@@ -1,0 +1,9 @@
+(*class* #00010000020003d0 5
+(*list*)
+(*list*
+(*declaration* NotSuspend (*scqf* int 1) public #00010000020003d0 0 NotSuspend)
+(*declaration* Suspending (*scqf* int 1) public #00010000020003d0 0 Suspending)
+(*declaration* Suspend (*scqf* int 1) public #00010000020003d0 0 Suspend)
+(*declaration* Resuming (*scqf* int 1) public #00010000020003d0 0 Resuming)
+)
+)

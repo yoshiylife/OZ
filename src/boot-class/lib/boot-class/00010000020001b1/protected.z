@@ -1,0 +1,12 @@
+(*class* #00010000020001b1 0
+(*list*)
+(*list*
+(*declaration* New (*method* void (*list*) 0) constructor #00010000020001b0 0 0)
+(*declaration* Open (*method* int (*list* #00010000020003bd 0 (*array* char ) ) 1) public #00010000020001b0 0 1)
+(*declaration* SetFd (*method* void (*list* int ) 1) public #00010000020001b0 0 2)
+(*declaration* Close (*method* void (*list*) 1) public #00010000020001b0 0 3)
+(*declaration* Read (*method* #0001000002000034 0 (*list* int ) 1) public #00010000020001b0 0 4)
+(*declaration* Write (*method* void (*list* #0001000002000034 0 int ) 1) public #00010000020001b0 0 5)
+(*declaration* Seek (*method* int (*list* int int ) 1) public #00010000020001b0 0 6)
+)
+)

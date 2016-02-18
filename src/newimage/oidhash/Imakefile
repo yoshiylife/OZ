@@ -1,0 +1,5 @@
+DESTDIR=${OZROOT}
+BINDIR=/bin
+CC=gcc
+
+SimpleProgramTarget(oidhash)

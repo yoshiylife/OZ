@@ -1,0 +1,25 @@
+/* XPM */
+static char * open_xpm[] = {
+/* width height ncolors chars_per_pixel */
+"16 16 3 1",
+/* colors */
+" 	s None	c None",
+".	c gray",
+"X	c black",
+/* pixels */
+"                ",
+"                ",
+"   .            ",
+"   ..           ",
+"   ....         ",
+"   ......       ",
+"   ........     ",
+"   ..........   ",
+"   .........X   ",
+"   .......X     ",
+"   .....X       ",
+"   ...X         ",
+"   .X           ",
+"   .            ",
+"                ",
+"                "};

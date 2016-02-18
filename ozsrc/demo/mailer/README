@@ -1,0 +1,49 @@
+○class Mailer
+
+SMTP メールの送受信を行うクラスです。
+
+○インスタンス変数
+
+・SMTPAgent
+
+    Mailer は、 SMTP エージェントを exec してメールを送信します。
+    SMTPAgent は、 exec される SMTP エージェントのパス名です。
+    メソッド New の中で "/usr/lib/sendmail" に初期化されます。
+
+・POPServer
+
+    Mailer は、 POP によってメールを受信します。
+    POPServer は、 POP server のあるホスト名です。
+    メソッド New の中で "localhost" に初期化されます。
+
+・Buffer
+
+    Mailer が POP サーバとの通信に利用するテキストバッファです。
+    大きさは自動的に拡張されます。
+
+・BufferStart, BufferEnd
+
+    Buffer の中の、有効なデータの存在する範囲を示します。
+    [BufferStart, BufferEnd) の範囲に有効なデータが存在します。
+
+○パブリックメソッド
+
+・void New ();
+    新しい Mailer のインスタンスを生成します。
+
+・void ChangeSMTPAgent (String smtp_agent);
+    SMTPAgent の値を smtp_agent に変更します。
+
+・void ChangePOPServer (String pop_server);
+    POPServer の値を pop_server に変更します。
+
+・String Receive (String user, String password)[];
+    POPServer から、その時点で受信しているメールをすべて取り出します。
+    POPServer からはそれらのメールを削除します。
+    メールは、一通ずつ String オブジェクトに格納され、受信している本数
+    分だけの大きさの配列として返されます。
+
+・void Send (String contents);
+    SMTPAgent を用いて contents を送信します。
+    contents は、ヘッダと内容を空行で区切って記述して下さい。
+    SMTPAgent は -t オプションつきで起動されます。

@@ -1,0 +1,29 @@
+#! /bin/sh
+cmdname=`basename $0` ;
+if [ $# -eq 1 ]; then
+	if [ "$1" = "-l" ]; then
+		kill -l ;
+		exit 0 ;
+	fi
+	sig=-TERM;
+	eid=$1 ;
+elif [ $# -eq 2 ]; then
+	sig=$1 ;
+	eid=$2 ;
+else
+	echo "Usage: $cmdname [-signal] Executor-ID" ;
+	exit 2 ;
+fi
+
+chdir ${OZROOT:?"You must be setenv."}/images ;
+exid=`expr substr 000000$eid \`expr length "$eid" + 1\` 6` ;
+if [ ! -d $exid ]; then
+	echo "$cmdname: Can't chdir $OZROOT/images/$exid." ;
+	echo "$cmdname: I need Executor-ID."
+	exit 1 ;
+fi
+chdir $exid ;
+
+pidstr=`head -1 .gdbinit` ;
+pid=`expr substr $pidstr 2 \`expr length "$pidstr" - 1\` ` ;
+kill $sig $pid ;

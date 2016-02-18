@@ -1,0 +1,60 @@
+NFE(1)                  NFE 組み込みコマンド                   NFE(1)
+
+　[名前]
+　　　　newimage - 任意のエグゼキュータ ID を付与してコマンド newimage
+　　　　　　　　　を起動する。
+
+　[形式]
+　　　　newimage [newimage options]
+
+　[機能説明]
+　　　　ニュクリアスから任意のエグゼキュータ ID を取得してコマンド
+　　　　newimage の引数として起動する。newimage が正常に終了した場合、
+　　　　エグゼキュータ ID メンテナンス情報として取得したエグゼキュータ
+　　　　ID を登録する。
+
+　[newimage オプション]
+        newimage は、以下のオプションを認識します。
+
+　　　　-n　取得したエグゼキュータ ID に対応する名前を付ける。エグゼキ
+　　　　  　ュータ起動の組み込みコマンド cex に対する引数で指定すること
+　　　　  　ができる。
+　　　　-c　取得したエグゼキュータ ID に対する備考を付ける。
+        -g  クラスオブジェクトを、クラス配送モニタなしに設定する。
+        -d domain-name
+            このエグゼキュータが属すべきドメイン名を domain-name に設
+            定する。
+        -u user-name
+            このエグゼキュータのオーナ名を user-name に設定する。
+        -k configuration-name
+            標準のコンフィギュレーションを使用する。configuration-name
+            は、次のいずれかである。
+
+                site-master または 1
+                station-master または 2
+                slave-with-class または 3
+                slave-without-class または 4
+
+        -o image-dir
+            エグゼキュータ image を作成するディレクトリを指定する。
+
+        これらのオプションが適切に設定されているならば、対応する設定手
+        順は省略される。
+
+        newimage の説明は doc/README.newimage.JP を参照。
+
+　[ファイル]
+　　　　・$OZROOT/images/<EXID>/exid.info
+　　　　　エグゼキュータ ID メンテナンス情報のためのファイルである。
+　　　　　newimage が正常に終了した時点で、エグゼキュータ ID メンテナン
+　　　　　ス情報が作成される。
+
+　[使用例]
+　　　　nfe> newimage -n TESTEX -c "FOR DEBUG"
+　　　　　            :
+　　　　nfe> exidlist
+　　　　 EXID     EX-NAME                COMMENT
+        00025f    TESTEX                 FOR DEBUG
+　　　　nfe> cex $TESTEX
+　　　　　            :
+        nfe>

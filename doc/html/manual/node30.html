@@ -1,0 +1,282 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.10 Statements</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.10 Statements">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION000610000000000000000>5.10 Statements</A></H2>
+ <A NAME=langlangmanualstatement>&#160;</A>
+<P>
+<PRE>stmt
+        : comp_stmt
+        | not_comp_stmt
+        ;
+
+not_comp_stmt
+        : ';'
+        | exp_stmt
+        | select_stmt
+        | iterate_stmt
+        | jump_stmt
+        | except_stmt
+        | c_stmt
+        | concurrent_stmt
+        | debug_stmt
+        ;
+</PRE>
+<P>
+The following types of statements are available:
+<P>
+<UL><LI> Expression Statements
+<LI> Compound Statements (Blocks)
+<LI> Declaration Statements
+<LI> Selection Statements
+<LI> Iteration Statements
+<LI> Jump Statements
+<LI> Exception Handling Statements
+<LI> External Language Interface Statements (C Statements)
+<LI> Statements for Concurrent Programming
+<LI> Debug Statements
+</UL><H3><A NAME=SECTION000610100000000000000>5.10.1 Expression Statements</A></H3>
+<P>
+<PRE>exp_stmt
+        : exp ';'
+        ;
+</PRE>
+<P>
+This is a statement for evaluating expressions.  
+A side effect of an
+expression statement is that it ends before the statements are
+executed.  
+Expression statement in which <tt> exp</tt> is omitted are null
+statements.  Null statements are used to empty the body of iterative
+statements (see Section <A HREF="node30.html#langlangmanualstatementitrn">5.10.5</A>).
+<P>
+<H3><A NAME=SECTION000610200000000000000>5.10.2 Declaration Statements</A></H3>
+<P>
+<PRE>var_decls
+        : /* empty */
+        | var_decls var_decl 
+        ;
+
+var_decl
+        : simple_quals_type simple_vars_list ';'
+        | class_quals_type class_vars_list ';'
+        ;
+</PRE>
+<P>
+This statement declares the introduction of a new identifier into the
+block (see Chapter <A HREF="node31.html#langlangmanualdecl">5.11</A>).
+<P>
+
+If the identifier introduced here is also declared outside the block,
+then the external declaration is kept hidden inside this block.
+However, once the process exits this block, the effect of the external
+declaration becomes exposed again.
+<P>
+When the process exits a block, the local variables declared in it
+lose their effect.
+<P>
+<H3><A NAME=SECTION000610300000000000000>5.10.3 Compound  Statements (Blocks) </A></H3>
+<P>
+<PRE>comp_stmt
+        : block
+        ;
+
+block
+        : '{'   block_contents '}'
+        ;
+
+block_contents 
+        : var_decls stmts
+        ;
+
+stmts
+        : /* empty */
+        | stmts stmt
+        ;
+</PRE>
+<P>
+A block is a statement which summarizes several statements into a single statement.  In addition, a block enables multiple statements to be used in places where only single statements are normally used.
+<P>
+A block having no statement is called an empty block.
+<P>
+<H3><A NAME=SECTION000610400000000000000>5.10.4 Selection Statements</A></H3>
+<P>
+<PRE>select_stmt
+        : if_exp if_body
+        | 'switch' '(' exp ')' '{' label_stmt '}'
+        ;
+
+if_exp
+        : 'if' '(' exp ')' 
+        ;
+
+if_body 
+        : stmt 
+        | stmt 'else' stmt
+        ;
+
+label_stmt
+        : label not_comp_stmts
+        | label_stmt label not_comp_stmts 
+        ;
+label
+        : 'case' exp ':'
+        | 'default' ':'
+        ;
+
+not_comp_stmts
+        : /* empty */
+        | not_comp_stmts not_comp_stmt
+        ;
+</PRE>
+<P>
+Under the conditions given, these statements make one choice from several control flows.
+   The  <tt> stmt</tt> in the selection statements must not be a single statement (see Chapter <A HREF="node31.html#langlangmanualdecl">5.11</A>).  If this constraint is relaxed, not only does the scope becomes unclear, but the names being used also become redundant.
+<P>
+<PRE>if (i) 
+  int a = 7;        // error
+
+if (i)
+  {
+    int a = 7;      // OK: a is valid only inside the block
+  }
+</PRE>
+<P>
+Only first order expressions of literals (see Section <A HREF="node29.html#langlangmanualexpfirstexp">5.9.1</A>) can be used in expressions of <tt> case</tt> label.
+<P>
+<H3><A NAME=SECTION000610500000000000000>5.10.5 Iteration Statements</A></H3>
+ <A NAME=langlangmanualstatementitrn>&#160;</A>
+<P>
+<PRE>iterate_stmt
+        : 'while' '(' exp ')' stmt
+        | 'do' stmt 'while' '(' exp ')' ';'
+        | 'for' '(' exp_or_null ';' exp_or_null 
+                 ';' exp_or_null ')' stmt
+        ;
+
+exp_or_null
+        : /* empty */
+        | exp
+        ;
+</PRE>
+<P>
+These are the statements for iterative constructions.
+<P>
+The <tt> stmt</tt> inside the iterative statement must not be a single declaration.  (see Chapter <A HREF="node31.html#langlangmanualdecl">5.11</A>)
+<P>
+<H3><A NAME=SECTION000610600000000000000>5.10.6 Jump Statements</A></H3>
+<P>
+<PRE>jump_stmt
+        : 'break' ';'
+        | 'continue' ';'
+        | 'return' ';'
+        | 'return' exp ';'
+        ;
+</PRE>
+<P>
+This is the statement for unconditional movement of controls.
+<P>
+<H3><A NAME=SECTION000610700000000000000>5.10.7 Statements for Exception Handling</A></H3>
+ <A NAME=langlangmanualstatementexcept>&#160;</A>
+<P>
+<PRE>except_stmt
+        : 'try' block 'except' '{' except_body
+                                   default_except_block '}'
+        | 'raise' exception_label2 ';'
+        | 'raise' ';'
+        ;
+
+except_body
+        : /* empty */
+        | except_body exception_labels block 
+        ;
+
+default_except_block
+        : /* empty */
+        | 'default' block
+        ;
+
+exception_labels
+        : exception_label 
+        | exception_labels ',' exception_label 
+        ;
+
+exception_label
+        : exception_name 
+        | exception_name '(' IDENTIFIER ')'
+        ;
+
+exception_label2
+        : exception_name
+        | exception_name '(' exp ')'
+        ;
+
+exception_name
+        : SHAREDNAME EXCEPTNAME
+        | IDENTIFIER
+        ;
+</PRE>
+<P>
+These are the statements which accept and generate exceptions (see Chapter <A HREF="node36.html#langlangmanualexcept">5.16</A> ).
+<P>
+<H3><A NAME=SECTION000610800000000000000>5.10.8 External Language Interface Statements</A></H3>
+<P>
+<PRE>c_stmt
+        : 'inline' '&quot;C&quot;'  '{' inline_body '}'
+        ;
+
+inline_body
+        : /* empty */
+        | inline_body STRINGS
+        ;
+</PRE>
+This is the statement for the external language interface.  Here, codes can be written in C language inside the source codes of OZ++ language (see Chapter <A HREF="node42.html#langlangmanualotherif">5.22</A>).
+<P>
+<H3><A NAME=SECTION000610900000000000000>5.10.9 Statements for Concurrent Programming</A></H3>
+ <A NAME=langlangmanualstatementconcurrent>&#160;</A>
+<P>
+<PRE>concurrent_stmt:
+          'detach' exp ';'
+        | 'kill' exp ';'
+        | 'abort' ';'
+        | 'abortable' ';'
+        | 'wait' exp ';'
+        | 'signal' exp ';'
+        | 'signalall' exp ';'
+        ;
+</PRE>
+<P>
+These are the elements for implementing concurrent programming using OZ++.  <tt> Detach</tt>, <tt> kill</tt>, <tt> abort</tt>, and <tt> abortable</tt>  describe processing of processes (see Section <A HREF="node28.html#langlangmanualprocessoperation">5.8.3</A>).  The rest are arithmetic operations for synchronizing threads of <tt> condition</tt> type variables (see Section <A HREF="node39.html#langlangmanualconcurrent">5.19</A>).
+<P>
+<H3><A NAME=SECTION0006101000000000000000>5.10.10 Debug Statements </A></H3>
+<P>
+<PRE>debug_stmt:
+        : 'debug' '(' exp ',' STRING ')' ';'
+        | 'debug' '(' exp ',' STRING ',' exp ')' ';'
+        | 'debug' '(' 'default' ',' STRING ')' ';'
+        | 'debug' '(' 'default' ',' STRING ',' exp ')' ';'
+        | 'debug' compound_stmt
+        ;
+</PRE>
+<P>
+These are the statements required during debugging to output messages and to denote necessary processes (see Chapter <A HREF="node40.html#langlangmanualdebug">5.20</A>).
+<P>
+
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

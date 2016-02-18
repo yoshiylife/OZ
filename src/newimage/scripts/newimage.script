@@ -1,0 +1,1016 @@
+#! /bin/sh 
+#
+#  Copyright (c) 1994-1997 Information-technology Promotion Agency, Japan
+#
+#  All rights reserved.  No guarantee.
+#  This technology is a result of the Open Fundamental Software Technology
+#  Project of Information-technology Promotion Agency, Japan (IPA).
+#
+DEBUGGING=n
+
+if [ $DEBUGGING = y ]; then echo $*; fi
+
+TEMPLATE=$OZROOT/lib/image-template
+SITEID_FILE=$OZROOT/etc/site-id
+
+INFOFILE=exid.info
+EXECUTOR_NAME="(noname)"
+EXECUTOR_COMMENT=
+
+CP=/bin/cp
+LN="/bin/ln -s"
+MKDIR=/bin/mkdir
+RM="/bin/rm -f"
+TOUCH=/bin/touch
+
+KIND=
+EXID=                # target executor ID
+SITEID=
+NEED_CLASS=
+NEED_NAME_DIRECTORY=
+NEED_DNS_RESOLVER=
+NEED_LAUNCHER=
+NEED_CATALOG=
+OBJECT_COUNT=0
+PRELOAD_COUNT=0
+OTM_KEY=otm_key_table_content
+OTM_VALUE=otm_value_table_content
+OTM_KEY_CLASS=
+OTM_VALUE_CLASS=
+OTM_KEY_NAME=
+OTM_VALUE_NAME=
+OTM_KEY_DNS=
+OTM_VALUE_DNS=
+OTM_KEY_LAUNCHER=
+OTM_VALUE_LAUNCHER=
+OTM_KEY_CATALOG=
+OTM_VALUE_CATALOG=
+
+OWNER=
+CLASS_OF_CLASS=2
+DOMAIN_NAME=
+DOMAIN_NAME_LEN=0
+
+STANDALONE=n
+ADDITIONAL=
+REFERENCE=
+
+PRESERVING=n
+
+CheckDirectory () {
+  if [ ! -d $1 ]; then
+    echo "Not a directory: $1"
+    exit 2
+  elif [ ! -w $1 ]; then
+    echo "Not a writable directory: $1"
+    exit 2
+  elif [ -d $1/$2 -o -f $1/$2 ]; then
+    echo "Cannot override an existing file/directory: $1/$2"
+    exit 2
+  fi
+}
+
+CheckSameDirectory () {
+  TESTFILE=.newimage-test$$
+  cd $1
+  $RM $TESTFILE
+  cd $2
+  $TOUCH $TESTFILE
+  cd $1
+  if [ -f $TESTFILE ]; then
+    $RM $TESTFILE
+    echo "Same directory $1 and $2"
+    exit 1
+  fi
+  cd $2
+  $RM $TESTFILE
+}
+
+PadEXID () {
+  expr substr 00000$1 `expr length "$1"` 6
+}
+
+Read () {
+  if [ -z "$2" ]; then
+    echo -n "$1 ? "
+  else
+    echo -n "$1 [$2] ? "
+  fi
+  read BUFF
+  if [ -z "$BUFF" ]; then
+    BUFF="$2"
+  fi
+}
+
+ReadInt () {
+  INT=
+  while [ -z "$INT" ]; do
+    Read "$1" "$2"
+    if [ "$BUFF" != "`expr "\"$BUFF\"" + 0 2>&1`" ]; then
+      echo 'Enter a decimal number.'
+      echo
+      INT=
+    else
+      INT=$BUFF
+    fi
+  done
+}
+
+ReadWord () {
+  WORD=
+  while [ -z "$WORD" ]; do
+    Read "$1" "$2"
+    if [ -z "$BUFF" ]; then
+      echo "Answer in a word."
+      echo
+    else
+      WORD="$BUFF"
+    fi
+  done
+}
+
+ReadName () {
+  NAME=
+  while [ -z "$NAME" ]; do
+    ReadWord "$1" "$2"
+    if expr match "$WORD" '^::' > /dev/null ; then
+      echo "A local name is required."
+      echo
+    else
+      NAME="$WORD"
+    fi
+  done
+}
+
+ReadYesNo () {
+  YESNO=
+  while [ -z "$YESNO" ]; do
+    Read "$1 (y/n)" "$2"
+    YESNO=`expr substr "$BUFF" 1 1 | tr YN yn`
+    if [ "$YESNO" != y -a "$YESNO" != n ]; then
+      echo "Answer in yes or no."
+      echo
+      YESNO=
+    fi
+  done
+}
+
+ArraySize () {
+  SIZE=$2
+  while [ $1 -gt $SIZE ]; do
+    SIZE=`expr $SIZE \* 2`
+  done
+}
+
+NameIt () {
+  NUMBER=0
+  ReadYesNo "Do you want to name the $1"
+  if [ $YESNO = y ]; then
+    ReadInt "How many names do you give to the $1" 1
+    NUMBER=$INT
+    I=0
+    while [ $NUMBER -gt $I ]; do
+      ReadName "What is the name ($I)"
+      echo "	names_table [$I] = array char [] { "\"$NAME\""; }" >> $2
+      I=`expr $I + 1`
+    done
+  else
+    $TOUCH $2
+  fi
+  ArraySize $NUMBER 2
+}
+
+PreloadIt () {
+  echo "#define $1 $PRELOAD_COUNT" >> om.h
+  PRELOAD_COUNT=`expr $PRELOAD_COUNT + 1`
+}
+
+AskPreload () {
+  ReadYesNo "Do you want to preload the $1"
+  if [ $YESNO = y ]; then
+    PreloadIt $2
+  fi
+}
+
+Oic () {
+  if [ "$1" = y ]; then
+    echo -n "preparing $2 ... "
+    $CP $TEMPLATE/$2.* .
+    oicfe -c $EXID $2
+    if [ $? != 0 ]; then
+      echo
+      echo 'Internal error: object image compilation was failed.'
+      exit 2
+    else
+      if [ $PRESERVING != y ]; then
+        $RM $2 $2.* $2name.h
+        if [ "$2" = om -o "$2" = miniom ]; then
+          $RM om-class.h
+        fi
+      fi
+      echo 'done.'
+    fi
+  fi
+}
+
+SetClass () {
+  NEED_CLASS=y
+  PreloadIt PRELOAD_CLASS
+  PRELOAD_CLASS=y
+  NUMBER_OF_CLASS_NAMES=1
+  ARRAY_SIZE_OF_CLASS_NAMES=4
+  NUMBER_OF_REMOTE_CLASS_NAMES=0
+  ARRAY_SIZE_OF_REMOTE_CLASS_NAMES=4
+  MANAGEBOOT=$1
+  echo 'names_table [0] = array char [] { "'$2'"; }' >> classname.h
+}
+
+EmployClasses () {
+  ReadInt 'How many remote class objects do you employee'
+  NUMBER_OF_REMOTE_CLASS_NAMES=$INT
+  I=0;
+  while [ $NUMBER_OF_REMOTE_CLASS_NAMES -gt $I ]; do
+    ReadName "What is the name ($I)"
+    echo "remote_class_names [$I] = array char [] { "\"$NAME\""; }" \
+        >> om-class.h
+    I=`expr $I + 1`
+  done
+  ArraySize $NUMBER_OF_REMOTE_CLASS_NAMES 4
+  ARRAY_SIZE_OF_REMOTE_CLASS_NAMES=$SIZE
+}
+
+AskDomainName () {
+  if [ -z "$DOMAIN_NAME" ]; then
+    ReadWord 'Enter domain name'
+    DOMAIN_NAME=$WORD
+    DOMAIN_NAME_LEN=`expr length $WORD`
+  fi
+}
+
+RemoteNameDirectory () {
+  REMOTE_NAME_DIRECTORY=0000000000000000
+  echo 'You can set an object ID as the name directory for this executor.'
+  echo 'Or, at the first execution of this executor, the name directory'
+  echo 'is searched by broadcasting.'
+  ReadYesNo 'Do you set an object ID as the name directory'
+  if [ "$YESNO" = y ]; then
+    ReadWord 'What is the object ID'
+    REMOTE_NAME_DIRECTORY=$WORD
+  fi
+}
+
+SetDNS () {
+  NEED_DNS_RESOLVER=y
+  PreloadIt PRELOAD_DNS
+  PRELOAD_DNS=y
+}
+
+SetLauncher () {
+  NEED_LAUNCHER=y
+  PreloadIt PRELOAD_LAUNCHER
+  PRELOAD_LAUNCHER=y
+}
+
+SetCatalog () {
+  NEED_CATALOG=y
+  PreloadIt PRELOAD_CATALOG
+  PRELOAD_CATALOG=y
+  NUMBER_OF_CATALOG_NAMES=1
+  ARRAY_SIZE_OF_CATALOG_NAMES=4
+  echo 'names_table [0] = array char [] { ":catalog"; }' >> catalogname.h
+}
+
+SetOwner () {
+  if [ -z "$OWNER" ]; then
+    if [ ! -z "$USER" ]; then
+        UNIX_USER_NAME=$USER
+    elif [ ! -z "$LOGNAME" ]; then
+        UNIX_USER_NAME=$LOGNAME
+    else
+        UNIX_USER_NAME=
+    fi
+    ReadWord "Who are you" $UNIX_USER_NAME
+    OWNER=$WORD
+  fi
+}
+
+StandardDaemons () {
+  BROADCAST_RECEIVERS=2
+  CODE_FAULT_DAEMONS=2
+  LAYOUT_FAULT_DAEMONS=0
+  CLASS_REQUEST_DAEMONS=2
+  OBJECT_FAULT_DAEMONS=1
+  CONFIGURATION_DAEMONS=3
+  DEBUGGER_CLASS_REQ_DAEMONS=2
+}
+
+SetAdditionalConfiguration () {
+  if [ -z "$ADDITIONAL" ]; then
+    while [ ! -f "$ADDITIONAL" ]; do
+      ReadYesNo 'Do you make changes on the boot time configuration table'
+      if [ "$YESNO" = y ]; then
+        ReadWord 'What is the file name'
+        ADDITIONAL=$WORD
+        if [ ! -f "$ADDITIONAL" ]; then
+          echo "$ADDITIONAL: No such file"
+        fi
+      else
+        break;
+      fi
+    done
+  fi
+}
+
+SetOM () {
+  SetOwner
+  SetAdditionalConfiguration
+  StandardDaemons
+  NUMBER_OF_OM_NAMES=1
+  ARRAY_SIZE_OF_OM_NAMES=4
+  echo 'names_table [0] = array char [] { "'$1'"; }' >> omname.h
+}
+
+CheckREFEXID () {
+  path="$OZROOT/images/$1";
+  if [ -d $path ]; then
+    cdpath="$path/classes"
+    if [ -d $cdpath ]; then
+      CHECK=y
+    else
+      echo "Executor $1 has no class directory";
+      CHECK=n
+    fi
+  else
+    echo "No such executor $1 in this OZROOT";
+    CHECK=n
+  fi
+}
+
+SetReferenceExecutor () {
+  if [ -z "$REFERENCE" ]; then
+    CHECK=n
+    while [ $CHECK = n ]; do
+      ReadYesNo 'Do you refer a class directory of another executor'
+      if [ "$YESNO" = y ]; then
+        ReadWord 'What is the executor ID'
+        REFERENCE=`PadEXID $WORD`
+        CheckREFEXID $REFERENCE
+      else
+        break;
+      fi
+    done
+  fi
+}
+
+SetStandAloneOM () {
+  SetReferenceExecutor
+  SetOwner
+  SetAdditionalConfiguration
+  StandardDaemons
+  NUMBER_OF_OM_NAMES=1
+  ARRAY_SIZE_OF_OM_NAMES=4
+  echo 'names_table [0] = array char [] { "'$1'"; }' >> miniomname.h
+}
+
+SiteMaster () {
+  SetClass y ":classes:site-master"
+
+  NEED_NAME_DIRECTORY=y
+  PRELOAD_NAME=n
+  AskDomainName
+
+#  SetDNS
+  NEED_DNS_RESOLVER=n
+  SetLauncher
+  SetCatalog
+  SetOM ":object-managers:site-master"
+}
+
+StationMaster () {
+  SetClass y ":classes:$EXID"
+
+  NEED_NAME_DIRECTORY=n
+  REMOTE_NAME_DIRECTORY=0000000000000000
+  AskDomainName
+
+  NEED_DNS_RESOLVER=n
+  SetLauncher
+  NEED_CATALOG=n
+  SetOM ":object-managers:$EXID"
+}
+
+SlaveWithaClass () {
+  SetClass n ":classes:$EXID"
+  EmployClasses
+
+  NEED_NAME_DIRECTORY=n
+  REMOTE_NAME_DIRECTORY=0000000000000000
+  AskDomainName
+
+  NEED_DNS_RESOLVER=n
+  SetLauncher
+  NEED_CATALOG=n
+  SetOM ":object-managers:$EXID"
+}
+
+SlaveWithoutaClass () {
+  NEED_CLASS=n
+  EmployClasses
+
+  NEED_NAME_DIRECTORY=n
+  REMOTE_NAME_DIRECTORY=0000000000000000
+  AskDomainName
+
+  NEED_DNS_RESOLVER=n
+  SetLauncher
+  NEED_CATALOG=n
+  SetOM ":object-managers:$EXID"
+}
+
+StandAlone () {
+  STANDALONE=y
+
+  NEED_CLASS=n
+  EmployClasses
+
+  NEED_NAME_DIRECTORY=n
+  REMOTE_NAME_DIRECTORY=0000000000000000
+  AskDomainName
+
+  NEED_DNS_RESOLVER=n
+  NEED_CATALOG=n
+  SetStandAloneOM ":object-managers:$EXID"
+}
+
+CustomizeClass () {
+  ReadYesNo 'Do you need a local class object for this executor'
+  NEED_CLASS=$YESNO
+  if [ $NEED_CLASS = y ]; then
+    CLASS_OF_CLASS=
+    while [ -z "$CLASS_OF_CLASS" ]; do
+      ReadInt \
+        'What kind of class do you need (1 .. normal, 2 .. with monitor)' 1
+      if [ "$INT" = 1 ]; then
+        CLASS_OF_CLASS=1
+      elif [ "$INT" = 2 ]; then
+        CLASS_OF_CLASS=2
+      else
+        echo 'Answer in 1 or 2.'
+        echo
+      fi
+    done
+    ReadYesNo 'Does it manage boot-classes'
+    MANAGEBOOT=$YESNO
+    PreloadIt PRELOAD_CLASS
+    PRELOAD_CLASS=y
+    NameIt 'class object' classname.h
+    NUMBER_OF_CLASS_NAMES=$NUMBER
+    ARRAY_SIZE_OF_CLASS_NAMES=$SIZE
+    NUMBER_OF_REMOTE_CLASS_NAMES=0
+    ARRAY_SIZE_OF_REMOTE_CLASS_NAMES=4
+  else
+    PRELOAD_CLASS=n
+    EmployClasses
+  fi
+}
+
+CustomizeName () {
+  ReadYesNo 'Do you need a local name directory'
+  NEED_NAME_DIRECTORY=$YESNO
+  if [ "$NEED_NAME_DIRECTORY" = y ]; then
+    AskPreload 'name directory' PRELOAD_NAME
+    PRELOAD_NAME=$YESNO
+    AskDomainName
+  else
+    RemoteNameDirectory
+  fi
+}
+
+CustomizeDNS () {
+  ReadYesNo 'Do you need a DNS resolver'
+  NEED_DNS_RESOLVER=$YESNO
+  if [ "$NEED_DNS_RESOLVER" = y ]; then
+    AskPreload dns PRELOAD_DNS
+    PRELOAD_DNS=$YESNO
+  fi
+}
+
+CustomizeLauncher () {
+  ReadYesNo 'Do you need a Launcher'
+  NEED_LAUNCHER=$YESNO
+  if [ "$NEED_LAUNCHER" = y ]; then
+    AskPreload launcher PRELOAD_LAUNCHER
+    PRELOAD_LAUNCHER=$YESNO
+  fi
+}
+
+CustomizeCatalog () {
+  ReadYesNo 'Do you need a local catalog'
+  NEED_CATALOG=$YESNO
+  if [ "$NEED_CATALOG" = y ]; then
+    AskPreload 'catalog' PRELOAD_CATALOG
+    PRELOAD_CATALOG=$YESNO
+    NameIt 'catalog' catalogname.h
+    NUMBER_OF_CATALOG_NAMES=$NUMBER
+    ARRAY_SIZE_OF_CATALOG_NAMES=$SIZE
+  fi
+}
+
+CustomizeOM () {
+  SetOwner
+
+  ReadYesNo 'Do you make a stand alone object manager'
+  if [ "$YESNO" = y ]; then
+    STANDALONE=y
+    SetReferenceExecutor
+  fi
+
+  SetAdditionalConfiguration
+
+  StandardDaemons
+  PROMPT="`echo -n 'Do you want to change the default number of fault daemons ' ;
+           echo -n [$BROADCAST_RECEIVERS/ ;
+           echo -n  $CODE_FAULT_DAEMONS/ ;
+           echo -n  $LAYOUT_FAULT_DAEMONS/ ;
+           echo -n  $CLASS_REQUEST_DAEMONS/ ;
+           echo -n  $OBJECT_FAULT_DAEMONS/ ;
+           echo -n  $CONFIGURATION_DAEMONS/ ;
+           echo     $DEBUGGER_CLASS_REQ_DAEMONS]`"
+  ReadYesNo "$PROMPT"
+  if [ "$YESNO" = y ]; then
+      ReadInt "How many broadcast receivers" $BROADCAST_RECEIVERS
+      BROADCAST_RECEIVERS=$INT
+      ReadInt "How many code fault daemons" $CODE_FAULT_DAEMONS
+      CODE_FAULT_DAEMONS=$INT
+      ReadInt "How many layout information fault daemons" $LAYOUT_FAULT_DAEMONS
+      LAYOUT_FAULT_DAEMONS=$INT
+      ReadInt "How many class request daemons" $CLASS_REQUEST_DAEMONS
+      CLASS_REQUEST_DAEMONS=$INT
+      ReadInt "How many object fault daemons" $OBJECT_FAULT_DAEMONS
+      OBJECT_FAULT_DAEMONS=$INT
+      ReadInt "How many configuration daemons" $CONFIGURATION_DAEMONS
+      CONFIGURATION_DAMONES=$INT
+      ReadInt "How many debugger class request daemons" \
+		$DEBUGGER_CLASS_REQ_DAEMONS
+      DEBUGGER_CLASS_REQ_DAEMONS=$INT
+  fi
+
+  if [ "$STANDALONE" = y ]; then
+    NameIt 'object manager' miniomname.h
+  else
+    NameIt 'object manager' omname.h
+  fi
+  NUMBER_OF_OM_NAMES=$NUMBER
+  ARRAY_SIZE_OF_OM_NAMES=$SIZE
+}
+
+Customize () {
+  CustomizeClass
+  CustomizeName
+  CustomizeDNS
+  CustomizeLauncher
+  CustomizeCatalog
+  CustomizeOM
+}
+
+Help () {
+  echo 'Site-master has an ObjectManager, a Class, a NameDiretory,'
+  echo '  a DNSResolver, a Launcher and a Catalog.'
+  echo '  The Class is named as `classes:site-master'\'' and manages boot-class.'
+  echo '  The ObjectManager is named as `object-managers:site-master'\'.
+  echo
+  echo 'Station-master has an ObjectManager, a Class, and a Launcher.'
+  echo '  The Class is named as `classes:<EXID>'\'' and manages boot-class.'
+  echo '  The ObjectManager is names as `object-managers:<EXID>'\'.
+  echo '  Each <EXID> is substituted by the executor ID.'
+  echo
+  echo 'Slave-with-class is almost same as a station-master, but its'
+  echo '  Class doesn'\''t manage boot-class.'
+  echo
+  echo 'Slave-without-class is also almost same as a station-master,'
+  echo '  but it doesn'\''t have a Class.  Instead, a remote Class can be'
+  echo '  employed for it.'
+  echo
+}
+
+ConfigureClass () {
+  if [ $NEED_CLASS = y ]; then
+    $MKDIR classes
+    OBJECT_COUNT=`expr $OBJECT_COUNT + 1`
+    $CP /dev/null class.h
+    OID=$SITEID${EXID}000002
+    HASH=`oidhash $OID 7`
+    OTM_KEY_CLASS="$OTM_KEY [$HASH] = oid ($OID);"
+    OTM_VALUE_CLASS="$OTM_VALUE [$HASH] = local (object_table_entry2);"
+    echo '#define NEED_CLASS'
+    OZCLASSPATH=images/$EXID/classes
+    if [ $MANAGEBOOT = y ]; then
+      OZCLASS=etc/boot-classes
+    else
+      OZCLASS=
+    fi
+    (echo '#include "oid.h"'
+     echo '#define LOG_FILE_PATH "'$OZCLASSPATH'/logfile"'
+     if [ $CLASS_OF_CLASS = 2 ]; then
+        echo "#define WITH_NOTIFIER"
+     fi
+     echo "#undef OZCLASSPATH"
+     echo "#define OZCLASSPATH" \"$OZCLASSPATH\"
+     echo "#undef OZCLASS"
+     echo "#define OZCLASS" \"$OZCLASS\"
+     echo "#define NUMBER_OF_CLASS_NAMES $NUMBER_OF_CLASS_NAMES"
+     echo "#define ARRAY_SIZE_OF_CLASS_NAMES $ARRAY_SIZE_OF_CLASS_NAMES") \
+    >> class.h
+  else
+    if [ ! -z "$REFERENCE" ]; then
+#      $MKDIR classes
+#      echo -n 'Creating symbolic links (it takes a few minutes) ... ' 1>&2
+#      $LN $OZROOT/images/$REFERENCE/classes/* classes
+#      echo 'done.' 1>&2
+      $LN $OZROOT/images/$REFERENCE/classes classes
+    fi
+    OTM_KEY_CLASS=
+    OTM_VALUE_CLASS=
+  fi
+  echo "#define OTM_KEY_CLASS $OTM_KEY_CLASS"
+  echo "#define OTM_VALUE_CLASS $OTM_VALUE_CLASS"
+  echo "#define NUMBER_OF_REMOTE_CLASS_NAMES $NUMBER_OF_REMOTE_CLASS_NAMES"
+  echo "#define ARRAY_SIZE_OF_REMOTE_CLASS_NAMES $ARRAY_SIZE_OF_REMOTE_CLASS_NAMES"
+}
+
+ConfigureName () {
+  if [ "$NEED_NAME_DIRECTORY" = y ]; then
+    OBJECT_COUNT=`expr $OBJECT_COUNT + 1`
+    echo "#define NEED_NAME_DIRECTORY"
+    OID=$SITEID${EXID}000003
+    HASH=`oidhash $OID 7`
+    OTM_KEY_NAME="$OTM_KEY [$HASH] = oid ($OID);"
+    OTM_VALUE_NAME="$OTM_VALUE [$HASH] = local (object_table_entry3);"
+    $CP /dev/null name.h
+    (echo '#include "oid.h"'
+     echo "#define DOMAIN_NAME \"$DOMAIN_NAME\""
+     echo "#define DOMAIN_NAME_LEN $DOMAIN_NAME_LEN") >> name.h
+  else
+    echo "#define REMOTE_NAME_DIRECTORY $REMOTE_NAME_DIRECTORY"
+    OTM_KEY_NAME=
+    OTM_VALUE_NAME=
+  fi
+  echo "#define OTM_KEY_NAME $OTM_KEY_NAME"
+  echo "#define OTM_VALUE_NAME $OTM_VALUE_NAME"
+  echo "#define DOMAIN_NAME \"$DOMAIN_NAME\""
+  echo "#define DOMAIN_PATH \"::${DOMAIN_NAME}:name\""
+}
+
+ConfigureDNS () {
+  if [ "$NEED_DNS_RESOLVER" = y ]; then
+    OBJECT_COUNT=`expr $OBJECT_COUNT + 1`
+    echo "#define NEED_DNS_RESOLVER"
+    OID=$SITEID${EXID}000004
+    HASH=`oidhash $OID 7`
+    OTM_KEY_DNS="$OTM_KEY [$HASH] = oid ($OID);"
+    OTM_VALUE_DNS="$OTM_VALUE [$HASH] = local (object_table_entry4);"
+    $CP /dev/null dns.h
+    (echo '#include "oid.h"' 
+     echo "#define DOMAIN_NAME \"$DOMAIN_NAME\""
+     echo "#define DOMAIN_NAME_LEN $DOMAIN_NAME_LEN") >> dns.h
+  else
+    OTM_KEY_DNS=
+    OTM_VALUE_DNS=
+  fi
+  echo "#define OTM_KEY_DNS $OTM_KEY_DNS"
+  echo "#define OTM_VALUE_DNS $OTM_VALUE_DNS"
+}
+
+ConfigureLauncher () {
+  if [ "$NEED_LAUNCHER" = y ]; then
+    OBJECT_COUNT=`expr $OBJECT_COUNT + 1`
+    $CP /dev/null launcher.h
+    OID=$SITEID${EXID}000005
+    HASH=`oidhash $OID 7`
+    OTM_KEY_LAUNCHER="$OTM_KEY [$HASH] = oid ($OID);"
+    OTM_VALUE_LAUNCHER="$OTM_VALUE [$HASH] = local (object_table_entry5);"
+    echo "#define NEED_LAUNCHER"
+  fi
+  echo "#define OTM_KEY_LAUNCHER $OTM_KEY_LAUNCHER"
+  echo "#define OTM_VALUE_LAUNCHER $OTM_VALUE_LAUNCHER"
+}
+
+ConfigureCatalog () {
+  if [ "$NEED_CATALOG" = y ]; then
+    OBJECT_COUNT=`expr $OBJECT_COUNT + 1`
+    echo "#define NEED_CATALOG"
+    OID=$SITEID${EXID}000006
+    HASH=`oidhash $OID 7`
+    OTM_KEY_CATALOG="$OTM_KEY [$HASH] = oid ($OID);"
+    OTM_VALUE_CATALOG="$OTM_VALUE [$HASH] = local (object_table_entry6);"
+    $CP /dev/null catalog.h
+    echo '#include "oid.h"' >> catalog.h
+    (echo "#define NUMBER_OF_CATALOG_NAMES $NUMBER_OF_CATALOG_NAMES"
+     echo "#define ARRAY_SIZE_OF_CATALOG_NAMES $ARRAY_SIZE_OF_CATALOG_NAMES") >> catalog.h
+  else
+    OTM_KEY_CATALOG=
+    OTM_VALUE_CATALOG=
+  fi
+  echo "#define OTM_KEY_CATALOG $OTM_KEY_CATALOG"
+  echo "#define OTM_VALUE_CATALOG $OTM_VALUE_CATALOG"
+}
+
+ConfigureOM () {
+  echo "#define OWNER \"$OWNER\""
+  echo "#define OBJECT_COUNT $OBJECT_COUNT"
+  echo "#define PRELOAD_COUNT $PRELOAD_COUNT"
+  echo "#define BROADCAST_RECEIVERS $BROADCAST_RECEIVERS"
+  echo "#define CODE_FAULT_DAEMONS $CODE_FAULT_DAEMONS"
+  echo "#define LAYOUT_FAULT_DAEMONS $LAYOUT_FAULT_DAEMONS"
+  echo "#define CLASS_REQUEST_DAEMONS $CLASS_REQUEST_DAEMONS"
+  echo "#define OBJECT_FAULT_DAEMONS $OBJECT_FAULT_DAEMONS"
+  echo "#define CONFIGURATION_DAEMONS $CONFIGURATION_DAEMONS"
+  echo "#define DEBUGGER_CLASS_REQ_DAEMONS $DEBUGGER_CLASS_REQ_DAEMONS"
+  echo "#define NUMBER_OF_OM_NAMES $NUMBER_OF_OM_NAMES"
+  echo "#define ARRAY_SIZE_OF_OM_NAMES $ARRAY_SIZE_OF_OM_NAMES"
+}
+
+SetPreload () {
+  echo -n 'Creating preload direction files ... '
+  for i in codes classes configurations; do
+    (if [ "$STANDALONE" = y ]; then
+       cat $TEMPLATE/preload-$i.miniom
+     else
+       cat $TEMPLATE/preload-$i.om
+     fi
+     if [ "$PRELOAD_CLASS" = y ]; then
+       cat $TEMPLATE/preload-$i.class
+     fi ;
+     if [ "$PRELOAD_NAME" = y ]; then
+       cat $TEMPLATE/preload-$i.name
+     fi ;
+     if [ "$PRELOAD_DNS" = y ]; then
+       cat $TEMPLATE/preload-$i.dns
+     fi
+     if [ "$PRELOAD_LAUNCHER" = y ]; then
+       cat $TEMPLATE/preload-$i.launcher
+     fi
+     if [ "$PRELOAD_CATALOG" = y ]; then
+       cat $TEMPLATE/preload-$i.catalog
+     fi) | sed -e '/^#/d' -e '/^$/d' | sort | uniq > preload-$i.src
+  done
+  set-preload-codes
+  if [ $? != 0 ]; then
+    echo 'Internal error: making preload-code file failed.'
+    exit 2
+  else
+    if [ $PRESERVING != y ]; then
+      $RM preload-codes.src
+    fi
+  fi
+  set-preload-classes
+  if [ $? != 0 ]; then
+    echo 'Internal error: making preload-classes file failed.'
+    exit 2
+  else
+    if [ $PRESERVING != y ]; then
+      $RM preload-classes.src
+    fi
+  fi
+  echo 'done.'
+}
+
+MakeObjectImage () {
+  echo 'Making object image files ...'
+  set-preload-configurations.keys
+  count=`set-preload-configurations.values`
+  if [ ! -z "$ADDITIONAL" ]; then
+    count=`add-preload-configurations $ADDITIONAL $count`
+  fi
+  echo '#define SIZEOFCONFIGURATIONTABLE '$count >> om.h
+  if [ "$STANDALONE" = y ]; then
+    Oic y miniom
+  else
+    Oic y om
+  fi
+  if [ $PRESERVING != y ]; then
+    $RM preload-configurations.*
+  fi
+  Oic $NEED_CLASS class
+  Oic $NEED_NAME_DIRECTORY name
+  Oic $NEED_DNS_RESOLVER dns
+  Oic $NEED_LAUNCHER launcher
+  Oic $NEED_CATALOG catalog
+  echo 'All done.'
+}
+
+Configure () {
+  (ConfigureClass
+   ConfigureName
+   ConfigureDNS
+   ConfigureLauncher
+   ConfigureCatalog
+   ConfigureOM) >> om.h
+  SetPreload
+  MakeObjectImage
+}
+
+# main
+
+if [ -z "$OZROOT" ]; then
+  echo 'OZROOT must be set.'
+  exit 2
+fi
+
+if [ -f "$SITEID_FILE" ]; then
+  SITEID=`cat $OZROOT/etc/site-id`
+else
+  echo "the site ID file ($SITEID_FILE) doesn't exist."
+  exit 2
+fi
+
+if [ ! -d "$TEMPLATE" ]; then
+  echo "template directory ($TEMPLATE) doesn't exist."
+  exit 2
+fi
+
+cd $OZROOT/images
+
+USAGE="Usage: newimage [-g] [-n name] [-c comment] [-o dir] [-d domain-name] [-u user-name] [-k kind] [-a additional] [-r exedutor-ID] executor-ID"
+while [ $# -gt 0 ]; do
+  case $1 in
+    -)  echo "$0: unknown option -";
+        echo $USAGE; exit 2;;
+    -*) len=`expr length $1`;
+        i=`expr substr $1 2 $len`;
+        shift;
+        while [ ! -z "$i" ]; do
+          case $i in
+            g) CLASS_OF_CLASS=1; if [ $DEBUGGING = y ]; then echo "-g"; fi;;
+            c) EXECUTOR_COMMENT=$1;
+               if [ $DEBUGGING = y ]; then echo "-c $1"; fi;
+               shift;;
+            n) EXECUTOR_NAME=$1;
+               if [ $DEBUGGING = y ]; then echo -n "-n $1"; echo; fi;
+               shift;;
+            o) IMAGEDIR=$1; if [ $DEBUGGING = y ]; then echo "-o $1"; fi;
+               shift;;
+            d) DOMAIN_NAME=$1; DOMAIN_NAME_LEN=`expr length $1`;
+               if [ $DEBUGGING = y ]; then echo "-d $1"; fi;
+               shift;;
+            k) if [ $DEBUGGING = y ]; then echo "-k $1"; fi;
+               if [ $1 = "site-master" -o $1 = 1 ]; then
+                 KIND=1
+               elif [ $1 = "station-master" -o $1 = 2 ]; then
+                 KIND=2
+               elif [ $1 = "slave-with-class" -o $1 = 3 ]; then
+                 KIND=3
+               elif [ $1 = "slave-without-class" -o $1 = 4 ]; then
+                 KIND=4
+               elif [ $1 = "stand-alone" -o $1 = 5 ]; then
+                 KIND=5
+               elif [ $1 = "customize" -o $1 = 9 ]; then
+                 KIND=9
+               else
+                 echo "kind must be one of following:"
+                 echo "  1. site-master"
+                 echo "  2. station-master"
+                 echo "  3. slave-with-class"
+                 echo "  4. slave-without-class"
+                 echo "  5. stand-alone"
+                 echo "  9. customize"
+                 echo "The leading decimal digit is also available."
+                 exit 2;
+               fi;
+               shift;;
+            p) PRESERVING=y; if [ $DEBUGGING = y ]; then echo "-p"; fi;;
+            u) OWNER=$1; if [ $DEBUGGING = y ]; then echo "-u $1"; fi;
+               shift;;
+            a) ADDITIONAL=$1; if [ $DEBUGGING = y ]; then echo "-a $1"; fi;
+               if [ ! -f $ADDITIONAL ]; then
+                 echo "$ADDITIONAL: No such file";
+                 exit 2;
+               fi
+               shift;;
+            r) REFERENCE=`PadEXID $1`;
+               if [ $DEBUGGING = y ]; then echo "-r $1"; fi;
+               CheckREFEXID $REFERENCE;
+               if [ $CHECK = n ]; then exit 2; fi;
+               shift;;
+            *) echo "$0: unknown option `expr substr $i 1 1`";
+               echo $USAGE; exit 2;;
+          esac
+          i=`expr substr $i 2 $len`
+        done;;
+    *)  break;;
+  esac
+done
+
+if [ $# = 0 ]; then
+  echo "No executor ID found."
+  echo $USAGE
+  exit 2
+elif [ $# = 1 ]; then
+  EXID=`PadEXID $1`
+  shift
+else
+  echo "Too many arguments"
+  echo $USAGE
+  exit 2
+fi
+
+if [ -z "$IMAGEDIR" ]; then
+  $MKDIR $EXID
+  (cd $EXID; $LN ../.. OZROOT)
+  trap '$RM -r $OZROOT/images/$EXID ; exit 2' 1 2 15
+else
+  CheckDirectory $IMAGEDIR $EXID
+  CheckSameDirectory $IMAGEDIR $OZROOT/images  
+  $MKDIR $IMAGEDIR/$EXID
+  $LN $IMAGEDIR/$EXID .
+  (cd $EXID; $LN $OZROOT OZROOT)
+  trap '$RM -r $IMAGEDIR/$EXID $OZROOT/images/$EXID; exit 2' 1 2 15
+fi
+
+cd $EXID
+$MKDIR objects
+echo '000007' > objects/oid
+
+$CP /dev/null om.h
+$CP /dev/null om-class.h
+
+(echo "#define SITEID $SITEID"
+ echo "#define EXID $EXID"
+ echo "#define EXIDString \"$EXID\""
+ echo '#ifdef __STDC__'
+ echo "#define MAKE_OID(ID) $SITEID##$EXID##ID"
+ echo '#else'
+ echo "#define MAKE_OID(ID) $SITEID/**/$EXID/**/ID"
+ echo '#endif') > oid.h
+echo '#include "oid.h"' >> om.h
+
+# standard configurations
+
+if [ -z "$KIND" ]; then
+  while [ -z "$KIND" ]; do
+    echo 'What kind of image do you want?'
+    echo '    1. Site master'
+    echo '    2. Station master'
+    echo '    3. Slave with a class object'
+    echo '    4. Slave without a class object'
+    echo '    5. Stand alone'
+    echo '    9. Fully customized'
+    echo '    0. Help'
+    echo -n '? '
+    read KIND
+    if [ "$KIND" = 1 ]; then
+      SiteMaster
+    elif [ "$KIND" = 2 ]; then
+      StationMaster
+    elif [ "$KIND" = 3 ]; then
+      SlaveWithaClass
+    elif [ "$KIND" = 4 ]; then
+      SlaveWithoutaClass
+    elif [ "$KIND" = 5 ]; then
+      StandAlone
+    elif [ "$KIND" = 9 ]; then
+      Customize
+    elif [ "$KIND" = 0 ]; then
+      Help
+      KIND=
+    else
+      echo 'Enter a decimal number'
+      echo
+      KIND=
+    fi
+  done
+else
+  if [ "$KIND" = 1 ]; then
+    SiteMaster
+  elif [ "$KIND" = 2 ]; then
+    StationMaster
+  elif [ "$KIND" = 3 ]; then
+    SlaveWithaClass
+  elif [ "$KIND" = 4 ]; then
+    SlaveWithoutaClass
+  elif [ "$KIND" = 5 ]; then
+    StandAlone
+  elif [ "$KIND" = 9 ]; then
+    Customize
+  elif [ "$KIND" = 0 ]; then
+    Help
+    exit 2
+  else
+    echo 'Enter a decimal number'
+    echo
+    exit 2
+  fi
+fi
+Configure
+
+(echo $EXECUTOR_NAME
+ echo $EXECUTOR_COMMENT) > $INFOFILE
+
+exit 0
+
+#if [ $MANAGEBOOT = y ]; then
+#  echo -n 'Creating symbolic links (it takes a few minutes) ... '
+#  (cd $OZROOT/$OZCLASSPATH;
+#   $LN $OZROOT/lib/boot-class* .)
+#  echo 'done.'
+#fi

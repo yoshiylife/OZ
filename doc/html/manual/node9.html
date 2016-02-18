@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>2.5 Executor</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="2.5 Executor">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION00035000000000000000>2.5 Executor</A></H2>
+<P>
+<H3><A NAME=SECTION00035100000000000000>2.5.1 executor options and arguments</A></H3>
+<P>
+Usage <BR>
+<P>
+<blockquote> Usage: executor [options] <b>&lt;</b>executor id<b>&gt;</b> <BR> 
+</blockquote>
+<P>
+options <BR>
+<P>
+<DL ><DT>-H <b>&lt;</b> mbyte (k) <b>&gt;</b> 
+<DD>Maximum heap size. The Unit of size is Mbyte. If &quot;k&quot; follows size, the unit is Kbyte(default 16).
+<DT>-M <b> &lt;</b>max<b>&gt; </b> 
+<DD>Maximum number of threads(default 256).
+<DT>-S <b>&lt;</b>site id<b>&gt;</b> 
+<DD>Site ID(default 1).
+<DT>-T <b>&lt;</b>ticks<b>&gt;</b> 
+<DD>Number of ticks in one second.
+<DT>-d	
+<DD>Running executor as a daemon.
+<DT>-g	
+<DD>Debug mode(enable OzDebugf() output).
+<DT>-i	
+<DD>Hide the global access monitor window.
+<DT>-p	
+<DD>Enable the profile.
+<DT>-s	
+<DD>Open executor shell window.
+<DT>-v	
+<DD>Print the version of executor.
+<DT>-a	
+<DD>Allow linking of all EXTERN symbols of executor.
+<DT>-o	
+<DD>Open console window.
+<P>
+ </DL><H3><A NAME=SECTION00035200000000000000>2.5.2 a note</A></H3>
+<P>
+<DL ><DT>SIGTERM
+<DD>Termination of the executor
+<DT>SIGINT
+<DD>Create of the executor shell
+<DT>SIGHUP
+<DD>Forcible termination of the executor
+<P>
+ </DL>
+<P>
+	<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

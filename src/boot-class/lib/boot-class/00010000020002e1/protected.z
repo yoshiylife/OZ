@@ -1,0 +1,21 @@
+(*class* #00010000020002e1 0
+(*list*
+(*list* #0001000002000187 #0001000002000188 0)
+)
+(*list*
+(*declaration* New (*method* void (*list* #000100000200018c 0 ) 0) constructor #00010000020002e0 0 0)
+(*declaration* Add (*method* void (*list* (*scqf* #0001000002fffffd 0 4) #00010000020002d1 0 ) 0) public #00010000020002e0 0 1)
+(*declaration* Download (*method* void (*list*) 1) public #00010000020002e0 0 2)
+(*declaration* GetEntry (*method* #00010000020002d1 0 (*list* (*scqf* #0001000002fffffd 0 4) ) 1) public #00010000020002e0 0 3)
+(*declaration* List (*method* (*array* (*scqf* #0001000002fffffd 0 4) ) (*list*) 1) public #00010000020002e0 0 4)
+(*declaration* Lookup (*method* (*scqf* #0001000002fffffd 0 4) (*list* (*scqf* #0001000002fffffd 0 4) ) 1) public #00010000020002e0 0 5)
+(*declaration* Remove (*method* void (*list* (*scqf* #0001000002fffffd 0 4) ) 0) public #00010000020002e0 0 6)
+(*declaration* Size (*method* (*scqf* int 2) (*list*) 1) public #00010000020002e0 0 7)
+(*declaration* Shutdown (*method* void (*list*) 0) public #00010000020002e0 0 8)
+(*declaration* Lock (*method* void (*list*) 1) public #0001000002000187 0 0)
+(*declaration* Unlock (*method* void (*list*) 1) public #0001000002000187 0 1)
+(*declaration* SuperNew (*method* void (*list*) 0) protected #0001000002000188 0 2)
+(*declaration* anExecutor #000100000200018c 0 protected #00010000020002e1 0 anExecutor)
+(*declaration* Table #00010000020004b4 0 protected #00010000020002e1 0 Table)
+)
+)

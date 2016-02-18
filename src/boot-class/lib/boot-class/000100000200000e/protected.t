@@ -1,0 +1,4 @@
+0 OIDAsKey<global CopyOfPrimaryCopyScheme<*>>
+	000100000200000d	000100000200000e	000100000200000f
+8 CopyOfPrimaryCopyScheme<*>
+	0001fff4e00002c5	0001fff4e00002c6	0001fff4e00002c7

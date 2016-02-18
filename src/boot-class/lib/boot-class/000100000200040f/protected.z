@@ -1,0 +1,13 @@
+(*class* #000100000200040f 0
+(*list*)
+(*list*
+(*declaration* New (*method* void (*list*) 0) constructor #000100000200040e 0 0)
+(*declaration* Abort (*method* void (*list*) 1) public #000100000200040e 0 1)
+(*declaration* Done (*method* void (*list*) 1) public #000100000200040e 0 2)
+(*declaration* Timer (*method* void (*list* (*scqf* int 2) ) 0) public #000100000200040e 0 3)
+(*declaration* WaitAndTest (*method* int (*list*) 1) public #000100000200040e 0 4)
+(*declaration* Aborted int protected #000100000200040f 0 Aborted)
+(*declaration* Finished int protected #000100000200040f 0 Finished)
+(*declaration* Lock OZ_ConditionRec protected #000100000200040f 0 Lock)
+)
+)

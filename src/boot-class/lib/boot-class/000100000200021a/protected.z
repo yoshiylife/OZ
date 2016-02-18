@@ -1,0 +1,13 @@
+(*class* #000100000200021a 0
+(*list*
+(*list* #0001000002000322 #0001000002000323 0)
+)
+(*list*
+(*declaration* New (*method* void (*list* OZ_Long ) 0) constructor #0001000002000219 0 0)
+(*declaration* Copy (*method* void (*list* int (*scqf* OZ_Long 2) #0001000002000214 8 ) 0) constructor #0001000002000219 0 1)
+(*declaration* Get (*method* #0001000002000214 8 (*list*) 0) public #0001000002000219 0 2)
+(*declaration* Clone (*method* #0001000002000322 8 (*list*) 0) public #0001000002000322 0 0)
+(*declaration* GetCID (*method* OZ_Long (*list*) 0) public #0001000002000322 0 8)
+(*declaration* Launch (*method* void (*list*) 0) public #0001000002000322 0 6)
+)
+)

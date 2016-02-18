@@ -1,0 +1,21 @@
+(*class* #000100000200030a 0
+(*list*
+(*list* #00010000020003e9 #00010000020003ea 0)
+)
+(*list*
+(*declaration* New (*method* void (*list* #00010000020003bd 0 ) 0) constructor #00010000020003e9 0 0)
+(*declaration* Next (*method* #00010000020003e2 8 (*list*) 0) public #00010000020003e9 0 2)
+(*declaration* ExtractorInit (*method* void (*list*) 0) protected #00010000020003ea 0 3)
+(*declaration* GetATokenFromBuffer (*method* #00010000020003e2 8 (*list*) 1) protected #00010000020003ea 0 4)
+(*declaration* IsEOF (*method* int (*list*) 1) protected #00010000020003ea 0 5)
+(*declaration* Lex (*method* void (*list* #00010000020003b6 0 ) 0) protected #00010000020003ea 0 6)
+(*declaration* PutATokenToBuffer (*method* void (*list* #00010000020003e2 8 ) 1) protected #00010000020003ea 0 8)
+(*declaration* ReadATokenFromFile (*method* #00010000020003e2 8 (*list* #00010000020003b6 0 ) 0) protected #00010000020003ea 0 9)
+(*declaration* SetEOF (*method* void (*list*) 1) protected #00010000020003ea 0 10)
+(*declaration* WaitSignal (*method* void (*list*) 1) protected #00010000020003ea 0 11)
+(*declaration* Buffer #000100000200051a 0 protected #00010000020003ea 0 Buffer)
+(*declaration* EOF int protected #00010000020003ea 0 EOF)
+(*declaration* ExtractorTable (*array* #00010000020003d8 8 ) protected #00010000020003ea 0 ExtractorTable)
+(*declaration* aTokenIsReady OZ_ConditionRec protected #00010000020003ea 0 aTokenIsReady)
+)
+)

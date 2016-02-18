@@ -1,0 +1,79 @@
+Class
+Collection<MirrorOperation>
+Collection<Token>
+ClassListFileReader
+ClassListFileTokenReader
+ClassLogFileReader
+ClassLogFileTokenReader
+ClassLogger
+ClassPackage
+ClassPackageID
+ClassPart
+ClassVersion
+ClassWithNotifier
+ConfiguredClass
+Date
+DefaultExtractor
+DefaultToken
+EOFToken
+ EnvironmentVariable
+FIFO<MirrorOperation>
+FIFO<Token>
+ FileOperators
+FileReader
+IdentifierExtractor
+IdentifierToken
+ImplementationPart
+InheritanceHierarchyNode
+IntegerExtractor
+IntegerToken
+Iterator<Token>
+LayoutFaultDaemon
+LexicalError
+LowerPart
+MirroredClassPackage
+MirrorOperation
+NewClassListFileReader
+NewClassListFileTokenReader
+NewLineAndHatchedCommentDisposer
+NewLineDisposer
+NewLineExtractor
+NewLineToken
+NotifierWindow
+OIDExtractor
+OIDSet<global ClassID>
+OIDToken
+OrderedCollection<MirrorOperation>
+OrderedCollection<Token>
+OriginalClassPackage
+PrivateDotiFileReader
+PrivateDotiTokenReader
+PrivateDotsFileReader
+PrivateDotsTokenReader
+ProtectedPart
+PublicPart
+ResolvableObject
+RootPart
+SequencedCollection<MirrorOperation>
+SequencedCollection<Token>
+SimpleArray<global ClassPackageID>
+SimpleTable<global Class,FIFO<MirrorOperation>>
+SimpleTable<global Class,int>
+SimpleTable<global Class,Waiter>
+SimpleTable<global ClassID,ClassPart>
+SimpleTable<global ClassID,Date>
+SimpleTable<global ClassPackageID,MirroredClassPackage>
+SimpleTable<global ClassPackageID,OriginalClassPackage>
+Stream
+String
+StringExtractor
+StringToken
+SubString
+Time
+TokenExtractor
+Token
+TokenReader
+UnixCommand
+UnixIO
+UpperPart
+VersionString

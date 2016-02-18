@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>2.3 Launcher</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="2.3 Launcher">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION00033000000000000000>2.3 Launcher</A></H2>
+<P>
+<H3><A NAME=SECTION00033100000000000000>2.3.1 Tutorial</A></H3>
+<P>
+Launcher is a tool for executing programs written by OZ++.
+<P>
+<H3><A NAME=SECTION00033200000000000000>2.3.2 Function</A></H3>
+<P>
+Information of display <BR>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD>
+<IMG  ALIGN=BOTTOM ALT="env-m_launcher.gif" SRC="figure/env-m_launcher.gif">
+</TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<P>
+<OL><LI> Title of window
+<LI> Menu bar
+<LI> Current project display view
+<LI> object/package change switch
+<LI> Subproject list
+<LI> Launchable object or Launchable class list
+</OL>
+<P>
+Project <BR>
+<P>
+<OL><LI> The project is a name space which can register Launchable objects.
+Launchable offers a tree structure of the projects, starting from /(root).
+<P>
+<LI> Users can freely make out subprojects under the root project.  Refer to
+Tutorial A for the detailed method.
+<P>
+<LI> Launcher has only a current project, which is displayed in the current
+project view.
+<P>
+<LI> Subprojects of the current project are displayed in the Subproject list.
+By double-clicking, the clicked project can be changed to the subproject.
+<P>
+<LI>  The moving of projects other than the above mentioned projects (the
+alteration of the current project) are done by the &quot;Project&quot; menu.<BR> 
+By clicking &quot;Up,&quot; the projects are moved to the parent project of the
+now current projects.
+</OL>
+<P>
+Package <BR>
+<P>
+Programs that can be executed by Launcher are registered in a global
+object called a catalog with a unit called a package.  To execute programs
+from Launcher, it is first necessary to copy the packages from the catalog.
+<P>
+The package list displays the registered packages.
+<P>
+As the package is registered as the name of the catalog, it is unable
+to import the more than two identical packages on the same project.
+<P>
+Launchable object <BR>
+<P>
+To execute the programs, it is necessary to convert the packages
+registered in the Launcher to the Launcher object.  This operation is done
+by double-clicking the item of the package list (Tutorial C).  The names
+input here are those displayed from Launcher.  These names have to be unique
+in the projects, and can not be the same as the name of a subproject or a
+package.
+<P>
+The Launcher object list displays the generated Launcher object, and
+this method is executed by double-clicking.
+<P>
+Edit Function <BR>
+<P>
+Moving and Deleting of the subprojects, Launcher objects and packages
+are done by the Edit menu.
+<UL><LI> The items the users want to move or delete are selected with the mouse.
+<LI> From the menu, select Move and Delete.
+<LI> The necessary items are entered in the dialog box.
+</UL>
+<P>
+When they are moved, the goal projects to be copied must already exist.
+<P>
+The root project can not be moved or deleted.
+<P>
+<H3><A NAME=SECTION00033300000000000000>2.3.3 Other Functions</A></H3>
+<P>
+By Flush in the System menu, you can save the Launcher image.
+<P>
+By Shutdown, you can terminate the executor.
+<P>
+<H3><A NAME=SECTION00033400000000000000>2.3.4 How to use Launcher</A></H3>
+<P>
+Tutorial <BR>
+<P>
+To understand the basic functions of Launcher, perform the following
+operations.
+<P>
+<OL><LI> Generating and Moving a Subproject
+<OL><LI> Choose &quot;Project&quot; from the Create menu. (All mouse operations are done
+by pressing its left button.)
+<P>
+<LI> The dialog box appears.  After typing &quot;Tools&quot; in the input field,
+click the Accept button.  The Subproject list (the list box at the left
+side) displays an item &quot;Tools.&quot;
+<P>
+<LI> Double-click &quot;Tools&quot; in the Subproject list.  The view of current
+Project (the view under menu bar) changes from &quot;/&quot; to &quot;/Tools.&quot;
+</OL>
+<P>
+<LI> Importing the Package from the Catalog
+<OL><LI> Choose &quot;Package&quot; from the Create menu.  The catalog browser appears.
+<P>
+<LI> From the Directory list in the left side of the catalog browser,
+double-click &quot;Tools.&quot;  The current directory moves.
+<P>
+<LI> After selecting &quot;WorkbenchLaunchable&quot; by single-clicking from the
+entries list on the right side of the catalog browser, click the Select
+button on the down side.  The catalog browser disappears.  Click the Quit
+button to interrupt operations.  When the catalog browser appears, the
+operations on Launcher are disabled.
+<P>
+Notice) Don't double-click the entries list.
+</OL>
+<P>
+<LI> Generating and Executing Launchable object
+<OL><LI> Press down the radio button displaying &quot;package&quot;.  The list box at the
+right side changes from the Launchable object list to the package list.
+&quot;WorkbenchLaunchable&quot; previously inputted from the catalog browser appears.
+<P>
+<LI> Double-click &quot;WorkbenchLaunchable&quot; in the list.  The dialog box
+appears.
+<P>
+<LI> After typing &quot;wb1&quot; in the field of the dialog box, click the Accept
+button.
+<P>
+<LI> Press the radio button displaying &quot;object.&quot;  The list box at the right
+side returns to the Launchable object list again.  &quot;wbl&quot; appears.
+<P>
+<LI> Click &quot;wbl&quot; in the Launchable object list.  The original (initial)
+screen of the workbench appears.
+<P>
+</OL></OL>
+<P>
+	<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

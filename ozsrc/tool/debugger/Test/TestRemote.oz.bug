@@ -1,0 +1,85 @@
+//
+//	Test of remote global access
+//
+//
+//
+class	TestRemote : Launchable
+{
+public:	// To be managed by a Launcher
+	Initialize,
+	Launch,
+	Loop
+;
+//------------------------------------------------------------------------------
+//
+//	Protected instance
+//
+
+//------------------------------------------------------------------------------
+//
+//	Private instance
+//
+char	NAME[] ;		// Class Name (Ready only)
+String	TargetName ;
+
+//------------------------------------------------------------------------------
+//	Public method to be managed by a Launcher
+//
+void
+Initialize()
+{
+	NAME = "TestRemote" ;
+	debug( 0, "%S::Initialize()\n", NAME ) ;
+	//TargetName => NewFromArrayOfChar( ":object-managers:site-master" ) ;
+	TargetName => NewFromArrayOfChar( ":object-managers:002502" ) ;
+	debug( 0, "%S::Initialize() return\n", NAME ) ;
+}
+
+//------------------------------------------------------------------------------
+//	Public method to be managed by a Launcher
+//
+void
+Launch()
+{
+	global	ObjectManager	OM ;
+	global	NameDirectory	ND ;
+	global	Object			O ;
+	inline "C" {
+		_oz_debug_flag =1 ;
+	}
+
+	debug( 0, "%S::Launch()\n", NAME ) ;
+
+	OM = Where() ;
+	ND = OM->GetNameDirectory() ;
+	O = ND->Resolve( TargetName ) ;
+
+	detach fork Loop( narrow( ObjectManager, O ) ) ;
+
+	debug( 0, "%S::Launch() return\n", NAME ) ;
+}
+
+void
+Loop( global ObjectManager OM )
+{
+	global	Object	objs[] ;
+
+	inline "C" {
+		_oz_debug_flag =1 ;
+	}
+	try {
+		for(;;) {
+			objs = OM->ListObjects() ;
+			abortable ;
+			inline "C" {
+				OzSleep( 1 ) ;
+			}
+		}
+	} except {
+		default {
+			debug( 0, "%S::Loop EXCEPTION !!\n", NAME ) ;
+		}
+	}
+}
+
+} // End of file: TestRemote.oz

@@ -1,0 +1,23 @@
+NFE(1)              Nucleus Front-End Built-In-Command               NFE(1)
+
+NAME
+     "env" - displays the nfe environment.
+
+SYNOPSIS
+     env
+
+DESCRIPTION
+     "env" displays the following terms of the environment set by
+      the nfe.
+
+        * The shell variable OZROOT
+        * The command path of executor
+        * The directory path of nfe's help file
+
+EXAMPLE
+     nfe> env
+     OZROOT = /home/oz++
+
+     *Executor command: /home/oz++/bin/executor
+     *Directory path for NFE help command: /home/oz++/etc/ncl-data/HELP
+

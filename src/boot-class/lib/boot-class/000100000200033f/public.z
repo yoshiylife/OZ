@@ -1,0 +1,8 @@
+(*class* #000100000200033f 5
+(*list*)
+(*list*
+(*declaration* DuplicateRegistration (*method* int (*list* #00010000020003bd 0 ) 0) public #000100000200033f 0 0)
+(*declaration* UnknownName (*method* int (*list* #00010000020003bd 0 ) 0) public #000100000200033f 0 1)
+(*declaration* UnknownResolverName (*method* int (*list* #00010000020003bd 0 ) 0) public #000100000200033f 0 2)
+)
+)

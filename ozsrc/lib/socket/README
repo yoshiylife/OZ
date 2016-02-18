@@ -1,0 +1,48 @@
+###############################################################################
+Copyright(c) 1994-1996 Information-technology Promotion Agency, Japan(IPA)
+
+All rights reserved.
+This software and documentation is a result of the Open Fundamental
+Software Technology Project of Information-technology Promotion Agency,
+Japan(IPA).
+
+Permissions to use, copy, modify and distribute this software are governed
+by the terms and conditions set forth in the file COPYRIGHT, located in
+this release package.
+###############################################################################
+
+				Socket library
+
+o What is the socket library?
+
+To provide socket communication facility.
+
+Socket is the root abstract class.  UnixDomainDatagramSocket and
+UnixDomainStreamSocket are subclasses of UnixDomainUnconnectedSocket.  Firstly,
+you should open and listen to one of them (according to the type of
+communication).  After accepting unconnected stream socket, you can get
+ConnectedStreamSocket.
+
+o Contents
+
+    socket.oz      -- abstract class Socket
+    uus.oz         -- abstract class UnixDomainUnconnectedSocket
+    uds.oz         -- class UnixDomainDatagramSocket
+    uss.oz         -- class UnixDomainStreamSocket
+    css.oz         -- class ConnectedStreamSocket
+
+    sockaddr.oz    -- class SocketAddress
+
+    sock-exc.oz    -- shared SocketExceptions
+
+
+o How to compile:
+
+    1. Open appropriate school in your workbench.
+    2. Select all *.oz files in this directory in your compiler front end.
+    3. Give New public version IDs to all classes by selecting "Compile",
+       "All", "New", then "from public" from the menu of compiler front end in
+       order.
+    4. Compile "Public & Protected" of "All" classes.
+    5. Compile "Implementation" of "All" classes, and confirm to configure.
+       That's all.

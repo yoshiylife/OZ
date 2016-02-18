@@ -1,0 +1,24 @@
+NFE(1)              Nucleus Front-End Built-In-Command               NFE(1)
+
+NAME
+     "migrateimage" - migrate an executor image
+
+SYNOPSIS
+     migrateimage Executor-ID [Directory-path]
+     migrateimage -r Executor-ID New-OZROOT
+
+DESCRIPTION
+     The executor image of Executor-ID is moved to the directory
+     Directory-path.  When Directory-path is omitted, it is moved
+     to $OZROOT/images instead.
+
+migrateimage OPTIONS
+     -r   The OZROOT of the Executor is changed to "New-OZROOT".
+
+EXAMPLE:
+     nfe> migrateimage 001001 /home/nick/images
+              :
+     nfe> migrateimage -r 001002 /home/nick/new-oz++ 
+              :
+     nfe> 
+

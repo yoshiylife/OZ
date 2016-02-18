@@ -1,0 +1,9 @@
+(*class* #000100000200019a 5
+(*list*)
+(*list*
+(*declaration* CannotOpenDirectory (*method* int (*list* (*array* char ) ) 0) public #000100000200019a 0 0)
+(*declaration* CommandFailed (*method* int (*list* (*array* char ) ) 0) public #000100000200019a 0 1)
+(*declaration* CannotOpenFile (*method* int (*list* (*array* char ) ) 0) public #000100000200019a 0 2)
+(*declaration* CannotRead (*method* int (*list*) 0) public #000100000200019a 0 3)
+)
+)

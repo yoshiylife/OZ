@@ -1,0 +1,2 @@
+5 MirrorModificationMode
+	000100000200087b

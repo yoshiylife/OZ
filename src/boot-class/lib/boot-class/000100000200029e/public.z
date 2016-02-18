@@ -1,0 +1,9 @@
+(*class* #000100000200029e 7
+(*list*)
+(*list*
+(*declaration* ToString (*method* #00010000020003bd 0 (*list* (*scqf* #000100000200006e 8 4) ) 0) public #000100000200029e 0 0)
+(*declaration* ToCID (*method* (*scqf* #000100000200006e 8 4) (*list* #00010000020003bd 0 ) 0) public #000100000200029e 0 1)
+(*declaration* ToVID (*method* (*scqf* #0001000002000404 0 4) (*list* #00010000020003bd 0 ) 0) public #000100000200029e 0 2)
+(*declaration* ToCCID (*method* (*scqf* #0001000002000043 0 4) (*list* #00010000020003bd 0 ) 0) public #000100000200029e 0 3)
+)
+)

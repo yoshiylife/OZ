@@ -1,0 +1,240 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.11 宣言</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.11 宣言">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION000611000000000000000>5.11 宣言</A></H2>
+ <A NAME=langlangmanualdecl>　</A>
+<P>
+宣言は識別子に解釈を与える。しかし、必ずしも識別子と結び付けられる記憶
+領域を確保するとは限らない。
+<P>
+宣言には次のものがある。
+<P>
+<UL><LI> クラスの宣言
+<LI> スタティッククラスの宣言
+<LI> インスタンス変数、メソッドの宣言
+<LI> レコードの宣言
+<LI> メンバ、オペレータの宣言
+<LI> 局所変数の宣言
+<LI> 例外の宣言
+<LI> 定数の宣言
+</UL><H3><A NAME=SECTION000611100000000000000>5.11.1 クラスの宣言</A></H3>
+<P>
+クラスの宣言はクラスの定義と同時に行なわれる 
+(<A HREF="node33.html#langlangmanualclass">5.13</A> 節参照)。
+<P>
+<H3><A NAME=SECTION000611200000000000000>5.11.2 スタティッククラスの宣言</A></H3>
+<P>
+スタティッククラスの宣言はスタティッククラスの定義と同時に行なわれる 
+(<A HREF="node34.html#langlangmanualstaticclass">5.14</A> 節参照)。
+<P>
+<H3><A NAME=SECTION000611300000000000000>5.11.3 インスタンス変数、メソッドの宣言</A></H3>
+<P>
+クラスおよびスタティッククラスの定義において、インスタンス変数の宣言を
+行なう。インスタンス変数の宣言はインスタンス変数として識別子に型を結び付
+ける (<A HREF="node31.html#langlangmanualdeclarationvar">5.11.6</A> 節参照) 。またメソッドの
+宣言はメソッドの定義と同時に行なわれる 
+(<A HREF="node33.html#langlangmanualclassmember">5.13.2</A> 、
+<A HREF="node34.html#langlangmanualstaticclassmember">5.14.2</A> 節参照) 。
+<P>
+<H3><A NAME=SECTION000611400000000000000>5.11.4 レコードの宣言</A></H3>
+<P>
+レコードの宣言はレコードの定義と同時に行なわれる 
+(<A HREF="node32.html#langlangmanualrecord">5.12</A> 節参照)。
+<P>
+<H3><A NAME=SECTION000611500000000000000>5.11.5 メンバ、オペレータの宣言</A></H3>
+<P>
+レコードの定義において、メンバの宣言を行なう。メンバの宣言はメンバとして
+識別子に型を結び付ける (<A HREF="node31.html#langlangmanualdeclarationvar">5.11.6</A> 節参
+照) 。またオペレータの宣言はオペレータの定義と同時に行なわれる 
+(<A HREF="node32.html#langlangmanualrecordmember">5.12.1</A> 節参照) 。
+<P>
+<H3><A NAME=SECTION000611600000000000000>5.11.6 局所変数の宣言</A></H3>
+ <A NAME=langlangmanualdeclarationvar>　</A>
+<P>
+<PRE>var_decl
+        : simple_quals_type simple_vars_list ';'
+        | class_quals_type class_vars_list ';'
+        ; 
+
+simple_quals_type
+        : quals type
+        ;
+
+class_quals_type
+        : CLASSNAME
+        | 'global' CLASSNAME
+        | TYPEPARAM
+        ;
+
+quals
+        : /* empty */ 
+        | 'unsigned'
+        ;
+
+type
+        : 'char'
+        | 'short'
+        | 'int'
+        | 'long'
+        | 'float'
+        | 'double'
+        | 'condition'
+        | 'void'
+        ;
+
+simple_vars_list
+        : vars_only 
+        | simple_vars_list ',' vars_only
+        | exp_vars
+        | simple_vars_list ',' exp_vars
+        ;
+
+vars_only 
+        : vars
+        ;
+
+vars
+        : processes var arrays 
+        | processes arrays 
+        | processes '(' vars ')' arrays 
+        ;
+
+var
+        : IDENTIFIER 
+        ;
+
+arrays 
+        : /* empty */ 
+        | arrays array 
+        ;
+
+array
+        : '[' ']' 
+        ;
+
+processes
+        : /* empty */ 
+        | processes process 
+        ;
+
+process
+        : '@' 
+        ;
+
+exp_vars
+        : vars ASSIGN exp
+        | vars ASSIGN exp_with_block
+        ;
+
+vars_list_noinit
+        : vars_noinit
+        | vars_list_noinit ',' vars_noinit
+        ;
+
+vars_noinit
+        : vars
+        ;
+
+class_vars_list
+        : vars_only     
+        | class_vars_list ',' vars_only 
+        | exp_vars
+        | class_vars_list ',' exp_vars
+        | inst_init_vars
+        | class_vars_list ',' inst_init_vars
+        ;
+
+inst_init_vars
+        | vars '=&gt;' IDENTIFIER '(' arg_list ')' inst_option exp_invokes
+        ;
+
+exp_invokes
+        : /* empty */
+        | exp_invokes exp_invoke
+        ;
+
+exp_invoke
+        | '-&gt;' IDENTIFIER '(' arg_list ')' 
+        ;
+
+arg_list
+        : /* empty */
+        | exp_no_comma
+        | exp_comma
+        ;
+
+inst_option
+        : /* empty */
+        | '@' exp %prec OM
+        ;
+
+exp_with_block
+        : '{' exp_with_block_content '}' 
+        ;
+
+exp_with_block_content
+        : exp_with_block ',' exp_with_block
+        | exp_with_block ',' exp
+        | exp ',' exp_with_block
+        | exp
+         ;
+</PRE>
+<P>
+ブロックの直後に、そのブロックで有効な局所変数を宣言できる。局所変数の
+宣言は識別子に型を結びつける。さらに型がクラス型の場合のみ、ローカル、
+グローバルの属性が付与される。
+<P>
+<PRE>class A;
+statci class B;
+
+A a1;
+global A a2;        // a1はローカルオブジェクト、a2はグローバルオブジェクト
+global B b1;        // エラー: Bはスタティッククラス
+</PRE>
+<P>
+また局所変数の初期化の記述が可能である。型がレコードの場合には、<code>{}</code> 
+を用いて記述する。
+<P>
+<PRE>record class Point {
+  int X, Y;
+}
+
+Point p1 = { 0, 0 }, p2 = { 100, 100};
+</PRE>
+<P>
+また、配列およびプロセスの派生型の定義もここで行なわれる 
+(<A HREF="node27.html#langlangmanualarray">5.7</A> 、<A HREF="node28.html#langlangmanualprocess">5.8</A> 節参照) 
+。
+<P>
+<PRE>int a[];        // aはint型の要素を持つ配列派生型
+void @b;        // bは任意の型に適合するプロセス派生型
+</PRE>
+<P>
+<H3><A NAME=SECTION000611700000000000000>5.11.7 例外の宣言</A></H3>
+<P>
+例外の宣言は、sharedにおいて行なわれる 
+(<A HREF="node35.html#langlangmanualsharedexcept">5.15.2</A> 節参照)。
+<P>
+<H3><A NAME=SECTION000611800000000000000>5.11.8 定数の宣言</A></H3>
+<P>
+ユーザ定義の定数の宣言は、sharedおいて
+行なわれる (<A HREF="node35.html#langlangmanualsharedmember">5.15.2</A> 節参照) 。
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

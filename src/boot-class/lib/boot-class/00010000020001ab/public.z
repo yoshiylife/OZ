@@ -1,0 +1,14 @@
+(*class* #00010000020001ab 8
+(*list*)
+(*list*
+(*declaration* Open (*method* void (*list*) 0) public #00010000020001ab 0 1)
+(*declaration* OpenWithName (*method* void (*list* #00010000020003bd 0 ) 2) public #00010000020001ab 0 0)
+(*declaration* Append (*method* void (*list*) 0) public #00010000020001ab 0 3)
+(*declaration* AppendWithName (*method* void (*list* #00010000020003bd 0 ) 2) public #00010000020001ab 0 2)
+(*declaration* Close (*method* void (*list*) 2) public #00010000020001ab 0 5)
+(*declaration* Seek (*method* int (*list* int ) 2) public #00010000020001ab 0 6)
+(*declaration* SeekCur (*method* int (*list* int ) 2) public #00010000020001ab 0 7)
+(*declaration* SeekEnd (*method* int (*list* int ) 2) public #00010000020001ab 0 8)
+(*declaration* Dup (*method* void (*list* int ) 0) public #00010000020001ab 0 4)
+)
+)

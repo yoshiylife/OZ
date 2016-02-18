@@ -1,0 +1,8 @@
+(*class* #000100000200087b 5
+(*list*)
+(*list*
+(*declaration* DoNothing (*scqf* int 1) public #000100000200087b 0 DoNothing)
+(*declaration* OnlyObject (*scqf* int 1) public #000100000200087b 0 OnlyObject)
+(*declaration* WithClassFiles (*scqf* int 1) public #000100000200087b 0 WithClassFiles)
+)
+)

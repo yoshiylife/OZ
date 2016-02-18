@@ -1,0 +1,15 @@
+(*class* #0001000002000226 0
+(*list*
+(*list* #0001000002000182 #0001000002000183 0)
+)
+(*list*
+(*declaration* New (*method* void (*list*) 0) constructor #0001000002000225 0 0)
+(*declaration* Spawn (*method* void (*list* #00010000020003bd 0 #000100000200048a 8 ) 0) public #0001000002000182 0 4)
+(*declaration* EventLoop (*method* void (*list*) 0) public #0001000002000182 0 5)
+(*declaration* GetOText (*method* #00010000020002d6 8 (*list*) 0) public #0001000002000182 0 6)
+(*declaration* GetCurrentProject (*method* #000100000200031d 0 (*list*) 0) public #0001000002000225 0 2)
+(*declaration* SendEvent (*method* void (*list* #00010000020003bd 0 ) 0) public #0001000002000225 0 1)
+(*declaration* Search (*method* #0001000002000322 8 (*list* #000100000200038c 0 ) 0) public #0001000002000225 0 3)
+(*declaration* Change (*method* void (*list* #000100000200038c 0 ) 0) public #0001000002000225 0 4)
+)
+)

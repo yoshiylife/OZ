@@ -1,0 +1,8 @@
+INCDIR	= /include
+HEADERS = \
+	off.h \
+	on.h
+
+all::
+
+InstallMultipleFlags($(HEADERS),$(INCDIR)/pixmaps,$(INSTINCFLAGS))

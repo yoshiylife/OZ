@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>4.2 Chess operations</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="4.2 Chess operations">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION00052000000000000000>4.2 Chess operations</A></H2>
+<P>
+
+<P>
+OZ++/Chess is a chart calculation program that has been implemented into 
+OZ++/Frame. The characteristics are:
+<UL><LI> It offers script language for chart calculations.
+        <LI> It can newly define classes for script calculations.
+        <LI> It can perform calculations on dispersed cells.
+</UL><H3><A NAME=SECTION00052100000000000000>4.2.1 Creating a board</A></H3>
+<P>
+<A NAME=chessinitboard>&#160;</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD>
+<IMG  ALIGN=BOTTOM ALT="env-chess-init.gif" SRC="figure/env-chess-init.gif">
+</TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>Fig. 4.2--1:</STRONG> Initial screen</CAPTION>
+
+</TABLE>
+</CENTER>
+
+<P>
+Fig. <A HREF="node19.html#chessinitboard">4.2--1</A> shows the initial screen of OZ++/Chess. Input 
+row and column number. Always press the Return key to reflect input value. 
+The board name is optional. Board name can be used when comparing the 
+cell board to other existing cell boards.  Click the Create button to 
+create and move to a new board.
+<P>
+<P>
+<P>
+<H3><A NAME=SECTION00052200000000000000>4.2.2 Script entry</A></H3>
+<P>
+<A NAME=chessboard>&#160;</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD>
+<IMG  ALIGN=BOTTOM ALT="env-chess-board.gif" SRC="figure/env-chess-board.gif">
+</TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>Fig. 4.2--2:</STRONG> Board</CAPTION>
+
+</TABLE>
+</CENTER>
+
+<P>
+Fig. <A HREF="node19.html#chessboard">4.2--2</A> is an example of a board. Set script to each cell. 
+Input &quot;1&quot; in the row and column fields such as when substituting script 
+in cell row 1 column 1. Then, enter script in the script field.
+<P>
+<H3><A NAME=SECTION00052300000000000000>4.2.3 Executing the script</A></H3>
+<P>
+Scripts of OZ++/Chess uses delayed evaluation. Evaluation is conducted 
+only when execution is specified. To execute evaluation, point and click 
+the cell with the mouse and press the Return key.
+<P>
+<H3><A NAME=SECTION00052400000000000000>4.2.4 Script type</A></H3>
+<P>
+Constants <BR>
+<P>
+The most simple script is a constant. Constants consist of two types: 
+numbers and characters. For numbers, integers and decimals can be 
+accounted for. There is no expression for exponents. If an entry is judged 
+not to be a number, then the entry will automatically be interpreted as a 
+character string.
+<P>
+e.g.
+<UL><LI> 3
+        <LI> 4.6
+        <LI> -29
+        <LI> Japan
+</UL>
+<P>
+Arithmetic operations <BR>
+<P>
+This program uses the four fundamental rules of arithmetic. Remainders 
+in divisions of integers are ignored.
+<P>
+e.g.
+<UL><LI> 3 + 4
+        <LI> 2 - 8
+        <LI> 3 * 3 * 3.14
+        <LI> 7 / 5
+</UL>
+<P>
+Character string operations <BR>
+<P>
+This program uses combine operation for character string operations. This 
+is conducted by using &quot;+&quot;.
+<P>
+e.g.
+<UL><LI> Star + Wards
+</UL>
+<P>
+Cell reference <BR>
+<P>
+Enter 'n@m' when referencing row n column m. For row n column m of board 
+A, input 'A#n@m'. For row n column m of board A registered in the name 
+directory as &quot;:chess:B&quot;, input ':chess:B:A#n@m'.
+<P>
+Refer a cell within a script to evaluate the script cell and acquire 
+evaluation value. Take caution for scripts self-evaluating its cell will 
+run constantly.
+<P>
+Substitution <BR>
+<P>
+Enter '=' on the right side of the cell reference then enter a formula 
+to substitute the evaluation of the right side with the formula on the left.
+<P>
+e.g.
+<UL><LI> 2 @ 2 = 3 * 4
+        <LI> 1 @ 1 = ( 2 @ 2 ) + ( 3 @ 3 )
+</UL>
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

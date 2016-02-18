@@ -1,0 +1,13 @@
+(*class* #000100000200042d 8
+(*list*)
+(*list*
+(*declaration* Initialize (*method* void (*list* (*array* char ) ) 0) constructor #000100000200042c 0 0)
+(*declaration* GetRequester (*method* #00010000020003bd 0 (*list*) 0) public #000100000200042c 0 2)
+(*declaration* GetResult (*method* int (*list* #00010000020003bd 0 ) 0) public #000100000200042c 0 3)
+(*declaration* GetWork (*method* int (*list*) 0) public #000100000200042c 0 4)
+(*declaration* Start (*method* void (*list* #0001000002000064 0 ) 2) public #000100000200042c 0 1)
+(*declaration* errorMessage #00010000020003bd 0 protected #000100000200042d 0 errorMessage)
+(*declaration* Status int protected #000100000200042d 0 Status)
+(*declaration* Work int protected #000100000200042d 0 Work)
+)
+)

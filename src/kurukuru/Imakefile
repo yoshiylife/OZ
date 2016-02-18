@@ -1,0 +1,9 @@
+DESTDIR=../..
+BINDIR=/bin
+LIBDIR=/lib
+GUIDIR=/lib/gui
+
+AllTarget()
+
+InstallScript(kurukuru,$(BINDIR))
+InstallNonExecFile(guruguru.tcl,$(GUIDIR))

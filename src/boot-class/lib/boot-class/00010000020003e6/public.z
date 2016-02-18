@@ -1,0 +1,7 @@
+(*class* #00010000020003e6 5
+(*list*)
+(*list*
+(*declaration* LockConfliction (*method* int (*list*) 0) public #00010000020003e6 0 0)
+(*declaration* UnknownLockID (*method* int (*list* (*scqf* #000100000200023b 0 4) ) 0) public #00010000020003e6 0 1)
+)
+)

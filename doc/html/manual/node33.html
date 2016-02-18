@@ -1,0 +1,483 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.13 Class</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.13 Class">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION000613000000000000000>5.13 Class</A></H2>
+ <A NAME=langlangmanualclass>&#160;</A>
+<P>
+<PRE>class_def
+        : class_sc CLASSNAME parents '{' class_body '}' 
+        ;
+class_sc
+        : 'class'
+        | 'abstract' 'class'
+        ;
+
+class_body
+        : access_ctrls member_decls
+        ;
+</PRE>
+<P>
+A class is one of user-defined types.  It is made up of instance
+variables (i.e. the internal representation of class instances) and
+definitions of methods applicable to the instances.  Class members are
+instance variables and methods defined in a class.
+<P>
+The size of a class instance having no class members consumes non-zero
+memory blocks.  In addition, multiple inheritance can be used in the
+definition of a class (see Chapter
+<A HREF="node37.html#langlangmanualinheritance">5.17</A>).
+<P>
+<H3><A NAME=SECTION000613100000000000000>5.13.1 Class Name</A></H3>
+<P>
+A class name is a reserved word in the scope of the class's definition.
+<P>
+<PRE>class C {
+  A a;    // an instance variable of type class A
+  B b;    // an instance variable of type class B
+}
+</PRE>
+<P>
+A class also represents a type.
+Different classes represent different types.
+As mentioned later (see Chapter <A HREF="node37.html#langlangmanualinheritance">5.17</A>),
+a class instance can not be assigned to a variable of a different
+class type which is not a ancestor class
+(see Section <A HREF="node26.html#langlangmanualtypeexchangeconsistency">5.6.2</A>).
+<P>
+<H3><A NAME=SECTION000613200000000000000>5.13.2 Class Members</A></H3>
+ <A NAME=langlangmanualclassmember>&#160;</A>
+<P>
+<PRE>member_decls
+        : /* empty */
+        | member_decls member_decl 
+        ;
+
+member_decl
+        : member_var_decl
+        | member_method_decl
+        ;
+
+member_var_decl
+        : quals_type vars_list_noinit ';'
+        ; 
+
+vars_list_noinit
+        : vars_noinit
+        | vars_list_noinit ',' vars_noinit
+        ;
+
+vars_noinit
+        : vars
+        ;
+
+member_method_decl
+        : quals_type m_members ':' 'abstract' 
+                                      m_quals_with_abstract ';'
+        | IDENTIFIER '(' args ')' ':' 'abstract'
+                                      m_quals_with_abstract ';'
+        | quals_type m_members m_quals block
+        | IDENTIFIER '(' args ')' m_quals block
+        ;
+
+m_members
+        : processes IDENTIFIER '(' args ')' arrays 
+        | processes '(' m_members ')' arrays 
+        ;
+
+args
+        : /* empty */
+        | arg
+        | args ',' arg
+        ;
+arg
+        : quals_type vars
+        ;
+
+m_quals
+        : /* empty */ 
+        | ':' m_qual
+        ;
+
+m_qual
+        : m_qualifier
+        | m_qual ',' m_qualifier
+        ;
+
+m_qualifier
+        : 'locked'
+        | 'global'
+        ;
+
+m_quals_with_abstract
+        : /* empty */
+        | ',' m_qual
+        ;
+</PRE>
+<P>
+Inside the class definition, class members of the same name must not
+be declared more than twice.  Also overloading of methods, as
+C++ language, are not possible.
+<P>
+<PRE>class C {
+  int m() { ... }        
+  int m(int p) { ... }   // error: the class member m
+}                        //  is already declared
+</PRE>
+<P>
+Initialization can not be performed in the declaration of instance
+variables.
+<P>
+<PRE>class C {
+  int a = 10;   // error: initial setups can not be performed
+}
+</PRE>
+<P>
+If methods having no <tt> m_quals</tt> are
+executed, 
+they become local
+methods and are executed as local accesses.
+<P>
+
+An access which is performed only inside the same cell is called a
+local access (as shown by the dotted lines in
+Fig.<A HREF="node33.html#figlanglangmanualclassmethod">5.13--1</A>).
+As mentioned in Chapter <A HREF="node25.html#langlangmanualusertype">5.5</A>,
+a cell consists of a set of class instances,
+one global object and local objects belongs to that global one.
+For this reason, local accesses, which are performed inside the same
+cell, require no access through the network.
+Thus, local accesses are method activations which are
+performed in the same computer.
+<P>
+Methods to which <tt> m_quals</tt> are added have the following
+properties as specified by <tt> m_quals</tt>:
+<P>
+<UL><LI> <tt> global</tt>
+<P>
+If the method is activated, this is the global method executed as a
+global access.
+<P>
+
+A global access is performed against global objects
+both inside and outside the cell
+(as shown by the thick lines in Fig.<A HREF="node33.html#figlanglangmanualclassmethod">5.13--1</A>).
+<P>
+Since local objects in other cells can not be used directly, all the
+outside cells are accessed as global access.
+Therefore, only the global methods defined in the global
+objects can be used to access objects in other cells.
+<P>
+In addition to the local objects mentioned above, global methods
+of the global object inside the same cell can be invoked.
+In this case, local objects of the parameters are not references,
+and copies of local objects are executed.
+The user must carefully note this fact.
+<P>
+Global accesses are performed as method invocations against external
+cells on the network.  However, in case of global accesses to the
+global object in the same cell, the network is not used.
+<P>
+<LI> <tt> locked</tt>
+<P>
+This specifies an exclusive control on the invocation of the methods.
+<P>
+Instances generated from a class having at least one <tt> locked</tt> method
+are called <b> monitors</b>.
+<P>
+<LI> <tt> abstract</tt>
+<P>
+This specifies that the method is an abstract one
+(see Section <A HREF="node33.html#langlangmanualclassabstract">5.13.6</A>).
+<P>
+</UL>
+<P>
+<A NAME=figlanglangmanualclassmethod>&#160;</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD>
+<IMG ALIGN=BOTTOM ALT="lang-method-access.gif" SRC="figure/lang-method-access.
+gif">
+</TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>Fig 5.1--2:</STRONG>Global/Local Access</CAPTION>
+</TABLE>
+</CENTER>
+
+<P>
+<PRE>class C {
+  int m1() { ... } 
+    // a local method
+  int m2() : global { ... } 
+    // a global method
+  int m3() : locked { ... }
+    // a local method performing exclusive controls
+  int m4() : global locked { ... }
+    // a global method performing exclusive controls
+</PRE>
+<P>
+
+<P>
+To use members defined at the later part in the same class, forward
+reference is possible without prototype declarations.
+<P>
+<PRE>class A {
+  public: m1;
+
+  int m1(int a) 
+    {
+      ...
+      if (a &lt; 0)
+          m2(a);        // OK
+      ...
+    }
+
+  int m2(int a)
+    {
+      ...
+      if (a &gt; 0)
+          m1(a);
+      ...
+    }
+}
+</PRE>
+<P>
+<H3><A NAME=SECTION000613300000000000000>5.13.3 Access Controls</A></H3>
+ <A NAME=langlangmanualclassaccesscontrol>&#160;</A>
+<P>
+<PRE>access_ctrls
+        : /* empty */
+        | access_ctrls acess_ctrl_not_protected
+        | access_ctrls acess_ctrl_protected
+        ;
+
+access_ctrls_no_protected
+        : /* empty */
+        | access_ctrls_no_protected acess_ctrl_not_protected
+        ;
+
+acess_ctrl_not_protected
+        : 'public' ':' member_lists ';'
+        | 'constructor' ':' member_lists ';'
+        ;
+
+acess_ctrl_protected
+        : 'protected' ':' member_lists ';'
+        ;
+
+member_lists
+        : IDENTIFIER 
+        | member_lists ',' IDENTIFIER 
+        ;
+</PRE>
+<P>
+The definition of a class specifies whether or not each class member is open to 
+the outside.  Hereafter, if a class is used as a variable type, it is also 
+called a client class.
+<P>
+The following three specifications are possible for access control of class 
+members.
+<P>
+<UL><LI> <tt> public</tt>
+<P>
+If the class is used as a client class, the class members are opened to enable 
+method invocations against instances.
+<P>
+If the class is inherited, the methods it specifies can be used in the child 
+classes (see Chapter <A HREF="node37.html#langlangmanualinheritance">5.17</A>).
+<P>
+<tt> public</tt> can only be specified to methods.
+<P>
+<LI> <tt> protected</tt>
+<P>
+If the class is used as a client class, it is not open.  Method
+invocations against its instances are not possible.
+<P>
+If the class is inherited, similar to methods where <tt> public</tt> is
+specified, the class members it specifies is accessible in the
+child classes (see Chapter <A HREF="node37.html#langlangmanualinheritance">5.17</A>).
+<P>
+<tt> protected</tt> can be specified to all class members.
+<P>
+<LI> <tt> constructor</tt>
+<P>
+Methods used for instance generation are specified in the constructor (see 
+Chapter <A HREF="node38.html#langlangmanualconstructor">5.18</A>).
+<P>
+Methods specifying constructors must have return values of the <tt> void</tt> type.
+<P>
+If the class is inherited, its methods are treated as any other ordinary 
+methods.
+</UL>
+<P>
+Class members for which access control is not specified become <tt>
+private</tt>, and if they are used as client classes, they can not be
+accessed from outside the class.
+If the class is inherited, it cannot be used in child
+classes (see Chapter <A HREF="node37.html#langlangmanualinheritance">5.17</A>).
+<P>
+<PRE>class C {
+  public: m1, m2; 
+  protected: m3;  
+  constructor: create, create2; 
+   // error: the type of return value of create2() is not void.
+  int m1() { ... }
+  int m2() { ... }
+  int m3() { ... }
+  int m4() { ... }  // since there are no specifications,
+                    // it is considered as private.
+  void create() { ... }
+  int create2() { ... } 
+}
+</PRE>
+<P>
+<H3><A NAME=SECTION000613400000000000000>5.13.4 self</A></H3>
+ <A NAME=langlangmanualclassself>&#160;</A>
+<P>
+Instances which are to be executed in a method can be referred
+by the reserved word <tt> self</tt>.  Therefore, in the following
+<P>
+<PRE>class C {
+  int m1() { ... }
+  int m2() { ... }
+}
+</PRE>
+<P>
+when the method <tt> m2</tt> is activated inside the method <tt> m1</tt>,
+<P>
+<PRE>    m2();
+</PRE>
+<P>
+and
+<P>
+<PRE>    self-&gt;m2();
+</PRE>
+<P>
+are the same.
+<P>
+<H3><A NAME=SECTION000613500000000000000>5.13.5 Instantiation</A></H3>
+<P>
+Variables of a class type immediately after its declaration have no
+references.  Instead they have zero as their values
+(see Section <A HREF="node24.html#langlangmanualdatatypezero">5.4.2</A>).
+By calling the constructors
+defined in that class, the generated instances can be referred against
+these variables (see Chapter <A HREF="node38.html#langlangmanualconstructor">5.18</A>).
+<P>
+Moreover, all instance assignments are
+performed by references.
+<P>
+<PRE>class C {
+  constructor: create;
+ 
+  void create() { ... } 
+}
+
+C c;
+c=&gt;create(); // generates an instance by calling 
+             // the constructor, and assigns the
+             // reference of the generated instance to c.
+</PRE>
+<P>
+Also, by assigning 0 to the variables,
+it is possible to clear the reference of instances belonging
+to the variables.
+<P>
+<PRE>A a
+
+a=&gt;create();
+...
+a = 0; // removes the reference to an instance.
+</PRE>
+<P>
+<H3><A NAME=SECTION000613600000000000000>5.13.6 Abstract Class</A></H3>
+ <A NAME=langlangmanualclassabstract>&#160;</A>
+<P>
+An abstract class is one where methods it defines have
+their implementations in its descendants.
+By using this abstract class in OZ++ language,
+representation of abstract data types become possible.
+Abstract classes can not generate instances.
+Thus, they can be used only through inheritances
+(see Chapter <A HREF="node37.html#langlangmanualinheritance">5.17</A>).
+<P>
+Abstract methods are ones which are defined in abstract classes,
+but whose implementations are not defined there.
+That is why a class having abstract methods is called an abstract class.
+Therefore, in any of the following cases, errors occur:
+<P>
+<UL><LI> When declaring classes having no abstract methods as abstract classes
+<P>
+<LI> When not declaring classes having abstract methods as abstract classes
+</UL>
+<P>
+Definitions of abstract methods are specified as attributes of methods
+(see Section <A HREF="node33.html#langlangmanualclassmember">5.13.2</A>) in the following
+way.  The implementation of these methods can not be
+described.
+<P>
+<PRE>abstract class A {  // abstract class
+  public: m1, m2;
+
+  int m1() : abstract;
+  int m2() : abstract;
+}
+
+class B {           // error: contains an abstract method
+  public: m1, m2;
+
+  int m1() { ... }
+  int m2() : abstract;        
+}
+
+class C : A {       // inheritance of abstract method
+  public: m1, m2;
+
+  int m1() { ... }        
+  int m2() { ... }        
+     // the abstract methods defined in the abstract
+     //  class A are redefined and methods are implemented.
+}
+</PRE>
+<P>
+<H3><A NAME=SECTION000613700000000000000>5.13.7 Generic Class</A></H3>
+<P>
+Generic classes contain generic parameters which represent
+all types of data in their definitions.
+By specifying a particular type to the generic parameters,
+a generic class can also be used as an ordinary class.
+<P>
+The generic parameters are defined as shown below.
+These parameters are included in the class name.
+<P>
+<PRE>class Collection&lt;T&gt; {
+  public: Add;
+
+  T Add (T content) { ... }
+}
+</PRE>
+<P>
+The specification of generic parameters in a generic class is described below:
+<P>
+<PRE>Collection&lt;int&gt; a;
+</PRE>
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

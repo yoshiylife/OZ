@@ -1,0 +1,18 @@
+#define	IHaveSubdirs
+#define	PassCDebugFlags	CDEBUGFLAGS="$(CDEBUGFLAGS)"
+DESTDIR		= ${OZROOT}
+GUIDIR		= /lib/gui
+SUBDIRS		= debugger debugger2 inspector launcher wb wb2
+
+AllTarget()
+
+install::
+	@if [ "$(DESTDIR)" = "" ]; then \
+	   echo "***" ;\
+	   echo "You must be set environment variable: OZROOT" ;\
+	   echo "***" ;\
+	   exit 1 ;\
+	 fi
+
+MakeSubdirs( $(SUBDIRS) )
+DependSubdirs( $(SUBDIRS) )

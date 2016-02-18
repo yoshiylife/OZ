@@ -1,0 +1,9 @@
+#! /bin/sh -f
+#
+#  Copyright (c) 1994 Information-technology Promotion Agency, Japan
+#
+#  All rights reserved.  No guarantee.
+#  This technology is a result of the Open Fundamental Software Technology
+#  Project of Information-technology Promotion Agency, Japan (IPA).
+#
+/usr/local/bin/wish -f $OZROOT/lib/gui/guruguru.tcl

@@ -1,0 +1,16 @@
+exec.h			from oz++/object.h object-manager/executor.oz
+monitor.h		from exec.h
+exception.h		from exec.h
+process.h		from exec.h
+method-invoke.h		from exec.h
+global-invoke.h		from exec.h
+alloc.h			from exec.h method-invoke.h
+executor.h		from method-invoke.h alloc.h
+class-table.h		from object-manager/executor.oz
+config-req.h		from object-manager/executor.oz
+memory.h		from object-manager/executor.oz
+ncl-if.h		from object-manager/executor.oz
+object-table.h		from object-manager/executor.oz
+code-layout.h		from object-manager/executor.oz
+debug.h			from object-manager/executor.oz
+remote-file-if.h	from object-manager/executor.oz

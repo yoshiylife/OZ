@@ -1,0 +1,13 @@
+(*class* #0001000002000624 0
+(*list*)
+(*list*
+(*declaration* New (*method* void (*list* #00010000020003bd 0 #0001000002000322 8 ) 0) constructor #0001000002000623 0 0)
+(*declaration* Compare (*method* int (*list* #0001000002000623 0 ) 0) public #0001000002000623 0 1)
+(*declaration* Hash (*method* (*scqf* int 2) (*list*) 0) public #0001000002000623 0 2)
+(*declaration* IsEqual (*method* int (*list* #0001000002000623 0 ) 0) public #0001000002000623 0 3)
+(*declaration* Key (*method* #00010000020003bd 0 (*list*) 0) public #0001000002000623 0 4)
+(*declaration* SetKey (*method* #00010000020003bd 0 (*list* #00010000020003bd 0 ) 0) public #0001000002000623 0 5)
+(*declaration* Value (*method* #0001000002000322 8 (*list*) 0) public #0001000002000623 0 6)
+(*declaration* SetValue (*method* #0001000002000322 8 (*list* #0001000002000322 8 ) 0) public #0001000002000623 0 7)
+)
+)

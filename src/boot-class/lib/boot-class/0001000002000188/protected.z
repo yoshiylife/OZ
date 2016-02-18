@@ -1,0 +1,10 @@
+(*class* #0001000002000188 0
+(*list*)
+(*list*
+(*declaration* Lock (*method* void (*list*) 1) public #0001000002000187 0 0)
+(*declaration* Unlock (*method* void (*list*) 1) public #0001000002000187 0 1)
+(*declaration* New (*method* void (*list*) 0) protected #0001000002000188 0 2)
+(*declaration* LockCondition OZ_ConditionRec protected #0001000002000188 0 LockCondition)
+(*declaration* Locking int protected #0001000002000188 0 Locking)
+)
+)

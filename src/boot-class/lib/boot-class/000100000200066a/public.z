@@ -1,0 +1,16 @@
+(*class* #000100000200066a 0
+(*list*
+(*list* #0001000002000479 #000100000200047a 0)
+(*list* #0001000002000474 #0001000002000475 0)
+)
+(*list*
+(*declaration* New (*method* void (*list*) 0) constructor #000100000200066a 0 0)
+(*declaration* Add (*method* (*scqf* #000100000200016c 8 4) (*list* (*scqf* #000100000200016c 8 4) ) 0) public #000100000200066a 0 1)
+(*declaration* Commit (*method* int (*list*) 0) public #000100000200066a 0 2)
+(*declaration* Includes (*method* int (*list* (*scqf* #000100000200016c 8 4) ) 0) public #000100000200066a 0 3)
+(*declaration* Lock (*method* int (*list*) 0) public #000100000200066a 0 4)
+(*declaration* Remove (*method* (*scqf* #000100000200016c 8 4) (*list* (*scqf* #000100000200016c 8 4) ) 0) public #000100000200066a 0 5)
+(*declaration* RemoveAllContent (*method* void (*list*) 0) public #0001000002000479 0 14)
+(*declaration* UnLock (*method* void (*list*) 0) public #000100000200066a 0 6)
+)
+)

@@ -1,0 +1,50 @@
+# When you are to use malloc debug feature, set yes to MALLOC_DEBUG, i.e.
+#         make MALLOC_DEBUG=yes
+
+TOP_INCLUDES = -I../include
+	MALLOC_DEBUG_LIB=$(MALLOC_DEBUG:yes=/usr/lib/debug/malloc.o)
+	MALLOC_DEBUG_CFLAGS=$(MALLOC_DEBUG:yes=-DMALLOC_DEBUG)
+	LDOPTIONS = -L/usr/lib 
+#	LIB = -ly -ll
+	LIB = $(MALLOC_DEBUG_LIB)
+	LIB += -lfl
+	CC = gcc 
+
+DESTDIR = ${OZROOT}
+BINDIR = /bin
+
+	CFLAGS = -g $(TOP_INCLUDES) $(MALLOC_DEBUG_CFLAGS)
+
+	SRCS1 = main.c y.tab.c lex.yy.c class.c school.c \
+		emit-class.c emit-layout.c \
+		emit-header.c \
+		class-list.c \
+		exp.c symbol.c block.c common.c type.c \
+		emit-common.c emit-method.c \
+		emit-common2.c \
+		error.c \
+		generic.c \
+		class-z.c stmt.c emit-stmt.c
+	OBJS1 = main.o y.tab.o lex.yy.o class.o school.o \
+		emit-class.o emit-layout.o \
+		emit-header.o \
+		class-list.o \
+		exp.o symbol.o block.o common.o type.o \
+		emit-common.o emit-method.o \
+		emit-common2.o \
+		error.o \
+		generic.o \
+		class-z.o stmt.o emit-stmt.o
+	YACC_SRCS = parser.y
+	PROGRAMS = ozc
+
+ComplexProgramTarget_1($(PROGRAMS), ,$(LIB))
+
+lex.yy.c: lex.l y.tab.c
+#	lex -t lex.l | sed 's/yylex/orig_yylex/g' > lex.yy.c
+	flex -Cf lex.l
+y.tab.c : parser.y
+#	yacc -v -d parser.y
+	bison -d -y parser.y
+clean::
+	rm -f y.output y.tab.h y.tab.c lex.yy.c

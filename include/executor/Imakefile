@@ -1,0 +1,22 @@
+INCDIR	= /include
+HEADERS = \
+	alloc.h \
+	class-table.h \
+	code-layout.h \
+	config-req.h \
+	debug.h \
+	exception.h \
+	exec.h \
+	executor.h \
+	global-invoke.h \
+	memory.h \
+	method-invoke.h \
+	monitor.h \
+	ncl-if.h \
+	object-table.h \
+	process.h \
+	remote-file-if.h
+
+all::
+
+InstallMultipleFlags($(HEADERS),$(INCDIR)/executor,$(INSTINCFLAGS))

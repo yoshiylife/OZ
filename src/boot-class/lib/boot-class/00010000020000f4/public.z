@@ -1,0 +1,16 @@
+(*class* #00010000020000f4 5
+(*list*)
+(*list*
+(*declaration* AlreadyCompiled (*method* int (*list* #00010000020003bd 0 ) 0) public #00010000020000f4 0 0)
+(*declaration* IllegalPart (*method* int (*list* #00010000020003bd 0 ) 0) public #00010000020000f4 0 1)
+(*declaration* IllegalClass (*method* int (*list* #00010000020003bd 0 ) 0) public #00010000020000f4 0 2)
+(*declaration* Public (*scqf* char 1) public #00010000020000f4 0 Public)
+(*declaration* Protected (*scqf* char 1) public #00010000020000f4 0 Protected)
+(*declaration* Implementation (*scqf* char 1) public #00010000020000f4 0 Implementation)
+(*declaration* If (*scqf* char 1) public #00010000020000f4 0 If)
+(*declaration* All (*scqf* char 1) public #00010000020000f4 0 All)
+(*declaration* NewPublic (*scqf* char 1) public #00010000020000f4 0 NewPublic)
+(*declaration* NewProtected (*scqf* char 1) public #00010000020000f4 0 NewProtected)
+(*declaration* NewImplementation (*scqf* char 1) public #00010000020000f4 0 NewImplementation)
+)
+)

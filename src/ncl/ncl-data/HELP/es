@@ -1,0 +1,37 @@
+NFE(1)              Nucleus Front-End Built-In-Command               NFE(1)
+
+NAME
+     "es" - displays the executor information managed by the nucl-
+            eus on station.
+
+SYNOPSIS
+     es
+
+DESCRIPTION
+     "es" displays the management information of the executor gen-
+     erated by the nucleus at its station.  Management information 
+     is as follows:
+
+       * UNIX user whom start up of executor requested by
+       * UNIX process ID of the executor
+       * Executor ID
+       * File Descriptor of the executor socket
+       * State of executor
+          - Start ..... exists as a UNIX process
+          - Active ..... OM is activated, the executor is outside
+                         the scope of multicast
+       * Time executor is generated
+       * Host name which start up executor requested from 
+
+     Once the executor is terminated, executor management informati-
+     on is also deleted.
+
+EXAMPLE
+     nfe> es
+     Executor Entry count(4)
+       USER       PID        EXID        FD   STAT     BOOT TIME      RHOST
+     ozguest    19316  0003000001000000   6  Active  04/07 16:35:58   oz
+     ozguest    19318  0003000002000000   7  Active  04/07 16:36:03   oz
+     ozguest    19320  0003000003000000   8  Active  04/07 16:36:08   oz
+     ozguest    19322  0003000004000000   9  Active  04/07 16:36:13   oz
+

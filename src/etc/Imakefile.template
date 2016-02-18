@@ -1,0 +1,72 @@
+SHELL	= /bin/sh
+PROJECT	= Project
+OZHOME	= OzHome		# Installed without symbolic link
+DESTDIR	= ${OZROOT}
+BINDIR	= /bin
+BCDIR	= /lib/boot-class
+
+AllTarget()
+
+install link setup::
+	@if [ "$(DESTDIR)" = "" ]; then \
+	   echo "***" ;\
+	   echo "You must be set environment variable: OZROOT" ;\
+	   echo "***" ;\
+	   exit 1 ;\
+	 fi
+
+install::
+	MakeDir($(DESTDIR))
+	$(INSTALL) $(INSTALLFLAGS) -m 444 Makefile $(DESTDIR)
+
+MakeDirectories(link,/bin /etc /images /lib /tmp /include /src /ozsrc /doc)
+
+link::
+	chmod a+rwx $(DESTDIR)/tmp
+	sh -c "$(LN) $(OZHOME)/bin/* $(DESTDIR)/bin"
+	sh -c "$(LN) $(OZHOME)/etc/* $(DESTDIR)/etc"
+	sh -c "$(LN) $(OZHOME)/lib/* $(DESTDIR)/lib"
+	sh -c "$(LN) $(OZHOME)/include/* $(DESTDIR)/include"
+	sh -c "$(LN) $(PROJECT)/include/ncl $(DESTDIR)/include"
+	sh -c "$(LN) $(PROJECT)/src/* $(DESTDIR)/src"
+	sh -c "$(LN) $(PROJECT)/ozsrc/* $(DESTDIR)/ozsrc"
+	sh -c "$(LN) $(PROJECT)/doc/* $(DESTDIR)/doc"
+	$(RM) $(DESTDIR)/etc/boot-school
+	$(RM) $(DESTDIR)/bin/OzFS
+	$(RM) $(DESTDIR)/bin/OzFR
+
+InstallNamedTarget(link,$(OZHOME)/etc/boot-school,-m 644,/etc,boot-school)
+InstallNamedTarget(link,$(OZHOME)/bin/OzFS,-m 655,$(BINDIR),OzFS)
+InstallNamedTarget(link,$(OZHOME)/bin/OzFR,-m 655,$(BINDIR),OzFR)
+
+link::
+	$(RM) $(DESTDIR)/lib/gui
+	MakeDir($(DESTDIR)/lib/gui)
+	sh -c "$(LN) $(OZHOME)/lib/gui/* $(DESTDIR)/lib/gui"
+
+link::
+	$(RM) $(DESTDIR)/lib/boot-class
+	MakeDir($(DESTDIR)/lib/boot-class)
+	sh -c "$(LN) $(OZHOME)$(BCDIR)/* $(DESTDIR)$(BCDIR)"
+
+setup::
+	@set -e ;\
+	 ncl=$(DESTDIR)/bin/ncl ;\
+	 if [ ! -h $$ncl ]; then \
+	   sh -xc "chown root $$ncl" ;\
+	   sh -xc "chmod u+s $$ncl" ;\
+	 fi
+	@( chmod +w $(DESTDIR)/etc/ncl-data/NCL_table ;\
+	   echo -n 'EXID Manage Nucleus Host Name ?' ;\
+	   read name ;\
+	   if [ "$$name" = "" ]; then \
+	     echo "You must retry to make setup" ;\
+	     exit 1 ;\
+	   fi ;\
+	   if [ `uname -n` = $$name ]; then \
+		   mv $(DESTDIR)/etc/ncl-data/EXID/exid_manage_template \
+			$(DESTDIR)/etc/ncl-data/EXID/$$name ;\
+	   fi ;\
+	   echo "EXIDMANAGE:$$name:" >> $(DESTDIR)/etc/ncl-data/NCL_table ;\
+	   chmod -w $(DESTDIR)/etc/ncl-data/NCL_table ;\
+	 )

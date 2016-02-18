@@ -1,0 +1,10 @@
+(*class* #00010000020003ba 5
+(*list*)
+(*list*
+(*declaration* NotFound (*method* int (*list*) 0) public #00010000020003ba 0 0)
+(*declaration* IllOpen (*method* int (*list*) 0) public #00010000020003ba 0 1)
+(*declaration* NotYet (*method* int (*list*) 0) public #00010000020003ba 0 2)
+(*declaration* Range (*method* int (*list* int ) 0) public #00010000020003ba 0 3)
+(*declaration* CannotRead (*method* int (*list*) 0) public #00010000020003ba 0 4)
+)
+)

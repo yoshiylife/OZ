@@ -1,0 +1,12 @@
+(*class* #0001000002000002 5
+(*list*)
+(*list*
+(*declaration* NotYet (*method* int (*list*) 0) public #0001000002000002 0 0)
+(*declaration* NotFound (*method* int (*list*) 0) public #0001000002000002 0 1)
+(*declaration* Killed (*method* int (*list*) 0) public #0001000002000002 0 2)
+(*declaration* NotFinish (*method* int (*list*) 0) public #0001000002000002 0 3)
+(*declaration* IllegalOp (*method* int (*list*) 0) public #0001000002000002 0 4)
+(*declaration* CannotExec (*method* int (*list* int ) 0) public #0001000002000002 0 5)
+(*declaration* NotOpend (*method* int (*list*) 0) public #0001000002000002 0 6)
+)
+)

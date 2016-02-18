@@ -1,0 +1,28 @@
+NFE(1)                  NFE 組み込みコマンド                   NFE(1)
+
+　[名前]
+　　　　killex - エグゼキュータに割り込みを送信する。
+
+　[形式]
+　　　　killex -signal <エグゼキュータ ID>
+
+　[機能説明]
+　　　　エグゼキュータに signal で指定した割り込みを送信する。
+　　　　エグゼキュータが認識する割り込みには次のようなものがある。
+
+　　　　　TERM ‥‥‥ Executor の終了
+　　　　　INT  ‥‥‥ Executor Shell のフォーク
+　　　　　HUP  ‥‥‥ Executor の強制終了
+
+　[使用例]
+　　　　nfe> es
+　　　　Executor Entry count(1)
+  　　　  USER       PID        EXID        FD   STAT     BOOT TIME     RHOST
+　　　　ozguest    19316  0003000101000000   6  Active  04/07 16:35:58  oz
+　　　　　            :
+　　　　nfe> killex -TERM 101
+　　　　 + Successful in forcible termination of the Executor(0x000101)
+　　　　nfe> es
+　　　　Executor Entry count(0)
+　　　　nfe>
+

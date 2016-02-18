@@ -1,0 +1,23 @@
+(*class* #00010000020006bf 0
+(*list*
+(*list* #00010000020006ce #00010000020006cf 0)
+(*list* #00010000020006c4 #00010000020006c5 0)
+)
+(*list*
+(*declaration* New (*method* void (*list*) 0) constructor #00010000020006c4 0 0)
+(*declaration* NewWithSize (*method* void (*list* (*scqf* int 2) ) 0) constructor #00010000020006c4 0 1)
+(*declaration* AddAssoc (*method* #00010000020006c9 0 (*list* #00010000020003bd 0 #00010000020002e7 0 ) 0) public #00010000020006bf 0 0)
+(*declaration* AssocAt (*method* #00010000020006c9 0 (*list* #00010000020003bd 0 ) 0) public #00010000020006bf 0 1)
+(*declaration* AtKey (*method* #00010000020002e7 0 (*list* #00010000020003bd 0 ) 0) public #00010000020006bf 0 2)
+(*declaration* DoFinish (*method* void (*list* #00010000020006d3 0 ) 0) public #00010000020006ce 0 9)
+(*declaration* DoNext (*method* #00010000020006c9 0 (*list* #00010000020006d3 0 ) 0) public #00010000020006ce 0 1)
+(*declaration* DoReset (*method* void (*list* #00010000020006d3 0 ) 0) public #00010000020006ce 0 10)
+(*declaration* IncludesKey (*method* int (*list* #00010000020003bd 0 ) 0) public #00010000020006bf 0 3)
+(*declaration* IsEmpty (*method* int (*list*) 0) public #00010000020006ce 0 12)
+(*declaration* IsEqual (*method* int (*list* #00010000020006ce 8 ) 0) public #00010000020006ce 0 3)
+(*declaration* RemoveKey (*method* #00010000020006c9 0 (*list* #00010000020003bd 0 ) 0) public #00010000020006bf 0 4)
+(*declaration* SetAtKey (*method* #00010000020002e7 0 (*list* #00010000020003bd 0 #00010000020002e7 0 ) 0) public #00010000020006bf 0 5)
+(*declaration* SetOfKeies (*method* #0001000002000463 0 (*list*) 0) public #00010000020006bf 0 6)
+(*declaration* Size (*method* (*scqf* int 2) (*list*) 0) public #00010000020006ce 0 15)
+)
+)

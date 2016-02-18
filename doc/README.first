@@ -1,0 +1,79 @@
+###############################################################################
+Copyright(c) 1994-1997 Information-technology Promotion Agency, Japan(IPA)
+
+All rights reserved.
+This software and documentation is a result of the Open Fundamental
+Software Technology Project of Information-technology Promotion Agency,
+Japan(IPA).
+
+Permissions to use, copy, modify and distribute this software are governed
+by the terms and conditions set forth in the file COPYRIGHT, located in
+this release package.
+###############################################################################
+
+
+                       OZ++ system, Version 1, Release 5
+
+		    README first of this document directory
+
+     Tsukuba Research Laboratory Of Open Fundamental Software Technology
+
+
+This document describes the contents of this directory.
+
+[Documents for usres trying simple programming]
+
+o README.site
+
+   A guide to configure the site for OZ++.
+
+[Other documents for reference]
+
+o LanguageManual.ps.gz
+
+  A reference manual of OZ++  language  (in  Japanese).   Computational  model,
+  syntax,  and  semantics  are  described  in  detail.  This  file  is for OZ++
+  programmers.
+
+o README.CFE
+
+  A users manual of a compiler front-end  `CFE'.  A  description  according  to
+  each menu item is provided here.
+
+o README.WB
+
+  An explanation of `Workbench', which is a platform of a group  of  developing
+  tools of OZ++ (e.g. various browsers).  A brief explanation on each menu item
+  is provided.
+
+o README.debugger
+
+  Debugging tools provided to debug OZ++ program are  introduced  and  a  brief
+  explanation on each tool is given.
+
+o README.executor
+
+  A list of available options when invoking an executor.
+
+o README.launcher
+
+  A user's manual  of  `Launcher',  which  is  a  tool  to  run  (launch)  OZ++
+  applications.  How  to  create and run the OZ++ applications are described in
+  detail.  A tutorial guidance of launcher is also included in this file.
+
+o README.newimage
+
+  A tutorial-like users manual of `newimage' (a tool to  configure  objects  of
+  the  distributed  object management system (management objects) of OZ++).  To
+  locate management objects in a site appropriately, read this file.
+
+o README.nucleus
+
+  A reference manual (manual page) of `nucleus' (OZ++ daemon) and its front-end
+  `nfe'.  How  to  create,  start,  and  remove executors are described in this
+  file.
+
+o README.ozag
+
+  A user's manual of `OZ Application Gateway': a proxy  which  can  relay  your
+  method invocation and class distribution through firewall in secure way.

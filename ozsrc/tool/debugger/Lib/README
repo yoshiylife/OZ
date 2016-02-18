@@ -1,0 +1,28 @@
+uses:
+	class	Object
+	class	ObjectManager
+	class	NameDirectory
+	class	DirectoryServer <Package>
+	class	DirectoryServer <global ResolvableObject>
+	class	Package
+	class	Catalog
+	class	String
+	class	UnixIO
+	class	Set <String>
+	class	Iterator <String>
+	shared	OTObjectStatus
+	shared	ObjectStatus
+	class	ResolvableObject
+	class	School
+
+generate:
+	class	CWDirectory <NameDirectory,global ResolvableObject>
+	class	CWDirectory <Catalog,Package>
+
+notes:
+	Ignore 2 warning in CWDirectory.oz
+
+Tcl/Tk:
+	EntrySelector.tcl
+	GUI.tcl
+	PackageSelector.tcl

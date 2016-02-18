@@ -1,0 +1,35 @@
+#!/bin/sh
+#
+#  Copyright (c) 1994-1997 Information-technology Promotion Agency, Japan
+#
+#  All rights reserved.  No guarantee.
+#  This technology is a result of the Open Fundamental Software Technology
+#  Project of Information-technology Promotion Agency, Japan (IPA).
+#
+source=$1
+num=$2
+
+if [ ! -f $source ]; then
+  echo "$0: No such file: $source"
+  exit 1
+fi
+
+(sed -e '/^$/d' -e '/^#/d' $source |
+ while read i; do
+   set $i
+   c=
+   while [ $# -gt 2 ]; do
+     c="$c $1";
+     shift;
+   done
+   class=`echo $c | sed 's/\([^a-zA-Z]\) /\1/g'`
+   publicPart=$1
+   confClass=$2
+   echo "	configuration_key_table [$num] = oid ($publicPart); " \
+        "/* $class */" >& 3
+   echo "	configuration_value_table [$num] = oid ($confClass); " \
+        "/* $class */" >& 4
+   num=`expr $num + 1`
+   echo $num
+ done | 
+ tail -1) 3>> preload-configurations.keys 4>> preload-configurations.values

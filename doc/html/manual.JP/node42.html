@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.22 他言語インタフェース</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.22 他言語インタフェース">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION000622000000000000000>5.22 他言語インタフェース</A></H2>
+ <A NAME=langlangmanualotherif>　</A>
+<P>
+ OZ++
+  では他言語インタフェースとして、 OZ++
+  言語のソースコード中に C 言語
+のソースコードを記述できる C 文を用意している。
+以下に C 文の、利用法、文法および利用上の制約について述べる。
+<P>
+<H3><A NAME=SECTION000622100000000000000>5.22.1 利用法</A></H3>
+<P>
+ OZ++
+  のソースコードで記述される C 文の利用形態には、
+<P>
+<UL><LI>  OZ++
+  のメソッドの実装を記述する
+<LI> あるクラス(一つのファイル)のスコープでのみ有効な、型定義、関数定
+義、ファイルのインクルードを行なう
+</UL>
+<P>
+などを想定している。
+<P>
+<H3><A NAME=SECTION000622200000000000000>5.22.2 文法</A></H3>
+<P>
+<PRE>c_stmt
+        : 'inline' '&quot;C&quot;'  '{' inline_body '}'
+        ;
+
+inline_body
+        : /* empty */
+        | inline_body STRINGS
+        ;
+</PRE>
+<P>
+<H3><A NAME=SECTION000622300000000000000>5.22.3 利用上の制限</A></H3>
+<P>
+変数 <BR>
+<P>
+ C 文はそれが含まれるブロックからアクセス可能な  OZ++
+  言語で定義された変
+数つまり、その C 文が記述されているメソッドが定義されているクラスのイ
+ンスタンス変数およびその C 文が含まれるブロック内の自動変数にアクセ
+スすることが可能である。
+<P>
+単純型および配列型の変数は、同じ型のまま、同じ変数名でアクセス
+することが可能である。
+<P>
+クラス型の変数はローカルオブジェクトに対してのみ、同じ変数名のまま、
+次のように型変換された形で、アクセスすることが可能である。
+<P>
+<PRE>(OZ++) &lt;スクール中のクラス名&gt; 
+   → (C文) OZ_ObjectPart_&lt;スクール中のクラス名&gt; または OZ_ObjectAll_&lt;スクール中のクラス名&gt;
+
+例
+
+(OZ++) List
+   → (C文) OZ_ObjectPart_List または OZ_ObjectAll_List
+</PRE>
+<P>
+スタティッククラス型の変数は、同じ変数名のまま、次のように型変換された
+形で、アクセスすることが可能である。
+<P>
+<PRE>(OZ++) &lt;スクール中のクラス名&gt; 
+   → (C文) OZ_StaticObject_&lt;スクール中のクラス名&gt;
+
+例
+
+(OZ++) List
+   → (C文) OZ_StaticObject_List
+</PRE>
+<P>
+レコード型の変数は、同じ変数名のまま、次のように型変換された形で、アク
+セスすることが可能である。
+<P>
+<PRE>(OZ++) &lt;スクール中のレコード名&gt; 
+   → (C文) OZ_Record_&lt;スクール中のレコード名&gt;
+
+例
+
+(OZ++) List
+   → (C文) OZ_Record_List
+</PRE>
+<P>
+オブジェクトのインスタンス変数およびレコードのメンバに対しては、構造体
+のメンバとしてアクセスすることが可能である。メンバへのアクセスはインス
+タンス変数名またはレコードのメンバ名の先頭に ``<tt> oz</tt>''を付けて行な
+う。
+<P>
+<PRE>例
+
+class Figure {
+  int X, Y;
+}
+
+class Rect : Figure {
+  int Width, Height;
+} 
+ 
+Rect r;
+
+r=&gt;new();
+
+inline &quot;C&quot; 
+  {
+    int width = ((OZ_ObjectPart_Rectr)-&gt;ozWidth;
+    int x ((OZ_ObjectPart_Figure)
+        ((OZ_ObjectAll_Rect) OzExecGetObjectTop (r))-&gt;part[0])-&gt;ozX;
+  }
+</PRE>
+<P>
+
+<P>
+
+<P>
+
+<P>
+
+<P>
+メソッド、オペレータ <BR>
+<P>
+ C 文を記述しているクラスまたはスタティッククラスに定義されたメソッ
+ドおよびレコードに定義されたオペレータのみ、関数呼び出しとして利用す
+ることができる。関数名は次の通り。
+<P>
+<PRE>(OZ++) クラスの&lt;メソッド名&gt; 
+→ (C文) _oz_&lt;メソッド名&gt;
+
+または
+
+(OZ++) &lt;スクール中のスタティッククラスの ID&gt;の&lt;メソッド名&gt; 
+→ (C文) _oz_&lt;スクール中のスタティッククラスの ID&gt;_&lt;メソッド名&gt;
+
+または
+
+(OZ++) &lt;スクール中のレコードの ID&gt;の&lt;オペレータ名&gt; 
+→ (C文) _oz_&lt;スクール中のレコードの ID&gt;_&lt;オペレータ名&gt;
+
+例
+
+(OZ++) クラスのメソッド Insert () 
+→ (C文) _oz_Insert ()
+
+(OZ++) スタティッククラス (ID = 0001000002000123) のメソッドInsert () 
+→ (C文) _oz_0001000002000123_Insert ()
+</PRE>
+<P>
+アクセス制御 <BR>
+<P>
+以上の記述からも明らかな通り、C 文は  OZ++
+  のアクセス制御に拘束されず、 
+C 文を利用することによって、 OZ++
+  のクラスおよびスタティッククラスのアク
+セス制御とは無関係にオブジェクトのインスタンス変数やメソッドアクセスするこ
+とが可能である。
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

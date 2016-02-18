@@ -1,0 +1,54 @@
+
+NAME
+     ncl - nucleus
+
+SYNOPSIS
+     ncl
+
+DESCRIPTION
+     Nucleus carries out the management (activation, generation) 
+     of executor in general.  It has the following functions:
+
+       * Provides information for the solution of network address
+         Finds a solution for the network address of another unknown 
+         executor when a demand arrives from the executor.
+       * Carries out management of executor inside station
+         Grasps the executor state when the executor is activated.
+       * Broadcasts
+         Nucleus enables broadcasts inside the site.
+         There are two types of broadcasts performed by the nucleus:
+           - solution for network address
+           - search for class, name
+
+     The shell variable OZROOT is root directory of OZ.
+
+FILES
+     * $OZROOT/etc/ncl-data/NCL_table
+       When activated, nucleus obtains its nucleus table from a 
+       file.
+       At present, it is used by the half router nuclei to enable 
+       them to recognize each other.
+       Nucleus acts as the physical transceiver of broadcasts with
+       other nuclei.
+       If the nucleus can not transceive broadcasts because other 
+       nuclei are beyond the range of physical transcription, the 
+       half rooter inside the site acts as the 'middle-man' of 
+       transcriptions.
+     * $OZROOT/etc/site-id
+       Nucleus obtains its site-id from a file.
+     * $OZROOT/bin/executor
+       The command path of executor.
+     * $OZROOT/etc/ncl-data/ExID_manage.log
+       This is the Log information of allocations for the Executor-ID
+       which only the Executor-ID Management Nucleus can update.
+     * $OZROOT/etc/ncl-data/log/<Hostname>
+       Log file of Nucleus
+
+SHARED MEMORY
+     Nucleus, when activated, allocates shared memory with keys
+     1 and 2 to the entities of executor table and Hash table 
+     respectively.
+     This is used to manage the network addresses of executors 
+     that are either activated by the nucleus, or whose search 
+     for the network address solution is successful.
+

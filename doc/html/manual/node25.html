@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.5 User-Defined Types</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.5 User-Defined Types">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION00065000000000000000>5.5 User-Defined Types</A></H2>
+ <A NAME=langlangmanualusertype>&#160;</A>
+<P>
+In OZ++ language, there are two types of user-defined types, class and record.
+<P>
+<H3><A NAME=SECTION00065100000000000000>5.5.1 Record Type</A></H3>
+<P>
+Like basic data types, record types are interpreted as values.
+Assignments or comparisons following the types are executed against
+this value.  In addition, when record types are used for assignments,
+return values, or value arguments of method calls after the types,
+all the values are copied (see Chapter <A HREF="node32.html#langlangmanualrecord">5.12</A>).
+<P>
+<H3><A NAME=SECTION00065200000000000000>5.5.2 Class Type</A></H3>
+ <A NAME=langlangmanualusertypeclasstype>&#160;</A>
+<P>
+Class types include ordinary classes (see Chapter
+<A HREF="node33.html#langlangmanualclass">5.13</A>) and static classes (see Chapter
+<A HREF="node34.html#langlangmanualstaticclass">5.14</A>).  Static classes are different
+from ordinary classes in the following way:
+<P>
+<UL><LI> Inheritance can not be used.
+<P>
+<LI> Generated instances are only global instances (explained later).
+</UL>
+<P>
+The class type is interpreted as a reference.  Both assignments and
+comparisons (explained later) are executed against this reference.
+Therefore, when class types are used for return values or value
+parameters of method call, there are two cases: when references are
+passed, and when instances are copied (as explained later).
+<P>
+<PRE>class Container;
+
+Container a, b;
+
+a=&gt;new();       // generates an instance, and binds it to 'a'
+b = a;          // assigns the reference of 'a' into 'b', this 
+                // makes both 'a' and 'b' share the same instance
+</PRE>
+<P>
+Class instances have the attributes of either global or local.  
+Static class instances cannot be global.
+<P>
+<UL><LI> Global Objects
+<P>
+A unique object ID is given to distinguish global objects inside the
+system.  This ID is used so that all references can access and share
+global objects with distributed transparency.  
+
+Inside the methods of a
+global object, it is possible to get a reference as a global object to
+itself by reserved word <tt> oid</tt>.
+<P>
+<LI> Local Objects
+<P>
+These function as parts of global objects.  
+Inside the same global
+object, they are accessed as references.  However, when accessed
+between global objects, 
+copies of local objects are executed.  
+<P>
+For this reason, local objects are not given object IDs, and are quite
+related to global objects.
+</UL>
+<P>
+A set of instances comprised of a global object and all its local
+objects is called a  <b> cell</b>.  A cell is a unit of memory
+management of an executor.  The relationship among cells, global
+objects, and local objects is shown in figure
+<A HREF="node25.html#figlanglangmanualusertypeobjects">5.5--1</A>.  In the language,
+reference to the global object inside a cell is made by the reserved
+word <tt> cell</tt>.
+<P>
+Furthermore, the difference between global objects and local objects
+can be distinguished as the difference between different types.  That
+is, even for instances of the same class, global objects can not be
+assigned to local objects, and nor can local objects be passed to a
+method's call by value arguments where only global objects are
+specified.
+<P>
+<A NAME=figlanglangmanualusertypeobjects>&#160;</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD>
+<IMG ALIGN=BOTTOM ALT="lang-objects.gif" SRC="figure/lang-objects.gif">
+</TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>Fig 5.1--1:</STRONG>Global/Local Object</CAPTION>
+</TABLE>
+</CENTER>
+
+<P>
+<PRE>class Container;
+
+Container a;         // a is a local object 
+global Container b;  // b is a global object
+
+a=&gt;new();
+b = a;               // as the types are different,
+                     //  an error occurs.
+</PRE>
+<P>
+
+Furthermore, if the method call includes a call by a value arguments
+or a return value of a class type, the treatment of global objects
+differs from that of the local ones.  The global objects are already
+treated as references.  The local objects may also be treated as
+references, but only when method calls are made against instances
+inside the cell where the local objects belong.  Otherwise, local
+objects are copied and the copy is used for further processing.
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

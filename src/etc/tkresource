@@ -1,0 +1,15 @@
+*Tk*font: -*-times-bold-r-*-*-14-*
+*Tk*Text.font: a14
+*Tk*Text.kanjiFont: k14
+*Tk*background: LightYellow2
+*Tk*activeBackground: LightCyan
+*Tk*selectBackground: LightSlateGray
+*Tk*selectForeground: LightYellow2
+*Tk*selector: aquamarine
+*Tk*Scrollbar.foreground: LightBlue
+*Tk*Scrollbar.activeForeground: LightCyan
+*Tk*Scrollbar.background: LightSteelBlue
+*Tk*Menu.activeBackground: Black
+*Tk*Menu.activeForeground: LightCyan
+*Tk*Scrollbar.cursor: sb_v_double_arrow
+*Tk*Label.cursor: hand2

@@ -1,0 +1,17 @@
+(*class* #0001000002000889 0
+(*list*
+(*list* #0001000002000897 #0001000002000898 0)
+(*list* #0001000002000892 #0001000002000893 0)
+(*list* #000100000200088d #000100000200088e 0)
+)
+(*list*
+(*declaration* New (*method* void (*list*) 0) constructor #000100000200088d 0 0)
+(*declaration* Get (*method* #0001000002000883 0 (*list*) 0) public #000100000200088d 0 8)
+(*declaration* Hash (*method* (*scqf* int 2) (*list*) 0) public #0001000002000897 0 2)
+(*declaration* IsEmpty (*method* int (*list*) 0) public #0001000002000897 0 12)
+(*declaration* IsEqual (*method* int (*list* #0001000002000897 8 ) 0) public #0001000002000897 0 3)
+(*declaration* Peek (*method* #0001000002000883 0 (*list*) 0) public #0001000002000892 0 3)
+(*declaration* Put (*method* #0001000002000883 0 (*list* #0001000002000883 0 ) 0) public #0001000002000897 0 0)
+(*declaration* Size (*method* (*scqf* int 2) (*list*) 0) public #0001000002000897 0 15)
+)
+)

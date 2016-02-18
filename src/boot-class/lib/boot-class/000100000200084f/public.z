@@ -1,0 +1,8 @@
+(*class* #000100000200084f 5
+(*list*)
+(*list*
+(*declaration* Polling (*scqf* int 1) public #000100000200084f 0 Polling)
+(*declaration* CopyOnWrite (*scqf* int 1) public #000100000200084f 0 CopyOnWrite)
+(*declaration* WriteInvalidate (*scqf* int 1) public #000100000200084f 0 WriteInvalidate)
+)
+)

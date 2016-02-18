@@ -1,0 +1,65 @@
+###############################################################################
+Copyright(c) 1994-1996 Information-technology Promotion Agency, Japan(IPA)
+
+All rights reserved.
+This software and documentation is a result of the Open Fundamental
+Software Technology Project of Information-technology Promotion Agency,
+Japan(IPA).
+
+Permissions to use, copy, modify and distribute this software are governed
+by the terms and conditions set forth in the file COPYRIGHT, located in
+this release package.
+###############################################################################
+
+			      Transaction library
+
+o What is the transaction library?
+
+To provide pessimistic transaction scheme to the distributed servers written in
+OZ++.
+   Pessimistic transaction control is based on locking/unlocking resources by
+transaction.  Following types of locking scheme is adopted in this library:
+
+    - 2 phase locking protocol
+    - 2 phase commitment protocol
+
+In addition, you can choice the following locking scheme by selecting
+appropriate class.
+
+    - strict 2 phase locking protocol (dead lock free protocol)
+    - moded locking procotol (shared/exclusive locking)
+
+o Contents
+
+    ptrans.oz      -- class PTransaction
+    sptrans.oz     -- class StrictPTransaction
+    mptrans.oz     -- class ModedPTransaction
+    msptrans.oz    -- class ModedStrictPTrasaction
+
+    tresource.oz   -- class TransactionResource
+    stresource.oz  -- class StrictTransactionResource
+    mtresource.oz  -- class ModedTransactionResource
+    mstresource.oz -- class ModedStrictTransactionResource
+
+    tr-exc.oz      -- shared TransactionProtocolExceptions
+
+o How to compile:
+
+    1. Open appropriate school in your workbench.
+    2. Select all *.oz files in this directory in your compiler front end.
+    3. Give New public version IDs to all classes by selecting "Compile",
+       "All", "New", then "from public" from the menu of compiler front end in
+       order.
+    4. Compile "Public & Protected" of "All" classes.
+    5. At the end of "Public & Protected" compilation, a "Some messages were
+       generated" window will appear.  Close it.
+    6. Cancel the "Implementation" compilation.
+    7. Generate a real generic class "OIDSet<global TransactionResource>".
+    8. Compile "Public & Protected" of "All" classes, again.
+    9. At the end of "Public & Protected" compilation, a "Some messages were
+       generated" window will appear.  Close it.
+   10. Cancel the "Implementation" compilation.
+   11. Generate "All" classes.
+   12. Compile "Public & Protected" of "All" classes, again.
+   13. Compile "Implementation" of "All" classes, and confirm to configure.
+       That's all.

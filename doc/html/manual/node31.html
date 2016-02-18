@@ -1,0 +1,226 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.11 Declaration</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.11 Declaration">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION000611000000000000000>5.11 Declaration</A></H2>
+ <A NAME=langlangmanualdecl>&#160;</A>
+<P>
+Declarations affect the interpretation of identifiers. 
+
+However, memory blocks related to identifiers are not always allocated.
+<P>
+The following kinds of declarations are used:
+<P>
+<UL><LI> Classes
+<LI> Static Classes
+<LI> Instance Variables and Methods
+<LI> Records
+<LI> Members and Operators
+<LI> Local Variables
+<LI> Exceptions
+<LI> Constants
+</UL><H3><A NAME=SECTION000611100000000000000>5.11.1 Declaration of Classes</A></H3>
+<P>
+The declaration of classes is similar to their definition (see Chapter <A HREF="node33.html#langlangmanualclass">5.13</A>).
+<P>
+<H3><A NAME=SECTION000611200000000000000>5.11.2 Declaration of Static Classes</A></H3>
+<P>
+The declaration of static classes is similar to their definition (see Chapter <A HREF="node34.html#langlangmanualstaticclass">5.14</A>).
+<P>
+<H3><A NAME=SECTION000611300000000000000>5.11.3 Declaration of Instance Variables and Methods</A></H3>
+<P>
+Instance variables are declared in the definitions of ordinary classes and static classes.  This declaration links the identifier to a type as an instance variable (see Section <A HREF="node31.html#langlangmanualdeclarationvar">5.11.6</A>).  Also, declaration of a method is similar to its definition (see Sections <A HREF="node33.html#langlangmanualclassmember">5.13.2</A> and <A HREF="node34.html#langlangmanualstaticclassmember">5.14.2</A>).
+<P>
+<H3><A NAME=SECTION000611400000000000000>5.11.4 Declaration of Records</A></H3>
+<P>
+The declaration of records is similar to their definition (see Chapter <A HREF="node32.html#langlangmanualrecord">5.12</A>).
+<P>
+<H3><A NAME=SECTION000611500000000000000>5.11.5 Declaration of Members and Operators</A></H3>
+<P>
+In the definitions of records, members are declared.  This declaration links a type to the identifier as a member (see Section <A HREF="node31.html#langlangmanualdeclarationvar">5.11.6</A>).  Also, declaration of operators is similar to their definition (see Section <A HREF="node32.html#langlangmanualrecordmember">5.12.1</A>).
+<P>
+<H3><A NAME=SECTION000611600000000000000>5.11.6 Declaration of Local Variables</A></H3>
+ <A NAME=langlangmanualdeclarationvar>&#160;</A>
+<P>
+<PRE>var_decl
+        : simple_quals_type simple_vars_list ';'
+        | class_quals_type class_vars_list ';'
+        ; 
+
+simple_quals_type
+        : quals type
+        ;
+
+class_quals_type
+        : CLASSNAME
+        | 'global' CLASSNAME
+        | TYPEPARAM
+        ;
+
+quals
+        : /* empty */ 
+        | 'unsigned'
+        ;
+
+type
+        : 'char'
+        | 'short'
+        | 'int'
+        | 'long'
+        | 'float'
+        | 'double'
+        | 'condition'
+        | 'void'
+        ;
+
+simple_vars_list
+        : vars_only 
+        | simple_vars_list ',' vars_only
+        | exp_vars
+        | simple_vars_list ',' exp_vars
+        ;
+
+vars_only 
+        : vars
+        ;
+
+vars
+        : processes var arrays 
+        | processes arrays 
+        | processes '(' vars ')' arrays 
+        ;
+
+var
+        : IDENTIFIER 
+        ;
+
+arrays 
+        : /* empty */ 
+        | arrays array 
+        ;
+
+array
+        : '[' ']' 
+        ;
+
+processes
+        : /* empty */ 
+        | processes process 
+        ;
+
+process
+        : '@' 
+        ;
+
+exp_vars
+        : vars ASSIGN exp
+        | vars ASSIGN exp_with_block
+        ;
+
+vars_list_noinit
+        : vars_noinit
+        | vars_list_noinit ',' vars_noinit
+        ;
+
+vars_noinit
+        : vars
+        ;
+
+class_vars_list
+        : vars_only     
+        | class_vars_list ',' vars_only 
+        | exp_vars
+        | class_vars_list ',' exp_vars
+        | inst_init_vars
+        | class_vars_list ',' inst_init_vars
+        ;
+
+inst_init_vars
+        | vars '=&gt;' IDENTIFIER '(' arg_list ')' 
+                          inst_option exp_invokes
+        ;
+
+exp_invokes
+        : /* empty */
+        | exp_invokes exp_invoke
+        ;
+
+exp_invoke
+        | '-&gt;' IDENTIFIER '(' arg_list ')' 
+        ;
+
+arg_list
+        : /* empty */
+        | exp_no_comma
+        | exp_comma
+        ;
+
+inst_option
+        : /* empty */
+        | '@' exp %prec OM
+        ;
+
+exp_with_block
+        : '{' exp_with_block_content '}' 
+        ;
+
+exp_with_block_content
+        : exp_with_block ',' exp_with_block
+        | exp_with_block ',' exp
+        | exp ',' exp_with_block
+        | exp
+         ;
+</PRE>
+<P>
+Immediately after starting a block, valid local variables within the block can be declared.  Declaration of local variables links a type to the identifiers.  Moreover, for only class types, both local and global attributes are given.
+<P>
+<PRE>class A;
+statci class B;
+
+A a1;            // a1 is a local object
+global A a2;     // a2 is a global object
+global B b1;     // error: B is a static class
+</PRE>
+<P>
+An initialization of a local variable can also be described.  When the type is a record, it is described using <code>{}</code>.
+<P>
+<PRE>record class Point {
+  int X, Y;
+}
+
+Point p1 = { 0, 0 }, p2 = { 100, 100};
+</PRE>
+<P>
+Also, definitions of the derived types of arrays and processes are performed
+here (see Chapters <A HREF="node27.html#langlangmanualarray">5.7</A> and <A HREF="node28.html#langlangmanualprocess">5.8</A>).
+<P>
+<PRE>int a[];      // a is an array derived type of the int type
+void @b;      // b is a process derived type 
+              // which matches all types
+</PRE>
+<P>
+<H3><A NAME=SECTION000611700000000000000>5.11.7 Declaration of Exceptions</A></H3>
+<P>
+Exceptions are declared in shared (see Section <A HREF="node35.html#langlangmanualsharedexcept">5.15.2</A>).
+<P>
+<H3><A NAME=SECTION000611800000000000000>5.11.8 Declaration of Constants</A></H3>
+<P>
+User-defined constants are also declared in shared (see Section <A HREF="node35.html#langlangmanualsharedmember">5.15.2</A>).
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

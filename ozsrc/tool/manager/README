@@ -1,0 +1,99 @@
+###############################################################################
+Copyright(c) 1994-1996 Information-technology Promotion Agency, Japan(IPA)
+
+All rights reserved.
+This software and documentation is a result of the Open Fundamental
+Software Technology Project of Information-technology Promotion Agency,
+Japan(IPA).
+
+Permissions to use, copy, modify and distribute this software are governed
+by the terms and conditions set forth in the file COPYRIGHT, located in
+this release package.
+###############################################################################
+
+		       Object Management Tools
+
+o What is the Object Management Tools?
+
+To provide direct operation facility to objects of the Distributed Object
+Management System, i.e. object managers, class objects, etc.
+
+o Contents
+
+  - Launchables of service interface
+
+    cio.oz           -- class ClassObjectServiceInterface
+    cpmaintainer.oz  -- class ClassPackageMaintainer
+    dnsmaintainer.oz -- class DNSResolverMaintainer
+    omsi.oz          -- class ObjectManagerServiceInterface
+
+  - Launchables of misc. tool
+
+    cochecker.oz     -- class ClassObjectChecker
+    confchanger.oz   -- class ConfigurationCacheChanger
+    confsetter.oz    -- class DefaultConfigurationSetter
+    dnsstarter.oz    -- class DNSResolverStarter
+    dropper.oz       -- class Dropper
+    exporter.oz      -- class PackageExporter
+    propagator.oz    -- class Propagator
+
+  - Launchables of test drivers
+
+    cltest.oz        -- class ClassTester
+    cmtest.oz        -- class CopyManagementTester
+    cttest.oz        -- class CatalogTester
+    ndtest.oz        -- class NameDirectoryTester
+    otest.oz         -- class ConfigurationSetTester
+    ptest.oz         -- class class GetPropertyPathNameTester
+    schooltest.oz    -- class SchoolTester
+
+  - DOMS Servers
+
+    cra.oz           -- class ClassRequestAgent
+
+  - Others (Parts)
+
+    catalogtool.oz   -- abstract class CatalogTool
+    ccom.oz          -- shared ClassCommands
+    ci-exc.oz        -- shared CommandInterpreterExceptions
+    ci.oz            -- abstract class CommandInterpreter
+    cicom.oz         -- shared CommandInterpreterCommands
+    cpcom.oz         -- shared ClassPackageCommands
+    cra-const.oz     -- shared ClassRequestAgentConstants
+    cracom.oz        -- shared ClassRequestAgentCommands
+    dnscom.oz        -- shared DNSCommands
+    easycom.oz       -- class EasyCompiler
+    easycomtest.oz   -- class EasyCompilerTester
+    omcoms.oz        -- shared ObjectManagerCommands
+    proptableent.oz  -- class PropagatorTableEntry
+    sstatus.oz       -- shared ServerStatus
+    ststable.oz      -- class SimpleTable <String, TValue>
+    sttable.oz       -- class SimpleStringTable <TValue>
+    tester.oz        -- abstract class Tester
+    withkterm.oz     -- abstract class LaunchableWithKterm
+
+o How to compile:
+
+    1. Open appropriate school in your workbench.
+    2. Select all *.oz files in this directory in your compiler front end.
+    3. Give New public version IDs to all classes by selecting "Compile",
+       "All", "New", then "from public" from the menu of compiler front end in
+       order.
+    4. Compile "Public & Protected" of "All" classes.
+    5. At the end of "Public & Protected" compilation, a "Some messages were
+       generated" window will appear.  Close it.
+    6. Cancel the "Implementation" compilation.
+    7. Generate "All" classes.
+    8. Compile "Public & Protected" of "All" classes, again.
+    9. At the end of "Public & Protected" compilation, a "Some messages were
+       generated" window will appear.  Close it.
+   10. Cancel the "Implementation" compilation.
+   11. Generate a real generic class "FIFO<Date>".
+   12. Compile "Public & Protected" of "All" classes, again.
+   13. At the end of "Public & Protected" compilation, a "Some messages were
+       generated" window will appear.  Close it.
+   14. Cancel the "Implementation" compilation.
+   15. Generate "All" classes.
+   16. Compile "Public & Protected" of "All" classes, again.
+   17. Compile "Implementation" of "All" classes, and confirm to configure.
+       That's all.

@@ -1,0 +1,15 @@
+NFE(1)                  NFE 組み込みコマンド                   NFE(1)
+
+　[名前]
+　　　　alias - 組み込みコマンドの置き換えを行う
+
+　[形式]
+　　　　alias [command1 command2…commandN]
+
+　[機能説明]
+　　　　command2 以降の文字列を command1 に置き換える。引数なしの場合は
+　　　　現在の alias のリストを表示する。
+
+　[使用例]
+　　　　nfe> alias c cex 101
+

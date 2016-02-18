@@ -1,0 +1,6 @@
+DESTDIR=../..
+BINDIR=/bin
+
+AllTarget()
+
+InstallScript(unix,$(BINDIR))

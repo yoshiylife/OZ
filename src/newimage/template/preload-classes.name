@@ -1,0 +1,10 @@
+# There is no need to preload any runtime class informations for a
+# NameDirectory if the `Master Class' (a Class object which manages
+# all release classes) is on the same executor.  If it is not, the
+# NameDirectory needs following classes.
+
+# NameDirectory
+# ResolverResponsibility
+# String
+# Dictionary<String,global ResolvableObject>
+# Assoc<String,global ResolvableObject>

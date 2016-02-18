@@ -1,0 +1,17 @@
+(*class* #000100000200039b 0
+(*list*
+(*list* #0001000002000313 #0001000002000314 0)
+)
+(*list*
+(*declaration* NewWithPidAndFd (*method* void (*list* int int ) 0) constructor #000100000200039b 0 0)
+(*declaration* GetStream (*method* #00010000020001e7 8 (*list*) 0) public #000100000200039b 0 1)
+(*declaration* GetText (*method* #00010000020001ec 8 (*list*) 0) public #000100000200039b 0 2)
+(*declaration* Kill (*method* void (*list*) 0) public #0001000002000313 0 4)
+(*declaration* SetSignal (*method* int (*list* int ) 0) public #0001000002000313 0 2)
+(*declaration* Status (*method* int (*list*) 1) public #0001000002000313 0 5)
+(*declaration* Wait (*method* int (*list*) 1) public #0001000002000313 0 6)
+(*declaration* IsEqual (*method* int (*list* #0001000002000313 0 ) 0) public #0001000002000313 0 3)
+(*declaration* Hash (*method* (*scqf* int 2) (*list*) 0) public #0001000002000313 0 7)
+(*declaration* Id (*method* int (*list*) 0) public #0001000002000313 0 1)
+)
+)

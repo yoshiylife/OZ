@@ -1,0 +1,17 @@
+(*class* #000100000200034d 0
+(*list*
+(*list* #0001000002000418 #0001000002000419 0)
+)
+(*list*
+(*declaration* New (*method* void (*list* (*scqf* #0001000002000064 0 4) #000100000200041d 0 ) 0) constructor #000100000200034c 0 0)
+(*declaration* ShowDefaultVersions (*method* (*array* #00010000020003bd 0 ) (*list* #00010000020003bd 0 ) 0) public #000100000200034c 0 1)
+(*declaration* ShowOtherVersions (*method* (*array* #00010000020003bd 0 ) (*list* #00010000020003bd 0 ) 0) public #000100000200034c 0 2)
+(*declaration* ShowOtherConfigurations (*method* (*array* #00010000020003bd 0 ) (*list* #00010000020003bd 0 ) 0) public #000100000200034c 0 3)
+(*declaration* ShowDefaultConfiguration (*method* #00010000020003bd 0 (*list* #00010000020003bd 0 ) 0) public #000100000200034c 0 4)
+(*declaration* ChangeDefaultVersion (*method* void (*list* #00010000020003bd 0 ) 0) public #000100000200034c 0 5)
+(*declaration* ChangeDefaultConfiguration (*method* void (*list* #00010000020003bd 0 ) 0) public #000100000200034c 0 6)
+(*declaration* ChangeVisible (*method* #00010000020003bd 0 (*list* #00010000020003bd 0 ) 0) public #000100000200034c 0 7)
+(*declaration* SearchClass (*method* int (*list* #00010000020003bd 0 ) 0) public #000100000200034c 0 8)
+(*declaration* AddProperty (*method* void (*list* #00010000020003bd 0 #00010000020003bd 0 ) 0) public #000100000200034c 0 9)
+)
+)

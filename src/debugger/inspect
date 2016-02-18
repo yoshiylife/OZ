@@ -1,0 +1,3 @@
+#!/usr/bin/csh -f
+limit descriptors 200
+wish -f $OZROOT/lib/gui/debugger/inspect.tcl $*

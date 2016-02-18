@@ -1,0 +1,33 @@
+TOP_INCLUDES = -I../include
+	LDOPTIONS = -L/usr/lib 
+#	LIB = 
+	LIB = /usr/lib/debug/malloc.o 
+	CC = gcc 
+
+DESTDIR = ${OZROOT}
+BINDIR = /bin
+	CFLAGS = -g $(TOP_INCLUDES)
+
+      	SRCS1 = main.c sb.c lock.c cfe.c school.c \
+		cb.c class.c symbol.c \
+		error.c emit-common.c common.c print.c \
+		reader.c cib.c \
+		configure.c parents.c info.c \
+		generic.c generate.c all.c 
+	OBJS1 =	main.o sb.o lock.o cfe.o school.o \
+		cb.o class.o symbol.o \
+		error.o emit-common.o common.o print.o \
+		reader.o cib.o \
+		configure.o parents.o info.o \
+		generic.o generate.o all.o
+	PROGRAMS = cfed
+
+ComplexProgramTarget_1($(PROGRAMS), , $(LIB))
+
+install::
+	@(cd $(DESTDIR)$(BINDIR); \
+	  $(RM) cb; $(LN) $(PROGRAMS) cb; \
+	  $(RM) cfe2; $(LN) $(PROGRAMS) cfe2; \
+	  $(RM) config; $(LN) $(PROGRAMS) config; \
+	  $(RM) generate; $(LN) $(PROGRAMS) generate; \
+	  $(RM) sb; $(LN) $(PROGRAMS) sb;)

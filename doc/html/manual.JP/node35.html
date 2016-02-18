@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.15 shared</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.15 shared">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION000615000000000000000>5.15 shared</A></H2>
+ <A NAME=langlangmanualshared>　</A>
+<P>
+<PRE>shared_def
+        : 'shared' CLASSNAME '{' shared_body '}'
+        ;
+
+shared_body
+        : shared_member_decls
+        ;
+</PRE>
+<P>
+shared はユーザ定義の例外名および定数のように複数のクラスのスコープにまたがっ
+て使用されるものを定義するためのものである。
+shared に定義される例外名および定数を shared メンバと呼ぶ。
+<P>
+shared はコンパイル時に参照がすべて解決される。
+<P>
+<H3><A NAME=SECTION000615100000000000000>5.15.1 shared 名</A></H3>
+<P>
+shared名は、その shared 定義のスコープで予約語となる。
+<P>
+shared はクラスやレコードとは異なり型ではない。
+<P>
+<H3><A NAME=SECTION000615200000000000000>5.15.2 shared メンバ</A></H3>
+ <A NAME=langlangmanualsharedmember>　</A>
+<A NAME=langlangmanualsharedexcept>　</A>
+<P>
+<PRE>shared_member_decls
+        : /* empty */
+        | shared_member_decls shared_member_decl
+        ;
+
+shared_member_decl
+        : exception_decl ';'
+        | constant_decl ';'
+        ;
+
+exception_decl
+        : exception
+        | exception_decl ',' exception
+        ;
+
+exception
+        : IDENTIFIER '(' ')' 
+        | IDENTIFIER '(' arg ')' 
+        ;
+
+constant_decl
+        : simple_quals_type simple_vars_list_with_exp
+        ;
+
+simple_vars_list_with_exp
+        : exp_vars
+        | simple_vars_list_with_exp ',' exp_vars
+        ;
+</PRE>
+<P>
+shared メンバに、利用者定義型の定数や、プロセス派生型の定数を宣言する
+ことはできない。定数の宣言は以下のように記述する。
+<P>
+<PRE>shared C {
+  float Pie = 3.14;         // float型の定数
+  int MaxSize = 100;        // int型の定数
+  char Name[] = &quot;MyName&quot;;   // char の配列派生型の定数
+}
+</PRE>
+<P>
+ OZ++
+  の例外処理では例外に任意の型のパラメータを与えることが可能であり、
+shared の例外定義ではパラメータの型を指定する 
+(<A HREF="node36.html#langlangmanualexcept">5.16</A> 節参照)。例外名の宣言は以下のように記述
+する。
+<P>
+<PRE>shared C {
+  e1();                 // パラメータを持たない例外
+  e2(int);              // int型のパラメータを持つ例外
+}
+</PRE>
+<P>
+shared を利用する場合には、次のように記述する 
+(<A HREF="node36.html#langlangmanualexceptuser">5.16.2</A> 節参照) 。
+<P>
+<PRE>shared C {
+  float Pie = 3.14;         
+  int MaxSize = 100;        
+  char Name[] = &quot;MyName&quot;;   
+
+  Exception1 ();
+  Exception2 (int);
+}
+
+int a = C::MaxSize;
+
+raise C::Exception1;
+raise C::Exception2 (9999);
+</PRE>
+<P>
+<H3><A NAME=SECTION000615300000000000000>5.15.3 総称パラメータの利用</A></H3>
+<P>
+shared にも総称パラメータを使用することが可能であり、利用方法はクラス
+の場合と同様である。
+<P>
+<PRE>shared ExceptionOfCollection&lt;T&gt; {
+  OverFlow (T);
+}
+</PRE>
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

@@ -1,0 +1,276 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.16 Exceptions</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.16 Exceptions">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION000616000000000000000>5.16 Exceptions</A></H2>
+ <A NAME=langlangmanualexcept>&#160;</A>
+<P>
+Exception handling is a mechanism that provides functions of global 
+escapes in programming. 
+In OZ++ language, global escape is possible in activations of all operators 
+(see Chapter <A HREF="node32.html#langlangmanualrecord">5.12</A>) and 
+all methods including global methods 
+(see Section <A HREF="node33.html#langlangmanualclassmember">5.13.2</A>) on the network.
+<P>
+In OZ++ language, exception processing is described by <code>raise</code> 
+statements which generate exceptions, and by exception statements 
+which receive the exceptions.
+<P>
+<H3><A NAME=SECTION000616100000000000000>5.16.1 Types of Exceptions</A></H3>
+ <A NAME=langlangmanualexceptkind>&#160;</A>
+<P>
+In OZ++ language, exception handling can handle two types of exceptions: 
+user-defined exceptions and system-defined exceptions.  
+These two types of exceptions are not discriminated by the system, 
+and are both processed in the same way.
+<P>
+The following system-defined exceptions are used:
+<P>
+<UL><LI> <tt> Abort</tt> 
+<LI> <tt> ChildAborted</tt> 
+<LI> <tt> ObjectNotFound</tt> 
+<LI> <tt> ClassNotFound</tt>
+<LI> <tt> CodeNotFound</tt> 
+<LI> <tt> LayoutNotFound</tt> 
+<LI> <tt> GlobalInvokeFailed</tt> 
+<LI> <tt> NoMemory</tt> 
+<LI> <tt> ForkFailed</tt>
+<LI> <tt> KillSelf</tt>
+<LI> <tt> ChildDoubleFault</tt>
+<LI> <tt> IllegalInvoke</tt>
+<LI> <tt> NarrowFailed</tt>
+<LI> <tt> ArrayRangeOverflow</tt>
+<LI> <tt> TypeCorrectionFailed</tt>
+</UL>
+<P>
+User-defined exceptions are defined in <tt> shared</tt> 
+(see Section <A HREF="node35.html#langlangmanualsharedexcept">5.15.2</A>).
+<P>
+<P>
+<P>
+For user-defined exceptions, the <tt> shared</tt> name and two colons ``::'' are
+prefixed to the names of the exceptions.
+On the other hand, system-defined exceptions are described without prefix.
+<P>
+Furthermore, an exception may have one parameter of any type.
+<P>
+<H3><A NAME=SECTION000616200000000000000>5.16.2 Exception Generation</A></H3>
+ <A NAME=langlangmanualexceptuser>&#160;</A>
+<P>
+<PRE>except_stmt
+        | 'raise' exception_label2 ';'
+        | 'raise' ';'
+        ;
+
+exception_label2
+        : exception_name
+        | exception_name '(' exp ')'
+        ;
+
+exception_name
+        : SHAREDNAME '::' IDENTIFIER
+        | IDENTIFIER
+        ;
+</PRE>
+<P>
+The user can generate both system-defined exceptions and user-defined 
+exceptions by using raise statement.
+<P>
+The <code>raise</code> statement usually requires an exception name specification as shown below:
+<P>
+<blockquote> <code>raise SharedString::OutOfRange (100)</code>
+</blockquote>
+<P>
+However, it is possible to use raise statement without exception name
+only inside the exception handler. 
+In this case, the received exceptions are sent to 
+the outer exception handler.
+(i.e. reraise of exceptions).
+<P>
+<H3><A NAME=SECTION000616300000000000000>5.16.3 An Exception Statement</A></H3>
+<P>
+<PRE>except_stmt
+        : 'try' block 'except''{' except_body
+                                  default_except_block '}'
+        ;
+</PRE>
+<P>
+An exception statement consists of an exception block and an exception
+handler list as stated below:
+<P>
+<PRE>String str;
+        :
+try 
+  {      // an exception block
+    str-&gt;At (100);        
+  } 
+except 
+  {      // an exception handler list
+  SharedString::OutOfRange (index)  // an exception handler
+    {
+      str-&gt;At (str-&gt;Length () - 1);
+    }
+  default 
+    {
+        :
+      raise;
+    }
+  }
+}
+</PRE>
+<P>
+The contents of a normal process are described in the exception block.  
+The process for supplementing the generated exception is also described here.  
+Moreover, exception statement can be nested.
+<P>
+<H3><A NAME=SECTION000616400000000000000>5.16.4 The Exception Handler List</A></H3>
+<P>
+<PRE>except_body
+        : /* empty */
+        | except_body exception_labels block 
+        ;
+
+default_except_block
+        : /* empty */
+        | 'default' block
+        ;
+
+exception_labels
+        : exception_label 
+        | exception_labels ',' exception_label 
+        ;
+
+exception_label
+        : exception_name 
+        | exception_name '(' IDENTIFIER ')'
+        ;
+</PRE>
+<P>
+More than zero (0) exception handlers are described in the exception handler 
+list. 
+Processes performed against exceptions that may be generated during the execution of exception blocks are also described in this list.
+<P>
+Exception handlers are described (i.e. denoted) in the following form:
+<P>
+<PRE>except
+  {
+    A::Except   // an exception name: user-defined exception
+      {
+        ...     // a process during exception generation
+      }
+    Abort (     // an exception name: system-defined exception
+      {
+        ...
+      }
+   }
+</PRE>
+<P>
+It is possible to specify <code>default</code> as an exception name 
+in the exception handler.  
+The exception handler receives exceptions which are not specified 
+by other exception handlers in the same exception handler list.  
+This exception handler does not process the generated exceptions. 
+However, it is useful when resources acquired in the exception block 
+are needed to be free.
+<P>
+<H3><A NAME=SECTION000616500000000000000>5.16.5 Semantics of Exception Processing</A></H3>
+<P>
+ First, the exception block is executed.  While it is being executed,
+<P>
+<UL><LI> If no exception is generated:
+<P>
+Control returns to the statement following the exception statement 
+after the exception block is terminated,
+<P>
+<LI> If an exception not specified by the exception handler is generated:
+<P>
+Method calls up to the current one are back-tracked to search a method
+whose exception statement can handle the raised exception.
+If found, the exception is delegated to the method, otherwise a runtime
+error occurs.
+<P>
+<LI>  If an exception specified by the exception handler is generated:
+<P>
+Control moves to the exception handler.
+<P>
+Once the exception handler terminates, the control moves to the statement 
+next to the exception statement.
+<P>
+</UL>
+<P>
+<PRE>class A {
+  public: m1, m2;
+
+  int m1() 
+    {
+      ...
+      m2();
+      ...
+    }
+
+  int m2()
+    {
+       try 
+         {
+           ...
+         }
+       except {
+         Abort
+           {
+             ...
+           }
+         AnyWhere::Quit 
+           {
+             ...
+           }
+       }
+    }  
+}
+</PRE>
+<P>
+In the above example, if a method <tt> m1</tt> of an instance of <tt> A</tt> is invoked,
+a method <tt> m2</tt> is invoked from inside the method <tt> m1</tt>.  
+Then, in <tt> m2</tt>, the exception block is first executed.  
+While executing,
+<P>
+<UL><LI> If no exception is generated:
+<P>
+Since the control moves to the statement next to the exception statement, it returns to <tt> m1</tt> after executing <tt> m2</tt>.
+<P>
+<LI> If an exception is generated:
+<P>
+<UL><LI> If the exception is either <tt> Abort</tt> or <tt> AnyWhere::Quit</tt>:
+<P>
+Once the exception handler corresponding to the exception terminates, the control returns to <tt> m1</tt> after executing <tt> m2</tt>.
+<P>
+<LI> If the exception is other than <tt> Abort</tt> and <tt> AnyWhere::Quit</tt>:
+<P>
+Since the exception handlers corresponding to these exceptions are not 
+yet available, these exception are delegated to the methods.  
+However, as there are no methods which accept these exceptions, 
+a runtime error occurs.
+<P>
+</UL></UL>
+<P>
+In the above situation (i.e. when no exception handlers can process 
+the exceptions and if eventually runtime error occurs), 
+depending on the executor, 
+the debugger activation mechanisms may be available in the OZ++ system.
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

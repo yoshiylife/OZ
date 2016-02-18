@@ -1,0 +1,13 @@
+DESTDIR=${OZROOT}
+BINDIR=/bin
+
+AllTarget()
+
+InstallScript(newimage,$(BINDIR))
+InstallScript(migrateimage,$(BINDIR))
+InstallScript(add-preload-configurations,$(BINDIR))
+InstallScript(set-preload,$(BINDIR))
+InstallScript(set-preload-classes,$(BINDIR))
+InstallScript(set-preload-codes,$(BINDIR))
+InstallScript(set-preload-configurations.keys,$(BINDIR))
+InstallScript(set-preload-configurations.values,$(BINDIR))

@@ -1,0 +1,37 @@
+NFE(1)              Nucleus Front-End Built-In-Command               NFE(1)
+
+NAME
+     "exidment" - This command rewrites the maintenance information of
+                  the Executor-ID.
+
+SYNOPSIS
+     exidment Executor-ID [-n new-name] [-c new-comment]
+     exidment Executor-ID [exidment options]
+
+DESCRIPTION
+     This command rewrites the contents of the maintenance information
+     of the Executor-ID.  It can change the Executor-Name equivalent of
+     the Executor-ID, and its remarks.
+
+exidment OPTIONS
+     -n new-name     Name of Executor.
+     -c new-comment  Comment.
+
+FILE
+     * $OZROOT/images/<EXID>/exid.info
+       This is a file for the maintenance information of the Executor-ID.
+       The maintenance information of the Executor-ID is generated when
+       newimage finishes normally.
+
+EXAMPLE:
+     nfe> newimage -n TESTEX -c FOR-DEBUG
+              :
+     nfe> exidlist
+      EXID     EX-NAME                COMMENT
+     00025f	TESTE                 FOR-DEBUG
+     nfe> exidment 25f -n FIXEX1 -c My-Executor
+              :
+     nfe> exidlist
+      EXID     EX-NAME                COMMENT
+     00025f    FIXEX1                 My-Executor
+

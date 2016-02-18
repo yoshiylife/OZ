@@ -1,0 +1,14 @@
+(*class* #00010000020000a1 0
+(*list*)
+(*list*
+(*declaration* New (*method* void (*list*) 0) constructor #00010000020000a0 0 0)
+(*declaration* ID (*method* void (*list* (*scqf* #000100000200006e 8 4) ) 0) public #00010000020000a0 0 1)
+(*declaration* Mawaru (*method* void (*list*) 0) public #00010000020000a0 0 2)
+(*declaration* Quit (*method* void (*list*) 0) public #00010000020000a0 0 3)
+(*declaration* Spawn (*method* void (*list*) 0) public #00010000020000a0 0 4)
+(*declaration* Tomaru (*method* void (*list*) 0) public #00010000020000a0 0 5)
+(*declaration* TomaruImpl (*method* void (*list*) 1) protected #00010000020000a1 0 8)
+(*declaration* IDImpl (*method* void (*list* (*scqf* #000100000200006e 8 4) ) 1) protected #00010000020000a1 0 6)
+(*declaration* MawaruImpl (*method* void (*list*) 1) protected #00010000020000a1 0 7)
+)
+)

@@ -1,0 +1,9 @@
+#
+# NCL TABLE
+#
+#type:hostname:
+#
+# Example:
+#    EXIDMANAGE:hostname1:
+#    HALFROUTER:hostname2:
+#    HALFROUTER:192.31.202.75:

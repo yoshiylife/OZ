@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.7 Arrays</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.7 Arrays">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION00067000000000000000>5.7 Arrays</A></H2>
+ <A NAME=langlangmanualarray>&#160;</A>
+<P>
+In OZ++, arrays are used as derived types of fundamental types or
+user-defined types.
+Arrays are interpreted as references.  
+As
+explained later, assignments and comparisons are executed against
+these references.  Therefore, assignments imply sharing of references.
+If arrays are used in parameters and return values of method calls,
+either the reference is passed, or the arrays are copied.
+<P>
+<UL><LI>  For method calls involving global and/or local objects in the same cell, the reference of the array is passed.
+<P>
+<LI>  For method calls involving global objects outside the cell, copies of the array is executed.
+</UL>
+<P>
+Arrays are declared as follows:
+<P>
+<PRE>int a[];
+</PRE>
+<P>
+<H3><A NAME=SECTION00067100000000000000>5.7.1 Operations</A></H3>
+<P>
+<tt> length</tt> <BR>
+<P>
+Arrays have an operation for
+summing 
+the number of elements (i.e. the
+length of the array).  This is called <tt> length</tt>, and is described
+as
+<P>
+<PRE>length a
+</PRE>
+<P>
+Its value can be used as either lvalue or rvalue.
+<P>
+<UL><LI>  If it is used as rvalue,
+<P>
+it return the length of the array.
+<P>
+<LI>  If it is used as lvalue,
+<P>
+ it sets the length to the specified size.  Its initial value is 0.
+<P>
+</UL>
+<P>
+
+If the <tt> length</tt> is applied to the array immediately after its
+declaration, it returns the value 0.
+<P>
+<PRE>int a[], len;   // this is an array of int type, its length 0
+
+length a = 10;  // this makes the length of a to 10
+len = length a; // 10 is returned to len 
+length a = 5;   // the length is shrunk to 5 
+length a = 15;  // the length is stretched to 15 % Contents...How? XXX
+len = length a; // 15 is returned to len
+</PRE>
+<P>
+Accessing Elements <BR> 
+ 
+<P>
+Access to a element of an array is described as
+<P>
+<PRE>a[5]
+</PRE>
+<P>
+This can be used as either rvalue or lvalue.  The index number 0 means
+the first element of the array.  If an element beyond the length of an
+array is accessed, a system exception <tt> ArrayRangeOverflow</tt> (see
+Section
+<A HREF="node36.html#langlangmanualexceptkind">5.16.1</A>) rise.
+<P>
+<PRE>int a[];
+
+length a = 3;
+a[0] = 1;       // assign 1 to the 0th element of a
+a[2] = a[0] + 1;
+a[3] = 3;       // error because the length of a is 3 
+length a = 2;
+a[2] = 0;       // error because the length of a is
+                // constricted to 2
+</PRE>
+<P>
+Assignments <BR>
+<P>
+Arrays are interpreted as references 
+to the memory block where
+elements of the arrays exist.  Therefore, assignments and comparisons
+are executed against these references.  Assignments mean sharing of
+references.
+<P>
+In addition, immediately after being declared, variables of the array
+type have the value 0 (see Section
+<A HREF="node24.html#langlangmanualdatatypezero">5.4.2</A>).  Furthermore, by assigning 0
+to a variable of the array type, it is possible clear all the
+references which the array had.
+<P>
+<PRE>int a[], b[];
+
+length a = 10;
+b = a;
+length b = 5;
+a[8] = 8;    // error
+a = 0;       // a does not have a reference below this position
+</PRE>
+<P>
+
+In the above example, since both <tt> a</tt> and <tt> b</tt> share the same
+array, it must noted that the constriction made on the length of <tt>
+b</tt> also has an influence on <tt> a</tt>.
+<P>
+<H3><A NAME=SECTION00067200000000000000>5.7.2 Multidimensional Arrays</A></H3>
+<P>
+In a array declaration, by putting two <tt> []</tt>s
+side by side, 
+a multidimensional array can be declared.  The length of a
+multidimensional array can be specified in each dimension.
+<P>
+<PRE>int a[][];
+
+length a = 2;
+length a[0] = 10; 
+length a[1] = 5;
+</PRE>
+<P>
+The example above is a two dimensional array, and both <tt> a[0]</tt> and
+<tt> a[1]</tt> are references to arrays of the <tt> int</tt> type.  Therefore,
+the following description is also possible.
+<P>
+
+<P>
+<PRE>int a[][], b[];
+
+length a = 2;
+length b = 10;
+a[0] = b;
+</PRE>
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

@@ -1,0 +1,6 @@
+DESTDIR	= ../../../..
+EXID_MNG_TMP	= exid_manage_template
+
+AllTarget()
+InstallProgramWithFlags($(EXID_MNG_TMP),/etc/ncl-data/EXID,-m 644)
+DependTarget($(EXID_MNG_TMP))

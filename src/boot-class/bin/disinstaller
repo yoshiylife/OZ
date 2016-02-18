@@ -1,0 +1,159 @@
+#!/bin/sh
+#
+#  Copyright (c) 1994-1997 Information-technology Promotion Agency, Japan
+#
+#  All rights reserved.  No guarantee.
+#  This technology is a result of the Open Fundamental Software Technology
+#  Project of Information-technology Promotion Agency, Japan (IPA).
+#
+#
+# disinstaller
+#
+#   Disinstaller copies boot classes from your OZROOT to the release package.
+#
+
+DESTDIR=.
+SRCDIR=$OZROOT
+
+
+Usage="Usage: $0 [-s ozroot] [destination]"
+set -- `getopt s: $*`
+if [ $? != 0 ]; then
+    echo $USAGE
+    exit 2
+fi
+for i in $*
+do
+    case $i in
+    -s) SRCDIR=$2; shift; shift;;
+    --) shift; break;;
+    esac
+done
+
+case $# in
+0) ;;
+1) DESTDIR=$1;;
+*) echo $USAGE; exit 2;;
+esac
+
+
+CFED=$SRCDIR/bin/cfed
+CHMOD=chmod
+GREP=egrep
+INSTALL="install -m 664 -c"
+MKDIR=mkdir
+MKDIRHIER=mkdirhier
+RM="rm -f"
+LS=ls
+SED=sed
+
+BOOTSCHOOL=$SRCDIR/etc/boot-school
+ORIGDIR=$SRCDIR/lib/boot-class
+LIMITFILE=$ORIGDIR/.oz++admin
+
+DESTSRCDIR=$DESTDIR/src
+DESTLIBBOOTDIR=$DESTDIR/lib/boot-class
+DESTETCDIR=$DESTDIR/etc
+DESTBOOTSCHOOL=$DESTETCDIR/boot-school
+
+echo "original=$SRCDIR"
+echo "destination=$DESTDIR"
+
+if [ ! -d $DESTDIR ]; then
+  echo "Destination directory $DESTDIR doesn't exist."
+  exit 2
+fi
+
+echo "clean-up directories"
+$RM -r $DESTLIBBOOTDIR
+$RM $DESTSRCDIR/0001000002??????.oz
+
+$MKDIRHIER $DESTETCDIR $DESTLIBBOOTDIR $DESTSRCDIR
+echo "installing $BOOTSCHOOL"
+$RM $DESTBOOTSCHOOL
+$INSTALL $BOOTSCHOOL $DESTBOOTSCHOOL || exit
+
+echo "setup directories"
+DIR=
+DIRS=`$SED -n 's/^[05678] \(.*\)$/\1/p' $DESTBOOTSCHOOL |
+      (while read i
+       do
+         echo "sb '$i' 6"
+       done; echo "quit") |
+      (OZROOT=. ; export OZROOT ;
+       $CFED -c /lib/boot-class -s /etc/boot-school) |
+      while read DIR
+      do
+        echo "$DESTLIBBOOTDIR/$DIR"
+      done`
+$MKDIR $DIRS
+$CHMOD 0775 $DIRS
+
+echo "installing ordinary classes"
+PREVENTS="/private.c$"
+for i in cl d h i l o oz t; do
+  PREVENTS="$PREVENTS|/private.$i$"
+done
+$SED -n 's/^[08] \(.*\)$/\1/p' $BOOTSCHOOL |
+(while read i
+ do
+   echo "sb '$i' 6"
+ done; echo "quit") | $CFED |
+while read CONFIGDIR
+do
+  read ROOTDIR
+  read PUBDIR
+  read PROTDIR
+  read IMPLDIR
+
+  echo "installing $ORIGDIR/$PUBDIR"
+  $INSTALL $ORIGDIR/$PUBDIR/public.h $ORIGDIR/$PUBDIR/public.t \
+           $ORIGDIR/$PUBDIR/public.z \
+           $DESTLIBBOOTDIR/$PUBDIR
+  echo "installing $ORIGDIR/$PROTDIR"
+  $INSTALL $ORIGDIR/$PROTDIR/protected-all.h $ORIGDIR/$PROTDIR/protected.h \
+           $ORIGDIR/$PROTDIR/protected.t $ORIGDIR/$PROTDIR/protected.z \
+           $DESTLIBBOOTDIR/$PROTDIR
+  IMPL_PROPERTIES=`$LS $ORIGDIR/$IMPLDIR/* | $GREP -v "$PREVENTS"`
+  if [ "$IMPL_PROPERTIES" != "" ]; then
+    echo "installing $IMPL_PROPERTIES"
+    $INSTALL $IMPL_PROPERTIES $DESTLIBBOOTDIR/$IMPLDIR
+  fi
+  $INSTALL $ORIGDIR/$IMPLDIR/private.oz $DESTSRCDIR/$IMPLDIR.oz
+done
+
+echo "installing shared constatns"
+$SED -n 's/^5 \(.*\)$/\1/p' $BOOTSCHOOL |
+(while read i
+ do
+   echo "sb '$i' 0"
+ done; echo "quit") | $CFED |
+while read PUBDIR
+do
+   echo "installing $ORIGDIR/$PUBDIR"
+   $INSTALL $ORIGDIR/$PUBDIR/public.h $ORIGDIR/$PUBDIR/public.t \
+	    $ORIGDIR/$PUBDIR/public.z \
+            $DESTLIBBOOTDIR/$IMPLDIR/$PUBDIR
+   $INSTALL $ORIGDIR/$PUBDIR/private.oz $DESTSRCDIR/$PUBDIR.oz
+done
+
+echo "installing records"
+PREVENTS="/private.c$"
+for i in cl d l o oz; do
+  PREVENTS="$PREVENTS|/private.$i$"
+done
+$SED -n 's/^7 \(.*\)$/\1/p' $BOOTSCHOOL |
+(while read i
+ do
+   echo "sb '$i' 0"
+ done; echo "quit") | $CFED |
+while read PUBDIR
+do
+   PUB_PROPERTIES=`$LS $ORIGDIR/$PUBDIR/* | $GREP -v "$PREVENTS"`
+   echo "installing $PUB_PROPERTIES"
+   $INSTALL $PUB_PROPERTIES $DESTLIBBOOTDIR/$PUBDIR
+   $INSTALL $ORIGDIR/$PUBDIR/private.oz $DESTSRCDIR/$PUBDIR.oz
+done
+
+echo "installing $LIMITFILE"
+$INSTALL $LIMITFILE $DESTLIBBOOTDIR

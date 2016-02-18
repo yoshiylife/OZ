@@ -1,0 +1,23 @@
+/* XPM */
+static char * none_xpm[] = {
+/* width height ncolors chars_per_pixel */
+"16 16 1 1",
+/* colors */
+" 	s None	c None",
+/* pixels */
+"                ",
+"                ",
+"                ",
+"                ",
+"                ",
+"                ",
+"                ",
+"                ",
+"                ",
+"                ",
+"                ",
+"                ",
+"                ",
+"                ",
+"                ",
+"                "};

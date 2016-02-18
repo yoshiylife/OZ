@@ -1,0 +1,30 @@
+NFE(1)                  NFE 組み込みコマンド                   NFE(1)
+
+　[名前]
+　　　　exidlist - エグゼキュータ ID メンテナンス情報を表示する。
+
+　[形式]
+　　　　exidlist
+
+　[機能説明]
+　　　　newimage が正常に終了した場合、エグゼキュータ ID メンテナンス情
+　　　　報として取得したエグゼキュータID を登録する。
+　　　　エグゼキュータ ID メンテナンス情報は次のような項目から構成される。
+
+　　　　　　・エグゼキュータ ID
+　　　　　　・エグゼキュータ 名
+　　　　　　・備考
+
+　[ファイル]
+　　　　・$OZROOT/images/<EXID>/exid.info
+　　　　　エグゼキュータ ID メンテナンス情報のためのファイルである。
+　　　　　newimage が正常に終了した時点で、エグゼキュータ ID メンテナン
+　　　　　ス情報が作成される。
+
+　[使用例]
+　　　　nfe> newimage -n TESTEX -c "FOR DEBUG"
+　　　　　            :
+　　　　nfe> exidlist
+　　　　 EXID     EX-NAME                COMMENT
+        00025f    TESTEX                 FOR DEBUG
+

@@ -1,0 +1,206 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>1.1 導入/運用の手引き</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="1.1 導入/運用の手引き">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION00021000000000000000>1.1 導入/運用の手引き</A></H2>
+<P>
+本節は、 OZ++ を最初に導入してから、インターネット経由で運用するまでの
+ガイドラインを示すものである。
+主に、この取扱説明書のどの部分を読めば良いかを示している。
+<P>
+<H3><A NAME=SECTION00021100000000000000>1.1.1 ためしに動かすには</A></H3>
+<P>
+OZ++ パッケージをダウンロードして最初にちょっと動かしてみるためには、
+以下の手順が簡単である。
+<OL><LI> インストールする
+<LI> ニュクリアスの設定を行う
+<LI> ニュクリアスを起動する
+<LI> サイトマスターを作成する
+<LI> サイトマスターを起動する
+</OL>
+<P>
+インストール <BR>
+<P>
+リリースパッケージに含まれているファイル <tt> INSTALL.JP</tt> に記述されている
+手順にしたがってインストールする。
+<P>
+ニュクリアスの設定 <BR>
+<P>
+簡単に導入するには、ニュクリアス表 <tt> $OZROOT/etc/ncl-data/NCL_table</tt> に
+次のように記入する。
+<blockquote> <tt> EXIDMANAGE:<i> hostname</i>:</tt>
+</blockquote>
+<i> hostname</i> には、使用中のマシンのホスト名を記述する。
+<P>
+これが何を意味するかについての詳細は、 2.1 「OZ++ 分散オブジェクトの構成」と、
+リリースパッケージに含まれているドキュメント 
+<tt> doc/README.nucleus</tt> を参照する必要がある。
+簡単に説明すると、使用中のマシンのニュクリアスに、
+オブジェクトイメージを作成する際に必要になる ID を提供する権限を付与している。
+<P>
+ニュクリアスの起動　 <BR>
+<P>
+ニュクリアスは、コマンド <tt> ncl</tt> によって起動する 
+(ディレクトリ <tt> $OZROOT/bin/</tt> を PATH に含めること)。
+その際、同じ LAN 上のマシンで他の OZ++ システムが動作していると、
+互いに干渉してしまう。
+これを避けるには、 ncl を -p オプションつきで起動するとよい。 
+-p の引数にデタラメな数を与えることで、他のニュクリアスとの干渉を防げる。
+この詳細は、 <tt> doc/README.nucleus</tt> に記述されている。
+<P>
+サイトマスターの作成 <BR>
+<P>
+サイトマスターは、それひとつだけで起動でき、
+ひととおりの機能を持っているので、最初にひとつだけ試しに作る
+エグゼキュータとして適している。
+ニュクリアスが起動できたなら、 <tt> nfe</tt> (Nucleus Front-End) を
+起動することで、 
+nucleus の機能を起動できる。
+サイトマスターの作成は、 nfe から以下のような newimage コマンドを
+投入することで可能である。
+<blockquote> <tt> 
+newimage -k site-master -n <i> name</i> -c <i> comment</i> -d <i> domain</i> -u <i> 
+user</i></tt>
+</blockquote>
+試しに使う分には、 
+<i> name</i>, <i> comment</i>, <i> domain</i>, <i> user</i> には適当な文字列を
+与えればよい。
+<blockquote> <tt> Do you make changes on the boot time configuration table (y/n) ? </tt>
+</blockquote>
+と聞かれるので、 <tt> n</tt> と答えれば、サイトマスターが作成される 
+(これには数分を要する)。
+この詳細は、 2.2 「イメージの作り方」に記述されている。
+正しく作成されたことを確認するには、 <tt> nfe</tt> の <tt> exidlist</tt> コマンドを
+用いる。
+作ったばかりのサイトマスターが表示されれば、正しく作成されている。
+<P>
+サイトマスターの起動 <BR>
+<P>
+エグゼキュータは、 <tt> nfe</tt> から <tt> cex</tt> コマンドで起動する。
+今作ったサイトマスターも、その名前を指定して起動できる。
+<blockquote> <tt> cex $<i> name</i></tt>
+</blockquote>
+<i> name</i> には、先ほど newimage で指定した <i> name</i> を与える。
+最初の起動には数分を要する。
+ランチャが表示されれば、起動は終了である。
+<P>
+<H3><A NAME=SECTION00021200000000000000>1.1.2 OZ++ プログラムを書くには</A></H3>
+<P>
+OZ++ 言語仕様については、 5 「補足: OZ++ 言語仕様」に記述されている。
+プログラムは書けたとしても、コンパイルしなければ動かない。
+コンパイルするには、開発環境である OZ++ ワークベンチを利用する。
+ワークベンチに関する説明は、 3 「OZ++ プログラムの開発環境」に詳述されている。
+ここでは、最初にワークベンチを作成する方法だけを述べる。
+ランチャの ``Create'' メニューから ``Object'' を選択し、 
+16 進数で WorkbenchLaunchable の public ID を記入して、
+ワークベンチの Launchable オブジェクトを生成する。
+ここで記入すべき public ID は、以下のようにして求める。
+<blockquote> <tt>
+% cfed<BR> 
+sb WorkbenchLaunchable 1<BR> 
+0001000002000414<BR> 
+quit<BR> 
+%</tt>
+</blockquote>
+ここで表示された <tt> 0001000002000414</tt> が WorkbenchLaunchable の 
+public ID である。
+二度とこのようなことをしなくていいように、
+最初に作ったワークベンチから、 
+WorkbenchLaunchable をカタログに登録しておくことを推奨する。
+ランチャの使い方に関する詳細は、 2.3 「ランチャの説明」に記述されている。
+<P>
+<H3><A NAME=SECTION00021300000000000000>1.1.3 複数のユーザの利用環境を構築するには</A></H3>
+<P>
+あるサイトの OZ++ ユーザが共通の環境を利用できるように設定するには、
+以下の手順が適している。
+<OL><LI> ニュクリアスを設定する
+<LI> 共用のサイトマスターを構築する
+<LI> 各ユーザに個人環境を構築してもらう
+</OL>
+<P>
+ニュクリアスの設定 <BR>
+<P>
+ニュクリアス表 <tt> $OZROOT/etc/ncl-data/NCL_table</tt> を、適切に設定し、
+その内容を公開する。
+エグゼキュータ ID 管理ニュクリアスを適切に指定することは必須であるが、
+加えて、 (すべてのマシンが同一セグメント上にあるのでない限り) 
+ハーフルータの設定を適切に行う必要がある。
+この詳細は、 2.1 「OZ++ 分散オブジェクトの構成」と、
+リリースパッケージに含まれているドキュメント 
+<tt> doc/README.nucleus</tt> に記述されている。
+サイト全体で運用するのであれば、
+ニュクリアスの起動時の -p 指定はしないことにするのが簡単である。
+サイト内で独立に OZ++ を利用したいユーザがいれば、
+それらのユーザは -p 指定をすることによって、
+サイト全体で運営されている OZ++ 環境と干渉しないことが可能になる。
+<P>
+共用のサイトマスターの構築 <BR>
+<P>
+共用のサイトマスターは、以下に注意して作成する。
+<UL><LI> 特権ユーザをオーナとする。<BR> 
+      特権ユーザのユーザ名は、既存のユーザでない限りどれでも構わないが、
+      oz++ や root など、それと分かる名前をつける方法もある。
+<LI> ドメイン名を、そのドメインの DNS ドメイン名に合わせる。
+<LI> 各ユーザが開発環境を起動できるように、
+      カタログに WorkbenchLaunchable を登録しておく。
+</UL>
+起動したサイトマスターは、各ユーザに共用されるので、
+安易に落さないようにする。
+<P>
+個人環境の構築 <BR>
+<P>
+個人環境は、ステーションマスターを中心に構築する。
+その際、以下に注意する。
+<UL><LI> オーナ名が重複しないようにする。<BR> 
+      サイトの管理者は、ユニークなオーナ名を割り当てる。
+<LI> ドメイン名を、サイトマスターのドメイン名に合わせる。
+</UL><H3><A NAME=SECTION00021400000000000000>1.1.4 インターネットを通じて利用するには</A></H3>
+<P>
+インターネットを通じて OZ++ を利用するには、サイトはユニークなサイト ID を
+持ち、アプリケーションゲートウェイを動作させなければならない。
+このために以下が必要である。
+<UL><LI> サイト ID の取得
+<LI> アプリケーションゲートウェイの設定
+</UL>
+<P>
+サイト ID の取得 <BR>
+<P>
+<tt> oz++admin@oz.ipa.go.jp</tt> に、以下のような内容の mail を送る。
+<blockquote> <tt>
+To: oz++admin@oz.ipa.go.jp<BR> 
+From: <i> your address</i><BR> 
+Subject: [Site ID Request]<BR> 
+<BR> 
+Organization: <i> your organization</i><BR> 
+Domain: <i> your DNS domain name</i><BR> 
+Gateway: <i> your firewall machine on which OZ++'s application gateway works</i></tt>
+</blockquote>
+折り返し、サイト ID が発行され通知されるので、 
+<tt> $OZROOT/etc/site-id</tt> に設定する。
+<P>
+これ以前に作ったエグゼキュータ、および、そこでコンパイルされたクラスは、
+サイト ID が異なるために利用できなくなる。
+サイトマスター、ステーションマスターなどを再度作成し、
+プログラム類を再コンパイルする必要がある。
+<P>
+アプリケーションゲートウェイの設定 <BR>
+<P>
+ファイアウォールを利用しているかどうかに関わらず、
+他のサイトとの間で OZ++ のメソッド起動を行うためには、
+アプリケーションゲートウェイが必要である。
+アプリケーションゲートウェイの設定方法は、 
+2.6 「アプリケーション・ゲートウェイの説明」に記述されている。
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

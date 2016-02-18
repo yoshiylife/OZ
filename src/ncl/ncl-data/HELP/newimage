@@ -1,0 +1,57 @@
+NFE(1)              Nucleus Front-End Built-In-Command               NFE(1)
+
+NAME
+     "newimage" - This command gives an optional Executor-ID and start
+                  command newimage up.
+
+SYNOPSIS
+     newimage [newimage options]
+
+DESCRIPTION
+     This command gets an optional Executor-ID from the nucleus and
+     allocates it as an argument of the command "newimage," then start up.
+     When newimage finishes normally, this command registers an Executor-ID
+     acquired as the maintenance information of itself.
+
+newimage OPTIONS
+     `Newimage' recognizes the following options:
+
+     -n This option puts a matched name to the obtained Executor-ID.
+        You can nominate it by using an argument for the built-in command
+        "cex" when you start to run an Executor.
+     -c This option puts a remark to the obtained Executor.
+     -g Set the kind of class to `without monitor'.
+     -d domain-name
+        Set the name of the domain to which this executor belongs to
+        `domain-name'.
+     -u user-name
+        Set the name of the owner of this executor.
+     -k configuration-name
+        Use one of the standard configurations.  `Configuration-name' is
+        one of the following:
+
+            site-master, or 1
+            station-master, or 2
+            slave-with-class, or 3
+            slave-without-class, or 4
+
+     -o image-directory-path
+        Target directory of executor image.
+
+     The newimage manual is written in doc/README.newimage
+
+FILE
+     * $OZROOT/images/<EXID>/exid.info
+       This file contains maintenance information  of  an  executor
+       image, and is created by newimage when the image is success-
+       fully generated.
+
+EXAMPLE:
+     nfe> newimage -n TESTEX -c FOR-DEBUG
+              :
+     nfe> exidlist
+      EXID     EX-NAME                COMMENT
+     00025f    TESTEX                 FOR-DEBUG
+     nfe> cex $TESTEX
+              :
+

@@ -1,0 +1,23 @@
+(*class* #00010000020001c5 0
+(*list*
+(*list* #0001000002000200 #0001000002000201 0)
+(*list* #00010000020001ab #00010000020001ac 0)
+)
+(*list*
+(*declaration* New (*method* void (*list*) 0) constructor #00010000020001c4 0 0)
+(*declaration* Name (*method* void (*list* #00010000020003bd 0 ) 0) constructor #00010000020001c4 0 1)
+(*declaration* Open (*method* void (*list*) 0) public #00010000020001ab 0 1)
+(*declaration* OpenWithName (*method* void (*list* #00010000020003bd 0 ) 0) public #00010000020001ab 0 0)
+(*declaration* Append (*method* void (*list*) 0) public #00010000020001ab 0 3)
+(*declaration* AppendWithName (*method* void (*list* #00010000020003bd 0 ) 0) public #00010000020001ab 0 2)
+(*declaration* Close (*method* void (*list*) 0) public #00010000020001ab 0 5)
+(*declaration* Seek (*method* int (*list* int ) 0) public #00010000020001ab 0 6)
+(*declaration* SeekCur (*method* int (*list* int ) 0) public #00010000020001ab 0 7)
+(*declaration* SeekEnd (*method* int (*list* int ) 0) public #00010000020001ab 0 8)
+(*declaration* Read (*method* #0001000002000034 0 (*list* int ) 0) public #0001000002000200 0 0)
+(*declaration* Eof (*method* int (*list*) 0) public #0001000002000200 0 1)
+(*declaration* Dup (*method* void (*list* int ) 0) public #00010000020001ab 0 4)
+(*declaration* Fname #00010000020003bd 0 protected #00010000020001ac 0 Fname)
+(*declaration* Fd int protected #00010000020001ac 0 Fd)
+)
+)

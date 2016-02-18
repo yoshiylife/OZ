@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.3 Scopes and Blocks</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.3 Scopes and Blocks">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION00063000000000000000>5.3 Scopes and Blocks</A></H2>
+<P>
+<H3><A NAME=SECTION00063100000000000000>5.3.1 Blocks</A></H3>
+<P>
+
+Blocks are used to allow compound statements in places where only one
+statement is written, and vice versa, i.e. a single statement can be
+used where only one is required (see Chapter
+<A HREF="node30.html#langlangmanualstatement">5.10</A>).
+<P>
+<H3><A NAME=SECTION00063200000000000000>5.3.2 Scopes</A></H3>
+<P>
+Scope in OZ++ language is lexical scope, it is determined statically
+during compilation.
+<P>
+There are four types of scopes:  local, class, static class, and record.
+<P>
+<UL><LI> Local Scope<BR> 
+A name declared inside a block is local to that block.  The name is
+valid only inside the block.
+<P>
+Names of call by value parameters of operators and methods are,
+however, treated as those names that are declared in the outermost
+block.
+<P>
+Only names of variables can be declared in a block.
+
+<P>
+<LI> Class Scope<BR> 
+This refers to the scope of a class.  The user-defined type (see
+Chapter <A HREF="node25.html#langlangmanualusertype">5.5</A>) used here is local to the
+scope.
+<P>
+The names of class members are also local to this class, and can be
+used in the following places:
+<P>
+<OL><LI> Inside the method of the class
+<P>
+<LI> In case of a method, below the operator <tt> -&gt;</tt> applied to
+      objects of the class or child classes inheriting the class
+
+<P>
+<LI> Inside the methods of the child classes inheriting the class.
+</OL>
+<P>
+To make 2 and 3 possible, appropriate access control must be made (see
+Chapter <A HREF="node33.html#langlangmanualclass">5.13</A>).  
+<P>
+<LI> Static Class Scope
+<P>
+This refers to the scope of a static class.  The user-defined type
+(see Chapter <A HREF="node25.html#langlangmanualusertype">5.5</A>) used here is local to
+the scope.
+<P>
+The names of static class members are also local to the class, and can be used in the following places:
+<P>
+<OL><LI> Inside the the method of the static class
+<P>
+<LI> In case of a method, below the operator
+ <tt> -&gt;</tt> applied to objects of the static class 
+</OL>
+<P>
+To make 2 possible, appropriate access control must be
+performed (see Chapter <A HREF="node34.html#langlangmanualstaticclass">5.14</A>). 
+<P>
+<LI>  Record Scope<BR> 
+This refers to the scope of a record.  The user-defined type (see
+Chapter <A HREF="node25.html#langlangmanualusertype">5.5</A>) used here is local to the
+scope.
+<P>
+The names of record members are also local to this record, and can be
+used in the following places:
+<P>
+<OL><LI> Inside the operator of this record
+<P>
+ <LI> After the operator <tt> .</tt> applied to the objects of this record
+</OL></UL>
+<P>
+Names are sometimes hidden by the scope which contains them.
+<P>
+<PRE>class D : A {
+  public: m1;
+
+  int x, y;
+  B b;
+  C c;
+
+  void m1 (int x)
+    {
+      int y, i;        
+
+      y = x;
+      for (i = 0; i &lt; y; i++)
+       {
+          int x;
+
+          x +=  y * i;
+       }
+    }        
+}
+</PRE>
+<P>
+In the above example,<tt> A</tt>,<tt> B</tt>,<tt> C</tt>, and <tt> D</tt> are four
+user-defined types which type names are local to the scope of class
+<tt> D</tt>.
+<P>
+In method <tt> m1</tt>, <tt> y</tt> is declared locally, and <tt> x</tt> is
+declared as a argument.  Thus, the instance variables <tt> x</tt> and <tt>
+y</tt> become hidden.  Also, as x is locally declared in <tt> for</tt>
+statement, the instance variable <tt> x</tt> of method becomes hidden.  If
+local declarations become hidden in this way, they can not be
+accessed.
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

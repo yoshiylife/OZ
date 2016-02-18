@@ -1,0 +1,2 @@
+5 ClassCopyKind
+	00010000020007a0

@@ -1,0 +1,9 @@
+(*class* #0001000002000319 0
+(*list*)
+(*list*
+(*declaration* NewWithPath (*method* void (*list* #00010000020003bd 0 ) 0) constructor #0001000002000318 0 0)
+(*declaration* Exec (*method* #0001000002000313 0 (*list* #000100000200048a 8 ) 0) public #0001000002000318 0 1)
+(*declaration* Spawn (*method* #000100000200039b 0 (*list* #000100000200048a 8 ) 0) public #0001000002000318 0 2)
+(*declaration* KillAll (*method* void (*list*) 0) public #0001000002000318 0 3)
+)
+)

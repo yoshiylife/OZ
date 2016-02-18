@@ -1,0 +1,10 @@
+(*class* #00010000020008f1 5
+(*list*)
+(*list*
+(*declaration* anOrdinaryClass (*scqf* (*scqf* int 2) 1) public #00010000020008f1 0 anOrdinaryClass)
+(*declaration* aShared (*scqf* (*scqf* int 2) 1) public #00010000020008f1 0 aShared)
+(*declaration* aStaticClass (*scqf* (*scqf* int 2) 1) public #00010000020008f1 0 aStaticClass)
+(*declaration* aRecord (*scqf* (*scqf* int 2) 1) public #00010000020008f1 0 aRecord)
+(*declaration* anAbstractClass (*scqf* (*scqf* int 2) 1) public #00010000020008f1 0 anAbstractClass)
+)
+)

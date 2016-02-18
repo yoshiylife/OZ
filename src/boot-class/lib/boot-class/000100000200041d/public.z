@@ -1,0 +1,18 @@
+(*class* #000100000200041d 0
+(*list*
+(*list* #00010000020001b5 #00010000020001b6 0)
+)
+(*list*
+(*declaration* New (*method* void (*list* #0001000002000422 0 ) 0) constructor #000100000200041d 0 0)
+(*declaration* Register (*method* void (*list* (*array* #00010000020003bd 0 ) (*array* #00010000020003bd 0 ) ) 0) public #000100000200041d 0 4)
+(*declaration* Open (*method* void (*list* #00010000020003bd 0 (*array* #00010000020003bd 0 ) (*array* #00010000020003bd 0 ) #00010000020003bd 0 #00010000020003bd 0 (*array* char ) #00010000020003bd 0 ) 0) public #000100000200041d 0 3)
+(*declaration* SetCurrent (*method* void (*list* #00010000020003bd 0 ) 0) public #000100000200041d 0 2)
+(*declaration* InputClassObject (*method* void (*list*) 0) public #000100000200041d 0 5)
+(*declaration* SetTools (*method* void (*list* #000100000200004a 0 #000100000200034c 0 ) 0) public #000100000200041d 0 1)
+(*declaration* ShowShortResult (*method* void (*list* #00010000020003bd 0 (*array* char ) #00010000020003bd 0 ) 0) public #000100000200041d 0 7)
+(*declaration* ShowResult (*method* void (*list* #00010000020003bd 0 (*array* char ) #00010000020003bd 0 ) 0) public #000100000200041d 0 6)
+(*declaration* SetNewVersionID (*method* void (*list* #00010000020003bd 0 #00010000020003bd 0 char (*array* #00010000020003bd 0 ) ) 0) public #000100000200041d 0 8)
+(*declaration* Quit (*method* void (*list*) 0) public #00010000020001b5 0 1)
+(*declaration* OpenSchools (*method* void (*list* #00010000020003bd 0 (*array* #00010000020003bd 0 ) (*array* #00010000020003bd 0 ) ) 0) public #000100000200041d 0 9)
+)
+)

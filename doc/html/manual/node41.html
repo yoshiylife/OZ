@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.21  Object class</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.21  Object class">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION000621000000000000000>5.21  Object class</A></H2>
+<P>
+<A NAME=langsecObject>&#160;</A> 
+<A NAME=langlangmanualobjectclass>&#160;</A>
+<P>
+In the OZ++ system, all the global objects created on each executor 
+are managed by the global object called the object manager.
+<P>
+If the object manager is implemented with OZ++ language,
+it should be able to describe operation on global object of any class
+by the language, because operation for all global object on the executor
+could be described.
+This means that a type which fits any class type and common methods
+which are used to manage global object by the object manager 
+should be introduced.
+However, these will put secure strain on the programmer to be insisted 
+to describe such methods on every classes for global objects.
+<P>
+To reduce this burden, the <tt> object</tt> class 
+which has all the necessary processes 
+for the object manager as methods and which is automatically mixed-in 
+as a class to all classes when they are compiled, are introduced.  
+With the <tt> object</tt> class, the object manager can process all global objects 
+as instances of object class.  
+Furthermore, if special processing is required in each class concerning 
+the method defined by <tt> object</tt> class, the programmer can change programs of 
+the method by overriding.
+<P>
+The mix-in of the <tt> object</tt> class is implemented with using 
+the same mechanism as inheritance.  
+Thus, it is impossible for the object manager to treat the instance of 
+the global object of the static class because it is enabled to mix-in 
+to the static class without inheritance.  
+Therefore, the instance of the global object can not be generated 
+from the static class.
+<P>
+<H3><A NAME=SECTION000621100000000000000>5.21.1 Class Interface</A></H3>
+<P>
+The class <tt> object</tt> provides the following methods:
+<P>
+<UL><LI> <tt> void Go()</tt>
+<P>
+The object manager calls <tt> Go()</tt> method once just before it is enabled 
+to call other methods after loading the object on the memory.  
+The programmer can describe the process when the object is started up 
+with redefinition of <tt> Go()</tt> in each class.
+<P>
+It is necessary to pay attention because (even indirectly) invoking the method 
+by itself from <tt> Go()</tt> leads to deadlock.
+<P>
+<LI> <tt> void Shutdown()</tt>
+<P>
+The object manager calls <tt> Shutdown()</tt> once when it stops the object just 
+before stopping the executor.  
+The programmer can describe the process when the object is shut down 
+with redefinition of <tt> Shutdown()</tt> in each class.  
+Other methods will not be called after starting <tt> Shutdown()</tt> 
+until the next starting section.
+<P>
+It is necessary to be careful because (even indirectly) invoking the method 
+by itself from <tt> Shutdown()</tt> leads to deadlock.
+<P>
+<LI> <tt> void Removing()</tt>
+<P>
+The object manager calls method <tt> Removing()</tt>  once before 
+the object is deleted. 
+The programmer can describe the process when it is deleted by redefining 
+<tt> Removing()</tt> in each class.  
+Other methods are not called after starting Removing.
+<P>
+However, <tt> Shutdown()</tt> will not be called in this situation 
+of calling <tt> Removing()</tt>.
+<P>
+It is necessary to be careful because (even indirectly) invoking 
+the method by itself from <tt> Removing()</tt> leads to deadlock. 
+However, it is possible to call <tt> Shutdown()</tt> from <tt> Removing()</tt>.
+<P>
+<LI> <tt> global ObjectManager Where()</tt>
+<P>
+The object ID of the object manager of an executor where the object exists 
+is returned.
+<P>
+<LI> <tt> void Flush()</tt>
+<P>
+The image of the object at the time is written to the secondary memory.
+<P>
+<LI> <tt> void NewObject (global VersionID vid)</tt>
+<P>
+This is an abstract method generating the global object.
+<P>
+</UL>
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

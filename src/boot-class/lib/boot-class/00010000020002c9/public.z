@@ -1,0 +1,15 @@
+(*class* #00010000020002c9 5
+(*list*)
+(*list*
+(*declaration* Frozen (*scqf* int 1) public #00010000020002c9 0 Frozen)
+(*declaration* Melting (*scqf* int 1) public #00010000020002c9 0 Melting)
+(*declaration* MeltingToStop (*scqf* int 1) public #00010000020002c9 0 MeltingToStop)
+(*declaration* Running (*scqf* int 1) public #00010000020002c9 0 Running)
+(*declaration* SwappedOut (*scqf* int 1) public #00010000020002c9 0 SwappedOut)
+(*declaration* CellingIn (*scqf* int 1) public #00010000020002c9 0 CellingIn)
+(*declaration* CellingInToStop (*scqf* int 1) public #00010000020002c9 0 CellingInToStop)
+(*declaration* OrderStopped (*scqf* int 1) public #00010000020002c9 0 OrderStopped)
+(*declaration* Closed (*scqf* int 1) public #00010000020002c9 0 Closed)
+(*declaration* Removed (*scqf* int 1) public #00010000020002c9 0 Removed)
+)
+)

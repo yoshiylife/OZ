@@ -1,0 +1,15 @@
+(*class* #0001000002fffffe 0
+(*list*)
+(*list*
+(*declaration* Go (*method* void (*list*) 4) public #0001000002fffffd 0 0)
+(*declaration* Removing (*method* void (*list*) 4) public #0001000002fffffd 0 2)
+(*declaration* Stop (*method* void (*list*) 4) public #0001000002fffffd 0 1)
+(*declaration* Flush (*method* void (*list*) 4) public #0001000002fffffd 0 4)
+(*declaration* Where (*method* (*scqf* #00010000020002b2 0 4) (*list*) 4) public #0001000002fffffd 0 3)
+(*declaration* NewObject (*method* (*scqf* #0001000002fffffd 0 4) (*list* (*scqf* #0001000002000043 0 4) #0001000002000115 0 ) 4) public #0001000002fffffd 0 5)
+(*declaration* GetConfigurationSet (*method* #0001000002000115 0 (*list*) 0) public #0001000002fffffd 0 6)
+(*declaration* LookupConfigurationSet (*method* (*scqf* #0001000002000043 0 4) (*list* (*scqf* #0001000002000404 0 4) ) 4) public #0001000002fffffd 0 8)
+(*declaration* SetConfigurationSet (*method* void (*list* #0001000002000115 0 ) 4) public #0001000002fffffd 0 7)
+(*declaration* GetPropertyPathName (*method* (*array* char ) (*list* (*array* char ) ) 4) public #0001000002fffffd 0 9)
+)
+)

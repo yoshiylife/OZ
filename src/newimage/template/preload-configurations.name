@@ -1,0 +1,7 @@
+# There is no need to preload any configurations for a NameDirectory
+# if the `Master Class' (a Class object which manages all release
+# classes) is on the same executor.  If it is not, the NameDirectory
+# needs configurations of following classes.
+
+# String
+# Assoc<String,global ResolvableObject>

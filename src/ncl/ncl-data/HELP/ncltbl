@@ -1,0 +1,17 @@
+NFE(1)              Nucleus Front-End Built-In-Command               NFE(1)
+
+NAME
+     "ncltbl" - displays the contents of the nucleus table.
+
+SYNOPSIS
+     ncltbl
+
+DESCRIPTION
+     "ncltbl" displays the contents of the nucleus table of nucleus.
+
+       * Type of nucleus
+          - HALFROUTER (half router nucleus)
+          - EXIDMANAGE (executor ID management nucleus)
+       * UNIX host name
+       * IP address
+

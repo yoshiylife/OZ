@@ -1,0 +1,7 @@
+(*class* #00010000020000b0 8
+(*list*)
+(*list*
+(*declaration* Hash (*method* (*scqf* int 2) (*list*) 2) public #00010000020000af 0 0)
+(*declaration* IsEqual (*method* int (*list* OZ_Generic ) 2) public #00010000020000af 0 1)
+)
+)

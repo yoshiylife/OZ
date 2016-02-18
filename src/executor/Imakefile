@@ -1,0 +1,57 @@
+DESTDIR		= ${OZROOT}
+BINDIR		= /bin
+CC		= gcc
+#PROF		= -p
+INCLUDES	= -I. -I../../include
+CFLAGS		= $(PROF) -g -ffixed-i0 -Wall -O $(INCLUDES)
+#CFLAGS		= $(PROF) -g -Wall -O $(INCLUDES)
+LOCAL_LDFLAGS	= $(PROF) -g -static
+LOCAL_LIBRARIES	= -L../thread -lthread #/usr/lib/debug/malloc.o
+DEPLIBS		= ../thread/libthread.a
+PROGRAM		= executor
+
+	SYSSRCS	= version.c main.c \
+		  startup.c cleanup.c load-image.c process.c exception.c \
+		  global-invoke.c local-channel.c config-req.c class-table.c \
+		  object-table.c code-layout.c method-invoke.c \
+		  alloc.c memory.c gc-subs.c \
+		  ozexeccifload.c encode-subs.c \
+		  ozexeccifflush.c ozencoder.c ozdecode.c p-table.c \
+		  pkif.c global-trace.c debugChannel.c debugManager.c \
+		  debugSupport.c debugFunction.c debugger.c dyload.c
+	SYSOBJS	= version.o main.o \
+		  startup.o cleanup.o load-image.o process.o exception.o \
+		  global-invoke.o local-channel.o config-req.o class-table.o \
+		  object-table.o code-layout.o method-invoke.o \
+		  alloc.o memory.o gc-subs.o \
+		  ozexeccifload.o encode-subs.o \
+		  ozexeccifflush.o ozencoder.o ozdecode.o p-table.o \
+		  pkif.o global-trace.o debugChannel.o debugManager.o \
+		  debugSupport.o debugFunction.o debugger.o dyload.o
+
+	COMSRCS	= circuits.c comm-buff.c comm-hash.c et-hash.c remote.c \
+		  ex-addr-table.c remote_file_IF.c ncl-if.c shmlib.c
+	COMOBJS	= circuits.o comm-buff.o comm-hash.o et-hash.o remote.o \
+		  ex-addr-table.o remote_file_IF.o ncl-if.o shmlib.o
+
+	SRCS	= $(SYSSRCS) $(COMSRCS)
+	OBJS	= $(SYSOBJS) $(COMOBJS)
+
+all::
+	$(RM) version.o
+
+install::
+	@if [ "$(DESTDIR)" = "" ]; then \
+	   echo "***" ;\
+	   echo "You must be set environment variable: OZROOT" ;\
+	   echo "***" ;\
+	   exit 1 ;\
+	 fi
+
+AllTarget($(PROGRAM))
+NormalProgramTarget($(PROGRAM),$(OBJS),$(DEPLIBS),$(LOCAL_LIBRARIES),-lm)
+InstallProgram($(PROGRAM),$(BINDIR))
+InstallScript(ozkill,$(BINDIR))
+InstallScript(ozlog,$(BINDIR))
+InstallScript(ozdb,$(BINDIR))
+DependTarget()

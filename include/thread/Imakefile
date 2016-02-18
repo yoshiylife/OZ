@@ -1,0 +1,15 @@
+INCDIR	= /include
+HEADERS = \
+	breakpoint.h \
+	monitor.h \
+	print.h \
+	shell.h \
+	signal.h \
+	stack.h \
+	testandset.h \
+	thread.h \
+	timer.h
+
+all::
+
+InstallMultipleFlags($(HEADERS),$(INCDIR)/thread,$(INSTINCFLAGS))

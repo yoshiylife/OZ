@@ -1,0 +1,25 @@
+NFE(1)                  NFE 組み込みコマンド                   NFE(1)
+
+　[名前]
+　　　　exidrm - エグゼキュータ ID メンテナンス情報を消去する。
+
+　[形式]
+　　　　exidrm Executor-ID
+
+　[機能説明]
+　　　　不用になったエグゼキュータ ID メンテナンス情報を破棄する。
+
+　[ファイル]
+　　　　・$OZROOT/images/<EXID>/exid.info
+　　　　　エグゼキュータ ID メンテナンス情報のためのファイルである。
+　　　　　newimage が正常に終了した時点で、エグゼキュータ ID メンテナ
+　　　　　ンス情報が作成される。
+
+　[使用例]
+　　　　nfe> newimage -n TESTEX -c FOR-DEBUG
+　　　　　            :
+　　　　nfe> exidlist
+　　　　 EXID     EX-NAME                COMMENT
+        00025f    TESTEX                 FOR-DEBUG
+　　　　nfe> exidrm 25f
+

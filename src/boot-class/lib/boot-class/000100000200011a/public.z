@@ -1,0 +1,13 @@
+(*class* #000100000200011a 0
+(*list*
+(*list* #0001000002000187 #0001000002000188 0)
+)
+(*list*
+(*declaration* New (*method* void (*list*) 0) constructor #000100000200011a 0 0)
+(*declaration* Lock (*method* void (*list*) 1) public #0001000002000187 0 0)
+(*declaration* Unlock (*method* void (*list*) 1) public #0001000002000187 0 1)
+(*declaration* Clear (*method* void (*list* (*scqf* #000100000200010b 0 4) ) 0) public #000100000200011a 0 1)
+(*declaration* Lookup (*method* (*scqf* #0001000002000043 0 4) (*list* (*scqf* #0001000002000404 0 4) (*scqf* #000100000200010b 0 4) ) 0) public #000100000200011a 0 2)
+(*declaration* SetConfiguration (*method* void (*list* (*scqf* #000100000200010b 0 4) #0001000002000115 0 ) 0) public #000100000200011a 0 3)
+)
+)

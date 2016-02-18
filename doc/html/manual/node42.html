@@ -1,0 +1,167 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.22 Interface to Other Languages</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.22 Interface to Other Languages">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION000622000000000000000>5.22 Interface to Other Languages</A></H2>
+ <A NAME=langlangmanualotherif>&#160;</A>
+<P>
+C statements enabling the source code of C language to be described 
+in the source code of OZ++ as the interface to other languages are provided.  
+The following description explains the method of use, its grammar, 
+and restrictions of usage.
+<P>
+<H3><A NAME=SECTION000622100000000000000>5.22.1 How to Use Interface</A></H3>
+<P>
+The form of use of C statement described with the source code of OZ++ 
+is as follows:
+<P>
+<UL><LI>  Describe the implementation of the method of OZ++
+<LI>  Execute the type definition, the function definition, and 
+the included files which are effective only within the scope 
+of a certain class (one file).
+</UL><H3><A NAME=SECTION000622200000000000000>5.22.2 Syntax</A></H3>
+<P>
+<PRE>c_stmt
+        : 'inline' '&quot;C&quot;'  '{' inline_body '}'
+        ;
+
+inline_body
+        : /* empty */
+        | inline_body STRINGS
+        ;
+</PRE>
+<P>
+<H3><A NAME=SECTION000622300000000000000>5.22.3 Restriction of Usage</A></H3>
+<P>
+variable <BR>
+<P>
+C statement enables access to the variables defined in OZ++ language accessible 
+from a block including C statements.  
+In short, it can access to the instance variables defined in the class
+which has the method 
+described with C statement 
+and automatic variables in the block including its C statement.
+<P>
+The basic type and array type variables can be accessed as variables of 
+the same type and name.
+<P>
+The class type variables can be accessed only to the local object 
+by retaining the same name and by changing the type as follows:
+<P>
+<PRE>(OZ++) &lt;class name in school&gt; 
+   -&gt; (C statement) OZ_ObjectPart_&lt;class name in school&gt; 
+        or OZ_ObjectAll_&lt;class name in school&gt;
+
+Example;
+
+(OZ++) List
+   -&gt; (C statement) OZ_ObjectPart_List or OZ_ObjectAll_List
+</PRE>
+<P>
+The static class variable can be accessed by retaining the same name and 
+by changing the type as follows:
+<P>
+<PRE>(OZ++) &lt;class name in school&gt; 
+   -&gt; (C statement) OZ_StaticObject_&lt;class name in school&gt; 
+
+Example;
+
+(OZ++) List
+   -&gt; (C statement) OZ_StaticObject_List
+</PRE>
+<P>
+The record type variable can be accessed by retaining the same name and 
+by changing the type as follows:
+<P>
+<PRE>(OZ++) &lt;record name in school&gt; 
+   -&gt; (C statement) OZ_Record_&lt;record name in a school&gt; 
+   
+Example;
+
+(OZ++) List
+   -&gt; (C statement) OZ_Record_List
+</PRE>
+<P>
+It is possible to access to the instance variable of the object and 
+the member of the record as a member of the structure. 
+'<tt> oz</tt>' should be put on the head of the name of the instance variable 
+or the name of member of the record when they are accessed.
+<P>
+<PRE>Example;
+
+class Figure {
+  int X, Y;
+}
+
+class Rect : Figure {
+  int Width, Height;
+} 
+ 
+Rect r;
+
+r=&gt;new();
+
+inline &quot;C&quot; 
+  {
+    int width = ((OZ_ObjectPart_Rectr)-&gt;ozWidth;
+    int x ((OZ_ObjectPart_Figure)
+        ((OZ_ObjectAll_Rect) OzExecGetObjectTop (r))
+          -&gt;part[0])-&gt;ozX;
+  }
+</PRE>
+<P>
+Method and Operator <BR>
+<P>
+Only the class describing C statement, the method defined by statistic class 
+and the operator defined by the record can be used as function calls.  
+The function names should be changed as follows:
+<P>
+<PRE>(OZ++) &lt;method name&gt; of the class 
+  -&gt; (C statement) _oz_&lt;method name&gt;
+
+or
+
+(OZ++) &lt;method name&gt; of &lt;ID of the statistic class in school&gt;
+  -&gt; (C statement) _oz_&lt;ID of the statistic class in school&gt;
+      _&lt;method name&gt;
+
+or
+
+(OZ++) &lt;operator name&gt; of &lt;ID of the record in school&gt;
+  -&gt; (C statement) _oz_&lt;'ID' of the record in school&gt;
+      _&lt;operator name&gt;
+
+Example;
+
+(OZ++) method of class Insert ()
+  -&gt; (C statement) _oz_Insert ()
+
+(OZ++) method Insert () of static class (ID = 
+   0001000002000123)
+  -&gt; (C statement) _oz_001000002000123_Insert ()
+</PRE>
+<P>
+Access Control <BR>
+<P>
+As clearly described above, C statement is not restricted by the access control 
+of OZ++, and by using C statement, the instance variable and the access 
+of method is enabled with no relation to the access control of the class 
+and statistic class of OZ++.
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

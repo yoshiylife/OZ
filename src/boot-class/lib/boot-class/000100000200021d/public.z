@@ -1,0 +1,9 @@
+(*class* #000100000200021d 5
+(*list*)
+(*list*
+(*declaration* NotLaunchable (*method* int (*list*) 0) public #000100000200021d 0 0)
+(*declaration* Duplicate (*method* int (*list*) 0) public #000100000200021d 0 1)
+(*declaration* NotFound (*method* int (*list* #00010000020003bd 0 ) 0) public #000100000200021d 0 2)
+(*declaration* IllegalCommand (*method* int (*list*) 0) public #000100000200021d 0 3)
+)
+)

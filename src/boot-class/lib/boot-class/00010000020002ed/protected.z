@@ -1,0 +1,7 @@
+(*class* #00010000020002ed 8
+(*list*)
+(*list*
+(*declaration* Parse (*method* #000100000200038c 0 (*list* #00010000020003bd 0 ) 2) public #00010000020002ec 0 0)
+(*declaration* AsString (*method* #00010000020003bd 0 (*list* #000100000200038c 0 ) 2) public #00010000020002ec 0 1)
+)
+)

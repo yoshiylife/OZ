@@ -1,0 +1,10 @@
+(*class* #000100000200035f 7
+(*list*)
+(*list*
+(*declaration* Kind (*scqf* int 2) public #000100000200035f 0 Kind)
+(*declaration* PublicVID (*scqf* #0001000002000404 0 4) public #000100000200035f 0 PublicVID)
+(*declaration* ProtectedVID (*scqf* #0001000002000404 0 4) public #000100000200035f 0 ProtectedVID)
+(*declaration* ImplementationVID (*scqf* #0001000002000404 0 4) public #000100000200035f 0 ImplementationVID)
+(*declaration* Set (*method* void (*list* (*scqf* int 2) (*scqf* #0001000002000404 0 4) (*scqf* #0001000002000404 0 4) (*scqf* #0001000002000404 0 4) ) 0) public #000100000200035f 0 0)
+)
+)

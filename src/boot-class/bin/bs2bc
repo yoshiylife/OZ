@@ -1,0 +1,14 @@
+while (<>) {
+	chop;
+	if (/^[0-9] /) {
+		if (($kind = substr ($_, 0, 1)) == 8) {
+			$kind = 0;
+		}
+	} else {
+		s/[ \t]*([0-9a-fA-F]*)/$1/;
+		s/[ \t]*([0-9a-fA-F]*)[ \t].*/$1/;
+		$a = substr ($_, 0, 8);
+		$b = hex (substr ($_, 8, 8)) - 1;
+		printf ("%d 0x$a%08xLL\n", $kind, $b);
+	}
+}

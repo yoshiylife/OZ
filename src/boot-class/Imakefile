@@ -1,0 +1,52 @@
+DESTDIR=${OZROOT}
+ETCDIR=/etc
+LIBBOOTDIR=/lib/boot-class
+
+SCRIPTDIR=bin
+SRCDIR=src
+SRCLIBBOOTDIR=lib/boot-class
+
+BOOTSCHOOL=etc/boot-school
+BOOTCLASSES=etc/boot-classes
+BOOTCLASS=boot-class
+LIMITFILE=$(SRCLIBBOOTDIR)/.oz++admin
+
+INSTALLFLAGS=-m 644 -c
+WRITABLEINSTALLFLAGS=-m 666 -c
+
+BS2BC=$(SCRIPTDIR)/bs2bc
+CFED=$(SCRIPTDIR)/cfed -c OZROOT/$(SRCLIBBOOTDIR) -s $(BOOTSCHOOL)
+CHANGER=$(SCRIPTDIR)/disinstaller
+LINKALL=$(SCRIPTDIR)/link-all
+PERL=perl
+
+AllTarget($(BOOTCLASSES) $(BOOTCLASS))
+
+depend::
+	-$(LN) ../../include include
+	-$(LN) . OZROOT
+	-(cd bin; $(LN) ../../lang/CFE/cfed .; $(LN) ../../lang/compiler/ozc .)
+
+$(BOOTCLASS): $(BOOTSCHOOL)
+	@(PATH=$(SCRIPTDIR):$$PATH; export PATH ; \
+	  $(LINKALL) "$(BOOTSCHOOL)" "$(CFED)" "$(SRCDIR)" "$(SRCLIBBOOTDIR)")
+
+$(BOOTCLASSES): $(BOOTSCHOOL)
+	$(PERL) $(BS2BC) < $(BOOTSCHOOL) > $(BOOTCLASSES)
+
+clean::
+	$(RM_CMD) private.oz include bin/cfed bin/ozc OZROOT $(BOOTCLASSES) \
+		  "$(SRCLIBBOOTDIR)/"*/private.[cdhilorst] \
+		  "$(SRCLIBBOOTDIR)/"*/private.cl \
+		  "$(SRCLIBBOOTDIR)/"*/private.oz
+
+InstallMultipleFlags($(BOOTSCHOOL),$(ETCDIR),$(WRITABLEINSTALLFLAGS))
+InstallMultipleFlags($(BOOTCLASSES),$(ETCDIR),$(INSTALLFLAGS))
+InstallMultipleFlags($(LIMITFILE),$(LIBBOOTDIR),$(INSTALLFLAGS))
+
+install::
+	(cd $(SRCLIBBOOTDIR) ; \
+	 tar cf - 0001000002?????? |(cd $(DESTDIR)$(LIBBOOTDIR) ; tar xf -))
+
+change:
+	$(CHANGER)

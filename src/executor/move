@@ -1,0 +1,9 @@
+#!/bin/sh
+for file in *.[ch]
+do
+	if [ -h $file ]
+	then
+		echo $file
+		mv $file ../thread
+	fi
+done

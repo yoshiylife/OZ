@@ -1,0 +1,29 @@
+NFE(1)              Nucleus Front-End Built-In-Command               NFE(1)
+
+NAME
+     nclshutdown - shuts down (terminates) the nucleus at the
+                   specified time
+
+SYNOPSIS
+     nclshutdown time
+
+DESCRIPTION
+     nclshutdown tells the nfe the time the nucleus should be 
+     automatically shut down.
+     The shutdown time is specified as the argument time. If
+     "now" is specified, the nucleus is shutdown immediately. 
+     Otherwise, the shutdown time is specified in the form of
+     a +number which indicates the time in minutes.
+
+     As the time to shutdown of the nucleus approaches, warning
+     messages are displayed periodically in the nfe.
+
+     If CONTROL-D is pressed within the time period specified
+     by the +number, shutdown is aborted, and the nfe is terminated.
+
+     If the nucleus is shut down, the nfe is terminated
+      automatically.
+
+EXAMPLE
+     nfe> nclshutdown now
+

@@ -1,0 +1,511 @@
+\documentstyle[epsf,oz++-words]{ipa}
+
+%\newcommand{\launcher}{\tt Launcher}
+%\newcommand{\launchable}{\tt launchable}
+%\newcommand{\launch}{\tt Launch}
+%\newcommand{\shell}{シェル}
+%\newcommand{\wish}{\tt Wish}
+%\newcommand{\project}{\tt Project}
+%\newcommand{\tcl}{\tt tcl/tk}
+
+\begin{document}
+%\input{macros/include}
+\subsection{\launcher}
+
+{\launcher}は昨年度までは{\shell}と呼んでいた。
+当初UNIXのcshのようなコマンドインタプリタとスクリプトを{\oz}に用意することを考えていたが、その考えを改めた。
+理由はまず、UNIXのC言語と{\shell}のように２つの界面を{\oz}に持たせたくなかった。
+さらにインタプリタであると、キーボードから入力する都合上整数や文字列といった
+プリミティブなデータが主体となるが、
+オブジェクト指向の場合それらが複合された有機的なデータを扱うことを主眼とすべきであり、
+コマンドインタプリタはそれにはそぐわないと考えた。
+
+{\oz}はオブジェクトが支配する世界であり、
+オブジェクトは{\oz}言語から作られる。
+オペレータがオブジェクトを操作する際に{\oz}言語では実現できない部分を考察し、
+それを提供すべきであると考えた。
+
+{\oz}のようなオブジェクト指向言語ではオブジェクトにメッセージを送信する作業の
+連鎖により、処理が進んでゆく。
+あるアプリケーションを考えた場合もそのようにプログラムは作られる。
+しかしそのメッセージの連鎖を引き起こすトリガは人間（オペレータ）である。
+オペレータ自身はオブジェクトではないのでメッセージを送信することができない。
+しかしながらオペレータは少なくとも１つのメッセージを１つのオブジェクトに送信する必要がある。
+それはC言語でいうところの{\tt main()}に相当するものである。
+
+以上の考察を踏まえて{\oz}ではオペレータがプログラムを起動するためのメソッドと
+そのメソッドを受けとるためのオブジェクトが必要であると考えた。
+さらにそのオブジェクトの生成とメソッドの実行はオペレータから行なわれなければならない。
+それを可能にするためのツールが必要である。
+そのツールはオペレータがプログラムを{\oz}の世界に射出（{\tt Launch}）するものである。
+我々はこのツールを{\launcher}と名付けることにした。
+
+\subsubsection{{\launcher}と{\launchable}}
+{\launcher}は以下のクラスから構成される。
+\begin{description}
+\item[\launcher]
+        {\launcher}は１つのグローバルオブジェクトである。
+        {\launcher}はオブジェクトイメージファイルに登録され、
+        システム起動時に自動的に立ち上がる。
+        {\launcher}はGUIを持ちオペレータに対して各種の機能を提供する。
+        
+\item[{\launchable}]
+        {\launchable}クラスは抽象クラスであり、
+        そのインスタンスは{\launcher}が所有するローカルオブジェクトとなる。
+        {\launcher}からプログラムを実行させたい時は、まず{\launchable}の
+        子クラスとしてクラスを用意する。
+        次ぎに{\launcher}に用意した{\launchable}の子クラスのパブリックパートID
+        を指定して、オブジェクトを生成させる。
+        最後に{\launcher}から実行を命令するとメソッドが起動される。
+\end{description}
+
+以下の説でさらに詳しく説明する。
+
+\subsubsection{\launchable}
+{\launchable}は{\launcher}から実行されるプログラムを記述するための抽象クラスである。
+以下のメソッドが定義されている。
+\begin{description}
+\item[{\tt void Initialize()}] 
+        {\launcher}は{\launchable}オブジェクトを生成する。
+        {\oz}言語での通常のオブジェクト生成と異なり、
+        {\launcher}は生成する{\launchable}のIDをあらかじめ知ることができない。
+        そのためC文と{\exec}のランタイムコールを用いてインスタンスを生成する。
+        その場合{\launchable}クラスのコンストラクタを実行することができない。
+        {\launchable}ではコンストラクタに代わるメソッドとして{\tt Initialize()}
+        を用意した。
+        {\launcher}は{\launchable}オブジェクトを生成した直後に
+        {\tt Initialize()}を呼ぶ。
+        {\launchable}に初期処理が必要な場合はこのメソッドを再定義して行なう。
+        再定義を行なわなかった場合は何も起きない。
+
+\item[{\tt void Launch()}]
+        {\launcher}がGUIからプログラムを実行するとき、
+        {\launchable}の{\tt Launch}メソッドを呼び出す。
+        このメソッドがC言語での{\tt main()}に相当する。
+        {\launcher}は何度も{\tt Launch()}を実行することができる。
+        同じ{\launchable}オブジェクトに対して複数回{\launch}が実行された
+        場合の解釈はその{\launchable}クラスに任される。
+        このメソッドは抽象メソッドであるため子クラスでは必ず再定義しなければ
+        ならない。
+\end{description}
+
+\subsubsection{{\launcher}の機能}
+{\launcher}には以下の機能がある。
+\begin{description}
+\item[{\launchable}オブジェクトの生成]
+        クラスIDから{\launchable}オブジェクトを生成する。
+        この時{\launchable}のメソッド{\tt Initialize()}を実行する。
+        またこの時にオペレータは{\launchable}に名前を入力し、
+        以降この名前で操作を行なう。
+\item[インボーク]
+        生成した{\launchable}に対してメソッド{\tt Luanche()}を実行する。
+\item[プロジェクト]
+        多数の{\launchable}を登録すると判別が難しくなる。
+        {\launcher}はプロジェクトと呼ばれるツリー構造の名称空間を持ち
+        {\launchable}はプロジェクトに登録される。
+
+        {\launcher}は最初は１つだけプロジェクトを保持する。
+        これをルートプロジェクトと呼ぶ。
+        ルートプロジェクトの名前は空文字列である。
+
+        オペレータは必要に応じて既存のプロジェクトの下に
+        新しいプロジェクトを生成できる。
+        またオペレータはルートプロジェクト以外のプロジェクトを
+        削除、改名、複製できる。
+
+        {\launcher}はカレントプロジェクトを１つだけ保持する。
+        最初のそれはルートプロジェクトである。
+        オペレータはカレントプロジェクトを既に存在する別のプロジェクトに変更できる。
+        {\launcher}はパーシステントなオブジェクトであるため、
+        一度変更したカレントプロジェクトは次回立ち上げた時にも有効である。
+\end{description}
+
+
+\begin{description}
+\item[window\ header] ウインドウシステムが提供する枠。
+\item[menu\ bar] メニューボタンが並ぶ。
+\item[current\ project] 現在のプロジェクトの位置。
+\item[binary switch]object側の時、Launchableオブジェクトを表示し、class側の時登録されたクラスを表示する。
+\item[sub\ projects] カレントプロジェクトの直下にあるサブプロジェクトのセレクションリスト
+\item[launchables\ or\ classes]カレントプロジェクトの直下にある{\launchable}オブジェクトまたはクラスのリスト。
+\item[information] メッセージ出力部
+\end{description}
+
+\subsubsection{メニュー一覧}
+\begin{itemize}
+\item {\bf Create}
+        \begin{description}
+        \item[Project]カレントプロジェクトの下に新たなプロジェクトを作成する。
+        \item[Object]カレントプロジェクトの下に新たな{\launchable}オブジェクトを作成する。
+        \item[Class]カレントプロジェクトの下に{\launchable}クラスを登録する。
+        \end{description}
+\item {\bf Edit}
+        \begin{description}
+        \item[Copy]選択されているアイテム\footnote{セレクトされているプロジェクト、{\launchable}オブジェクト、{\launchable}クラスのいずれか。}を複製する。
+        \item[Move]選択されているアイテムを移動、改名する。
+        \item[Delete]選択されているアイテムを削除する。
+        \end{description}
+\item {\bf Project}
+        \begin{description}
+        \item[Up]カレントプロジェクトを上位に移動する。
+        \item[Jump]カレントプロジェクトを任意の場所へ移動する。
+        \item[Tree]プロジェクト構造を図示する。
+        \end{description}
+\item {\bf Find}
+        プロジェクト、{\launchable}名、エリアスを名前で検索する。
+\item {\bf Help} \newline
+        オンラインヘルプ
+\end{itemize}
+
+\subsubsection{メニュー以外のオペレーション}
+\begin{itemize}
+\item セレクションリストは要素を１つ選択できる。
+\item サブプロジェクトリストの要素をダブルクリックするとカレントプロジェクトが移動する。
+\item {\launchable}をダブルクリックすると{\tt launch}メソッドが実行される。
+\end{itemize}
+
+\subsubsection{内部設計}
+
+\begin{enumerate}
+\item {\tt Launcher}\\
+このクラスはグローバルオブジェクトを提供する。
+このクラスの役割はまず、GUIプロセスを起動し通信を行なう。
+またLauncherが提供する機能をメソッドとして保持している。
+このクラスはルートプロジェクトを１つ保持し、カレントプロジェクトを１つ参照している。
+
+\begin{itemize}
+\item{\bf ProjectLink Search( name )}\\
+        nameで示されるProjectLinkを取り出す。
+        nameが'/'で始まればルートプロジェクトから検索する。（絶対表記）
+        それ以外の文字で始まればカレントプロジェクトから検索する。（相対表記）
+        .（ドット）はカレントプロジェクトを意味し、
+        ..(ドットドット）はその直上のプロジェクトを意味する。
+        \begin{enumerate}
+        \item nameが絶対表記か相対表記かを判定する。
+        \item nameを{\tt '/'}をデリミタとして分割し、
+                {\tt OrderedCollection$<$String$>$}に変換する。\label{delim}
+        \item 絶対表記ならば{\tt root}に、
+                相対表記ならば{\tt current}に{\tt Search()}をインボークする。
+        \item その戻り値を返す。
+        \end{enumerate}
+
+\item{\bf void CreateLaunchable( cid, project, name )}\\
+        projectの下にcidで示されるクラスをインスタンス化してnameの名前で登録する。
+        cidは{\launchable}クラスの下位クラスのIDでなければならない。
+        projectにnameが既に登録されていたならばエラー。
+        \begin{enumerate}
+        \item projectを検索する。
+        \item projectにnameが登録されていないことを確認する。
+        \item C文によりcidをインスタンシエートする。
+        \item インスタンシエートしたオブジェクトをLaunchableにナローイングする。
+                失敗すればエラー。
+        \item Initialize()メソッドをインボークする。
+        \item projectに{\launchable}を登録する。
+        \end{enumerate}
+
+\item{\bf void Launch( name )}\\
+        nameで示される{\launchable}にLaunch()を実行する。
+        \begin{enumerate}
+        \item nameで示される{\launchable}を検索する。
+        \item {\tt Launch()}メソッドをインボーク。
+        \end{enumerate}
+
+\item{\bf void PutCid( cid, project, name )}\\
+        cidをnameの名前でprojectの下に登録する。
+        \begin{enumerate}
+        \item projectを検索する。
+        \item nameが登録されていないことを確認する。
+        \item CidHolderオブジェクトを生成する。
+        \item projectに登録する。
+        \end{enumerate}
+
+\item{\bf void DeleteLink( name )}\\
+        nameで示される登録名を削除する。
+        ルートプロジェクトは削除できない。
+        \begin{enumerate}
+        \item nameで参照されるProjectLinkオブジェクトを検索する。
+        \item {\tt Delete()}を呼び出す。
+        \end{enumerate}
+
+\item{\bf void MoveLink( old-name, new-project, new-name )}\\
+        old-nameをnew-projectの下のnew-nameへ移動する。
+        old-nameにルートプロジェクトは使用できない。
+        new-nameで表現されるアイテムの属するプロジェクトが存在しない場合エラーとなる。
+        \footnote{例えばnew-nameが/a/b/cであり/a/bというプロジェクトが存在しなければエラーとなる。}
+        \begin{enumerate}
+        \item old-nameで示されるProjectLinkを検索する。
+        \item new-projectで示されるプロジェクトを検索する。
+        \item new-projectにnameが登録されていないか確認する。
+        \item ProjectLinkにRelease()を実行し、親プロジェクトの関係を切る。
+        \item new-projectにProjectLinkを登録する。
+        \end{enumerate}
+
+\item{\bf void CopyLink( old-name, new-project, new-name )}\\
+        old-nameが削除されないことを除いて{\tt MoveLink()}に同じ。
+        \begin{enumerate}
+        \item old-nameで示されるProjectLinkを検索する。
+        \item 検索したProjectLinkのClone()メソッドにより、その複製を得る。
+        \item new-projectで示されるプロジェクトを検索する。
+        \item プロジェクトに対してPutLink()をインボークする。
+        \end{enumerate}
+
+\item{\bf long long GetCid( name )}\\
+        nameが示す{\launchable}のクラスのIDを返す。
+        \begin{enumerate}
+        \item nameが示すProjectLinkを検索する。
+        \item ProjectLinkがLaunchableまたはCidHolderであることを確認する。
+        \item GetCid()を実行し結果を返す。
+        \end{enumerate}
+
+\item{\bf void MoveCurrent( name )}\\
+        カレントプロジェクトをnameへ移動する。
+        \begin{enumerate}
+        \item nameで示されるProjectLinkを検索する。
+        \item ProjectLinkがProjectであることを確認する。
+        \item currentにProjectを代入する。
+        \end{enumerate}
+
+\item{\bf void UpCurrent()}\\
+        カレントプロジェクトを直上に移動する。
+        カレントプロジェクトがルートプロジェクトであった時何もしない。
+        \begin{enumerate}
+        \item {\tt MoveCurrent( ``..'' )}を実行する。
+        \end{enumerate}
+
+\item{\bf void CreateProject( project, name )}\\
+        nameで示されるプロジェクトをprojectの下に作成する。
+        \begin{enumerate}
+        \item 自身の{\tt Search()}メソッドによりprojectを求める。
+        \item 求めたプロジェクトにnameが登録されていないことを確認する。
+        \item プロジェクトオブジェクトを生成する。
+        \item PutLink()で登録する。
+        \end{enumerate}
+\item{\bf void Help()}\\
+        オンラインヘルプを表示する。
+\item{\bf String GetCurrentFullname()}\\
+        カレントプロジェクト名をフルパスで返す。
+\item{\bf Set$<$String$>$ GetProjectList( name )}\\
+        nameで示されるプロジェクトの直下のプロジェクト名のリストを返す。
+\item{\bf Set$<$String$>$ GetLaunchableList( name )}\\
+        nameで示されるプロジェクトの直下の{\launchable}名のリストを返す。
+\item{\bf Set$<$String$>$ GetCidList( name )}\\
+        nameで示されるプロジェクトの直下の{\launchable}クラス名のリストを返す。
+\item{\bf IOStream SpawnGui()}\\
+        {\wish}を起動し、通信用ストリームを返す。
+\item{\bf String ReadEvent()}\\
+        {\wish}からイベントを読み込む。
+\item{\bf void SendEvent( data )}\\
+        {\wish}へデータを送信する。
+\end{itemize}
+        
+\item{\tt ProjectLink}\\
+{\tt ProjectLink}は{\project}が保持し得るオブジェクトを表現する抽象クラスである。
+\begin{itemize}
+\item{\bf void Delete()}\\
+        自身の登録を抹消する。
+        \begin{enumerate}
+        \item superに対して{\tt DeleteLink()}を実行する。
+        \end{enumerate}
+
+\item{\bf ProjectLink Clone()}\\
+        自身の複製を作成して返す。
+
+\item{\bf void Release()}\\
+        自身と親プロジェクトとの関係を断つ。
+        \begin{enumerate}
+        \item parentoに対して{\tt DeleteLink()}をインボークする。
+        \end{enumerate}
+\end{itemize}
+
+\item{\project}\\
+\begin{itemize}
+\item{\bf ProjectLink Search( OrderedCollection$<$String$>$ name-list )}\\
+        自身より下方へnameで示されるProjectLinkを検索して返す。
+        自身の直下でないものについては下位のプロジェクトに検索を委譲する。
+        \begin{enumerate}
+        \item name-listに要素がなければ０を返す。
+        \item name-listをcarとcdrに分割する。\label{cutfirst}
+        \item carが{\tt '.'}であったならば、\ref{cutfirst}へ戻る。
+        \item carが{\tt '..'}であったならば、parentに対して再帰呼び出しを行ないそれを返す。
+        \item carをキーとしてdictionaryから値を取り出す。\label{subvalue}
+        \item cdrがなければ\ref{subvalue}の値を返す。
+        \item \ref{subvalue}のオブジェクトに再帰呼び出しを行なう。
+                引数はcdr。
+        \end{enumerate}
+
+\item{\bf void PutLinkable( name, aLinkable )}\\
+        自身の持つDictionaryへaLinkableを登録する。
+\item{\bf void DeleteLinkable( name )}\\
+        自身のDictionaryからnameで示される要素を削除する。
+\item{\bf ProjectLink Clone( ProjectLink parent )}\\
+        自身を複製し、それを返す。
+        \begin{enumerate}
+        \item 新しい{\tt Project}オブジェクトを生成する。
+        \item 自身が保持するsubの要素を１つずつコピーする。
+                コピーには{\tt Copy()}メソッドを用いる。
+        \item 新しいオブジェクトを返す。
+        \end{enumerate}
+\end{itemize}
+
+\item{\tt CidHolder}\\
+このクラスはProjectに登録される{\launchable}クラスのIDを実現する。
+
+\begin{itemize}
+\item{\bf long long GetCid()}\\
+        自身のCIDを返す。
+\item{\bf ProjectLink Clone( Project parent )}\\
+        自身の複製を返す。
+\end{itemize}
+
+\item{\launchable}\\
+このクラスはLaunchされるオブジェクトの振舞いを定義する抽象クラスである。
+{\launcher}から実行されるクラスはこのクラスの下位クラスでなければならない。
+
+\begin{itemize}
+\item{\bf void Initialize()}\\
+{\launchable}オブジェクトはコンストラクタが実行されないため、それに代わるメソッドである。
+        インスタンシエートされた直後にこれが呼び出される。
+        このメソッドは下位クラスで再定義されることを想定しているが、それを強制はしない。
+        再定義を行なわなかった場合、何も行なわれない。
+        \footnote{インスタンス変数の０クリアさえ行なわれない。}
+
+\item{\bf void Launch()}\\
+        アプリケーションを実行するメソッド。
+        C言語でいうところの{\tt main()}相当する。
+        {\launchable}クラスの下位の具象クラスではこのメソッドの再定義を義務づける。
+\end{itemize}
+\end{enumerate}
+
+\subsubsection{{\tcl}との通信} \label{wish}
+
+
+{\launcher}のGUIは{\tcl}により実装される。
+手順は以下の通り。
+\begin{enumerate}
+\item {\launcher}はエクゼキュータプロセスの子プロセスとして{\wish}を起動する。
+        これはエクゼキュータの関数{\tt OzSpawn()}を用いる。
+\item {\tt OzSpawn()}は子プロセスと通信するファイルディスクリプタを返す。
+        {\launcher}はこれを保持し、以後{\wish}との通信に利用する。
+\item {\launcher}はファイルディスクリプタに対して入力を待つ。\label{read}
+\item {\wish}はイベントが発生すると必要な処理を行なった後、データを{\launcher}に送信する。
+\item {\launcher}は送信データを解釈し、自身に対してサービスメソッドを呼び出す。
+\item {\launcher}は処理が終了するとステータス等、画面側に通知するデータを送信する。
+\item \ref{read}に戻る。
+\end{enumerate}
+
+\subsubsection{処理手順}
+
+\begin{enumerate}
+\item{\project}の生成\\
+\begin{enumerate}
+\item Create-Projectメニュー選択。
+\item ダイアログボックスを開く〜プロジェクト名入力。
+\item メッセージ送信。
+\item CreateProject( プロジェクト名 )。
+\item 成功したならばリストに新プロジェクト名を追加する。
+\end{enumerate}
+
+\item{\launchable}の生成\\
+\begin{enumerate}
+\item Create-Objectメニュー選択。
+\item ダイアログボックスオープン〜CIDと{\launchable}名の入力
+\item メッセージ送信。
+\item CreateLaunchable( CID, {\launchable}名 )
+\item 成功したならばリストに新{\launchable}名を追加する。
+\end{enumerate}
+
+\item{\launchable}クラスの登録\\
+\begin{enumerate}
+\item Create-Classメニュー選択。
+\item ダイアログボックスオープン〜CIDと登録名の入力
+\item メッセージ送信。
+\item CreateLaunchable( CID, 登録名 )
+\item 成功したならばリストに新登録名を追加する。
+\end{enumerate}
+
+\item{Launch}\\
+\begin{enumerate}
+\item {\launchable}リストのアイテムをダブルクリック。
+\item メッセージ送信。
+\item インボーク
+\end{enumerate}
+
+\item{アイテムの削除}\\
+\begin{enumerate}
+\item Edit-Deleteメニュー選択。
+\item セレクションを確認
+\item 確認〜バイナリチョイス
+\item メッセージ送信。
+\item インボーク。
+\item 成功したならば、リストから削除したアイテムを削除する。
+\end{enumerate}
+
+\item{アイテムの複製}\\
+\begin{enumerate}
+\item Edit-Deleteメニュー選択。
+\item セレクションを確認。
+\item ダイアログボックス〜複製先の指定
+\item メッセージ送信。
+\item インボーク。
+\item 成功したならば、リストを再表示する。
+\end{enumerate}
+
+\item{アイテムの移動}\\
+\begin{enumerate}
+\item Edit-Deleteメニュー選択。
+\item セレクションを確認。
+\item ダイアログボックス〜移動先の指定
+\item メッセージ送信。
+\item インボーク。
+\item 成功したならば、リストを再表示する。
+\end{enumerate}
+
+\item{上位{\project}への移動}\\
+\begin{enumerate}
+\item Project-Upメニュー選択。
+\item メッセージ送信。
+\item インボーク。
+\item 成功したならば、リストとカレント{\project}表示を変更する。
+\end{enumerate}
+
+\item{下位{\project}への移動}\\
+\begin{enumerate}
+\item サブ{\project}リストのアイテムをダブルクリック。
+\item メッセージ送信
+\item インボーク
+\item 成功したならば、リストとカレント{\project}を再表示。
+\end{enumerate}
+
+\item{任意の{\project}への移動}\\
+\begin{enumerate}
+\item Project-Upメニュー選択。
+\item ダイアログボックスを開く〜移動先の入力
+\item メッセージ送信。
+\item インボーク。
+\item 成功したならば、リストとカレント{\project}表示を変更する。
+\end{enumerate}
+
+\item{{\project}ツリーの表示}\\
+\begin{enumerate}
+\item Project-Treeメニュー選択。
+\item メッセージ送信〜ツリー構造の取得。
+\item サブビューを開き、ツリー表示。
+\end{enumerate}
+
+\item{アイテムの検索}\\
+\begin{enumerate}
+\item Findメニュー選択。
+\item ダイアログボックスを開く〜検索名と検索範囲の入力
+\item メッセージ送信。
+\item インボーク
+\item 検索結果の表示
+\end{enumerate}
+
+\item{バイナリスイッチ}\\
+\begin{enumerate}
+\item バイナリスイッチの押下。
+\item リスト内容の取り出し。
+\end{enumerate}
+\end{enumerate}
+
+\end{document}

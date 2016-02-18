@@ -1,0 +1,141 @@
+#!/bin/sh
+
+# 
+# oicfe: Object Image Ccompiler FrontEnd for 'alpha version system'
+#
+# -d: debug flag
+# -h: usage
+# 
+
+OZOIC=$OZROOT/bin/oic
+OZOIMAKE=$OZROOT/lib/Makefile.oibuild
+OZOIBUILD=`pwd`/oib
+OZOBJECTIMAGES=$OZROOT/images
+OZARCH_ID=`cat $OZROOT/etc/architecture-id`
+OZSITE_ID=`cat $OZROOT/etc/site-id`
+
+usage() {
+  echo "oicfe [-cdhv] [-A aid] [-S sid] [-C count] eid image_define_file ..."
+  exit 1
+}
+
+aid=$OZARCH_ID
+sid=$OZSITE_ID
+count=""
+debug=""
+noclean=0
+verbose=0
+while getopts cA:E:S:dhC:v i; do
+  case $i in
+  c)
+    noclean=1 ;;
+  d)
+    debug="-d" ;;
+  h|\?)
+    usage ;;
+  C)
+    count="-c $OPTARG" ;;
+  A)
+    aid=$OPTARG 
+    OZARCH_ID=$aid ;;
+  S)
+    sid=$OPTARG 
+    OZSITE_ID=$sid ;;
+  v)
+    verbose=1 ;;
+  esac
+done
+shift `expr $OPTIND - 1`
+
+if [ $# -lt 2 ]; then
+  usage
+fi
+
+eid=`nawk '{print substr("00000" $0, length($0), 6);}' << EOM
+$1
+EOM
+`
+shift
+
+for j in $*; do
+
+  if [ $verbose -eq 1 ]; then
+    echo -n "prepare for \`$j' ... "
+  fi
+  ((sed -e '/^$/d' -e '/^#/d' $j.uc |
+    (while read i
+     do
+       echo sb \'$i\' 7
+       echo sb \'$i\' 3
+     done) ; echo quit) |
+   cfed |
+   (flag=0
+    while read i
+    do
+      case $flag in
+       0)
+        name=$i
+        flag=1;;
+       1)
+        id=$i
+        flag=0
+        echo "class $name=$id;";;
+      esac
+    done);
+   (sed -e '/^$/d' -e '/^#/d' $j.ur |
+    (while read i
+     do
+       echo sb \'$i\' 7
+       echo sb \'$i\' 0
+     done) ; echo quit) |
+   cfed |
+   (flag=0
+    while read i
+    do
+      case $flag in
+       0)
+        name=$i
+        flag=1;;
+       1)
+        id=$i
+        flag=0
+        echo "record $name=$id;";;
+      esac
+    done) ; /usr/lib/cpp -P < $j.oi) > $j
+
+  make -f $OZOIMAKE clean 2>&1 >/dev/null
+
+  $OZOIC $debug $count $j
+  if [ $? -eq 1 ]; then
+    exit 1
+  fi
+  if [ $verbose -eq 1 ]; then
+    echo done
+  fi
+
+  if [ $verbose -eq 1 ]; then
+    echo -n "make an object image builder of \`$j' ... "
+  fi
+  make -f $OZOIMAKE PROGRAM=$OZOIBUILD 2>&1 >/dev/null
+  if [ $? -eq 1 ]; then
+    exit 1
+  fi
+  if [ $verbose -eq 1 ]; then
+    echo done
+  fi
+
+  if [ $verbose -eq 1 ]; then
+    echo -n "make an image of \`$j' ... "
+  fi
+  (cd $OZOBJECTIMAGES/$eid/objects; $OZOIBUILD $aid $sid $eid) 
+  if [ $verbose -eq 1 ]; then
+    echo done
+  fi
+
+  if [ $noclean -eq 0 ]; then
+    rm $j
+    make -f $OZOIMAKE clean 2>&1 >/dev/null
+  fi
+done
+
+exit 0

@@ -1,0 +1,103 @@
+Version 1.25
+
+サイト間通信のために、1.24から大きく変更した。
+変更は、このディレクトリのみではなく、以下のファイルを変更した。
+
+src/executor/alloc.c
+src/executor/comm.h
+src/executor/decode.h
+src/executor/exception.c
+src/executor/method-invoke.c
+src/executor/object-table.c
+src/executor/ozdecode.c
+src/executor/ozexeccifload.c
+src/executor/remote.c
+src/executor/remote_file_IF.c
+src/executor/switch.h
+src/executor/version.c
+
+src/thread/file.c
+src/thread/ozlibc.c
+src/thread/thread.c
+
+src/remotefile/OzFileReceiver.c
+src/remotefile/OzFR.c
+src/remotefile/OzFileSender.c
+src/remotefile/OzFS.c
+src/remotefile/remotefile.h
+
+src/ncl/ncl.c
+src/ncl/ncl_extable.c
+
+include/thread/thread.h
+include/oz++/sysexcept.h
+
+また、OZ++アプリケーションゲートウェイのソースファイルを
+
+src/ozag の下に置いた。
+
+＝＝＝
+サイト間通信に関する主な変更点と、その影響を受けたファイルを
+示す。
+
+１）OZ++アプリケーションゲートウェイによって、メソッド呼びだしの
+ パケットのヘッダに外来フラグおよび最終パケットフラグが付け加え
+ られた。
+
+src/executor/comm.h  	  リモートチャネルに外来フラグ追加。
+src/executor/remote.c 	  パケット処理のルーチンの変更、リモートチャネル
+ 			  外来性の処理。
+
+２）オブジェクトに外来という性質が追加された。
+
+src/executor/alloc.c      外来のスレッドは、外来の性質をもったオブジェクトを
+			  生成するように変更。
+src/executor/decode.h     デコードの際のワークデータの変更
+src/executor/ozdecode.c	  デコードされた結果生成されるオブジェクトに
+			  外来の性質を付与できるように変更。
+src/executor/ozexeccifload.c デコードルーチンの変更への対応。
+
+３）スレッドに外来という性質が追加された。
+
+include/thread/thread.h   スレッドの構造体に外来を示すフラグを追加。
+src/thread/thread.c       外来のスレッドが生成したスレッドが外来になるように
+			  変更
+src/executor/method-invoke.c  外来のオブジェクトのメソッド実行中はスレッドが
+			      外来になるように変更。
+
+４）外来スレッドは機能の制限を受ける。それに対応するための変更。
+
+src/executor/object-table.c  外来スレッドはグローバルオブジェクトが生成でき
+			     できない。しようとすると例外が上がる。
+include/oz++/sysexcept.h   上記の例外の追加。
+src/executor/exception.c   上記の例外の追加。
+src/thread/file.c	   外来スレッドのファイル操作の禁止(open,read,write等)
+src/thread/ozlibc.c	   外来スレッドのファイル操作の禁止(rmdir,link等)
+
+５）ファイル転送をOZ++アプリケーションゲートウェイで中継できるように、配送元
+ エグゼキュータのIDを転送要求パケットに追加。
+
+src/executor/remote_file_IF.c  ファイル転送プログラムとのインタフェース変更。
+
+以下のファイル転送プログラムも変更した。
+src/remotefile/OzFileReceiver.c
+src/remotefile/OzFR.c
+src/remotefile/OzFileSender.c
+src/remotefile/OzFS.c
+src/remotefile/remotefile.h
+
+番外） 以下のファイルはOZ++アプリケーションゲートウェイとのインタフェース、
+ ならびにアプリケーションゲートウェイから要求されるアドレス解決に対応する
+ ために変更を行なった。 
+
+src/ncl/ncl.c
+src/ncl/ncl_extable.c
+
+＝＝
+その他：
+
+ BUG FIX: src/executor/remote.c  通信エラーにより一つのリモート送信チャネルが
+				 複数のエラーパケットを受信した場合に、通信
+				 バッファが多重にfreeされるエラーを修正。
+
+

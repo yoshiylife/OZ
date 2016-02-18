@@ -1,0 +1,8 @@
+(*class* #00010000020003ac 0
+(*list*)
+(*list*
+(*declaration* GetName (*method* (*array* char ) (*list*) 1) public #00010000020003ac 0 0)
+(*declaration* Uptime (*method* #00010000020003dd 0 (*list*) 0) public #00010000020003ac 0 1)
+(*declaration* LoadAverage (*method* (*scqf* int 2) (*list*) 0) public #00010000020003ac 0 2)
+)
+)

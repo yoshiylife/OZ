@@ -1,0 +1,522 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE> Summary of syntax</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value=" Summary of syntax">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION000625000000000000000> Summary of syntax</A></H2>
+<P>
+The followings are based on a source file of <tt> yacc</tt>, and therefore they do not follow BNF strictly.
+<P>
+<PRE>file 
+        : inlines user_type_def 
+        ;
+inlines
+        : /* empty */
+        | inlines c_stmt
+        ;
+user_type_def
+        : class_def
+        | shared_def
+        | record_def
+        ;       
+class_def
+        : class_sc CLASSNAME parents '{' class_body '}' 
+        | 'static' 'class' CLASSNAME '{' static_class_body '}' 
+        ;
+class_sc
+        : 'class'
+        | 'abstract' 'class'
+        ;
+parents
+        : /* empty */
+        | ':' parent_lists
+        ;
+parent_lists
+        : parent
+        | parent_lists ',' parent
+        ;
+parent
+        : CLASSNAME
+        | CLASSNAME '(' rename_alias_lists ')'
+        ;
+rename_alias_lists
+        : rename_alias
+        | rename_alias_lists rename_alias
+        ;
+rename_alias
+        : 'rename' IDENTIFIER IDENTIFIER ';'
+        | 'alias' IDENTIFIER IDENTIFIER ';'
+        ;
+class_body
+        : access_ctrls member_decls
+        ;
+static_class_body
+        : access_ctrls_no_protected member_decls
+        ;                
+access_ctrls
+        : /* empty */
+        | access_ctrls acess_ctrl_not_protected
+        | access_ctrls acess_ctrl_protected
+        ;
+access_ctrls_no_protected
+        : /* empty */
+        | access_ctrls_no_protected 
+                   acess_ctrl_not_protected
+        ;
+acess_ctrl_not_protected
+        : 'public' ':' member_lists ';'
+        | 'constructor' ':' member_lists ';'
+        ;
+acess_ctrl_protected
+        : 'protected' ':' member_lists ';'
+        ;
+member_lists
+        : IDENTIFIER 
+        | member_lists ',' IDENTIFIER 
+        ;
+member_decls
+        : /* empty */
+        | member_decls member_decl 
+        ;
+member_decl
+        : member_var_decl
+        | member_method_decl
+        ;
+member_var_decl
+        : quals_type vars_list_noinit ';'
+        ; 
+vars_list_noinit
+        : vars_noinit
+        | vars_list_noinit ',' vars_noinit
+        ;
+vars_noinit
+        : vars
+        ;
+member_method_decl
+        : quals_type m_members ':' 'abstract'
+                         m_quals_with_abstract ';'
+        | IDENTIFIER '(' args ')' ':' 'abstract'
+                         m_quals_with_abstract ';'
+        | quals_type m_members m_quals block
+        | IDENTIFIER '(' args ')' m_quals block
+        ;
+m_members
+        : processes IDENTIFIER '(' args ')' arrays 
+        | processes '(' m_members ')' arrays 
+        ;
+args
+        : /* empty */
+        | arg
+        | args ',' arg
+        ;
+arg
+        : quals_type vars
+        ;
+m_quals
+        : /* empty */ 
+        | ':' m_qual
+        ;
+m_qual
+        : m_qualifier
+        | m_qual ',' m_qualifier
+        ;
+m_qualifier
+        : 'locked'
+        | 'global'
+        ;
+m_quals_with_abstract
+        : /* empty */
+        | ',' m_qual
+        ;
+shared_def
+        : 'shared' CLASSNAME '{' shared_body '}'
+        ;
+shared_body
+        : shared_member_decls
+        ;
+shared_member_decls
+        : /* empty */
+        | shared_member_decls shared_member_decl
+        ;
+shared_member_decl
+        : exception_decl ';'
+        | constant_decl ';'
+        ;
+exception_decl
+        : exception
+        | exception_decl ',' exception
+        ;
+exception
+        : IDENTIFIER '(' ')' 
+        | IDENTIFIER '(' arg ')' 
+        ;
+constant_decl
+        : simple_quals_type 
+              simple_vars_list_with_exp
+        ;
+simple_vars_list_with_exp
+        : exp_vars
+        | simple_vars_list_with_exp ',' exp_vars
+        ;
+record_def
+        : 'record' CLASSNAME '{' record_body '}'
+        ;
+record_body
+        : record_member_decls
+        ;
+record_member_decls
+        : /* empty */
+        | record_member_decls record_member_decl 
+        ;
+record_member_decl
+        : member_var_decl
+        | member_operator_decl
+        ;
+member_operator_decl
+        | quals_type m_members m_quals block
+        | IDENTIFIER '(' args ')' m_quals block
+        ;
+quals_type
+        : simple_quals_type
+        | class_quals_type
+        ;
+simple_quals_type
+        : quals type
+        ;
+class_quals_type
+        : CLASSNAME
+        | 'global' CLASSNAME
+        | TYPEPARAM
+        ;
+quals
+        : /* empty */ 
+        | 'unsigned'
+        ;
+type
+        : 'char'
+        | 'short'
+        | 'int'
+        | 'long'
+        | 'float'
+        | 'double'
+        | 'condition'
+        | 'void'
+        ;
+arrays 
+        : /* empty */ 
+        | arrays array 
+        ;
+array
+        : '[' ']' 
+        ;
+processes
+        : /* empty */ 
+        | processes process 
+        ;
+process
+        : '@' 
+        ;
+simple_vars_list
+        : vars_only 
+        | simple_vars_list ',' vars_only
+        | exp_vars
+        | simple_vars_list ',' exp_vars
+        ;
+vars_only 
+        : vars
+        ;
+exp_vars
+        : vars '=' exp
+        | vars '=' exp_with_block
+        ;
+class_vars_list
+        : vars_only     
+        | class_vars_list ',' vars_only 
+        | exp_vars
+        | class_vars_list ',' exp_vars
+        | inst_init_vars
+        | class_vars_list ',' inst_init_vars
+        ;
+inst_init_vars
+        | vars '=&gt;' IDENTIFIER '(' arg_list ')'
+                     inst_option exp_invokes
+        ;
+exp_invokes
+        : /* empty */
+        | exp_invokes exp_invoke
+        ;
+exp_invoke
+        | '-&gt;' IDENTIFIER '(' arg_list ')' 
+        ;
+inst_option
+        : /* empty */
+        | '@' exp 
+        ;
+vars
+        : processes var arrays 
+        | processes arrays 
+        | processes '(' vars ')' arrays 
+        ;
+var
+        : IDENTIFIER 
+        ;
+exp_with_block
+        : '{' exp_with_block_content '}' 
+        ;
+exp_with_block_content
+        : exp_with_block ',' exp_with_block
+        | exp_with_block ',' exp
+        | exp ',' exp_with_block
+        | exp
+        ;
+exp_or_null
+        : /* empty */
+        | exp
+        ;
+exp
+        : exp_no_comma
+        | exp_comma
+        ;
+exp_no_comma
+        : exp_value 
+        | exp_var 
+        | exp '.' IDENTIFIER
+        | exp '=' exp 
+        | exp '*=' exp 
+        | exp '/=' exp 
+        | exp '%=' exp 
+        | exp '+=' exp 
+        | exp '-=' exp 
+        | exp '&lt;&lt;=' exp 
+        | exp '&gt;&gt;=' exp 
+        | exp '&amp;=' exp 
+        | exp '^&gt;=' exp 
+        | exp '|=' exp 
+        | exp '||' exp 
+        | exp '&amp;&amp;' exp 
+        | exp '|' exp 
+        | exp '^' exp 
+        | exp '&amp;' exp 
+        | exp '==' exp 
+        | exp '!=' exp 
+        | exp '&lt;' exp 
+        | exp '&lt;=' exp 
+        | exp '&gt;' exp 
+        | exp '&gt;=' exp 
+        | exp '&lt;&lt;' exp 
+        | exp '&gt;&gt;' exp 
+        | exp '+' exp 
+        | exp '-' exp 
+        | exp '*' exp 
+        | exp '/' exp 
+        | exp '%' exp 
+        | '!' exp 
+        | '~' exp 
+        | '++' exp 
+        | exp '++'
+        | '--' exp 
+        | exp '--'
+        | '+' exp 
+        | '-' exp 
+        | exp '?' exp ':' exp
+        | '(' exp ')' 
+        | exp '-&gt;' IDENTIFIER '(' arg_list ')'
+        | exp '=&gt;' IDENTIFIER '(' arg_list ')'
+                               inst_option
+        | IDENTIFIER '(' arg_list ')' 
+        | exp '.' IDENTIFIER '(' arg_list ')' 
+        | 'length' exp 
+        | exp '[' exp ']' 
+        | 'fork' exp
+        | 'join' exp
+        | 'narrow' '(' CLASSNAME ',' exp ')'
+        ;
+exp_comma
+        : exp ',' exp
+        ;
+arg_list
+        : /* empty */
+        | exp_no_comma
+        | exp_comma
+        ;
+exp_value
+        : DOUBLEVAL
+        | FLOATVAL
+        | uinteger
+        | longlong
+        | ulonglong
+        | CONST_CHAR
+        | 'cell'
+        | 'oid'
+        | STR
+        | SHAREDNAME '::' IDENTIFIER
+        ;
+integer
+        : INTEGER 
+        | HEX
+        | OCT
+        ;
+uinteger
+        : UINTEGER 
+        | UHEX
+        | UOCT
+        ;
+longlong
+        : LLINTEGER
+        | LLHEX
+        | LLOCT
+        ;
+ulonglong
+        : ULLINTEGER
+        | ULLHEX
+        | ULLOCT
+        ;
+exp_var
+        : IDENTIFIER
+        | 'self'
+        ;
+block
+        : '{'   block_contents '}'
+        ;
+block_contents 
+        : var_decls stmts
+        ;
+var_decls
+        : /* empty */
+        | var_decls var_decl 
+        ;
+var_decl
+        : simple_quals_type simple_vars_list ';'
+        | class_quals_type class_vars_list ';'
+        ; 
+stmts
+        : /* empty */
+        | stmts stmt
+        ;
+not_comp_stmts
+        : /* empty */
+        | not_comp_stmts not_comp_stmt
+        ;
+stmt
+        : comp_stmt
+        | not_comp_stmt
+        ;
+not_comp_stmt
+        : ';'
+        | exp_stmt
+        | select_stmt
+        | iterate_stmt
+        | jump_stmt
+        | except_stmt
+        | c_stmt
+        | concurrent_stmt
+        | debug_stmt
+        ;
+exp_stmt
+        : exp ';'
+        ;
+comp_stmt
+        : block
+        ;
+select_stmt
+        : if_exp if_body
+        | 'switch' '(' exp ')' '{' label_stmt '}'
+        ;
+if_exp
+        : 'if' '(' exp ')' 
+        ;
+if_body 
+        : stmt 
+        | stmt 'else' stmt
+        ;
+label_stmt
+        : label not_comp_stmts
+        | label_stmt label not_comp_stmts 
+        ;
+label
+        : 'case' exp ':'
+        | 'default' ':'
+        ;
+iterate_stmt
+        : 'while' '(' exp ')' stmt
+        | 'do' stmt 'while' '(' exp ')' ';'
+        | 'for' '(' exp_or_null ';' exp_or_null 
+                ';' exp_or_null ')' stmt
+        ;
+jump_stmt
+        : 'break' ';'
+        | 'continue' ';'
+        | 'return' ';'
+        | 'return' exp ';'
+        ;
+except_stmt
+        : 'try' block 'except' '{' except_body 
+                                   default_except_block '}'
+        | 'raise' exception_label_for_raise ';'
+        | 'raise ';'
+        ;
+except_body
+        : /* empty */
+        | except_body exception_labels block 
+        ;
+default_except_block
+        : /* empty */
+        | 'default' block
+        ;
+exception_labels
+        : exception_label 
+        | exception_labels ',' exception_label 
+        ;
+exception_label
+        : exception_name 
+        | exception_name '(' IDENTIFIER ')'
+        ;
+exception_label_for_raise
+        : exception_name
+        | exception_name '(' exp ')'
+        ;
+exception_name
+        : SHAREDNAME '::' IDENTIFIER
+        | IDENTIFIER
+        ;
+c_stmt
+        : 'inline' '&quot;C&quot;'  '{' inline_body '}'
+        ;
+inline_body
+        : /* empty */
+        | inline_body STRINGS
+        ;
+concurrent_stmt
+        : 'detach' exp ';'
+        | 'kill' exp ';'
+        | 'abort' ';'
+        | 'abortable' ';'
+        | 'wait' exp ';'
+        | 'signal' exp ';'
+        | 'signalall' exp ';'
+        ;
+debug_stmt
+        : 'debug' '(' exp ',' STRING ')' ';'
+        | 'debug' '(' exp ',' STRING ',' exp ')' ';'
+        | 'debug' '(' 'default' ',' STRING ')' ';'
+        | 'debug' '(' 'default' ',' STRING ',' exp ')' ';'
+        | 'debug' block
+        ;
+</PRE>
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

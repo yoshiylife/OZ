@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.5 利用者定義型</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.5 利用者定義型">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION00065000000000000000>5.5 利用者定義型</A></H2>
+ <A NAME=langlangmanualusertype>　</A>
+<P>
+ OZ++
+  では利用者定義型として、クラス型とレコード型の二種類がある。
+<P>
+<H3><A NAME=SECTION00065100000000000000>5.5.1 レコード型</A></H3>
+<P>
+レコード型は基本型と同様に値として解釈され、後述する代入および比較は値
+に対して実行される。また、代入および後述するメソッド呼び出しの引数
+または返り値にレコード型が使用された場合には、すべて値がコピーされる
+(<A HREF="node32.html#langlangmanualrecord">5.12</A> 節参照)。
+<P>
+<H3><A NAME=SECTION00065200000000000000>5.5.2 クラス型</A></H3>
+ <A NAME=langlangmanualusertypeclasstype>　</A>
+<P>
+クラス型には、クラス (<A HREF="node33.html#langlangmanualclass">5.13</A> 節参照) とスタティッ
+ククラスがある。スタティッククラス 
+(<A HREF="node34.html#langlangmanualstaticclass">5.14</A> 節参照) は、以下の点でクラスと異
+なる。
+<P>
+<UL><LI> 継承が利用できない。
+<P>
+<LI> 生成されるインスタンスはローカルオブジェクト(後述)のみである。
+</UL>
+<P>
+クラス型は参照として解釈され、後述する代入および比較は参照に対して実行
+されるので、代入はインスタンスの共有を意味する。メソッド呼び出しの引数
+または返り値にクラス型が使用された場合には、参照が渡る場合と、インスタ
+ンスのコピーが実行される場合とがある(後述)
+<P>
+<PRE>class Container;
+
+Container a, b;
+
+a=&gt;new();       // インスタンスを生成し、それを a に結びつける 
+b = a;          // a の参照を b に代入することによって、a と b は同じインスタンスを共有する
+</PRE>
+<P>
+クラスのインスタンスは、グローバルオブジェクトまたはローカルオブジェク
+トのどちらかの属性を持つ。スタティッククラスのインスタンスはすべてロー
+カルオブジェクトの属性を持つ。
+<P>
+<UL><LI> グローバルオブジェクト
+<P>
+すべて参照によって分散透過にアクセスされ共有されるため、システ
+ム内で一意に識別するためのオブジェクトIDが付与される。グローバルオブジェ
+クト自身のメソッド内では、予約語 <tt> oid</tt> によって、自身へのグローバ
+ルオブジェクトとしての参照を得ることができる。
+<P>
+<LI> ローカルオブジェクト
+<P>
+グローバルオブジェクトの部品として機能し、一つのグローバルオブジェクト
+内では参照によってアクセスされるが、グローバルオブジェクト間ではコピー
+が実行される。そのため、オブジェクトIDは付与されず、グローバルオブジェ
+クトと無関係に存在することはない。
+</UL>
+<P>
+一つのグローバルオブジェクトとそれに属する任意個のローカルオブジェクト
+から構成されるインスタンスの集合を、セルと呼ぶ。セルはエグゼキュータの
+メモリ管理の単位である。セル、グローバルオブジェクト、ローカルオブジェ
+クトの関係を図 <A HREF="node25.html#figlanglangmanualusertypeobjects">5.5--1</A> に示す。言
+語では、予約語 <tt> cell</tt> によって、セル内の
+グローバルオブジェクトへの参照を表す。
+<P>
+<A NAME=figlanglangmanualusertypeobjects>　</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD>
+<IMG ALIGN=BOTTOM ALT="lang-objects.gif" SRC="figure/lang-objects.gif">
+</TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>図 5.1--1:</STRONG> グローバル/ローカルオブジェクト}</CAPTION>
+</TABLE>
+</CENTER>
+
+<P>
+また、グローバルオブジェクトとローカルオブジェクトの違いは型として区別
+される。つまり、同じクラスのインスタンスであっても、グローバルオブジェ
+クトをローカルオブジェクトに代入したり、グローバルオブジェクトが指定さ
+れているメソッドの仮引数にローカルオブジェクトを渡したりすることはできない。
+<P>
+<PRE>class Container;
+
+Container a;            // a はローカルオブジェクト 
+global Container b;     // b はグローバルオブジェクト
+
+a=&gt;new();
+b = a;                  // 型が異なるため、エラー
+</PRE>
+<P>
+さらにメソッド呼び出しの引数および返り値にクラス型が使用された場合にグ
+ローバルオブジェクトとローカルオブジェクトではその扱いが異なる。グロー
+バルオブジェクトは常に参照として扱われるのに対して、ローカルオブジェク
+トでは、自分が属しているセル内のインスタンスに対するメソッド呼び出しの
+場合には参照として扱われるが、それ以外の場合にはそのローカルオブジェク
+トのコピーが実行され、そのコピーされたものがやり取りされる。
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

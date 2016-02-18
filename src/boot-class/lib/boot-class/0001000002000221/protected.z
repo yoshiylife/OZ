@@ -1,0 +1,12 @@
+(*class* #0001000002000221 8
+(*list*
+(*list* #000100000200043f #0001000002000440 0)
+(*list* #00010000020000eb #00010000020000ec 0)
+)
+(*list*
+(*declaration* New (*method* void (*list* #0001000002000225 0 ) 0) constructor #00010000020000eb 0 3)
+(*declaration* MyEvaluator (*method* #0001000002000225 0 (*list*) 0) protected #0001000002000221 0 0)
+(*declaration* MyName (*method* (*array* char ) (*list*) 0) protected #00010000020000ec 0 2)
+(*declaration* Execute (*method* int (*list* #000100000200038c 0 ) 2) protected #00010000020000ec 0 1)
+)
+)

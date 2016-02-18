@@ -1,0 +1,7 @@
+DESTDIR	= ../../../..
+
+AllTarget()
+
+install::
+	@if [ -d $(DESTDIR)/etc/ncl-data/log ]; then set +x; \
+        else (set -x; $(MKDIRHIER) $(DESTDIR)/etc/ncl-data/log); fi

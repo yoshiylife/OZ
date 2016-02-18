@@ -1,0 +1,46 @@
+NFE(1)              Nucleus Front-End Built-In-Command               NFE(1)
+
+NAME
+     "cex" - This command generates executors.
+
+SYNOPSIS
+     cex <Executor-ID or Executor-Name> [Executor options]
+
+DESCRIPTION
+     This command calls an Executor.  You have to specify an Executor-ID
+     or an Executor-Name as an argument.  The Executor-ID or the
+     Executor-Name must be registered as its own maintenance information
+     of itself.
+     When you specify an Executor-ID, you have to process it using a
+     hexadecimal number.  If the head character is $, the following
+     characters are recognized as the Executor-Name.
+
+Executor OPTIONS
+     -H <size[k]>    Maximum heap size. The Unit of size is Mbyte. If "k"
+                     follows size, the unit is Kbyte(default 16).
+     -M <max>        Maximum number of threads(default 256).
+     -S <site id>    Site ID(default 1).
+     -T <ticks>      Number of ticks in one second.
+     -d              Running executor as a daemon.	
+     -g              Debug mode(enable OzDebugf() output).
+     -i              Hide the gloval access monitor window.
+     -p              Enable the profile.
+     -s              Open executor shell window.
+     -v              Print the version of executor.
+     -a              Allow linking of all EXTERN symbols of executor.
+     -o              Open console window.
+
+EXAMPLE:
+     nfe> newimage -n TESTEX -c FOR-DEBUG
+                :
+     nfe> newimage -n SEREX -c SERVER-EXECUTOR
+                :
+     nfe> exidlist
+      EXID     EX-NAME                COMMENT
+     00025f    TESTEX                 FOR-DEBUG
+     000260    SEREX                  SERVER-EXECUTOR
+     nfe> cex $TESTEX
+                :
+     nfe> cex 260
+                :
+

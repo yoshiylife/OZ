@@ -1,0 +1,209 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.4 基本データ型</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.4 基本データ型">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION00064000000000000000>5.4 基本データ型</A></H2>
+ <A NAME=langlangmanualdatatype>　</A>
+<P>
+ OZ++
+  言語では基本データ型として、以下のものがある。
+<P>
+<UL><LI> 文字 (<tt> char</tt>)
+<P>
+<tt> unsigned</tt>の指定が可能である。
+<P>
+<LI> 整数 (<tt> short, int, long</tt>)
+<P>
+整数を表現する型として、<tt> short</tt>、<tt> int</tt>、<tt> long</tt> の三種類
+の異なるサイズのものが利用可能である。
+<P>
+それぞれに対して、<tt> unsigned</tt>の指定が可能である。
+<P>
+<LI> 浮動小数 (<tt> float, double</tt>)
+<P>
+浮動小数を表現する型として、<tt> float</tt>、<tt> double</tt>の二種類の
+異なるサイズのものが利用可能である。
+<P>
+<LI> 条件変数 (<tt> condition</tt>)
+<P>
+スレッド間の同期をとるための条件変数を表現する型である 
+(<A HREF="node39.html#langlangmanualconcurrent">5.19</A> 節参照)
+<P>
+
+<P>
+</UL>
+<P>
+基本データ型は値として解釈され、後述する代入および比較は値に対して実行
+される。また、代入および後述するメソッド呼び出しの引数または返り値に基
+本データ型が使用された場合には、次のようになる。
+<P>
+<UL><LI> condition 型の場合
+<P>
+参照が渡される。
+<P>
+<LI> それ以外の場合
+<P>
+すべて値がコピーされる。
+</UL>
+<P>
+<PRE>int a, b;
+
+a = 2;                  // 2 が a にコピーされる 
+b = a;                  // b に a の値がコピーされる 
+if (a &lt; 10)             // a の値(2) と値 10 が比較される 
+  {
+    math-&gt;log(2);       // a の値(2) がコピーされて仮引数に代入される 
+  }
+</PRE>
+<P>
+ OZ++
+  言語では基本データ型の消費する領域のサイズは、C や C++ のように処理系
+の実装依存ではなく、言語においてすべて規定している。ただし、各基本デー
+タ型のアライメント等は実行環境に依存する。
+<P>
+<CENTER>
+<TABLE BORDER>
+<CAPTION ALIGN=TOP><STRONG>表 5.1--4:</STRONG> 基本データ型のサイズ</CAPTION>
+<TR>
+<TH>型</TH><TH>サイズ(単位:バイト)</TH>
+</TR>
+<TR ALIGN=CENTER>
+<TD><TT>char</TT></TD>  <TD>1</TD>
+</TR>
+<TR ALIGN=CENTER>
+<TD><TT>short</TT></TD> <TD>2</TD>
+</TR>
+<TR ALIGN=CENTER>
+<TD><TT>int</TT></TD>   <TD>4</TD>
+</TR>
+<TR ALIGN=CENTER>
+<TD><TT>float</TT></TD> <TD>4</TD>
+</TR>
+<TR ALIGN=CENTER>
+<TD><TT>long</TT></TD>  <TD>8</TD>
+</TR>
+<TR ALIGN=CENTER>
+<TD><TT>double</TT></TD><TD>8</TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<P>
+<H3><A NAME=SECTION00064100000000000000>5.4.1 演算
+ </A></H3>
+<P>
+<tt> condition</tt> を除く基本データ型に対しては、表
+<A HREF="node24.html#tablanglangmanualdataop">5.4--2</A> のような C と同様の演算が可能である。
+<P>
+<A NAME=tablanglangmanualdataop>　</A>
+<P>
+<CENTER>
+<TABLE BORDER>
+<CAPTION ALIGN=TOP><STRONG>表 5.1--5:</STRONG> 演算子の順位と評価の方向</CAPTION>
+<TR>
+<TH>演算子</TH><TH>評価の方向</TH>
+</TR>
+<TR>
+<TD><TT>()</TT></TD><TD ALIGN=CENTER>左から右</TD>
+</TR>
+<TR>
+<TD><TT>! ~ ++ -- + - &amp;(単項演算子)</TD><TD ALIGN=CENTER>右から左</TD>
+</TR>
+<TR>
+<TD><TT>* / %</TT></TD><TD ALIGN=CENTER>左から右</TD>
+</TR>
+<TR>
+<TD><TT>+ -</TT></TD><TD ALIGN=CENTER>左から右</TD>
+</TR>
+<TR>
+<TD><TT>&lt;&lt; &gt;&gt;(二項演算子)</TD><TD ALIGN=CENTER>左から右</TD>
+</TR>
+<TR>
+<TD><TT>&lt; &lt;= &gt; &gt;=</TT></TD><TD ALIGN=CENTER>左から右</TD>
+</TR>
+<TR>
+<TD><TT>== !=</TT></TD><TD ALIGN=CENTER>左から右</TD>
+</TR>
+<TR>
+<TD><TT>&amp;</TT></TD><TD ALIGN=CENTER>左から右</TD>
+</TR>
+<TR>
+<TD><TT>^</TT></TD><TD ALIGN=CENTER>左から右</TD>
+</TR>
+<TR>
+<TD><TT>|</TT></TD><TD ALIGN=CENTER>左から右</TD>
+</TR>
+<TR>
+<TD><TT>&amp;&amp;</TT></TD><TD ALIGN=CENTER>左から右</TD>
+</TR>
+<TR>
+<TD><TT>||</TT></TD><TD ALIGN=CENTER>左から右</TD>
+</TR>
+<TR>
+<TD><TT>?:(三項演算子)</TT></TD><TD ALIGN=CENTER>右から左</TD>
+</TR>
+<TR>
+<TD><TT>= += -= *= /= %= &amp;= |= ^= &lt;&lt;= &gt;&gt;=</TT></TD><TD ALIGN=CENTER>右から左</TD>
+</TR>
+<TR>
+<TD><TT>,</TT></TD><TD ALIGN=CENTER>左から右</TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<P>
+<H3><A NAME=SECTION00064200000000000000>5.4.2 0 (ゼロ)</A></H3>
+ <A NAME=langlangmanualdatatypezero>　</A>
+<P>
+0 は右辺値として  OZ++
+  言語において任意の型に対して利用可能な
+値である。
+
+<P>
+その値の意味は以下のようにそれが利用される型によって決まる。
+<P>
+<PRE>class A;
+
+A a;
+int a = 0;     // 整数の 0 を表す。
+
+if (a == 0)    // クラスのインスタンスの参照がないことを表す。
+  ...
+</PRE>
+<P>
+<UL><LI> <tt> condition</tt> 型を除く基本型の場合は、その型において 0 が表現
+する値を表す
+<P>
+<LI> <tt> condition</tt> 型の場合は、参照がないことを表す
+<P>
+ <LI> クラスおよびスタティッククラスの場合は、インスタンスへの参照が
+ないことを表す (<A HREF="node33.html#langlangmanualclass">5.13</A>、
+<A HREF="node34.html#langlangmanualstaticclass">5.14</A> 節参照)
+<P>
+<LI> レコードの場合は、そのすべてのメンバが 0 であることを表す。
+(<A HREF="node32.html#langlangmanualrecord">5.12</A> 節参照)
+<P>
+<LI> 配列の場合は、配列への参照がないことを表す 
+(<A HREF="node27.html#langlangmanualarray">5.7</A> 節参照)
+<P>
+<LI> プロセス型の場合は、いずれのプロセスも参照していないことを表す
+(<A HREF="node28.html#langlangmanualprocess">5.8</A> 節参照)
+</UL>
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

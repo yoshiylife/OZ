@@ -1,0 +1,20 @@
+uses:
+	class		Object
+	class		ObjectManager
+	class		NameDirectory
+	class		String
+	class		Lib:GUI
+	class		Lib:EntrySelector
+	abstract	ResolvableObject
+	abstract	Launchable
+	shared		DirectoryExceptions
+
+indirect uses:
+	class		SubString
+
+Tcl/Tk:
+	7.3jp/3.4jp(Pixmap)	LoadAndHeapMeter.tcl
+
+notes:
+	Ignore 2 warning in LoadAndHeapMeter.oz
+		(warning: xxx: this variable: `ES' not binded)

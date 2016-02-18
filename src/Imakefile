@@ -1,0 +1,18 @@
+#define	IHaveSubdirs
+#define	PassCDebugFlags	CDEBUGFLAGS="$(CDEBUGFLAGS)"
+DESTDIR	= ${OZROOT}
+SUBDIRS	= etc ncl remotefile ozag thread executor lang debugger newimage \
+	  pikopiko gui kurukuru unix-io boot-class
+
+AllTarget()
+
+install::
+	@if [ "$(DESTDIR)" = "" ]; then \
+	   echo "***" ;\
+	   echo "You must be set environment variable: OZROOT" ;\
+	   echo "***" ;\
+	   exit 1 ;\
+	 fi
+
+MakeSubdirs( $(SUBDIRS) )
+DependSubdirs( $(SUBDIRS) )

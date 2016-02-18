@@ -1,0 +1,12 @@
+(*class* #0001000002000883 0
+(*list*)
+(*list*
+(*declaration* New (*method* void (*list* int (*array* (*scqf* #000100000200006e 8 4) ) int ) 0) constructor #0001000002000883 0 0)
+(*declaration* GetArgument (*method* (*array* (*scqf* #000100000200006e 8 4) ) (*list*) 0) public #0001000002000883 0 1)
+(*declaration* GetDate (*method* #000100000200079c 0 (*list*) 0) public #0001000002000883 0 2)
+(*declaration* GetModificationMode (*method* int (*list*) 0) public #0001000002000883 0 3)
+(*declaration* GetOperation (*method* int (*list*) 0) public #0001000002000883 0 4)
+(*declaration* Hash (*method* (*scqf* int 2) (*list*) 0) public #0001000002000883 0 5)
+(*declaration* IsEqual (*method* int (*list* #0001000002000883 0 ) 0) public #0001000002000883 0 6)
+)
+)

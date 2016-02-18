@@ -1,0 +1,34 @@
+TOP_INCLUDES = -I../include
+	LDOPTIONS = -L/usr/lib
+	LIB = /usr/lib/debug/malloc.o -ly -ll 
+	CC = gcc 
+
+DESTDIR = ${OZROOT}
+BINDIR = /bin
+	CFLAGS = -g $(TOP_INCLUDES)
+
+#      	SRCS = test.c object-image-lib.c
+	OILIB_SRCS =	object-image-lib.c
+#	SRCS1 = main.c y.tab.c lex.yy.c object.c 
+	SRCS1 = main.c y.tab.c lex.yy.c object.c emit.c ref.c print.c
+	OILIB_OBJS =	object-image-lib.o
+#	OBJS1 = main.o y.tab.o lex.yy.o object.o 
+	OBJS1 = main.o y.tab.o lex.yy.o object.o emit.o ref.o print.o
+	YACC_SRCS = parser.y
+	PROGRAMS = oic
+
+OIMAKEFILE=Makefile.oibuild
+OICFE=oicfe
+
+ComplexProgramTarget_1(oic, , $(LIB))
+NormalLibraryTarget(oibuild, $(OILIB_OBJS))
+InstallLibrary(oibuild,/lib)
+InstallNonExecFile($(OIMAKEFILE),/lib)
+InstallScript($(OICFE),$(BINDIR))
+
+lex.yy.c: lex.l y.tab.c
+	lex lex.l
+y.tab.c: parser.y
+	yacc -d -v parser.y
+clean::
+	rm -f y.output y.tab.c y.tab.h lex.yy.c

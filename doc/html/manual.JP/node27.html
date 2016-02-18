@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.7 配列</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.7 配列">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION00067000000000000000>5.7 配列</A></H2>
+ <A NAME=langlangmanualarray>　</A>
+<P>
+ OZ++
+  では、基本型あるいは利用者定義型の派生型として、配列を利用すること
+ができる。配列は参照として解釈され、後述する代入および比較は参照に対し
+て実行されるので、代入は共有を意味する。メソッド呼び出しの引数または返
+
+<P>
+り値に配列が使用された場合には、参照が渡る場合と、配列のコピーが実行
+される場合とがある。
+<P>
+<UL><LI> 同一セル内のグローバルオブジェクトまたはローカルオブジェクトに対
+するメソッド呼び出しの場合は、参照が渡る。
+<P>
+<LI> 同一セル外のグローバルオブジェクトに対するメソッド呼び出しの場合
+は、コピーが実行される。
+</UL>
+<P>
+配列は、
+<P>
+<PRE>int a[];
+</PRE>
+<P>
+のように宣言する。
+<P>
+<H3><A NAME=SECTION00067100000000000000>5.7.1 演算</A></H3>
+<P>
+<tt> length</tt> <BR>
+<P>
+配列には、要素の数(配列の長さと呼ぶ)に関する演算 <tt> length</tt>があり、
+<P>
+<PRE>length a
+</PRE>
+<P>
+のように記述する。これは右辺値、左辺値の両方として利用することが可能
+である。
+<P>
+<UL><LI> 右辺値として利用した場合
+<P>
+配列の長さを返す
+<P>
+<LI> 左辺値として利用した場合
+<P>
+配列の長さを指定された長さに設定する。配列の長さの初期値は 0 である。
+</UL>
+<P>
+宣言された直後のものに <tt> length</tt> を適用した場合には、0 を返す。
+<P>
+<PRE>int a[], len;   // int 型の配列 (長さは 0) 
+
+length a = 10;  // a の長さを 10 にする 
+len = length a; // a の長さ (10) を返す 
+length a = 5;   // a の長さを 5 に縮める 
+length a = 15;  // a の長さを 15 に伸ばす 
+len = length a; // a の長さ (15) を返す
+</PRE>
+<P>
+要素へのアクセス <BR>
+<P>
+配列の要素へのアクセスは、
+<P>
+<PRE>a[5]
+</PRE>
+<P>
+のように記述する。これは右辺値、左辺値の両方として利用することが可能で
+ある。配列の添字は 0 が先頭の要素を表す。配列の長さを越えた要素にアク
+セスしようとした場合には、<tt> ArrayRangeOverflow</tt> というシステム例外
+ (<A HREF="node36.html#langlangmanualexceptkind">5.16.1</A> 節参照) が発生する。
+<P>
+<PRE>int a[];
+
+length a = 3;
+a[0] = 1;       // a の0番目(先頭)の要素に 1 を代入する 
+a[2] = a[0] + 1;
+a[3] = 3;       // エラー。a の長さは 3 
+length a = 2;
+a[2] = 0;       // エラー。a の長さは 2 に縮められている
+</PRE>
+<P>
+代入 <BR>
+<P>
+配列はその要素が存在する記憶領域への参照として解釈される。したがって代
+入および比較は参照に対して実行され、代入は共有を意味する。
+<P>
+また配列型の変数は宣言された直後はいずれへの参照も持たず、値として 0 
+を持っている (<A HREF="node24.html#langlangmanualdatatypezero">5.4.2</A> 節参照) 。さらに、
+配列型の変数に 0 を代入することによって、それまでの参照をなくすことが可
+能である。
+<P>
+<PRE>int a[], b[];
+
+length a = 10;
+b = a;
+length b = 5;
+a[8] = 8;       // エラー
+a = 0;          // 以後 a は参照を持たない
+</PRE>
+<P>
+上の例では <tt> a</tt> と <tt> b</tt> は同じ配列を共有しているので、<tt> b</tt> に
+対して行なった配列の長さを縮める操作は結果的に <tt> a</tt> にも影響が及ぶ
+ことに注意する必要がある。
+<P>
+<H3><A NAME=SECTION00067200000000000000>5.7.2 多次元配列</A></H3>
+<P>
+配列の宣言で <tt> []</tt> を2個以上隣接させることによって、多次元配列を利
+用することができる。
+<P>
+多次元配列の長さは、次元ごとに指定する。
+<P>
+<PRE>int a[][];
+
+length a = 2;
+length a[0] = 10; 
+length a[1] = 5;
+</PRE>
+<P>
+上の例は二次元配列を利用する場合であるが、<tt> a[0]</tt>、<tt> a[1]</tt> は共
+に <tt> int</tt> 型の配列への参照である。したがって次のような記述も可能で
+ある。
+<P>
+<PRE>int a[][], b[];
+
+length a = 2;
+length b = 10;
+a[0] = b;
+</PRE>
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

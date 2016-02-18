@@ -1,0 +1,16 @@
+NFE(1)              Nucleus Front-End Built-In-Command               NFE(1)
+
+NAME
+     "alias" - substitutes the built-in-commands of nfe.
+
+SYNOPSIS
+     alias [command1 command2 ... commandN]
+
+DESCRIPTION
+     "alias" substitutes the strings from command2 .... commandN
+     into command1.  If no arguments are specified, a list of a-
+     liases is displayed.
+
+EXAMPLE
+     nfe> alias c cex 101
+

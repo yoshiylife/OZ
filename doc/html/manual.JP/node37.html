@@ -1,0 +1,582 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.17 継承</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.17 継承">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION000617000000000000000>5.17 継承</A></H2>
+ <A NAME=langlangmanualinheritance>　</A>
+<P>
+クラスは他のクラスを多重継承して定義することができる。継承するクラスを
+親クラスと呼び、新しく定義したクラスを子クラスと呼ぶ。子クラスは親クラ
+スのインスタンス変数とメソッドを継承する。このとき親クラスのメソッドを
+再定義することもできる。また、親クラスと異なるアクセス制御を設定するこ
+とが可能である。
+<P>
+継承する親クラスの間で名前が衝突する場合は改名を用いて名前の衝突を回避
+することができる。また再定義した親クラスのメソッドを呼び出すためにメソッ
+ドに別名を付けることも可能である。
+<P>
+継承する親クラスの指定はクラスの定義において次のように宣言する。
+<P>
+<PRE>class_def
+        : class_sc CLASSNAME parents '{' class_body '}' 
+        ;
+
+parents
+        : /* empty */
+        | ':' parent_lists
+        ;
+
+parent_lists
+        : parent
+        | parent_lists ',' parent
+        ;
+
+parent
+        : CLASSNAME
+        | CLASSNAME '(' rename_alias_lists ')'
+        ;
+</PRE>
+<P>
+例えばクラス A 、B を親クラスとする子クラス X の場合は次のように記述する。
+<PRE>class X : A, B {
+...
+}
+</PRE>
+<P>
+<H3><A NAME=SECTION000617100000000000000>5.17.1 メソッドの継承</A></H3>
+<P>
+private 以外のクラスのメソッドは動的束縛である 
+(<A HREF="node43.html#langlangmanualmethodexec">5.23</A> 節参照)。つまりあるクラス型の変数
+に束縛されているオブジェクトに対するメソッドは、変数の型によって決定さ
+れるのではなく、束縛されているオブジェクトによって決定される
+<A NAME=tex2html10 HREF="footnode.html#2548">※</A>。
+以下のコードにおいて最初のメソッド foo の呼び出しではクラス A のメソッ
+ド foo が呼ばれ、次のメソッド foo の呼び出しでは、クラス B のメソッド 
+foo が呼ばれる。
+<P>
+<PRE>class A {
+  public: foo;
+
+  foo() {...}
+}
+
+class B : A {
+  public: foo;
+
+  foo() {...}
+}
+
+// あるコードにおいて
+    B b;
+    A a;
+
+    a=&gt;new();  // クラス A のインスタンス作成
+    a-&gt;foo();  // クラス A の foo が呼び出される
+
+    b=&gt;new();  // クラス B のインスタンス作成
+    a = b;     // 型変換可能
+    a-&gt;foo();  // クラス B の foo が呼び出される
+</PRE>
+<P>
+継承した、メソッド、インスタンス変数を削除することはできない。しかし、
+アクセス制御により、顧客クラスや子クラスにこれらを非公開にすることは可
+能である。しかし、その場合でも全くアクセスできないとは限らない。以下
+の例で、クラス B のインスタンスをクラス B の型の変数に束縛している場合、
+メソッド foo は呼び出せないが、クラス A の型の変数に束縛していればメソッ
+ド foo を呼ぶことができる。また、クラス B のサブクラス C のメソッド中
+で、 <tt> self</tt> をクラス A 型の変数に束縛すれば同様に foo を呼ぶことが
+可能となる。
+<P>
+<PRE>class A {
+  public: foo;
+
+  foo() {...}
+}
+
+class B : A {
+  private: foo;
+}
+
+// あるコードにおいて
+    B b;
+    A a;
+
+    b-&gt;foo();  // コンパイルエラー
+    a = b;     // 型変換可能
+    a-&gt;foo();  // OK
+//
+
+class C : B {
+  void bar() 
+    {
+      A a;
+      a = self;
+      a-&gt;foo();    // OK
+    }
+}
+</PRE>
+<P>
+<H3><A NAME=SECTION000617200000000000000>5.17.2 改名</A></H3>
+<P>
+次節で述べるように、改名は多重継承時に名前の衝突を回避するためのもので
+あるが、単独でも使用することが可能である。
+<P>
+改名とは、あるクラスにおいて
+継承する親クラスでの名前を変更するものである。
+この名前の変更は、このクラスの顧客クラス、子クラスの両方で有効となり、
+改名する前の名前は無効となる。
+改名する名前はインスタンス変数、メソッドのどちらでも構わない。
+<P>
+改名は次のように記述する。
+<P>
+<PRE>rename_alias_lists
+        : rename_alias
+        | rename_alias_lists rename_alias
+        ;
+
+rename_alias
+        : 'rename' IDENTIFIER IDENTIFIER ';'
+        ;
+</PRE>
+<P>
+例えば親クラス A での名前 old_name1 を子クラス B で
+new_name1 に、そして old_name2 を new_name2 に改名したい場合は
+次のように記述する。
+<P>
+<PRE>class B : A (
+  rename old_name1 new_name1;
+  rename old_name2 new_name2;) {
+...
+}
+</PRE>
+<P>
+この時改名する前の名前が親クラスで定義されていなければエラーとなる。
+また、同じ名前を二度改名することはできない。
+<P>
+以下のコードにおいてクラス A の子クラスであるクラス B が、クラス A の
+名前を改名した場合、クラス B の顧客クラスや、子クラス では、改名した名
+前が有効となる。ただし、クラス B のインスタンスをクラス A の変数に束縛
+した場合はもとのクラス A での名前が有効となり、クラス B で改名した名前
+は無効である。
+<P>
+<PRE>class A {
+  public: foo;
+
+  foo() {...}
+}
+
+class B : A {rename foo bar;} {
+  public: bar;
+}
+
+// あるコードにおいて
+    B b;
+    A a;
+
+    b-&gt;foo();  // コンパイルエラー
+    b-&gt;bar();  // OK
+    a = b;     // 型変換可能
+    a-&gt;foo();  // OK ( b-&gt;bar() と同じ)
+    a-&gt;bar();  // コンパイルエラー
+</PRE>
+<P>
+改名後、改名する前の名前を新たなクラスメンバの定義に利用することは可能
+である。ただし、この場合は同じ名前でも違うものを参照することになるため
+注意が必要である。以下のコードにおいて最初の foo のメソッド呼び出しで
+はクラス B の old_foo メソッドが呼ばれ
+<A NAME=tex2html11 HREF="footnode.html#2551">※</A>、次の foo メソッドの呼び出しでは
+クラス B の foo メソッドが呼ばれる。
+<P>
+<PRE>class A {
+  public: foo;
+
+  foo() {...}
+}
+
+class B : A {rename foo old_foo; } {
+  public: foo, old_foo;
+
+  foo() {...}
+  old_foo() {...}  // クラス A の foo (old_foo の古い名前)メソッドを再定義。
+}
+
+// あるコードにおいて
+    B b;
+    A a;
+
+    b=&gt;new();  // クラス B のインスタンス作成
+    a = b;     // 型変換可能
+    a-&gt;foo();  // クラス B の old_foo メソッドの呼び出し
+    b-&gt;foo();  // クラス B の foo メソッドの呼び出し
+</PRE>
+<P>
+<H3><A NAME=SECTION000617300000000000000>5.17.3 別名</A></H3>
+<P>
+別名とは、親クラスで定義されているメソッドの名前が参照しているメソッド
+の実装を、別の新しく定義されたメソッドの名前で参照するものである。改名
+と異なり、別名をつける親クラスで定義されたメソッド名と、別名で定義した
+新しいメソッド名のいずれも有効である。つまり別名の機能を用いれば、一つ
+のメソッドの実装を二つのメソッドの名前で参照することができる。したがっ
+て、新しく定義された名前のメソッドの引数および返り値の型は、親クラスで
+定義されているメソッドのものと同一となる。また、インスタンス変数
+には別名を付けることはできない。
+<P>
+別名は次のように記述する。
+<P>
+<PRE>rename_alias_lists
+        : rename_alias
+        | rename_alias_lists rename_alias
+        ;
+
+rename_alias
+        | 'alias' IDENTIFIER IDENTIFIER ';'
+        ;
+</PRE>
+<P>
+例えば親クラス A でのメソッド name1 を子クラス B で
+alias_of_name1 に、そして name2 を alias_of_name2 に改名したい場合は
+次のように記述する。
+<PRE>class B : A (
+  alias name1 alias_of_name1;
+  alias name2 alias_of_name2; ) {
+...
+}
+</PRE>
+<P>
+この時別名をつけるメソッドが親クラスで定義されていなければエラーとなる。
+また、同じメソッド名に二つの別名を付けることや、別名を public,
+protected とすることはできない。つまり、別名は private となり他のクラ
+スからアクセスすることはできない。
+<P>
+別名は、再定義して見えなくなってしまった親クラスのメソッドの実装を呼び
+出すために用意している。例えばクラス A の子クラス B が、クラス A で
+定義されているメソッドを、何か前処理をしてクラス A でのメソッドの実装
+を呼ぶように変更したい場合がある。これは Smalltalk などでは、super と
+いう記法を用いて行なわれことで、OZ++ では別名を用いて次のように行なう。
+<P>
+例えば以下のコードにおいてクラス B のメソッド foo は、自分自身のメソッ
+ド foo を呼び出してしまい計算が進まない。
+<P>
+<PRE>class A {
+  public: foo;
+
+  foo() {...}
+}
+
+class B : A {
+  public: foo;
+
+  foo() 
+    {
+      foo();        // 自分自身の呼び出し
+    }
+}
+</PRE>
+<P>
+そこで以下のように、別名を用いてクラス A で実装されているメソッドの 
+foo に、 super_foo という名前をつけ、クラス B の foo で、 super_foo 
+を呼ぶことで解決する。
+<P>
+<PRE>class A {
+  public: foo;
+
+  foo() {...}
+}
+
+class B : A (alias foo super_foo;) {
+  public: foo;
+
+  foo() 
+    {
+      super_foo();    // クラス A の foo の呼び出し
+    }
+}
+</PRE>
+<P>
+<H3><A NAME=SECTION000617400000000000000>5.17.4 多重継承</A></H3>
+<P>
+OZ++ では子クラスを定義する時、複数の親クラスを指定することができる。
+親クラスの間で名前が衝突した時は前に述べた改名の機能を用いてこれを解決
+する。また、親クラスで実装されているメソッド名も衝突するのでこちらは別
+名を用いて解決する。ただし子クラスで衝突する名前を使用しなければ改名、
+別名を行なう必要はない (public や protected で使用する場合も含む)。
+<P>
+例えばクラス A 、B を親クラス、クラス X をこれらの子クラスとし、クラス 
+A 、B でメソッド名 foo が衝突している場合、以下のように記述することに
+よって名前の衝突を避けることができる。
+<P>
+<PRE>class A {
+  public: foo;
+
+  void foo() {...}    // メソッド foo を定義
+}
+
+class B {
+  public: foo;
+  void foo() {...}    // メソッド foo を定義
+}
+
+// 名前 foo が衝突するので、rename 、alias で衝突を避ける
+class C : A (
+    rename foo a_foo;          // A の foo を a_foo に改名
+    alias foo super_a_foo; ),  // A の foo の実装に別名 super_a_foo を付ける
+
+  B (
+    rename foo b_foo;          // B の foo を b_foo に改名
+    alias foo super_b_foo; ) { // B の foo の実装に別名 super_b_foo を付ける
+
+  public: a_foo, b_foo;
+
+  void a_foo() 
+    {                          // A の foo を再定義
+      ...
+      super_a_foo();           // A の foo の実装を呼び出す
+      ...
+    }
+
+  void b_foo() 
+    {                          // B の foo を再定義
+      ...
+      super_b_foo();           // B の foo の実装を呼び出す
+      ...
+    }
+}
+</PRE>
+<P>
+また、クラス C のインスタンスが型 A や、型 B の変数に束縛されている場
+合、メソッド foo のメソッド呼び出しはそれぞれ、クラス C の a_foo 、
+b_foo が呼び出されることになる。
+<P>
+<PRE>// あるコードにおいて、
+  C c;
+  A a;
+  B b;
+
+  c=&gt;new();      // C のインスタンス作成
+  c-&gt;a_foo();    // C の a_foo の呼び出し
+  c-&gt;b_foo();    // C の b_foo の呼び出し
+  c-&gt;foo();      // 改名されているので名前 foo は未定義なため、コンパイルエラー
+  a = c;         // 型変換可能
+  b = c;         // 型変換可能
+  a-&gt;foo();      // C の a_foo の呼び出し
+  b-&gt;foo();      // C の b_foo の呼び出し
+</PRE>
+<P>
+<H3><A NAME=SECTION000617500000000000000>5.17.5 反復継承</A></H3>
+<P>
+反復継承とは、親クラスの祖先を辿っていったときに同じクラスが二度以上出
+現していることを指す。例えば、クラス A 、B の親クラスを X 、クラス C 
+の親クラスを A 、B とする。この時、クラス C は親クラスの祖先の中に同一
+のクラス X が二度出現している。この場合クラス C のインスタンスはクラス 
+X の部分を二つ持つことになる。これを図にすると図
+<A HREF="node37.html#langinheritrepeatinherit">5.17--1</A>のようになる。 OZ++ ではこの場合ク
+ラス X の部分を一つにすることはできない
+<A NAME=tex2html12 HREF="footnode.html#2556">※</A>。
+<P>
+<A NAME=langinheritrepeatinherit>　</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD WIDTH=30></TD>
+<TD>
+<IMG ALIGN=BOTTOM ALT="lang-inherit-repeat-inherit.gif"
+ SRC="figure/lang-inherit-repeat-inherit.gif">
+</TD>
+<TD WIDTH=30></TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>図 5.1--3:</STRONG> 共通の祖先の部分</CAPTION>
+</TABLE>
+</CENTER>
+
+<P>
+反復継承において、重複している部分をどのようにして制御するかを以下に示
+す。次のような例を考える。 vehicle (乗物) というクラスがありこの子クラ
+スとして car (自動車)、ship (船) がある。そして、car 、ship を多重継承
+して amphibious (水陸両用車) を定義する (図
+<A HREF="node37.html#langinheritamphibious">5.17--2</A>参照)。
+<P>
+<A NAME=langinheritamphibious>　</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD WIDTH=30></TD>
+<TD>
+<IMG ALIGN=BOTTOM ALT="lang-inherit-amphibious.gif"
+ SRC="figure/lang-inherit-amphibious.gif">
+</TD>
+<TD WIDTH=30></TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>図 5.1--4:</STRONG> クラス amphibious の継承図</CAPTION>
+</TABLE>
+</CENTER>
+
+<P>
+まずクラス vehicle でインスタンス変数 speed 、fuel と、これらの値を設
+定するメソッド set_speed、set_fuel を定義する。
+<P>
+<PRE>class vehicle {
+ public:    set_speed, set_fuel;
+ protected: speed, fuel;
+
+  int speed;
+  int fuel;
+
+  void set_speed (int x) 
+    {
+      speed = x;
+    }
+
+  void set_fuel(int x) 
+    {
+      fuel = x;
+    }
+}
+</PRE>
+<P>
+クラス car や ship では特にこれらのメソッドを再定義せず、
+クラス vehicle の物をそのまま利用するとする。
+<P>
+<PRE>class car : vehicle {
+ public:    set_speed, set_fuel;
+ protected: speed, fuel;
+}
+
+class ship : vehicle {
+ public:    set_speed, set_fuel;
+ protected: speed, fuel;
+}
+</PRE>
+<P>
+クラス amphibious では、 speed は car としての speed と ship としての 
+speed の二つを持ち、 fuel は car 、ship で共有したいとする。
+<P>
+まず speed は car と ship で名前が
+衝突しているので各々次のように改名する。
+<P>
+<CENTER>
+<TABLE>
+<TR ALIGN=CENTER>
+<TD>car の speed</TD><TD><IMG SRC="figure/rightarrow.gif"></TD><TD>car_speed</TD>
+</TR>
+<TR ALIGN=CENTER>
+<TD>ship の speed</TD><TD><IMG SRC="figure/rightarrow.gif"></TD><TD>ship_speed</TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<P>
+amphibiouse としては、car としての speed の設定と ship としての speed 
+の設定が個別に行なえなくてはならないため set_car_speed 、
+set_ship_speed の二つのメソッドを新たに定義する。なお、単に 
+set_speed が呼ばれた時にどちらの speed を設定するかわからないのでこの
+メソッドは公開しない (public としない)。
+<P>
+次に fuel は、speed と同様に名前が衝突するので改名を行なうが、 car と
+しての fuel と ship としての fuel を同一にするためには、各々の fuel の
+値を常に同じ値にする必要がある。このため car の set_fuel 、ship の 
+set_fuel の二つのメソッドを再定義しなければならない。ところが再定義し
+ようとすると、これらの名前が衝突してしまう。従ってメソッド名の改名も行
+なわなければならない。まとめると、次のような改名を行なう必要がある。
+<P>
+<CENTER>
+<TABLE>
+<TR ALIGN=CENTER>
+<TD>car の fuel</TD><TD><IMG SRC="figure/rightarrow.gif"></TD><TD>car_fuel</TD>
+</TR>
+<TR ALIGN=CENTER>
+<TD>car の set_fuel</TD><TD><IMG SRC="figure/rightarrow.gif"></TD><TD>car_set_fuel</TD>
+</TR>
+<TR ALIGN=CENTER>
+<TD>ship の fuel</TD><TD><IMG SRC="figure/rightarrow.gif"></TD><TD>ship_fuel</TD>
+</TR>
+<TR ALIGN=CENTER>
+<TD>ship の set_fuel</TD><TD><IMG SRC="figure/rightarrow.gif"></TD><TD>ship_set_fuel</TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<P>
+また、上の二つのメソッドを改名してしまうと
+set_fuel という名前のメソッドがなくなってしまうため、
+新たに set_fuel というメソッドを定義する必要がある。
+<P>
+結果として amphibious のクラスは次のようになる。
+<P>
+<PRE>class amphibious :
+  car(
+    rename speed car_speed;
+    rename fuel car_fuel;
+    rename set_fuel car_set_fuel; ),
+
+  ship(
+    rename speed ship_speed;
+    rename fuel ship_fuel;
+    rename set_fuel ship_set_fuel; ) {
+
+ public: set_car_speed, set_ship_speed, set_fuel;
+
+  void set_car_speed (int x) 
+    {
+      car_speed = x;              // car の speed を設定
+    }
+
+  void set_ship_speed (int x) 
+    {
+      ship_speed = x;             // ship の speed を設定
+    }
+
+  void set_fuel (int x) 
+    {
+      car_fuel = ship_fuel = x;   // car と ship の fuel を設定
+    }
+
+  void car_set_fuel(int x)        // car の set_fuel を再定義
+    {     
+      set_fuel(x);
+    }
+
+  void ship_set_fuel(int x)       // ship の set_fuel を再定義
+    {    
+      set_fuel(x);
+    }
+}
+</PRE>
+<P>
+クラス amphibious のインスタンスが car 型の変数に束縛されている場合の
+set_fuel の呼び出しは次のようになる。
+<P>
+<UL><LI> car の set_fuel は amphibious で car_set_fuel に改名されている。
+<LI> car_set_fuel は再定義されている。
+<LI> したがって amphibious の car_set_fuel が呼び出される。
+<LI> amphibious の car_set_fuel から amphibious の set_fuel が
+呼び出される。
+<LI> car_fuel 、すなわち car の fuel と ship_fuel 、
+すなわち ship の fuel が同じ値に設定される。
+</UL>
+ship 型の変数に束縛されている場合も同様である。
+このようにして、fuel という変数を同一のものとして扱うことが可能となる。
+<P>
+先に述べたように OZ++ では反復継承において重複しているクラスは別々の部
+分を持つことになるが、ここで述べた技法を用いれば反復継承において全ての
+インスタンス変数を同一のように見せることも可能であり、また必要に応じて
+一部分のみを同一に見せることも可能である。
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

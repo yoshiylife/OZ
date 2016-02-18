@@ -1,0 +1,11 @@
+NFE(1)              Nucleus Front-End Built-In-Command               NFE(1)
+
+NAME
+     "quit" - terminates nfe.
+
+SYNOPSIS
+     quit
+
+DESCRIPTION
+     "quit" terminates nfe.
+

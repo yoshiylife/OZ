@@ -1,0 +1,25 @@
+#define	IHaveSubdirs
+#define	PassCDebugFlags	CDEBUGFLAGS="$(CDEBUGFLAGS)"
+DESTDIR		= ../..
+BINDIR		= /bin
+NCLDIR		= /etc/ncl-data
+CC		= gcc
+INCLUDES	= -I. -I../../include
+CFLAGS		= -g -DRELEASE -D_NCL_CODE_ -DDEBUG $(INCLUDES)
+LOCAL_LDFLAGS	= -g -static
+SUBDIRS		= tool ncl-data
+
+	SRCS	= ncl.c ncl_table.c ncl_extable.c ncl_exidmanage.c \
+		  ncl_commands.c ncl_debugger.c et-hash.c shmlib.c \
+		  ncl_log.c
+	OBJS	= ncl.o ncl_table.o ncl_extable.o ncl_exidmanage.o \
+		  ncl_commands.o ncl_debugger.o et-hash.o shmlib.o \
+		  ncl_log.c
+
+AllTarget(ncl)
+NormalProgramTarget(ncl,$(OBJS), , , )
+InstallProgramWithFlags(ncl,$(BINDIR), -m 4755)
+DependTarget()
+
+MakeSubdirs( $(SUBDIRS) )
+DependSubdirs( $(SUBDIRS) )

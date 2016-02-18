@@ -1,0 +1,465 @@
+/*
+ * Copyright(c) 1994-1997 Information-technology Promotion Agency, Japan(IPA)
+ *
+ * All rights reserved.
+ * This software and documentation is a result of the Open Fundamental
+ * Software Technology Project of Information-technology Promotion Agency, 
+ * Japan(IPA).
+ * 
+ * Permissions to use, copy, modify and distribute this software are governed 
+ * by the terms and conditions set forth in the file COPYRIGHT, located in 
+ * this release package.
+ */
+
+1. Preface
+
+  A guide line is presented for indicating which function should be assigned 
+to which machine at a site and how to set it appropriately when OZ++ is used. 
+
+  The OZ++ system performs calculations by operating on objects on the
+executive system known as an executor.  The executor cannot operate by
+itself, so it is necessary to have a nucleus that can manage the executor
+existing on each machine and supply basic functions such as communication
+etc.  There are several types of nucleus suitable for these roles.
+Therefore, it becomes necessary to make available the proper nucleus.
+To enable the communication among sites, it is necessary to lay out the
+application gateway which relays the nucleus communication.  The same
+applies to objects.  That is, not only the user object but also the
+management object supporting the user object should be placed at the
+proper position in the site.
+  In this document, the system configuration is presented.  Also, the
+layout of the application gateway, the nucleus and management objects in
+the system are described.
+
+2. Configuration of OZ++ System
+
+  The configuration of the OZ++ system is as follows:
+
+  * OZ++ world
+    An OZ++ world is the range which can be accessed in the OZ++ system.
+    An OZ++ world is composed of more than one site.  In case of
+    inter-site access through the internet, a firewall is introduced, and
+    the network is divided into the insecure zone and the restricted
+    internal network.  The OZ application gateway in the unarmed belt and
+    the relay nucleus in the internal network must be started.
+    In an environment without a firewall, the entire network becomes an
+    insecure zone.
+
+  * Site
+    A range in which a logical broadcast can be performed is called a site.  
+    While a domain represents a logical management unit, a site is a
+    management unit that depends on the physical configuration of a network.
+    A site is composed of more than one segment.
+
+  * Segment
+    A range in which a physical broadcast can be performed is called a
+    segment.  A segment is comprised of more than one station belonging to
+    the same physical segment.  To enable a broadcast to be performed
+    between segments of the same site, a halfrouter nucleus (described
+    later) is set on each segment.
+    The logical broadcast is one that is performed over segments through
+    the relay of the halfrouter nucleus, as shown in Figure 1.
+
+  * Station
+    This is a computer.  One nucleus and more than 0 executors should be
+    set on each station.
+
+          [Segment-A]                              [Segment-B]
+
+      +---+  +---+  +---+                      +---+  +---+  +---+        
+      | N |  | N |  | H |<-------------------->| H |  | E |  | N |       
+      +-+-+  +-+-+  +-+-+  Relay of broadcast  +-+-+  +-+-+  +-+-+        
+        |      |      |                          |      |      |
+    =---+------+------+--------=        =--------+------+------+---=
+     <-------------------->  :            :  <-------------------->
+       physical broadcast    :............:    physical broadcast
+           on segment-A                            on segment-B
+
+     <------------------------------------------------------------>
+                       logical broadcast in Site
+
+              N: Nucleus
+              H: HalfRouter Nucleus
+              E: ExecutorID Management Nucleus
+
+            (Figure 1: Propagation Image of Logical Broadcast)
+
+3. System Setup
+
+  In case of inter-site access through the internet, a firewall is
+introduced, and the following procedure must be performed to install and
+run the OZ++ system started by either the application gateway outside the
+firewall or the relay nucleus inside the firewall.
+
+3.1 Acquisition of Site ID
+
+  Acquisition of site ID is necessary for inter-site communication.
+
+  The necessary site IDs can be obtained by applying to a particular
+organization which manages the worldwide unique IDs.  The applied site ID
+must be registered in the site database.  Also, this ID must be made
+accessible on demand.
+  At present, the method to implement for this aquisition of site ID is
+still unknown.
+
+3.2 Layout of the Application Gateway
+
+  The application gateway is operated in a machine of the unarmed belt in
+the network.  Through this gateway communication between the internal
+network and other sites is possible.  A site in the internal network which
+can be relayed is called a local site.
+  Please see README.ozag for an explanation of the application gateway.
+
+  The following cases can be considered as the paths of inter-site
+communication by the application gateway.  The relay process for address
+solution is shown in figure.
+    
+  * Relay between a local site and another site (see figure 2)
+    Relay is performed between the site managed by the application gateway
+    and the other site.
+  ,A!* Relay inside a local site (see figure 3)
+    The application gateway manages several sites, and performs relay
+    within the range of the management.  
+
+
+                [Site-1]           +--------+           [Site-2]
+                                   |        |
+   =---+------------+------------+-+-=    =-+-+------------+------------+---=
+       |            |            |            |            |            |
+   +---+--+(11)+----+---+(10)+---+---+ (9)+---+---+ (8)+---+----+ (7)+--+---+
+   |      |<---|        |<---|       |<---|       |<---|        |<---|      |
+   | Ncl1 |    | R-Ncl1 |    | APGW1 |    | APGW2 |    | R-Ncl2 |    | Ncl2 |
+   |      |===>|        |--->|       |--->|       |--->|        |===>|      |
+   +------+(2) +--------+(3) +-------+(4) +-------+(5) +---+----+(6) +--+---+
+  (12)| ^                                                               |
+      V |(1)                                                            |
+    +-----+            ====> Broadcast communication                 +--+--+
+    | EX1 |                                                          | EX2 |
+    +-----+            ----> Connection communication                +-----+
+
+                   Figure 2: Relay of Local-site and Remote-site
+
+
+             [Site-2]                               [Site-3]
+
+   =---+--------------+-------------+-------------+--------------+----=
+       |              |             |             |              |
+   +---+--+  (9) +----+---+ (8) +---+---+ (7) +---+----+  (6) +--+---+
+   |      |<-----|        |<----|       |<----|        |<-----|      |
+   | Ncl2 |      | R-Ncl2 |     | APGW2 |     | R-Ncl3 |      | Ncl3 |
+   |      |=====>|        |---->|       |---->|        |=====>|      |
+   +------+ (2)  +--------+ (3) +-------+ (4) +--------+ (5)  +--+---+
+  (10)| ^                                                        |
+      V |(1)                                                     |
+    +-----+            ====> Broadcast communication          +--+--+
+    | EX2 |                                                   | EX3 |
+    +-----+            ----> Connection communication         +-----+
+
+                   Figure 3: Relay of inside Local-Site
+
+        APGW: Application GateWay
+        R-Ncl: Relay Nucleus
+        Ncl: Nucleus
+        EX: Executor
+
+3.2.1 Acquisition of Site Table
+
+  The site table ($OZROOT/etc/SITE_table) is the text file read when the
+application gateway is started.  It contains the following items:
+
+     <site ID>:<host name or IP-Address of application gateway>:
+
+     Example:
+        % cat $OZROOT/etc/SITE_table
+        0004:192.33.202.15:
+        0005:bunax3:
+        0006:bun17
+        0007:192.31.202.11:
+
+  The site table is obtained from the database in the organization which
+manage the site ID.  The site table might be renewed periodically.
+
+3.2.2 Setup of Local Site
+
+  The setup of a local site is registered in a text file called the local
+site information ($OZROOT/etc/apgw_LSiteInfo).
+  The site ID registered in local site information must already be
+registered in the site table.
+  In the setup of local site information, the information for only one site
+is described per line of the file.  The usage is described below:
+
+     <site ID>:<rncl IP-Address>:<rncl port>:<type of site>
+
+  There are two types of site: open site and closed site.
+
+  (1) The setup of local site information is shown in figure 2
+     In this case, the local site information is registered as follows:
+
+     Setup of Site-1:
+        Site-1:<IP-Address of R-Ncl1>:<port of R-Ncl1>:<type of site>
+     Setup of Site-2:
+        Site-2:<IP-Address of R-Ncl2>:<port of R-Ncl2>:<type of site>
+
+     Example of local site information of Site-1
+        % cat $OZROOT/etc/apgw_LSiteInfo
+        0005:bunax3:3777:CLOSE_SITE
+
+     Example of local site information of Site-2
+        % cat $OZROOT/etc/apgw_LSiteInfo
+        0001:bun13:3777:CLOSE_SITE
+
+  (2) The setup of local site information is shown in Figure 3
+     In this case, the local site information is registered as follows:
+
+     Site-2:<IP-Address of R-Ncl2>:<port of R-Ncl2>:<type of site>
+     Site-3:<IP-Address of R-Ncl3>:<port of R-Ncl3>:<type of site>
+
+     Example:
+        % cat $OZROOT/etc/apgw_LSiteInfo
+        0005:bunax3:3777:CLOSE_SITE
+        0002:bun12:3777:OPEN_SITE
+
+3.3 Layout of a Nucleus
+
+  There are some nuclei which play special roles in the site, and it is
+very important to lay them out properly.
+  The layout of these nuclei is set by registering them in a text file
+called the nucleus table ($OZROOT/etc/ncl-data/NCL_table).  Please see
+README.nucleus for an explanation of nucleus.
+
+3.3.1 Executor ID Management Nucleus
+
+  The executor which carries and executes the object is identified by a
+unique ID at the site.  This ID is called an executor ID.  The executor ID
+management nucleus is one that performs centralized management for the
+creation of the executor.  The new executor ID is obtained from the
+executor ID management nucleus, to ensure the impartment of the unique
+executor ID at the site.
+  Be sure to set only one executor ID management nucleus at a site.  It is 
+necessary for the nucleus, to be operational at all times and so it should
+be started on a station that is working continuously.
+
+3.3.2 Relay Nucleus
+
+  The relay nucleus communicates with the application gateway, and relays
+the transmission of demands to and reception of demands from other sites.
+  The setup of a relay nucleus defines the application gateway corresponding 
+to the relay nucleus in the nucleus table.
+
+     RELAYNCL:<IP-Address of Relay nucleus>:<OZAG IP-Address>
+
+  For those nuclei registered as relay nuclei, it is necessary to maintain
+mutual consistency between these nuclei and the relay nuclei registered in
+the local site information of the application gateway.
+
+3.3.3 Halfrouter Nucleus
+
+  The nucleus relaying the physical broadcast is called a halfrouter nucleus
+(refer to Fig. 1).
+  When the site is composed of several segments, it is necessary to set one
+halfrouter nucleus in each segment.
+
+4. Configuration of Management Object
+
+  A series of objects is prepared in OZ++ to provide the necessary functions
+for the user object operation.  These objects are called a distributed
+object management system in summary.  To operate the user object, it is
+necessary to properly lay out the management object.  The name and outline
+of each management object are shown as follows.
+
+  * Object Manager
+    Only one object manager is required for each executor.
+    It manages the state of global object on the executor.
+    It has global object functions such as generation, stop, deletion, pause,
+    etc.
+
+  * Class Object
+    Generally, one class object is required for each station.
+    It manages classes (executable code etc.)
+    The executor needs a class of object to be operated on it.
+    The class takes on the function of this supplying.
+    If a class without self-management is required, the requirement is
+    transmitted through a network and supplied to the executor after the
+    class delivery is received by the class object which manages the class.
+
+  * Name Directory
+    Only one name directory is required in a domain (to be described later).
+    It assigns a name to a global object, so that the global object can be
+    referred to by its name.
+
+  * Catalog
+    Only one catalog is required in a domain.
+    It assigns names for the open application and class library, and then
+    stores them.
+    As a management object needs another management object to control its
+    operation, an object image including a management object must be created
+    at the beginning.  The newimage is provided as a tool for creating the
+    object image of the management object.  Produce the image with the use
+    of this tool.  The method of using this tool is written in
+    README.newimage
+
+4.1 Domain
+
+  The management objects described above are registered under the following
+names in the name directory.
+
+     Class object       ":class : xxxxxx"
+     Name directory     ":name "
+     Catalog            ":catalog "
+
+In the case of newimage unless otherwise specified, xxxxxx is filled in with
+six digits that comprise the ID sequence number part of the executor where the
+class object exists.  If the executor ID is 0001001402000000, the six digits
+are 001402.
+  The name space of an object created by the name directory, such as that
+shown above, is called a domain.  The previous section states that only one
+name directory and only one catalog are required in a domain.  This means
+that there are objects corresponding to ":name" and ":catalog" and they have
+to play the roles of name directory and catalog.
+  You can build any number of domains in site, but each of them must has a name
+directory and a catalog.
+
+4.2 Characteristics of Management Object
+
+  When various objects are laid out, various characteristics are shown.
+
+4.2.1 Object Manager
+
+  Only one object manager can be created in each executor.
+
+4.2.2 Class Object
+
+  The class object can supply the classes not only for the executor on which
+it exists, but also for other executors sharing a common OZROOT.  Therefore,
+it is possible for each OZROOT to actuate the overall system as long as at
+least one class object operates.  Usually, since the OZROOT is made by each
+station, it is believed that the class object is also required for each
+station.  However, when OZROOT is shared according to NFS, etc., it is
+feasible to have only one class object at least for the group of stations.
+  Since the OZROOT without class object is disabled from operating, it is
+necessary to hold the class objects for those executors that may not be
+started at the same time.  Otherwise, it is desirable to prepare an executor
+which is always running and to set a class object on this executor.
+
+4.2.2.1 Preload Class and Boot Class
+
+  The object manager and class object should operate even when there is no 
+class object to provide classes for the executor.  Therefore, the classes
+necessary for the operation must be designated with a special "preload class"
+to ensure that the classes are supplied properly even when no class object
+exists.
+  However, it is impossible to operate the user object in practice, unless 
+the name directory and catalog necessary for the domain operation as well as
+the classes used to actuate the launcher (refer to "README.launcher") etc.
+required for starting the application operation are provided.  These classes
+needed for the basic objects are supplied as a boot class.  Whether or not the
+boot class is managed by a class object is specified when the class object is
+created with the newimage.
+  The boot class of a non-preload class is different from the preload class.
+  It can not be supplied to the executor until it is managed properly by a
+class object.
+  Then, is the class object which does not manage the boot class worth
+nothing?  This is not the case.  For classes without self-management, the
+class object can be delivered from other class objects on the network.
+However, this operation can be performed only by the preload class.
+Therefore, it is necessary to create a class object which does not manage the
+boot class, so as to receive the delivery of classes in sequence and supply
+the classes to the executor at the same time.  (In this case, there must
+exist a class object managing the boot class somewhere on the network.)
+
+4.2.3 Name Directory
+
+  Be sure to create only one name directory in a domain.
+  Since a domain without a name directory can not operate, create one on the
+executor which is always working at your site.
+
+4.2.4 Catalog
+
+  Be sure to create only one catalog in a domain.
+  It is very difficult to start the OZ++ program in a domain without a catalog.
+  The catalog should be set on the same executor as the name directory, and
+it should be operated at all times.
+
+4.3 Layout of Management Object
+
+  A guideline is presented to show how to lay out each management object in
+a better way.
+
+4.3.1 Site Master (*1)
+
+  Create the site master first.  Choose a station which is running
+continuously and create an executor which is also working continuously as
+far as possible.  It should include the following:
+
+     Object manager
+     Class object (managing boot class)
+     Name directory
+     Catalog
+     Launcher
+
+  A simple procedure for creating the site master is prepared in newimage and
+the executor which has all the objects needed for the site master is easy to
+create using this procedure.  (*2)
+  A site master created with a diffusion source is included in this release.
+In addition to the boot class, various class libraries used for the OZ++ user
+and a lot of classes required for demonstration are registered in the class
+object and catalog on this site master.  This site master should be tried at
+the beginning is suggested.
+
+  (*1) It should be called a domain master.
+  (*2) It should be noted that the class object name created on the site
+       master in this way is not ":classes:xxxxxx", but is
+       ":classes:site-master".
+
+4.3.2 Station Master
+
+  Several site masters can not be created at one domain.  Then, what kind of
+executor is it better to create in the station after the second?  It should
+include the following:
+
+     Object manager
+     Class object (managing boot class)
+     Launcher
+
+  In this case, the operation until the launcher starts can be performed
+locally only with this station.  If there are other necessary classes,
+delivery can be received at another place.  An executor configured in this
+way is known as a station master.  It is possible to create several station
+masters in one station.
+  A simple procedure for creating a station master is prepared in newimage,
+and an executor which has all the objects written above is easy to create
+using the procedure.
+
+4.3.3 Slave with Class Object
+
+  An executor holding a class object which delivers all the classes including
+the boot class from outside can be created, so that it can take the place of
+a station master.  This kind of executor is called a slave with class objects.
+It holds the following objects.
+
+     Object manager
+     Class object (does not manage boot class)
+     Launcher
+
+  A simple procedure for creating a slave with class objects is prepared in
+newimage and an executor which has all the objects written above is easy to
+create using the procedure.
+
+4.3.4 Slave without Class Objects
+
+  What kind of object should be laid out to create an executor after the
+second on the station where the site master and the station master have been
+created?  It should include the following:
+
+     Object manager
+     Launcher
+
+  Class objects in the existing site master and the station master are used.
+A simple procedure for creating a slave without class objects is prepared in
+the newimage and the executor which has all the objects written above is easy
+to create using the procedure.
+
+4.4 Creating Method of Management Object
+  The management objects are created with a tool called newimage.  The
+method of using this tool is written in README.newimage
+

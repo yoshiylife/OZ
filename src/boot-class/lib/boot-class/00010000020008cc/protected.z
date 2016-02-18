@@ -1,0 +1,8 @@
+(*class* #00010000020008cc 8
+(*list*)
+(*list*
+(*declaration* Alarm (*method* void (*list* (*scqf* int 2) ) 2) public #00010000020008cb 0 0)
+(*declaration* Hash (*method* (*scqf* int 2) (*list*) 2) public #00010000020008cb 0 1)
+(*declaration* IsEqual (*method* int (*list* #00010000020008cb 8 ) 2) public #00010000020008cb 0 2)
+)
+)

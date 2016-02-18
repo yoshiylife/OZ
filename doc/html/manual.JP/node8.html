@@ -1,0 +1,1019 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>2.4 ニュクリアスの説明</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="2.4 ニュクリアスの説明">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION00034000000000000000>2.4 ニュクリアスの説明</A></H2>
+<P>
+<H3><A NAME=SECTION00034100000000000000>2.4.1 ニュクリアスマニュアル</A></H3>
+<P>
+<DL ><DT>［名前］
+<DD> <P>
+ncl - ニュクリアス
+<DT>［形式］
+<DD> <P>
+ncl
+<DT>［機能説明］
+<DD> <P>
+主にエグゼキュータの管理(起動/生成)を行う。
+<P>
+ニュクリアスの機能には次のようなものがある。
+<blockquote> <UL><LI> ネットワークアドレス解決のための情報提供<BR> 
+エグゼキュータからの要求により、未知のエグゼキュータのネ
+ットワークアドレスの解決を行う。
+<LI> ステーション内のエグゼキュータの管理<BR> 
+ニュクリアスが起動したエグゼキュータの状態を把握する。
+<LI> ブロードキャスト<BR> 
+ニュクリアスはサイト内へのブロードキャストを可能にする。
+ニュクリアスが行うブロードキャストメッセージには次の二種
+類がある。
+<UL><LI> ネットワークアドレス解決ブロードキャスト
+<LI> クラス、ネーム探しのブロードキャスト
+</UL></UL></blockquote>
+<P>
+環境変数 OZROOT は OZ のルートディレクトリである。
+<DT>［ファイル］
+<DD> <P>
+<UL><LI> $OZROOT/etc/ncl-data/NCL_table<BR> 
+起動時に読み込むニュクリアス表である。現在は、ハーフルータ
+ニュクリアス同士の認識等に使用される。<BR> 
+ニュクリアスは、物理的なブロードキャストの送受信を行う。ハ
+ーフルータはサイト内において、物理的な送受信の範囲外のニュ
+クリアスに送受信の仲介を行う。
+<LI> $OZROOT/etc/site-id<BR> 
+このファイルからサイト ID を取得する。
+<LI> $OZROOT/bin/executor<BR> 
+ニュクリアスは、エグゼキュータの起動要求を受信するとこのコ
+マンドを実行する。
+<LI> $OZROOT/etc/ncl-data/EXID/<b>&lt;</b>Hostname<b>&gt;</b><BR> 
+エグゼキュータ ID 管理情報ファイルである。ニュクリアスがエ
+グゼキュータイメージの生成に必要なエグゼキュータ ID を記憶
+しておく。エグゼキュータ ID 管理ニュクリアスはサイトのエグ
+ゼキュータ ID も記憶している。
+<LI> $OZROOT/etc/ncl-data/ExID_manage.log<BR> 
+エグゼキュータ ID 管理ニュクリアスだけが更新するエグゼキュ
+ータ ID 割り当てのログ情報である。
+<LI> $OZROOT/etc/ncl-data/log/<b>&lt;</b>Hostname<b>&gt;</b><BR> 
+ニュクリアスのログファイル。
+</UL>
+<DT>［共有メモリ］
+<DD> <P>
+ニュクリアスはステーションにおいてエグゼキュータとエグゼキュー
+タ表を共有するために、起動時に key が 1 と 2 で共有メモリを作
+成する。
+<P>
+それぞれ、エグゼキュータ表の実体とハッシュ表である。ニュクリア
+スが起動したエグゼキュータ、もしくはアドレス解決が終了したエグ
+ゼキュータのネットワークアドレス等の管理に使用する。
+<P>
+ </DL>
+<P>
+<H3><A NAME=SECTION00034200000000000000>2.4.2 ニュクリアスフロントエンド(nfe)マニュアル</A></H3>
+<P>
+<DL ><DT>［名前］
+<DD> <P>
+nfe - ニュクリアスフロントエンド
+<DT>［形式］
+<DD> <P>
+nfe ［Hostname］
+<DT>［機能説明］
+<DD> <P>
+nfe はニュクリアス(ncl)と接続してエグゼキュータの生成/状態の
+管理を行うツールである。
+<P>
+nfe は引数で指定された hostname のニュクリアスと接続し、組み
+込みコマンドによりニュクリアスと情報の交換を行う。引数が指定さ
+れない場合、自ホストのニュクリアスと接続する。
+<DT>［ファイル］
+<DD> <P>
+<UL><LI> $HOME/.nclrc<BR> 
+nfe は起動時に $HOME/.nclrc が存在すれば、nfe コマンドスク
+リプトとして実行する。nfe コマンドスクリプトには、nfe の組
+み込みコマンドを書いておくことができる。
+<PRE>    例：
+        % cat $HOME/.nclrc
+        alias c cex
+        alias h help
+</PRE>
+</UL>
+<DT>［使用例］
+<DD> <P>
+<PRE>    % nfe host1
+        :
+    nfe&gt; help
+    help            nclshutdown     es              cex             
+    ncltbl          env             man             et              
+    alias           source          who             newimage        
+    migrateimage    exidlist        exidment        exidrm          
+    killex          quit
+    nfe&gt; quit
+</PRE>
+<P>
+ </DL>
+<P>
+<H3><A NAME=SECTION00034300000000000000>2.4.3 ニュクリアスの起動</A></H3>
+<P>
+ニュクリアスを起動するには、端末から UNIX コマンドとして起動する。
+ニュクリアスは起動時に次のファイル転送用デーモンを起動する。
+<blockquote> <UL><LI> OzFileRecevier ‥‥ ファイル受信デーモン
+<LI> OzFileSender   ‥‥ ファイル送信デーモン
+</UL></blockquote>
+これらのデーモンの起動に失敗した時は、ニュクリアスも起動しない。
+<P>
+<H3><A NAME=SECTION00034400000000000000>2.4.4 ニュクリアスの終了処理</A></H3>
+<P>
+ニュクリアスは、ニュクリアスフロントエンド(nfe)の組み込みコマンド
+nclshutdown で終了処理を行う。終了処理は次のような手順で行われる。
+<P>
+<blockquote> <DL ><DT>(1)
+<DD> ハーフルータニュクリアス接続断<BR> 
+終了するニュクリアスがハーフルータニュクリアスであれば、他の
+ハーフルータとの接続を切る。
+<DT>(2)
+<DD> エグゼキュータ強制終了<BR> 
+終了するニュクリアスが起動したエグゼキュータ全てに対して
+割り込み SIGTERM を送信することにより、強制終了させる。<BR> 
+ニュクリアスは、エグゼキュータが終了したら /tmp の次の 2 つの
+ファイルを削除する。
+<UL><LI> Dm%06x      ‥‥ %06x は Exec-ID
+<LI> Oz%06x      ‥‥ %06x は Exec-ID
+</UL>
+<DT>(3)
+<DD> エグゼキュータ表の削除<BR> 
+エグゼキュータ表は、エグゼキュータとの共有するために共有メモ
+リで実装されている。ニュクリアスが作成した共有メモリを消去す
+る。
+<DT>(4)
+<DD> ニュクリアスが起動したファイル転送用デーモンを割り込み SIGTERM
+で終了させる。
+<DT>(5)
+<DD> ニュクリアスフロントエンド(nfe)への終了処理完了の通知
+接続している全てのニュクリアスフロントエンド(nfe)に終了処理
+が完了したことを通知する。
+<P>
+ </DL></blockquote><H3><A NAME=SECTION00034500000000000000>2.4.5 ニュクリアスの強制終了</A></H3>
+<P>
+デーモンとして起動した場合のニュクリアスは、UNIX コマンド kill で
+終了させることが可能である。ニュクリアスに対して割り込み SIGHUP(1)
+か SIGTERM(15) を送ることにより強制終了となる。
+<P>
+ニュクリアスが何らかの原因で異常終了した場合、共有メモリが残る場合が
+ある。ニュクリアスを短時間で再起動する場合は、再利用するので放置しても
+良いが再起動する予定がないのであれば、UNIX コマンド ipcrm で消去するこ
+とが望ましい。
+<P>
+<H3><A NAME=SECTION00034600000000000000>2.4.6 ニュクリアス表の設定</A></H3>
+<P>
+ニュクリアス表($OZROOT/etc/ncl-data/NCL_table)は、ニュクリアスが起動
+時に解釈し、特別な役割を持つニュクリアスを判別するためのテキストファイ
+ルである。
+<P>
+ニュクリアス表の設定は、エディタで特定の書式で特別な役割を行うニュク
+リアスのホスト名、もしくは IP アドレスを登録する。
+<P>
+ハーフルータ・ニュクリアスの設定 <BR>
+<P>
+ハーフルータ・ニュクリアスは、サイト内で物理的なブロードキャストを中
+継し、サイト内の論理的なブロードキャストを可能にするものである。サイト
+が複数のセグメント(物理的なブロードキャスト送受信可能な範囲)から構成さ
+れている場合セグメントに一つだけハーフルータ・ニュクリアスが必要である。
+<P>
+<PRE>　　　例：
+        サイト 1 が二つのセグメントから構成されているとする。
+
+　　　　　セグメント A:
+　　　　　　　hostname1, hostname2
+　　　　　セグメント B:
+　　　　　　　hostname3, hostname4
+　　　　　
+　　　　　範囲 A と範囲 B を同一サイトとして扱うには、ニュクリアス表
+　　　　　($OZROOT/etc/ncl-data/NCL_table) に次のように記述する。
+          hostname1 と hostname3 をハーフルータ・ニュクリアスとする。
+
+　　　　　　　% cat NCL_table
+　　　　　　　HALFROUTER:hostname1:
+　　　　　　　HALFROUTER:hostname3:
+
+　　　　　このような場合、hostname2 からサイト内ブロードキャストが送
+　　　　　信された場合、次のような手順でサイト内に伝搬される。
+
+　　　　　　　(1) hostname1 がブロードキャストメッセージを受信。自分
+　　　　　　　　　がハーフルータであることが認識できるので他のハーフ
+　　　　　　　　　ルータ(hostname3)にブロードキャスト要求を仲介する。
+　　　　　　　(2) hostname3 は hostname1 からのブロードキャスト要求
+　　　　　　　　　を受信すると、物理的なブロードキャストを送信する。
+　　　　　　　(3) hostname4 がブロードキャストを受信。
+</PRE>
+<P>
+エグゼキュータ ID 管理ニュクリアスの設定 <BR>
+<P>
+エグゼキュータ ID 管理ニュクリアスは、サイト内で付与されるエグゼキュ
+ータ ID を一括管理するニュクリアスである。他のニュクリアスからエグゼキュ
+ータ ID の取得要求を受けると、特定の個数のエグゼキュータ ID を与える。
+<P>
+エグゼキュータ ID 管理ニュクリアスが集中管理することにより、サイト内
+でエグゼキュータ ID が重複しないことを保証する。
+<P>
+<PRE>　　　例：
+　　　　　OZ++ システムインストール時に決定してニュクリアス表には登録
+　　　　　済みのはずであるが、エグゼキュータ ID 管理ニュクリアスを変更
+　　　　　することも仮定して説明する。
+　　　　　hostnameN をエグゼキュータ ID 管理ニュクリアスとして扱うには、
+　　　　　ニュクリアス表($OZROOT/etc/ncl-data/NCL_table) に次のように記
+          述する。エグゼキュータ ID 管理ニュクリアスを複数指定してはな
+　　　　　らない。
+
+　　　　　　　% cat NCL_table
+　　　　　　　EXIDMANAGE:hostnameN:
+</PRE>
+<P>
+エグゼキュータ ID 管理ニュクリアス以外のニュクリアスがエグゼキュータ ID
+管理ニュクリアスに要求を出すタイミングは特定できないのでは、常時起動し
+ているステーションに設定することが望ましい。
+<P>
+リレーニュークリアス
+  の設定 <BR>
+<P>
+リレーニュークリアス
+  はアプリケーションゲートウェイ
+  と通信し、他のサイト
+への要求の送信と他のサイトからの要求の受信を中継する。
+<P>
+リレーニュークリアス
+  の設定はニュクリアス表にリレーニュークリアス
+  と対応す
+るアプリケーションゲートウェイ
+  を記述する。
+<P>
+<PRE>　　RELAYNCL:&lt;リレーニュクリアスの IP-Address&gt;:&lt;OZAG IP-Address&gt;
+</PRE>
+<P>
+リレーニュークリアス
+  として登録されているものは、アプリケーションゲートウェイ
+  の局所サイト情報に登録されて
+いるリレーニュークリアス
+  とお互いに整合性が取れている必要がある。
+<P>
+例えば次のように記述する。
+<PRE>  例) リレーニュクリアスを bun13, アプリケーションゲートウェイを bunax3 と
+　　　する設定
+    % cat $OZROOT/etc/apgw_LSiteInfo
+    0005:bun13:3777:CLOSE_SITE
+    % cat $OZROOT/etc/ncl-data/NCL_table
+    RELAYNCL:bun13:bunax3
+</PRE>
+<P>
+<H3><A NAME=SECTION00034700000000000000>2.4.7 エグゼキュータ ID 管理情報ファイルの説明</A></H3>
+<P>
+エグゼキュータ ID 管理情報ファイルは、ニュクリアスが確保しているエグ
+ゼキュータ ID を記憶しているテキストファイルである。このファイルはニュ
+クリアス自動的に生成し、更新するのでトラブルなどがないかぎりメンテナン
+スの必要はない。インストール直後は確保しているエグゼキュータ ID がない
+のでエグゼキュータイメージを生成する時にエグゼキュータ ID 管理ニュクリ
+アスに要求を出し、エグゼキュータ ID を特定の個数取得する。取得直後のエ
+グゼキュータ ID 管理情報の内容は次のようになっているはずである。
+<PRE>      #
+      # Informations of ExecutorID Management
+      #
+      IN_ACTIVITY:ExecutorID(1000),Rest(100)
+      RESERVATION:ExecutorID(0000),Rest(0)
+</PRE>
+この内容の場合、エグゼキュータ ID は 1000(hex) から使用でき、100(hex) 
+個確保されていることを意味する。もし、残り(Rest) が a(hex) 個より少なけ
+れば予約としてエグゼキュータ ID 管理ニュクリアスに要求を出し、新たにエ
+グゼキュータ ID を確保して RESERVATION の行に登録される。
+<P>
+　エグゼキュータ ID 管理ニュクリアスの場合、管理情報は上記の内容に加え、
+サイトのエグゼキュータ ID の情報も管理しているので次の内容の行が加えら
+れている。
+<PRE>      EXID_OF_SITE:0001100
+</PRE>
+これは現在サイトでエグゼキュータ ID が 1100 から使用できることを示す。
+もしエグゼキュータ ID 管理ニュクリアスのエグゼキュータ ID 管理情報ファ
+イルがトラブルなどで失われてしまったら、IN_ACTIVITY と RESERVATION の
+行の値はゼロにしても構わないが、EXID_OF_SITE の行だけはログ情報(
+$OZROOT/etc/ncl-data/ExID_manage.log)を元にエグゼキュータ ID 管理情報
+を復旧する必要がある。
+<P>
+<H3><A NAME=SECTION00034800000000000000>2.4.8 ニュクリアスのトラブルに関して</A></H3>
+<P>
+ニュクリアスが何らかの原因で起動できない場合が考えられる。
+<P>
+<DL ><DT>(1)
+<DD> ニュクリアス起動に必要なファイルがオープンできない。<BR> 
+ニュクリアス起動時に必要なファイルには次のようなものがある。
+<UL><LI> $OZROOT/etc/ncl-data/NCL_table
+<LI> $OZROOT/etc/site-id
+</UL>
+この場合は原因として考えられるものは、次のものが挙げられる。
+<UL><LI> 環境変数 OZROOT が正常に設定されていない。
+<LI> $OZROOT 下のディレクトリ、ファイルのパーミッションが正常に設
+定されていない。
+<LI> ニュクリアス表($OZROOT/etc/ncl-data/NCL_table)の記述に誤りが
+ある。
+</UL>
+<DT>(2)
+<DD> ニュクリアスの使用するポートに bind できない。<BR> 
+次のようなメッセージが出力される。
+<PRE>    init_ncl_port: bind: Address already in use
+    init_ncl_port: Other Nucleus start up already ?
+</PRE>
+これには次の原因が考えられる。
+<UL><LI> 起動しようとしているステーションにすでにニュクリアスが起動済
+みである。
+<LI> ニュクリアス以外の別のアプリケーションによって、すでにポート
+が bind されている。
+</UL>
+<DT>(3)
+<DD> 共有メモリが作成、または attatch できない。<BR> 
+ニュクリアスは、エグゼキュータ表として使用するため二つの共有メモ
+リを作成する。共有メモリはキーが 1 と 2 で作成される。
+他のアプリケーションによって同一のキーで共有メモリが使用されてい
+た場合、ユーザパーミッションによって起動できないか、もしくは共有
+メモリを再利用して他のアプリケーションに悪影響を与えることが考え
+られる。
+<DT>(4)
+<DD> クラス転送ファイル転送デーモン(OzFileReceiver, OzFileSender) が起
+動できない。<BR> 
+一つ前のニュクリアスが、特殊な割り込みで強制終了させられたか、異
+常終了によってニュクリアスが起動したファイル転送デーモンが起動し
+たままになっている。UNIX コマンド ps でプロセス ID を確認して、
+UNIX コマンド kill でプロセスを終了させるべきである。
+<DT>(5)
+<DD> エグゼキュータ ID 管理情報ファイルがオープンできない。<BR> 
+次のようなメッセージが出力される。
+<PRE>    init_exid_mnginfo: Can't open ExecutorID management file(.....)
+</PRE>
+これには次の原因が考えられる。
+<UL><LI> エグゼキュータ ID 管理ニュクリアスの場合、エグゼキュータ ID
+管理情報ファイルがファイルシステムなどのトラブルや人為的ミス
+でエグゼキュータ ID 管理情報ファイルが消去された。
+<LI> 通常のニュクリアスの場合、ニュクリアスの OS プロセスのユーザ
+ID やエグゼキュータ ID 管理情報ファイルの保護モードが変更された。
+</UL>
+対処方法： 
+ログ情報($OZROOT/etc/ncl-data/ExID_manage.log)を元にエグゼキュ
+ータ管理情報を復旧する。
+<P>
+ </DL>
+<P>
+<H3><A NAME=SECTION00034900000000000000>2.4.9 ニュクリアスフロントエンド(nfe)組み込みコマンドマニュアル</A></H3>
+<P>
+<PRE>NFE(1)                  NFE 組み込みコマンド                   NFE(1)
+</PRE>
+<P>
+<DL ><DT>［名前］
+<DD> <P>
+alias - 組み込みコマンドの置き換えを行う
+<DT>［形式］
+<DD> <P>
+alias ［command1 command2…commandN］
+<DT>［機能説明］
+<DD> <P>
+command2 以降の文字列を command1 に置き換える。引数なしの場合は現在の 
+alias のリストを表示する。
+<DT>［使用例］
+<DD> <P>
+<PRE>    nfe&gt; alias c cex 0x101
+</PRE>
+<P>
+ </DL>
+<P>
+<BR><HR><BR>
+
+<P>
+<PRE>NFE(1)                  NFE 組み込みコマンド                   NFE(1)
+</PRE>
+<P>
+<DL ><DT>［名前］
+<DD> <P>
+cex - エグゼキュータを生成する。
+<DT>［形式］
+<DD> <P>
+cex <b>&lt;</b>Executor-ID or Executor-Name<b>&gt;</b> ［Executor options］
+<DT>［機能説明］
+<DD> <P>
+エグゼキュータを起動する。引数にはエグゼキュータ ID かエグゼ
+キュータ名のいずれかを指定する。エグゼキュータ ID とエグゼキ
+ュータ名はエグゼキュータ ID メンテナンス情報として登録されて
+いるものしか指定してはならない。
+<P>
+エグゼキュータ ID の指定は、16 進の指定として扱う。エグゼキュ
+ータ名は、先頭の文字が '$' だった場合、それ以降をエグゼキュー
+タ名として認識する。
+<DT>［エグゼキュータオプション］
+<DD> <P>
+cex ではエグゼキュータに対するオプションを指定できる。指定可能なオプショ
+ンには次のものがある。
+<PRE>  -H &lt;mbyte[k]&gt;  オブジェクトのヒープとして利用するメモリサイズの上限を指定する。
+                 k を付けるとキロバイト指定となる(例 1024k は 1 メガバイト、デフォ
+                 ルト 16メガバイト(1024*1024単位)。
+  -M &lt;max&gt;       同時に生成と実行ができるスレッドの最大数を指定する (デフォルト
+                 256)。
+  -S &lt;site id&gt;   スタンドアローンで実行する場合のサイト ID を指定する (デフォルト
+                 1)。 
+  -T &lt;ticks&gt;     1 秒間のチック数を指定する(デフォルト 50)。
+  -d             executor を daemon として起動する。
+  -g             OzDebugf() によるメッセージ出力を行う。
+  -i             グローバルアクセスの表示をしない。
+  -p             profile を行う。
+  -s             手動による OZ++ System の起動を行う(shell を起動する)。
+  -v             executor のバージョン表示のみを行う。
+  -a             エグゼキュータの EXTERN シンボルを全てリンク可能にする。
+  -o             コンソールを開いて表示する(icon化しない)。
+</PRE>
+<DT>［使用例］
+<DD> <P>
+<PRE>    nfe&gt; newimage -n TESTEX -c FOR-DEBUG
+　　　　　            :
+    nfe&gt; newimage -n SEREX -c SERVER-EXECUTOR
+　　　　　            :
+    nfe&gt; exidlist
+     EXID     EX-NAME                COMMENT
+    00025f    TESTEX                 FOR-DEBUG
+    000260    SEREX                  SERVER-EXECUTOR
+    nfe&gt; cex $TESTEX
+　　　　　            :
+    nfe&gt; cex 260
+　　　　　            :
+</PRE>
+<P>
+ </DL>
+<P>
+<BR><HR><BR>
+
+<P>
+<PRE>NFE(1)                  NFE 組み込みコマンド                   NFE(1)
+</PRE>
+<P>
+<DL ><DT>［名前］
+<DD> <P>
+env - nfe の環境を表示する。
+<DT>［形式］
+<DD> <P>
+env
+<DT>［機能説明］
+<DD> <P>
+現在設定されている nfe の環境に関して次のような項目の表示を行う。
+<blockquote> <UL><LI> UNIX シェル変数 OZROOT の設定
+<LI> UNIX シェル変数 DISPLAY の設定
+<LI> エグゼキュータのコマンドパス
+<LI> nfe ヘルプファイルのディレクトリパス
+</UL></blockquote>
+<DT>［使用例］
+<DD> <P>
+<PRE>    nfe&gt; env
+    OZROOT = /home/oz++
+    DISPLAY = :0.0
+
+    *Executor command: /home/oz++/bin/executor
+    *Directory path for NFE help command: /home/oz++/etc/ncl-data/HELP
+</PRE>
+<P>
+ </DL>
+<P>
+<BR><HR><BR>
+
+<P>
+<PRE>NFE(1)                  NFE 組み込みコマンド                   NFE(1)
+</PRE>
+<P>
+<DL ><DT>［名前］
+<DD> <P>
+et - エグゼキュータ表の内容を表示する。
+<DT>［形式］
+<DD> <P>
+et
+<DT>［機能説明］
+<DD> <P>
+ニュクリアスの管理するエグゼキュータ表の内容を表示する。
+<P>
+エグゼキュータ表の項目には次のようなものがある。
+<blockquote> <UL><LI> エグゼキュータ ID
+<LI> ネットワークアドレス
+<LI> ロケーション
+<UL><LI> LOCAL(自ステーション内)
+<LI> INSITE(サイト内)
+<LI> OUTSITE(他サイト)
+</UL></UL></blockquote>
+<DT>［使用例］
+<DD> <P>
+<PRE>    nfe&gt; et
+    Hash table: size(2048)  count(3)
+    EXID                    NET-ADDR              LOCATION
+    0x0003000001000000      ???.??.???.??:?       LOCAL
+    0x0003000002000000      ???.??.???.??:?       LOCAL
+    0x0003000003000000      ???.??.???.??:?       LOCAL
+</PRE>
+<P>
+ </DL>
+<P>
+<BR><HR><BR>
+
+<P>
+<PRE>NFE(1)                  NFE 組み込みコマンド                   NFE(1)
+</PRE>
+<P>
+<DL ><DT>［名前］
+<DD> <P>
+exidlist - エグゼキュータ ID メンテナンス情報を表示する。
+<DT>［形式］
+<DD> <P>
+exidlist
+<DT>［機能説明］
+<DD> <P>
+newimage が正常に終了した場合、エグゼキュータ ID メンテナンス情
+報として取得したエグゼキュータID を登録する。
+<P>
+エグゼキュータ ID メンテナンス情報は次のような項目から構成される。
+<UL><LI> エグゼキュータ ID
+<LI> エグゼキュータ 名
+<LI> 備考
+</UL>
+<DT>［ファイル］
+<DD> <P>
+<DT><DD> $OZROOT/images/<b>&lt;</b>EXID<b>&gt;</b>/exid.info<BR> 
+エグゼキュータ ID メンテナンス情報のためのファイルである。
+newimage が正常に終了した時点で、エグゼキュータ ID メンテナン
+ス情報が作成される。
+<DT>［使用例］
+<DD> <P>
+<PRE>    nfe&gt; newimage -n TESTEX -c &quot;FOR DEBUG&quot;
+　　　　　            :
+    nfe&gt; exidlist
+     EXID     EX-NAME                COMMENT
+    00025f    TESTEX                 FOR DEBUG
+</PRE>
+<P>
+ </DL>
+<P>
+<BR><HR><BR>
+
+<P>
+<PRE>NFE(1)                  NFE 組み込みコマンド                   NFE(1)
+</PRE>
+<P>
+<DL ><DT>［名前］
+<DD> <P>
+exidment - エグゼキュータ ID メンテナンス情報を更新する。
+<DT>［形式］
+<DD> <P>
+exidment Executor-ID ［-n new-name］ ［-c new-comment］
+<DT>［機能説明］
+<DD> <P>
+エグゼキュータ ID メンテナンス情報の内容を更新する。引数 
+Executor-ID に対応するエグゼキュータ名と備考を変更することができ
+る。
+<DT>［ファイル］
+<DD> <P>
+<DT><DD> $OZROOT/images/<b>&lt;</b>EXID<b>&gt;</b>/exid.info<BR> 
+エグゼキュータ ID メンテナンス情報のためのファイルである。
+newimage が正常に終了した時点で、エグゼキュータ ID メンテナン
+ス情報が作成される。
+<DT>［使用例］
+<DD> <P>
+<PRE>    nfe&gt; newimage -n TESTEX -c &quot;FOR DEBUG&quot;
+　　　　　            :
+    nfe&gt; exidlist
+     EXID     EX-NAME                COMMENT
+    00025f    TESTEX                 FOR DEBUG
+    nfe&gt; exidment 25f -n FIXEX1 -c My-Executor
+　　　　　            :
+    nfe&gt; exidlist
+     EXID     EX-NAME                COMMENT
+    00025f    FIXEX1                 My-Executor
+</PRE>
+<P>
+ </DL>
+<P>
+<BR><HR><BR>
+
+<P>
+<PRE>NFE(1)                  NFE 組み込みコマンド                   NFE(1)
+</PRE>
+<P>
+<DL ><DT>［名前］
+<DD> <P>
+exidrm - エグゼキュータ ID メンテナンス情報を消去する。
+<DT>［形式］
+<DD> <P>
+exidrm Executor-ID
+<DT>［機能説明］
+<DD> <P>
+不用になったエグゼキュータ ID メンテナンス情報を破棄する。
+<DT>［ファイル］
+<DD> <P>
+<DT><DD> $OZROOT/images/<b>&lt;</b>EXID<b>&gt;</b>/exid.info<BR> 
+エグゼキュータ ID メンテナンス情報のためのファイルである。
+newimage が正常に終了した時点で、エグゼキュータ ID メンテナン
+ス情報が作成される。
+<DT>［使用例］
+<DD> <P>
+<PRE>    nfe&gt; newimage -n TESTEX -c FOR-DEBUG
+　　　　　            :
+    nfe&gt; exidlist
+     EXID     EX-NAME                COMMENT
+    00025f    TESTEX                 FOR-DEBUG
+    nfe&gt; exidrm 25f
+</PRE>
+<P>
+ </DL>
+<P>
+<BR><HR><BR>
+
+<P>
+<PRE>NFE(1)                  NFE 組み込みコマンド                   NFE(1)
+</PRE>
+<P>
+<DL ><DT>［名前］
+<DD> <P>
+help - nfe の組み込みコマンドの説明を表示する。
+<DT>［形式］
+<DD> <P>
+help ［-j］ ［built-in-command-name］
+<DT>［オプション］
+<DD> <P>
+-j　日本語の説明を表示する。
+<DT>［機能説明］
+<DD> <P>
+引数でコマンド名を指定すると、そのコマンドの説明を表示する。引
+数を指定しなければ、組み込みコマンドのリストを表示する。
+<DT>［使用例］
+<DD> <P>
+<PRE>    nfe&gt; help
+    help            nclshutdown     es              cex             
+    ncltbl          env             man             et              
+    alias           source          who             newimage        
+    migrateimage    exidlist        exidment        exidrm          
+    killex          quit
+    nfe&gt; help cex
+            :
+       組み込みコマンドの説明表示
+            :
+</PRE>
+<P>
+ </DL>
+<P>
+<BR><HR><BR>
+
+<P>
+<PRE>NFE(1)                  NFE 組み込みコマンド                   NFE(1)
+</PRE>
+<P>
+<DL ><DT>［名前］
+<DD> <P>
+killex - エグゼキュータに割り込みを送信する。
+<DT>［形式］
+<DD> <P>
+killex -signal <b>&lt;</b>エグゼキュータ ID<b>&gt;</b>
+<DT>［機能説明］
+<DD> <P>
+エグゼキュータに signal で指定した割り込みを送信する。
+エグゼキュータが認識する割り込みには次のようなものがある。
+<PRE>    TERM ‥‥‥ Executorの終了
+    INT  ‥‥‥ Executor Shell のフォーク
+    HUP  ‥‥‥ Executorの強制終了
+</PRE>
+<DT>［使用例］
+<DD> <P>
+<PRE>    nfe&gt; es
+    Executor Entry count(1)
+      USER       PID        EXID        FD   STAT     BOOT TIME     RHOST
+    ozguest    19316  0003000101000000   6  Active  04/07 16:35:58  oz
+　　　　　            :
+    nfe&gt; killex -TERM 101
+     + Successful in forcible termination of the Executor(0x000101)
+    nfe&gt; es
+    Executor Entry count(0)
+    nfe&gt;
+</PRE>
+<P>
+ </DL>
+<P>
+<BR><HR><BR>
+
+<P>
+<PRE>NFE(1)                  NFE 組み込みコマンド                   NFE(1)
+</PRE>
+<P>
+<DL ><DT>［名前］
+<DD> <P>
+man - ニュクリアスのマニュアルを表示する。
+<DT>［形式］
+<DD> <P>
+man ［-j］
+<DT>［オプション］
+<DD> <P>
+-j　日本語のマニュアルが表示される。
+<P>
+ </DL>
+<P>
+<BR><HR><BR>
+
+<P>
+<PRE>NFE(1)                  NFE 組み込みコマンド                   NFE(1)
+</PRE>
+<P>
+<DL ><DT>［名前］
+<DD> <P>
+newimage - 任意のエグゼキュータ ID を付与してコマンド newimage
+を起動する。
+<DT>［形式］
+<DD> <P>
+newimage ［-n executor-name］ ［-c comment］ ［newimage options］
+<DT>［機能説明］
+<DD> <P>
+ニュクリアスから任意のエグゼキュータ ID を取得してコマンド
+newimage の引数として起動する。newimage が正常に終了した場合、
+エグゼキュータ ID メンテナンス情報として取得したエグゼキュータ
+ID を登録する。
+<DT>［オプション］
+<DD> <P>
+newimage は、以下のオプションを認識する。
+<PRE>　　-n　取得したエグゼキュータ ID に対応する名前を付ける。エグゼキ
+　　  　ュータ起動の組み込みコマンド cex に対する引数で指定すること
+　　  　ができる。
+　　-c　取得したエグゼキュータ ID に対する備考を付ける。
+    -g  クラスオブジェクトを、クラス配送モニタなしに設定する。
+    -d domain-name
+        このエグゼキュータが属すべきドメイン名を domain-name に設定する。
+    -u user-name
+        このエグゼキュータのオーナ名を user-name に設定する。
+    -k configuration-name
+        標準のコンフィギュレーションを使用する。configuration-nameは、
+        次のいずれかである。 
+
+            site-master または 1
+            station-master または 2
+            slave-with-class または 3
+            slave-without-class または 4
+
+    -o image-dir
+        エグゼキュータ image を作成するディレクトリを指定する。
+</PRE>
+これらのオプションが適切に設定されているならば、対応する設定手順は省略
+される。
+<DT>［ファイル］
+<DD> <P>
+<DT><DD> $OZROOT/images/<b>&lt;</b>EXID<b>&gt;</b>/exid.info<BR> 
+エグゼキュータ ID メンテナンス情報のためのファイルである。
+newimage が正常に終了した時点で、エグゼキュータ ID メンテナン
+ス情報が作成される。
+<DT>［使用例］
+<DD> <P>
+<PRE>    nfe&gt; newimage -n TESTEX -c &quot;FOR DEBUG&quot;
+　　　　　            :
+    nfe&gt; exidlist
+     EXID     EX-NAME                COMMENT
+    00025f    TESTEX                 FOR DEBUG
+    nfe&gt; cex $TESTEX
+　　　　　            :
+    nfe&gt;
+</PRE>
+<P>
+ </DL>
+<P>
+<BR><HR><BR>
+
+<P>
+<PRE>NFE(1)                  NFE 組み込みコマンド                   NFE(1)
+</PRE>
+<P>
+<DL ><DT>［名前］
+<DD> <P>
+migrateimage - エグゼキュータ image の移動
+<DT>［形式］
+<DD> <P>
+migrateimage Executor-ID ［Directory-path］<BR> 
+migrateimage -r Executor-ID New-OZROOT
+<DT>［機能説明］
+<DD> <P>
+Executor-ID で指定されたエグゼキュータの image を Directory-path
+で指定されたディレクトリに移動する。
+Directory-path を省略すると、$OZROOT/images の直下に移動する。
+<DT>［オプション］
+<DD> <P>
+<PRE>　　-r　Executor-ID で指定されたエグゼキュータの image の OZROOT を、 
+　　  　Directory-path に変更する。 Directory-Path を省略することは
+　　  　できない。
+</PRE>
+<DT>［使用例］
+<DD> <P>
+<PRE>    nfe&gt; migrateimage 001001 /home/nick/images
+                    :
+    nfe&gt; migrateimage -r 001002 /home/nick/new-oz++
+                    :
+    nfe&gt;
+</PRE>
+<P>
+ </DL>
+<P>
+<BR><HR><BR>
+
+<P>
+<PRE>NFE(1)                  NFE 組み込みコマンド                   NFE(1)
+</PRE>
+<P>
+<DL ><DT>［名前］
+<DD> <P>
+nclshutdown - 所定の時間でのニュクリアスの終了
+<DT>［形式］
+<DD> <P>
+nclshutdown time
+<DT>［機能説明］
+<DD> <P>
+nclshutdown は、いつニュクリアスがシャットダウンされるかを
+ニュクリアスフロントエンド(nfe)に自動的に通知する。
+引数 time には nclshutdown がニュクリアスをシャットダウンさ
+せる時間を指定する。この値は、&quot;now&quot;(ただちにシャットダウン
+される)と指定することもできる。あるいは、+number のどちらか
+の形式でシャットダウンの時間を指定する。+number を指定する
+と、ニュクリアスは number 分後にシャットダウンされる。
+<P>
+シャットダウンの時間が近付くと、ニュクリアスフロントエンド
+(nfe)に定期的に警告メッセージが表示される。
+<P>
+シャットダウンの中断は、+number で指定した時間内であれば、
+CONTROL-D で nfe を終了することにより中断可能である。
+<P>
+ニュクリアスがシャットダウンされると、ニュクリアスフロント
+エンド(nfe)も自動的に終了する。
+<DT>［使用例］
+<DD> <P>
+<PRE>    nfe&gt; nclshutdown now
+</PRE>
+<P>
+ </DL>
+<P>
+<BR><HR><BR>
+
+<P>
+<PRE>NFE(1)                  NFE 組み込みコマンド                   NFE(1)
+</PRE>
+<P>
+<DL ><DT>［名前］
+<DD> <P>
+ncltbl - ニュクリアス表の内容を表示する。
+<DT>［形式］
+<DD> <P>
+ncltbl
+<DT>［機能説明］
+<DD> <P>
+ニュクリアスの持つニュクリアス表の内容を表示する。ニュクリア
+ス表の内容には次のようなものがある。
+<blockquote> <UL><LI> ニュクリアスのタイプ
+<UL><LI> EXID_MANAGEMENT(エグゼキュータ ID 管理ニュクリアス)
+<LI> HALFROUTER(ハーフルータ・ニュクリアス)
+</UL>
+<LI> UNIX ホスト名
+<LI> IP アドレス
+</UL></blockquote> 
+ </DL>
+<P>
+<BR><HR><BR>
+
+<P>
+<PRE>NFE(1)                  NFE 組み込みコマンド                   NFE(1)
+</PRE>
+<P>
+<DL ><DT>［名前］
+<DD> <P>
+es - ステーション上でニュクリアスが管理しているエグゼキュータの情報を
+表示する。
+<DT>［形式］
+<DD> <P>
+es
+<DT>［機能説明］
+<DD> <P>
+ニュクリアスがステーションに生成したエグゼキュータの管理情報を
+表示する。管理情報には次のようなものがある。
+<blockquote> <UL><LI> エグゼキュータの生成要求をした UNIX ユーザ
+<LI> エグゼキュータの UNIX プロセス ID
+<LI> エグゼキュータ ID
+<LI> エグゼキュータのソケットのファイルディスクリプタ
+<LI> エグゼキュータの状態
+<UL><LI> Start(UNIX プロセスとして存在している)
+<LI> Active(オブジェクトマネージャが立ち上がっている。他の
+エグゼキュータからのメッセージが受信可能な状態
+を意味している)
+</UL>
+<LI> エグゼキュータを生成した時間
+<LI> エグゼキュータの生成要求をしたホスト名
+</UL></blockquote>
+エグゼキュータが終了するとエグゼキュータ管理情報から削除される。
+<DT>［使用例］
+<DD> <P>
+<PRE>    nfe&gt; es
+    Executor Entry count(4)
+      USER       PID        EXID        FD   STAT     BOOT TIME     RHOST
+    ozguest    19316  0003000001000000   6  Active  04/07 16:35:58  oz
+    ozguest    19318  0003000002000000   7  Active  04/07 16:36:03  oz
+    ozguest    19320  0003000003000000   8  Active  04/07 16:36:08  oz
+    ozguest    19322  0003000004000000   9  Active  04/07 16:36:13  oz
+</PRE>
+<P>
+ </DL>
+<P>
+<BR><HR><BR>
+
+<P>
+<PRE>NFE(1)                  NFE 組み込みコマンド                   NFE(1)
+</PRE>
+<P>
+<DL ><DT>［名前］
+<DD> <P>
+source - nfe のコマンドスクリプトファイルを読み込み実行する。
+<DT>［形式］
+<DD> <P>
+source nfe-script-file
+<DT>［機能説明］
+<DD> <P>
+引数で指定された nfe-script-file を読み込み組み込みコマン
+ドを実行する。
+<P>
+スクリプトファイルは、行の先頭が '#' であるか、空行であれば無視
+される。
+<DT>［使用例］
+<DD> <P>
+<PRE>    % cat test.src
+    #
+    # TEST
+    #
+    alias h  help
+    alias c  cex
+    % nfe
+        ：
+    nfe&gt; source test.src
+        ：
+    nfe&gt; alias
+    alias h help
+    alias c cex
+</PRE>
+<P>
+ </DL>
+<P>
+<BR><HR><BR>
+
+<P>
+<PRE>NFE(1)                  NFE 組み込みコマンド                   NFE(1)
+</PRE>
+<P>
+<DL ><DT>［名前］
+<DD> <P>
+quit - nfe を正常終了する。
+<DT>［形式］
+<DD> <P>
+quit
+<DT>［機能説明］
+<DD> <P>
+nfe を正常終了する。
+<P>
+ </DL>
+<P>
+<BR><HR><BR>
+
+<P>
+<PRE>NFE(1)                  NFE 組み込みコマンド                   NFE(1)
+</PRE>
+<P>
+<DL ><DT>［名前］
+<DD> <P>
+who - ニュクリアスに接続しているフロントエンドの接続状況を表示する。
+<DT>［形式］
+<DD> <P>
+who
+<DT>［機能説明］
+<DD> <P>
+ニュクリアス・フロントエンド(nfe)は、自分の接続しているニュクリア
+スが他のユーザから接続されているか知る手段が必要である。
+<P>
+who は接続しているニュクリアスのツール接続状況に関して次の項
+目を表示する。
+<blockquote> <UL><LI> 接続要求をした UNIX ユーザ
+<LI> nfe のソケットのファイルディスクリプタ
+<LI> 接続した時間
+<LI> 接続要求をしたホスト名
+</UL></blockquote>
+<DT>［使用例］
+<DD> <P>
+<PRE>    nfe&gt; who
+    Who Entry count(2)
+      USER    FD   CONNECT-TIME   RHOST
+    ozguest1   6  05/15 19:08:16  oztaro
+    ozguest2   6  05/15 19:08:16  ozjiro
+</PRE>
+<P>
+ </DL>
+<P>
+	<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

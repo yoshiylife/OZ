@@ -1,0 +1,14 @@
+(*class* #0001000002000020 0
+(*list*)
+(*list*
+(*declaration* New (*method* void (*list* (*scqf* #00010000020002b2 0 4) (*scqf* int 2) (*scqf* #000100000200006e 8 4) #000100000200000c 0 ) 0) constructor #0001000002000020 0 0)
+(*declaration* GetSender (*method* (*scqf* #00010000020002b2 0 4) (*list*) 0) public #0001000002000020 0 1)
+(*declaration* GetID (*method* int (*list*) 0) public #0001000002000020 0 2)
+(*declaration* GetParam1 (*method* (*scqf* #000100000200006e 8 4) (*list*) 0) public #0001000002000020 0 3)
+(*declaration* GetParam2 (*method* #000100000200000c 0 (*list*) 0) public #0001000002000020 0 4)
+(*declaration* SetSender (*method* void (*list* (*scqf* #00010000020002b2 0 4) ) 0) public #0001000002000020 0 5)
+(*declaration* SetID (*method* void (*list* int ) 0) public #0001000002000020 0 6)
+(*declaration* SetParam1 (*method* void (*list* (*scqf* #000100000200006e 8 4) ) 0) public #0001000002000020 0 7)
+(*declaration* SetParam2 (*method* void (*list* #000100000200000c 0 ) 0) public #0001000002000020 0 8)
+)
+)

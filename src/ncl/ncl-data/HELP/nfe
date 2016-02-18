@@ -1,0 +1,39 @@
+NFE(1)              Nucleus Front-End Built-In-Command               NFE(1)
+
+NAME
+     nfe - Nucleus Front-End
+
+SYNOPSIS
+     nfe [Hostname]
+
+DESCRIPTION
+     nfe is a tool which connects itself to a nucleus and manages
+     its generation state.
+     If a hostname is specified to ncl as an arguments, it connects
+     itself to the nucleus with that hostname, and exchanges
+     information with it by means of built-in commands.  If no
+     arguments are specified, nfe connects itself to its own host
+     nucleus.
+
+FILES
+     * $HOME/.nclrc
+       When nfe is activated, it executes the nfe command script
+       $HOME/.nclrc.  The built-in commands of nfe can be written 
+       in this script.
+
+         Example:
+           % cat $HOME/.nclrc
+           alias c cex
+           alias h help
+
+EXAMPLE
+     % nfe host1
+           :
+     nfe> help
+     help            nclshutdown     es              cex
+     ncltbl          env             man             et
+     alias           source          who             newimage
+     migrateimage    exidlist        exidment        exidrm
+     killex          quit
+     nfe> ^D
+

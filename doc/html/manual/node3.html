@@ -1,0 +1,195 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>1.1 A guideline to introduce and operate OZ++</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="1.1 A guideline to introduce and operate OZ++">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION00021000000000000000>1.1 A guideline to introduce and operate OZ++</A></H2>
+<P>
+This section shows a guideline to introduce the OZ++ system and operate it
+using the internet, mainly showing the reference point in this document.
+<P>
+<H3><A NAME=SECTION00021100000000000000>1.1.1 Trial installation</A></H3>
+<P>
+To try the OZ++ at first, the following steps will be simple and useful:
+<OL><LI> Install the OZ++ system.
+<LI> Configure the nucleus.
+<LI> Start the nucleus.
+<LI> Configure the site-master.
+<LI> Start the site-master.
+</OL>
+<P>
+Installation <BR>
+<P>
+To install the OZ++ system, follow the instructions listed in the file <tt>
+INSTALL</tt> included in the release package.  By the installation, the OZROOT
+directory is made and the executable binaries are obtained.
+<P>
+Configuring the nucleus <BR>
+<P>
+To configure easily, it is enough to add the following line to the nucleus
+table file <tt> $OZROOT/etc/ncl-data/NCL_table</tt>:
+<blockquote> <tt> EXIDMANAGE:<i> hostname</i>:</tt>
+</blockquote>
+The <i> hostname</i> should be replaced by the name of your machine.
+<P>
+The details of the nucleus configuration are given in the section 2.1
+``Structure of OZ++ distributed objects'' in this document and the file <tt>
+doc/README.nucleus</tt> included in this release package.  In brief, this line
+sets the nucleus at <i> hostname</i> as the executor-ID management nucleus.
+<P>
+Starting the nucleus <BR>
+<P>
+The nucleus is started by the command <tt> ncl</tt>.  (Include the <tt>
+$OZROOT/bin/</tt> in the PATH.)  When starting a nucleus, if the other nucleus is 
+running in the same LAN, they may interfere each other.  It can be avoided by
+giving a random number as an argument of the -p option of the <tt> ncl</tt>.  The
+details are described in the file <tt> doc/README.nucleus</tt> included in this
+release package.
+<P>
+Configuring the site-master <BR>
+<P>
+The site-master is suitable as the first executor you make because it can be
+started by itself and has most of the functionalities the OZ++ distributed
+object management system can provide.  After successful starting of the
+nucleus, its functions can be invoked through the command <tt> nfe</tt> (Nucleus
+Front-End).  A site-master can be created by typing the following command to
+the nfe:
+<blockquote> <tt> newimage -k site-master -n <i> name</i> -c <i> comment</i> -d <i> domain</i> -u
+<i> user</i></tt>
+</blockquote>
+To use the site-master as a trial, it is enough to give meaningless words for
+the <i> name</i>, <i> comment</i>, <i> domain</i> and <i> user</i>.  After that, you
+will be asked as following:
+<blockquote> <tt> Do you make changes on the boot time configuration table (y/n) ? </tt>
+</blockquote>
+Answer <tt> n</tt> to it.  Then a site-master will be created after a few minutes
+later.  The details of image creation are described in the section 2.2 ``How
+to make images.''  The successful creation of the site-master can be confirmed 
+by the command <tt> exidlist</tt> of the <tt> nfe</tt>.
+<P>
+Starting the site-master <BR>
+<P>
+An executor can be started by the command <tt> cex</tt> of the <tt> nfe</tt>.  The
+newly created site-master can be invoked by the following command:
+<blockquote> <tt> cex $<i> name</i></tt>
+</blockquote>
+The <i> name</i> should be replaced by the <i> name</i> parameter given at the
+creation time.  It takes a few minutes to start the site-master at the first
+time.  The start-up procedure ends with showing the Launcher window.
+<P>
+<H3><A NAME=SECTION00021200000000000000>1.1.2 Writing OZ++ programs</A></H3>
+<P>
+The language specification is described in section 5 ``Supplements: OZ++
+Language Specification'' in this document.  The OZ++ programs must be compiled
+before the execution.  The compilation of them can be done by the OZ++
+workbench: the development environment of OZ++.  Since the detailed
+explanations of the OZ++ workbench are described in section 3 ``Environment
+for OZ++ Program Development'' in this document, this section only describes
+the way to create the OZ++ workbench at first time.
+<P>
+Select the item ``Object'' from the menu ``Create'' of the Launcher, and type
+the public ID of the class WorkbenchLaunchable.  The public ID of the
+WorkbenchLaunchable can be obtained by following manner:
+<blockquote> <tt>
+% cfed<BR> 
+sb WorkbenchLaunchable 1<BR> 
+0001000002000414<BR> 
+quit<BR> 
+%</tt>
+</blockquote>
+The <tt> 0001000002000414</tt> is the public ID of the WorkbenchLaunchable.  To
+avoid repeating this rather awkward procedure, it is recommended to register
+the WorkbenchLaunchable to the Catalog using the just created workbench.
+The detailed explanations of the Launcher usage are described in section 2.3
+``Launcher'' in this document.
+<P>
+<H3><A NAME=SECTION00021300000000000000>1.1.3 To use the OZ++ system in a site</A></H3>
+<P>
+To configure the OZ++ system to be used by the multiple users in a site,
+following steps will be suitable:
+<OL><LI> Configuring the nucleus to be operated in the site-wide system
+<LI> Configuring the site-master to be shared
+<LI> Configuring the individual environment of each user
+</OL>
+<P>
+Configuring the site-wide nucleus <BR>
+<P>
+Nucleus table (<tt> $OZROOT/etc/ncl-data/NCL_table</tt>) must be configured
+appropriately and released to public.  It is necessary to specify the
+executor-ID management nucleus.  Moreover, the configuration of the half
+routers must be specified unless all the machines are connected to the same
+LAN segment.  The detailed explanations of the nucleus table configuration are
+described in section 2.1 ``Structure of OZ++ distributed objects'' in this
+document and the file <tt> doc/README.nucleus</tt> in this release package.  To
+make things simple, nuclei started to be operated as a part of the site-wide
+OZ++ system should not be given the -p option.  By this, a user willing to
+start a nucleus independent from the site-wide system can start it with the -p
+option.  It never interfere the site-wide system.
+<P>
+Configuring the site-master to be shared <BR>
+<P>
+The site-master should be configured in the following manner:
+<UL><LI> Specify the privileged user as the owner<BR> 
+      Although the privileged user can be named as your choice, it is
+      recommended to give an apparently distinguishable name, such as oz++,
+      root, and the like.
+<LI> Give the DNS domain name of your domain as the domain name.
+</UL>
+After the successful start up, it is recommended to register the
+WorkbenchLaunchable to your catalog for the convenience of the users.
+<P>
+Once the site-master is started, it is shared by the users.  Thus, be careful
+with the shutdown.
+<P>
+Configuring the individual environment <BR>
+<P>
+Individual environment should be build without the site-master.
+Note that:
+<UL><LI> Do not use the same user name for different users.<BR> 
+      Manager of the site should assign the unique user name for each user.
+<LI> Specify the domain name same as that of the site-master.
+</UL><H3><A NAME=SECTION00021400000000000000>1.1.4 To use objects over the Internet</A></H3>
+<P>
+To use objects over the internet, your site must have an unique site-id and an
+application gateway running.  To satisfy these, following steps are required:
+<UL><LI> Acquiring the site ID
+<LI> Configuring the application gateway
+</UL>
+<P>
+Acquiring the site ID <BR>
+<P>
+Send the following mail to the <tt> oz++admin@oz.ipa.go.jp</tt>:
+<blockquote> <tt>
+To: oz++admin@oz.ipa.go.jp<BR> 
+From: <i> your address</i><BR> 
+Subject: [Site ID Request]<BR> 
+<BR> 
+Organization: <i> your organization</i><BR> 
+Domain: <i> your DNS domain name</i><BR> 
+Gateway: <i> your firewall machine on which OZ++'s application gateway works</i></tt>
+</blockquote>
+The site ID will be issued and replied.  Set it to the file <tt>
+$OZROOT/etc/site-id</tt>.
+<P>
+Note that the executors and classes created prior to rewriting the site-id
+cannot be used after it.  You must re-create a site-master and
+station-masters, and re-compile classes.
+<P>
+Configuring the application gateway <BR>
+<P>
+Despite of whether the firewall exists or not, the application gateway is
+required to use the Internet by OZ++.  How to configure the application
+gateway is described in section 2.6 ``Application Gateway'' in this document.
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

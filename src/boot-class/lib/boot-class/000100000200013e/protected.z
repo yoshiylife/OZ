@@ -1,0 +1,13 @@
+(*class* #000100000200013e 8
+(*list*)
+(*list*
+(*declaration* GetNumberOfProcesses (*method* (*scqf* int 2) (*list*) 1) public #000100000200013d 0 0)
+(*declaration* SetNumberOfProcesses (*method* void (*list* (*scqf* int 2) ) 1) public #000100000200013d 0 1)
+(*declaration* Start (*method* void (*list* #00010000020002b2 0 ) 0) public #000100000200013d 0 2)
+(*declaration* DaemonProcess (*method* void (*list*) 2) protected #000100000200013e 0 3)
+(*declaration* New (*method* void (*list* #000100000200018c 0 (*scqf* int 2) ) 0) protected #000100000200013e 0 4)
+(*declaration* anExecutor #000100000200018c 0 protected #000100000200013e 0 anExecutor)
+(*declaration* NumberOfProcesses (*scqf* int 2) protected #000100000200013e 0 NumberOfProcesses)
+(*declaration* OM #00010000020002b2 0 protected #000100000200013e 0 OM)
+)
+)

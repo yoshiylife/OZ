@@ -1,0 +1,203 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>3.4 Inspector operations</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="3.4 Inspector operations">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION00044000000000000000>3.4 Inspector operations</A></H2>
+<P>
+<H3><A NAME=SECTION00044100000000000000> NAME</A></H3>
+<P>
+inspect - inspector
+<H3><A NAME=SECTION00044200000000000000> FORMAT</A></H3>
+<P>
+inspect [Local Executor ID]
+<P>
+<H3><A NAME=SECTION00044300000000000000> FUNCTIONS</A></H3>
+<P>
+The function of this tool is to display the contents of process stacks 
+or global objects of the specified executor. It is possible to inspect 
+the global object of the executor or the process stack if the executor 
+is not operating on the same WS. This function uses the executor 
+specified as the Local Executor ID for the address solution. It is also 
+possible to display the contents of stack process on multiple executors. 
+Windows opened by this command allow for users to receive detailed 
+information of items for inspection merely by pointing then double 
+clicking their choice (the function is not available if the window 
+does not open). The following are the main types of windows that can 
+be opened.
+<UL><LI>	Debugger <BR> 
+Debugger window will appear first when using the inspect command. 
+Here the executor ID can be specified for the address solution of 
+an executor ID under inspection. The functions of each button in the 
+window are as follows:
+<P>
+<TABLE BORDER>
+<TR VALIGN=TOP>
+<TH NOWRAP>Button</TH>     <TH>Functions</TH>
+</TR>
+<TR>
+</TR>
+<TR VALIGN=TOP>
+<TD>Object List</TD>  <TD>Displays the Global Object List window.</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD>Process List</TD> <TD>Displays the Process List window.</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD>Quit</TD>         <TD>Close all windows and exit the executor</TD>
+</TR>
+</TABLE>
+
+<P>
+<LI>	Global Object List <BR> 
+his window appears when the Object List button in the debugger window 
+is pressed. This window displays listing of global objects in the 
+executor. The functions of each button in this window are as 
+follows<A NAME=tex2html4 HREF="footnode.html#1183">[+]</A>:
+<P>
+<TABLE BORDER>
+<TR VALIGN=TOP>
+<TH NOWRAP>Button</TH>     <TH>Functions</TH>
+</TR>
+<TR>
+</TR>
+<TR VALIGN=TOP>
+<TD>Refresh</TD>      <TD>Updates displayed information</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD>Inspect</TD>      <TD>Displays the Global Object Inspect window of selected global object. This function can also be used to suspend the global object status.</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD>Snap</TD>         <TD>Temporarily saves the instance variable data of selected global object then opens the Global Object Inspect window. The global object will not be suspended while the Global Object Inspect window is open.</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD>Status</TD>       <TD>Displays the status of the selected global object kept by the object manager.</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD>Close</TD>        <TD>Closes the Global Object List window.</TD>
+</TR>
+</TABLE>
+
+<P>
+<LI>	Process List <BR> 
+This window appears when the Process List button in the debugger window is 
+pressed. This window displays the process list starting with the specified 
+executor in the Debugger window. The functions of each button in this 
+window are as follows<A NAME=tex2html5 HREF="footnode.html#1194">[+]</A>:
+<P>
+<TABLE BORDER>
+<TR VALIGN=TOP>
+<TH NOWRAP>Button</TH>     <TH>Functions</TH>
+</TR>
+<TR>
+</TR>
+<TR VALIGN=TOP>
+<TD>Refresh</TD>      <TD>Updates displayed information</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD>Inspect</TD>      <TD>Displays the Process Inspect window of the selected process. This function can also be used to suspend processing. </TD>
+</TR>
+<TR VALIGN=TOP>
+<TD>Kill</TD>         <TD>Terminate selected process.</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD>Status</TD>       <TD>Displays the execution condition of the selected process.</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD>Close</TD>        <TD>Closes the Process List window.</TD>
+</TR>
+</TABLE>
+
+<P>
+<LI>	Object Inspect <BR> 
+This window is used to display the object content. The function of each 
+button in this window is as follows:
+<P>
+<TABLE BORDER>
+<TR VALIGN=TOP>
+<TH NOWRAP>Button</TH>     <TH>Functions</TH>
+</TR>
+<TR>
+</TR>
+<TR VALIGN=TOP>
+<TD>Refresh</TD>      <TD>Updates displayed information.</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD>Inspect</TD>      <TD>Displays the Object Inspect window of the selected object.</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD>Process</TD>      <TD>This function refers to the global object cell and displays listing of the process by the executor.</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD>Close</TD>        <TD>Closes the Object Inspect window. However, this function will close all windows opened with the Global Object Inspect window. If the global object has been suspended, this condition will be canceled.</TD>
+</TR>
+</TABLE>
+
+<P>
+<LI>	Process Inspect <BR> 
+This window displays the contents of the process stack. The function of each b
+utton in this window is as follows<A NAME=tex2html6 HREF="footnode.html#1215">[+]</A>:。
+<P>
+<TABLE BORDER>
+<TR VALIGN=TOP>
+<TH NOWRAP>Button</TH>     <TH>Functions</TH>
+</TR>
+<TR>
+</TR>
+<TR VALIGN=TOP>
+<TD>Inspect</TD>      <TD>Displays the Object Inspect window of selected object.</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD>Kill</TD>         <TD>Terminates concerned process.</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD>Close</TD>        <TD>Closes the Object Inspect window. If the process execution has been suspended, this condition will be canceled.</TD>
+</TR>
+</TABLE>
+
+	</UL><H3><A NAME=SECTION00044400000000000000> Environment variables</A></H3>
+<P>
+<DL COMPACT>
+<DT>OZHOME
+<DD>Home directory of OZ++
+<P>
+<DT>OZSITE_ID
+<DD>Site ID
+<P>
+<DT>OZCLASSPATH
+<DD>Class directory
+<P>
+<P>
+</DL>
+
+<H3><A NAME=SECTION00044500000000000000> Caution:</A></H3>
+<P>
+<UL><LI> When specifying argument of Local Executor ID with the use of 
+hexadecimal, it is necessary to place 0x at the beginning.	
+<LI> The cell (global object) belonging to the object will be placed 
+on hold while displaying object contents. However, this suspension is 
+unrelated to the object manager.
+<LI> The process will be placed on hold while displaying process stacks. 
+As a result, it may influence other processes (exclusive control, etc.).
+<LI> The inspector presumes that the OZ++ system is functioning 
+properly. Therefore, if the executor itself is paused *2, the inspector 
+waits for the restart of the executor.
+</UL><H3><A NAME=SECTION00044600000000000000> e.g.</A></H3>
+<P>
+<PRE>inspect 0x101
+</PRE>
+This activates the inspector to solve the address of the executor of 101 
+in hexadecimal.
+<P>
+	<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

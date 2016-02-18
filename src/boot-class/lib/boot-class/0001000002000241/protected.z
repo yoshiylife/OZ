@@ -1,0 +1,18 @@
+(*class* #0001000002000241 0
+(*list*
+(*list* #0001000002000499 #000100000200049a 0)
+(*list* #0001000002000494 #0001000002000495 0)
+)
+(*list*
+(*declaration* New (*method* void (*list*) 0) constructor #0001000002000240 0 0)
+(*declaration* Add (*method* OZ_Generic (*list* OZ_Generic ) 0) public #0001000002000240 0 1)
+(*declaration* Commit (*method* int (*list*) 0) public #0001000002000240 0 2)
+(*declaration* Includes (*method* int (*list* OZ_Generic ) 0) public #0001000002000240 0 3)
+(*declaration* Lock (*method* int (*list*) 0) public #0001000002000240 0 4)
+(*declaration* Remove (*method* OZ_Generic (*list* OZ_Generic ) 0) public #0001000002000240 0 5)
+(*declaration* RemoveAllContent (*method* void (*list*) 0) public #0001000002000499 0 14)
+(*declaration* UnLock (*method* void (*list*) 0) public #0001000002000240 0 6)
+(*declaration* Locked #0001000002000494 0 protected #0001000002000241 0 Locked)
+(*declaration* ID (*scqf* #000100000200023b 0 4) protected #0001000002000241 0 ID)
+)
+)

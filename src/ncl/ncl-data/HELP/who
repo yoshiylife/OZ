@@ -1,0 +1,27 @@
+NFE(1)              Nucleus Front-End Built-In-Command               NFE(1)
+
+NAME
+     who - displays the connection condition of the front-end
+           connected to the nucleus.
+
+SYNOPSIS
+     who
+
+DESCRIPTION
+     It is important to know about the users connected to the 
+     nucleus that nfe exchanges information with.  For this 
+     purpose, who displays the following argument of 
+     connection condition:
+
+¥       * UNIX user who requested connection
+       *¥ file descriptor of nfe socket
+       *¥ time period of connection
+       *¥ hostname which requested connection
+
+EXAMPLE
+     nfe> who
+     Who Entry count(2)
+       USER    FD   CONNECT-TIME   RHOST
+     ozguest1   6  05/15 19:08:16  oztaro
+     ozguest2   6  05/15 19:08:16  ozjiro
+

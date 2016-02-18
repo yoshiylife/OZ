@@ -1,0 +1,4 @@
+5 ObjectManagerExceptions
+	00010000020002af
+0 Object
+	0001000002fffffd	0001000002fffffe	0001000002ffffff

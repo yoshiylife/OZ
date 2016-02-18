@@ -1,0 +1,244 @@
+Tue Apr  2 10:31:21 1996  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* namedir.oz (NameDirectory::Resolve)
+	  存在しないパスを Resolve したときに (補足されるとはいえ) 例外を
+	  発生する頻度が少なくなるように、一回 ListEntry で調べるようにし
+	  た。
+
+Wed Mar 20 15:07:03 1996  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* dnsresolver.oz (DNSResolver::Dump)
+	  school.oz (School::PrintIt)
+	  Openflag を使わずに fcntl.h を include するようにした。
+
+Sun Feb 18 00:57:16 1996  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* dserver.oz (DirectoryServer<*>)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  システムのメンバーが一部欠けている場合でもそれなりにトランザクショ
+	  ンを実行できて、なおかつ後で (可能なら) マージできるようにした。
+
+Mon Jan 29 15:58:44 1996  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* lockset.oz (LockSet<*>::New)
+	  LockID は New せずに、 OM の NewOID サービスを利用するようにした。
+
+Sun Jan 28 12:05:49 1996  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* dir-exc.oz (DirectoryExceptions::DomainConfliction
+		      DirectoryExceptions::NotModiable)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  ドメイン名の不整合を警告する例外とを追加した。
+
+	* dserver.oz (DirectoryServer<TEnt>::Kill,Terminate)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  事故などで永久に失われたメンバーを強制的に削除するメソッドを作成
+	  して、 Kill と名付けた。従来の Kill は Terminate と名前を変えた。
+
+	* dserver.oz (DirectoryServer<TEnt>::AddDirectoryServer)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  システムと重複しない内容を保持したサーバを新たにメンバー加えるこ
+	  とを可能にした。 DNSResolver などの追加に必要である。
+
+Sat Jan 27 23:10:47 1996  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* namedir.oz (NameDirectory::ChangeDomain, WhichDomain, DomainName)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  自身のドメイン名を記憶するようにした。
+
+Fri Jan 19 09:01:36 1996  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* 95Sep.1 を更新
+
+Tue Jan 16 08:48:12 1996  NISHIOKA Jazz Toshihiro  (nishioka at hotate)
+
+	* schoo.oz (School)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  WB でのスクールの利用形態に合わせて、通常のクラスについてはプロ
+	  テクティッドパートと実装パートのバージョン ID も記憶するようにし
+	  た。これにより、スクールの転送時にクラス配送が発生しないようになっ
+	  た。
+
+	* cnextractor.oz (ClassNameExtractor)
+	  sftreader.oz (SchoolFileTokenReader)
+	  sfreader.oz (SchoolFileReader)
+	  !!NEW CLASS!!
+	  スクールファイル (boot-school, sf-x-xxxx, *.t などの形式のファイ
+	  ル) を読み込んで School オブジェクトを作れるようにした。
+
+Thu Jan 11 00:10:53 1996  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* dserver.oz (DirectoryServer <TEnt>)
+	  各トランザクション終了時にフラッシュするように変更した。
+
+Sat Nov 11 22:46:21 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* ここで Sep.1 を更新
+
+Thu Nov  9 11:36:50 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* dserver.oz (DirectoryServer <TEnt>::NewEntry)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  catalog.oz (Catalog), acd.oz (AccountDirectory)	  
+	  !!PUBLIC INTERFACE CHANGED!!
+	  DirectoryServer のパブリックメソッド NewEntry を廃止した。
+	  これに伴って、 Catalog::NewPackage, AccountDirectory::NewUser が
+	  廃止された。
+
+	* dserver.oz (DirectoryServer <TEnt>::DirectoryServerOf)
+	  !!PROTECTED INTERFACE CHANGED!!
+	  メソッド DirectoryServerOf をプロテクティッドメソッドにした。
+
+	* name2.oz (NameDirectory)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  NameDirectory を、 DirectoryServer <global ResolvableObject> の
+	  サブクラスとした。
+
+Wed Oct 11 22:39:31 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* ここで Sep.1 を更新
+
+Fri Oct  6 15:10:45 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* dserver.oz (DirectoryServer<*>::Retrieve)
+	  前回の修正し残しの修正。
+	  処理中に例外が発生したら、既に獲得したロックを解放するように修正
+	  した。
+
+Thu Oct  5 07:45:56 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* dserver.oz のみ Sep.1 に反映
+
+	* dserver.oz (DirectoryServer<*>)
+	  処理中に例外が発生したら、既に獲得したロックを解放するように修正
+	  した。
+
+Wed Oct  4 15:38:41 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* dserver.oz (DirectoryServer<*>::Seperate, Trailer)
+	  Delimiter が空文字列であった場合 (ディレクトリがフラットである場
+	  合) にも正しく動作するように変更
+
+	* dir-exc.oz (DirectoryExceptions)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  DirectoryServer の新規生成に失敗した場合の例外 
+	  CouldntCreateDirectoryServer を追加した。
+
+Sat Sep 30 14:30:04 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* ここで Sep.1 に更新
+
+Tue Sep 12 05:44:05 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* package.oz (Package::SetConfigurationSet)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  Object::SetConfigurationSet と衝突しないように、 rename した。
+
+Mon Sep 11 06:50:18 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* ここで Jun.2 を更新
+
+Sat Sep  2 06:19:15 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* dserver.oz (DirectoryServer<*>::IsaDirectory)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  あるパスがディレクトリかどうかを調べるメソッドを追加した。
+
+Thu Aug  3 20:37:12 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* ここで Jun.2 を更新
+
+Sun Jul 30 21:01:52 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* lockset.oz (LockSet<*>::Lock)
+	  OzSleep を使うようにした。
+
+Mon Jul 10 18:07:39 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* school.oz (School::PrintIt)
+	  share, static class, record については、 ProtectedPart や実装の
+	  クラス ID を出力しないようにした。
+
+	* school.oz (School), phschdir.oz (PhysicalSchoolDirectory):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  NeuSchool, NewPhysicalSchoolDirectory を、それぞれ、 School,
+	  PhysicalSchoolDirectory と改名し、古いものを捨てた。
+
+Thu Jun 22 20:12:53 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* newschool.oz (NeuSchool::PrintIt):
+	  RootPart が書いてあってもいいように変更した (音川さんの指摘によ
+	  る)。
+
+Wed Jun 14 01:35:43 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* phschdir.oz (PhysicalSchoolDirectory::ListEntry):
+	  newphschdir.oz (NewPhysicalSchoolDirectory::ListEntry):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  メソッド ListEntry を削除した。
+
+Mon Jun 12 21:34:51 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* newschool.oz (NeuSchool):
+	  newphschdir.oz (NewPhysicalSchoolDirectory):
+	  !!NEW CLASS!!
+	  計量化し、種別情報を入れた新しいスクールを作成し、 NeuSchool と
+	  名付けた (将来、 School と改名する予定)。
+	  また、 NeuSchool を扱う物理スクールディレクトリである 
+	  NewPhysicalSchoolDirectory を作成した。
+
+Fri Jun  2 13:21:40 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* resolvable.oz (ResolvableObject):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  メソッドの継承関係が絶えないように、 public メソッド Removing,
+	  Flush, Where を宣言した。
+
+Mon May  8 22:09:01 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* school.oz (School):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  メソッド Compare を削除した。
+
+Sun May  7 16:23:44 1995  NISHIOKA Toshihiro  (nishioka@hotate.mri.co.jp)
+
+	* resolvable.oz (ResolvableObject):
+	  登録しようとした名前で既に別のオブジェクトが登録されていたら、 
+	  DuplicateRegsitration をあげるようにした。
+
+	* rslv-exc.oz (ResolverExceptions):
+	  !!PUBLIC INTERFACE CHANGED (ResolverExceptions)!!
+	  すでに他のオブジェクトやリゾルバが登録されているところへ、同じ名
+	  前で別のオブジェクトやリゾルバを登録しようとしたときの例外として 
+	  DuplicateRegistration (String) を追加した。
+
+Mon Apr 24 13:20:26 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* phschdir.oz (PhysicalSchoolDirectory):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  ListEntry を ListSchool に rename した (backward compatibility 
+	  のため、古い方も一応残してある)。
+
+	* directory.oz (Directory<*>):
+	  !!PROTECTED INTERFACE CHANGED!!
+	  Directory::Entries を protected にした。
+
+	* dserver.oz (DirectoryServer<*>),
+	  phschdir.oz (PhysicalSchoolDirectory):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  DirectoryServer<*>::CreateNewDirectoryServer を abstract method 
+	  とした。
+
+	* これより上が、 Release 2 に向けての修正である。
+
+Fri Mar 10 10:42:44 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* resolver.oz (Resolver):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  メソッド ChangeObject を global method とした。
+
+Fri Mar  3 17:54:08 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz)
+
+	* dserver.oz (DirectoryServer <*>):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  ResolvableObject の subclass とした

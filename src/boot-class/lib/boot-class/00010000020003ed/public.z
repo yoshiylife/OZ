@@ -1,0 +1,12 @@
+(*class* #00010000020003ed 5
+(*list*)
+(*list*
+(*declaration* DefaultType (*scqf* int 1) public #00010000020003ed 0 DefaultType)
+(*declaration* IdentifierType (*scqf* int 1) public #00010000020003ed 0 IdentifierType)
+(*declaration* StringType (*scqf* int 1) public #00010000020003ed 0 StringType)
+(*declaration* IntegerType (*scqf* int 1) public #00010000020003ed 0 IntegerType)
+(*declaration* NewLineType (*scqf* int 1) public #00010000020003ed 0 NewLineType)
+(*declaration* OIDType (*scqf* int 1) public #00010000020003ed 0 OIDType)
+(*declaration* EOFType (*scqf* int 1) public #00010000020003ed 0 EOFType)
+)
+)

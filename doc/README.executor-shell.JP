@@ -1,0 +1,235 @@
+/*
+ * Copyright(c) 1994-1997 情報処理振興事業協会（ＩＰＡ）
+ *
+ * ＩＰＡは全ての権利を保留します。
+ * 本ソフトウェア及びその関連ドキュメンテーションは情報処理振興事業協会（Ｉ
+
+  ＰＡ）が実施した「開放型基盤ソフトウェア研究開発評価事業」の成果です。
+ *
+ * 本ソフトウェア及びその関連ドキュメンテーションを利用、複製、変更、配布す
+
+  る場合は、配布パッケージのファイル「COPYRIGHT.JIS」に記載される使用条
+件
+ * に従って下さい。
+ */
+
+【executor のシェルのデバッグ用組み込みコマンド】
+
+●ブートストラップ時点のコマンド（手動による OZ++ System の起動時）
+dyload <file name>		dynamic load
+help [<class> [<command>]]	print comment of command(s)
+exit				exit executor
+quit				quit shell
+cs				check stack of all threads
+sh				fork new shell
+ts				print status of all threads
+
+●ブートストラップ時点でのみ有効となるコマンド
+boot [<object number>]	boot OZ++ System modules and go <object number>
+
+●引数なしで、コマンド boot を実行した場合にのみ有効となるコマンド
+preload			preload codes, classes and etc...
+
+●コマンド preload を実行した場合にのみ有効となるコマンド
+go <object number>	go global object
+
+●OZ++Systemの通常動作時に有効となるコマンド
+
+・コマンドの一般形式
+　
+<クラス名> <コマンド名> [<引数1> [<引数2> [...]]] [:[<開始>][,[<終了>]]] [&]
+
+	※注意	<クラス名>と<コマンド名>は、入力された文字列が
+		それぞれの先頭文字列と一致する対象が１つである場合、
+		以降の文字列を省略することができる。
+		但し、<クラス名>は、<エリアス名>が優先する。
+
+
+	<クラス名>		説明
+	shell		-- 組み込みシェル関連
+	object		-- オブジェクト関連
+	process		-- プロセス関連（OZ++言語）
+	class		-- クラス情報関連
+	layout		-- クラスレイアウト情報関連
+	code		-- クラス実行可能コード情報関連
+	thread		-- スレッド操作関連
+	break		-- ブレークポイント関連
+	set		-- パラメータ関連
+	info		-- 起動後に変更できないパラメータ関連
+	debugger	-- OZ++Systemのデバッガ（組み込み部）
+	<エイリアス名>	-- <クラス名>に優先して検索される。
+
+	<コマンド名>		説明
+	文字列		-- クラス別に定義されたコマンドを指定する。
+			   <クラス名>に<エリアス名>を指定した場合は指定しない。
+
+	<引数n>			説明
+	<... #>		-- ... のＩＤを指定する。サイトＩＤとエグゼキュータＩＤ
+			   を除く番号を１６進数で指定する。
+			   例、	0001000002123456 の場合、123456
+	<... ID>	-- ... のＩＤを指定する。通常、１６桁の１６進数を
+			   指定する。（１６桁に満たない場合、サイトＩＤと
+			   エグゼキュータＩＤがマージされる）
+	<... id>	-- ... のＩＤを指定する。１０進数を入力する。
+
+	[:[<開始>][,[<終了>]]]	説明
+	<開始>		-- 表示を開始する行番号を指定する。省略された場合、
+			   先頭（１)から表示する。
+	<終了>		-- 表示を中止する行番号を指定する。省略された場合、
+			   <開始>以降の全ての行が表示される。
+
+	[&]			説明
+	&		-- コマンドを実行するためのスレッドを生成する。
+
+・オブジェクト関連
+object <object #>		-- オブジェクト情報の表示
+object *<address>		-- ローカルオブジェクト情報の表示
+object list 			-- オブジェクトの一覧表示
+object suspend <object #>	-- オブジェクトの一時停止（但し、ＯＭ非経由）
+object resume <object #>	-- オブジェクトの実行再開（但し、ＯＭ非経由）
+object flush <object #> [<file name>]
+				-- オブジェクトのフラッシュ（但し、ＯＭ非経由）
+object gc <object #>		-- オブジェクトのヒープのＧＣを実行
+object heap <object #>		-- オブジェクトのヒープの使用状態を表示
+object threads <object #>	-- オブジェクト上のスレッドの一覧表示
+
+・プロセス関連（OZ++言語）
+process <process #>		-- プロセス情報の表示
+process list 			-- 全てのプロセスを一覧表示
+process list <object #>		-- オブジェクト上のプロセスを一覧表示
+process kill <process #>	-- プロセスに対して kill を実行
+process suspend <process #>|<message ID>
+				-- 当該エグゼキュータを起点とするプロセスの
+				   連続するスレッドの終点にあるスレッド、
+				   あるいは、<message id>によって識別される
+				   連続するスレッドの終点にあるスレッドの
+				   一時停止
+process resume <process #>|<message id>
+				-- 当該エグゼキュータを起点とするプロセスの
+				   連続するスレッドの終点にあるスレッド、
+				   あるいは、<message id>によって識別される
+				   連続するスレッドの終点にあるスレッドの
+				   実行再開
+process threads <process #>|<message ID>
+				-- 当該エグゼキュータを起点とするプロセスの
+				   連続するスレッドの<thread id>、
+				   あるいは、<message id>によって識別される
+				   連続するスレッドの一覧表示
+
+・クラス情報関連
+class <class ID>		-- クラス情報の表示
+class list 			-- クラス情報の一覧表示
+class gc			-- クラス情報のＧＣを実行
+
+・クラスレイアウト情報関連
+layout <class ID>		-- クラスレイアウトの情報表示
+layout list			-- クラスレイアウト情報の一覧表示
+layout gc 			-- クラスレイアウト情報のＧＣを実行
+
+・クラス実行可能コード情報関連
+code <class ID>			-- クラス実行可能コード情報の表示
+code *<address>			-- クラスＩＤの表示
+code list			-- クラス実行可能コード情報の一覧表示
+code gc				-- クラス実行可能コード情報のＧＣを実行
+code load <class ID>		-- クラス実行可能コード情報のロード
+code methods <class ID>		-- クラス実行可能コード情報のメソッドの一覧表示
+
+・スレッド操作関連
+thread <thread id>		-- スレッド情報の表示
+thread *<address>		-- スレッドＩＤの表示
+thread list  			-- 全てのスレッドの一覧表示
+thread frame <thread id>	-- スタックの全てのフレームを表示
+thread suspend <thread id>	-- スレッドの一時停止
+thread resume <thread id>	-- スレッドの実行再開
+thread kill <thread id>		-- スレッドの強制終了
+thread abort <thread id>	-- スレッドの例外指定
+thread monitor <thread id>	-- そのモニタで待ち状態のスレッドの一覧表示
+thread condition <thread id>	-- 同じ条件変数で待ち状態のスレッドの一覧表示
+thread yield			-- 実行待ちになっている次のスレッドを実行する
+thread sleep [<time>]		-- 実行を少なくとも<time>秒の間一時停止する
+thread stop [<status>]		-- スケジューラを状態<status>で停止する
+thread nice [<number>]		-- 優先順位を<number>だけ低くする
+thread idle [<time>]		-- <time>秒の間のidleスレッドの実行回数を計る
+thread chktsk			-- 全てのスレッドのスタックの残りを調べる
+				  
+
+・ブレークポイント関連
+break list			-- ブレークポイントの一覧表示
+break <breakpoint id>		-- ブレークポイント情報の表示
+break *<address>		-- アドレスにブレークポイントを設定
+break <class ID>:<line number>	-- クラス(private.c)の行番号の位置に
+				   ブレークポイントを設定
+break <class ID>:<method name>	-- クラスのメソッドのエントリーの位置に
+				   ブレークポイントを設定
+break continue <thread id>	-- ブレークポイントで一時停止したスレッドの
+				   実行再開
+break disable <breakpoint id>	-- ブレークボイントを無効化
+break enable <breakpoint id>	-- ブレークボイントを有効化
+break delete <breakpoint id>	-- ブレークポイントを削除
+break delete			-- 全てのブレークポイントを削除
+break clear *<address>		-- アドレスに設定された全てのブレークポイントを
+				   削除
+break clear <class ID>:<line number>
+				-- クラス(private.c)の行番号の位置に
+				   設定された全てのブレークポイントを削除
+break clear <class ID>:<line number>
+				-- クラスのメソッドのエントリーの位置に
+				   設定された全てのブレークポイントを削除
+
+・デバッガ関連
+debugger where <thread id>	-- dump thread stack
+debugger threads [object #]	-- list thread
+debugger methods <class ID>	-- list methods
+debugger monitor <thread id> <object address>
+			-- print thread locked monitor and threads waited
+debugger condition <thread id>	-- list wait threads for condition
+debugger break <class id>:<line number>
+				-- set breakpoint
+debugger continue <thread id>	-- continue from breakpoint
+debugger delete <breakpoint id>	-- clear breakpoint
+debugger clear <breakpoint addr>-- clear breakpoint address
+debugger enable <breakpoint id>	-- enable breakpoint
+debugger disable <breakpoint id>-- disable breakpoint
+debugger suspend <thread id>	-- suspend thread
+debugger resume <thread id>	-- resume thread
+debugger abort <thread id>	-- abort thread
+debugger kill <thread id>	-- kill thread
+debugger load <class id>	-- load class code
+
+・パラメータ関連
+set heap [<size[k]>]		-- オブジェクトのヒープとして利用する
+				   メモリサイズの上限を指定する。
+				   k を付けるとキロバイト指定となる。
+set tick [<ticks>]		-- １秒間のチック数を指定する。
+set debug [on|off]		-- OzDebugf()によるメッセージ出力のon/off
+set indicator [on|off]		-- グローバルアクセスの表示のon/off
+
+・起動後に変更できない情報関連
+info id				-- エグゼキュータのプロセスＩＤ（UNIX）
+				   サイトＩＤを表示（４桁）
+				   エグゼキュータＩＤを表示（６桁）
+				   アーキテクチャＩＤの表示（４桁）
+				   上記の表示
+info param			-- エグゼキュータの起動時に指定された値の表示
+info version			-- エグゼキュータのバージョンの表示
+info ozroot			-- エグゼキュータの環境変数 OZROOT の表示
+
+・エイリアス
+alias <name> ...		-- <name>とうコマンド名のエイリアスを設定
+unalias <name>			-- <name>というエイリアス名を削除
+alias load <file name>		-- エイリアスの設定をロード
+alias save <file name>		-- エイリアスの設定を保存
+
+codes				code list
+layouts				layout list
+classes				class list
+ps				process list
+objects				object list
+methods				code methods
+flush				object flush
+load				code load
+gc class			class gc
+gc code				code gc
+gc layout			layout gc
+heap				object heap
+threads				object threads

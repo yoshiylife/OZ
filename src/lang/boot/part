@@ -1,0 +1,20 @@
+emit.c:  for (i = 0; i < c->info->number_of_parts; i++)
+emit.c:  for (i = c->info->number_of_parts - 1; i >= 0; i--)
+emit.c:      for (i = 0; i < c->info->number_of_parts; i++)
+emit.c:	     c->type->part[c->info->number_of_parts - 1]->cid);
+emit.c:      cid = c->info->parts[p_no]->cid;
+emit.c:			 * (c->info->number_of_parts - 1));
+emit.c:  for (i = 0; i < c->info->number_of_parts; i++)
+emit.c:	 o->class->type->part[o->class->info->number_of_parts - 1]->cid, 
+emit.c:  for (i = 0; i < o->class->info->number_of_parts; i++)
+emit.c:	 o->class->type->part[o->class->info->number_of_parts - 1]->cid, 
+emit.c:  for (i = 0; i < o->class->info->number_of_parts; i++)
+emit.c:      if (i == o->class->info->number_of_parts - 1)
+emit.c:  for (i = 0; i < o->class->info->number_of_parts; i++)
+emit.c:	     o->count, o->class->info->number_of_parts);
+object-image-lib.c:  info->data_size_protected = class->parts[part_no]->info.data_size_protected;
+object-image-lib.c:  info->data_size_private = class->parts[part_no]->info.data_size_private;
+object-image-lib.c:  info->number_of_pointer_protected
+object-image-lib.c:  info->number_of_pointer_private
+object-image-lib.c:  info->zero_protected = class->parts[part_no]->info.zero_protected;
+object-image-lib.c:  info->zero_private = class->parts[part_no]->info.zero_private;

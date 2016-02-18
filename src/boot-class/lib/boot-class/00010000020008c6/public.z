@@ -1,0 +1,12 @@
+(*class* #00010000020008c6 0
+(*list*)
+(*list*
+(*declaration* New (*method* void (*list*) 0) constructor #00010000020008c6 0 0)
+(*declaration* Add (*method* void (*list* (*scqf* int 2) #00010000020008cb 8 ) 1) public #00010000020008c6 0 1)
+(*declaration* Delete (*method* void (*list* #00010000020008cb 8 ) 1) public #00010000020008c6 0 2)
+(*declaration* GetTimeQuantum (*method* (*scqf* int 2) (*list*) 0) public #00010000020008c6 0 3)
+(*declaration* SetTimeQuantum (*method* void (*list* (*scqf* int 2) ) 1) public #00010000020008c6 0 5)
+(*declaration* Start (*method* void (*list*) 1) public #00010000020008c6 0 4)
+(*declaration* Stop (*method* void (*list*) 5) public #0001000002fffffd 0 1)
+)
+)

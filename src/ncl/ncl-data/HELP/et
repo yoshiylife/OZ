@@ -1,0 +1,27 @@
+NFE(1)              Nucleus Front-End Built-In-Command               NFE(1)
+
+NAME
+     "et" - displays the contents of the executor table.
+
+SYNOPSIS
+     et
+
+DESCRIPTION
+     "et" displays the contents of the executor table of nuleus.
+     The executor table has the following contents.
+
+       * Executor ID
+       * Network address
+       * Location
+          - LOCAL(inside its own station)
+          - INSITE(inside its own site)
+          - OUTSITE(other sites)
+
+EXAMPLE
+     nfe> et
+     Hash table: size(2048)  count(3)
+     EXID                    NET-ADDR              LOCATION
+     0x0003000001000000      ???.??.???.??:?       LOCAL
+     0x0003000002000000      ???.??.???.??:?       LOCAL
+     0x0003000003000000      ???.??.???.??:?       LOCAL
+

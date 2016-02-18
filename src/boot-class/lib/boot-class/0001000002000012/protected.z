@@ -1,0 +1,11 @@
+(*class* #0001000002000012 0
+(*list*)
+(*list*
+(*declaration* New (*method* void (*list*) 0) constructor #0001000002000011 0 0)
+(*declaration* Add (*method* void (*list* (*scqf* #0001000002000064 0 4) (*array* char ) #0001000002000073 8 ) 0) public #0001000002000011 0 1)
+(*declaration* GetClass (*method* (*scqf* #0001000002000064 0 4) (*list* (*scqf* int 2) ) 0) public #0001000002000011 0 2)
+(*declaration* GetClassPart (*method* #0001000002000073 8 (*list* (*scqf* int 2) ) 0) public #0001000002000011 0 3)
+(*declaration* GetDirectoryPath (*method* (*array* char ) (*list* (*scqf* int 2) ) 0) public #0001000002000011 0 4)
+(*declaration* Size (*method* (*scqf* int 2) (*list*) 0) public #0001000002000011 0 5)
+)
+)

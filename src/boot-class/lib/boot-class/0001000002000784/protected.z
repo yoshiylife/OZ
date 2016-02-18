@@ -1,0 +1,17 @@
+(*class* #0001000002000784 0
+(*list*
+(*list* #000100000200053f #0001000002000540 0)
+(*list* #00010000020005cb #00010000020005cc 0)
+(*list* #00010000020005c6 #00010000020005c7 0)
+)
+(*list*
+(*declaration* New (*method* void (*list* int ) 0) constructor #0001000002000783 0 0)
+(*declaration* Register (*method* (*array* #00010000020003bd 0 ) (*list* (*array* #00010000020003bd 0 ) (*array* #00010000020003bd 0 ) ) 0) public #0001000002000783 0 1)
+(*declaration* Unregister (*method* void (*list* (*array* #00010000020003bd 0 ) ) 1) public #0001000002000783 0 3)
+(*declaration* RegisterPackages (*method* (*array* #00010000020003bd 0 ) (*list* (*array* #00010000020003bd 0 ) (*array* #00010000020002e7 0 ) ) 0) public #0001000002000783 0 2)
+(*declaration* GetAll (*method* (*array* #00010000020003bd 0 ) (*list*) 0) public #0001000002000783 0 5)
+(*declaration* GetFile (*method* #00010000020003bd 0 (*list* #00010000020003bd 0 ) 0) public #00010000020005c6 0 2)
+(*declaration* Convert (*method* #00010000020002e7 0 (*list* #00010000020003bd 0 ) 0) public #0001000002000783 0 4)
+(*declaration* ConvertToFile (*method* (*array* #00010000020003bd 0 ) (*list* (*array* #00010000020002e7 0 ) ) 0) public #0001000002000783 0 6)
+)
+)

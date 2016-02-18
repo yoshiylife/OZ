@@ -1,0 +1,38 @@
+/*
+ * Copyright(c) 1994-1997 Information-technology Promotion Agency, Japan(IPA)
+ *
+ * All rights reserved.
+ * This software and documentation is a result of the Open Fundamental
+ * Software Technology Project of Information-technology Promotion Agency, 
+ * Japan(IPA).
+ * 
+ * Permissions to use, copy, modify and distribute this software are governed 
+ * by the terms and conditions set forth in the file COPYRIGHT, located in 
+ * this release package.
+ */
+
+[executor options and arguments]
+
+Usage: executor [options] <executor id>
+
+<executor id>	Executor ID
+
+options
+-H <size[k]>	Maximum heap size. The Unit of size is Mbyte. If "k"
+		follows size, the unit is Kbyte(default 16).
+-M <max>	Maximum number of threads(default 256).
+-S <site id>	Site ID(default 1).
+-T <ticks>	Number of ticks in one second.
+-d		Running executor as a daemon.	
+-g		Debug mode(enable OzDebugf() output).
+-i		Hide the global access monitor window.
+-p		Enable the profile.
+-s		Open executor shell window.
+-v		Print the version of executor.
+-a		Allow linking of all EXTERN symbols of executor.
+-o		Open console window.
+
+a note
+	SIGTERM	Termination of the executor
+	SIGINT	Create of the executor shell
+	SIGHUP	Forcible termination of the executor

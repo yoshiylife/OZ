@@ -1,0 +1,140 @@
+/*
+  oid (000001) : object manager;
+  oid (000002) : class object;
+  oid (000003) : name directory;
+  oid (000004) : DNS resolver;
+  oid (000005) : launcher;
+  oid (000006) : catalog;
+*/
+
+#include "catalog.h"
+
+global Catalog ct = 000006 {
+    local String null_string {
+	ACO = {}
+	Len = 0;
+	Str = array char [] { ""; }
+    }
+    local Dictionary <String, Directory <Package>> subdirectories {
+	DefaultCapacity = 16;
+	ExpansionFactor = 2;
+	ExpansionIncrement = 2;
+	Count = 0;
+	Nbits = 4;
+	Mask = 15;
+	Contents = array Assoc <String, Directory <Package>> [16] {}
+    }
+    local Dictionary <String, Package> entries {
+	DefaultCapacity = 16;
+	ExpansionFactor = 2;
+	ExpansionIncrement = 2;
+	Count = 0;
+	Nbits = 4;
+	Mask = 15;
+	Contents = array Assoc <String, Package> [16] {}
+    }
+    local UnixIO debug {
+	aBuffer = array char [14] {}
+	Debug = 0;
+	aFDout = 0;
+	aFDin = 0;
+    }
+    local Directory <Package> root_package {
+	Subdirectories = local (subdirectories);
+	Entries = local (entries);
+	Debug = local (debug);
+    }
+    local Assoc <String, Directory <Package>> own_map_content0 {
+	aKey = local (null_string);
+	aValue = local (root_package);
+    }
+    array Assoc <String, Directory <Package>> own_map_contents [16] {
+	own_map_contents [0] = local (own_map_content0);
+    }
+    local Dictionary <String, Directory <Package>> own_map {
+	DefaultCapacity = 16;
+	ExpansionFactor = 2;
+	ExpansionIncrement = 2;
+	Count = 1;
+	Nbits = 4;
+	Mask = 15;
+	Contents = array (own_map_contents);
+    }
+
+    local Assoc <String, global DirectoryServer <Package>> system_map_content0 {
+	aKey = local (null_string);
+	aValue = oid (MAKE_OID (000006));
+    }
+    array
+      Assoc <String, global DirectoryServer <Package>> system_map_contents [4] {
+	  system_map_contents [0] = local (system_map_content0);
+      }
+    local Dictionary <String, global DirectoryServer <Package>> system_map {
+	DefaultCapacity = 16;
+	ExpansionFactor = 2;
+	ExpansionIncrement = 2;
+	Count = 1;
+	Nbits = 2;
+	Mask = 3;
+	Contents = array (system_map_contents);
+    }
+
+    local Set <OIDAsKey <global DirectoryServer <Package>>> members {
+	DefaultCapacity = 16;
+	ExpansionFactor = 2;
+	ExpansionIncrement = 2;
+	Count = 0;
+	Nbits = 2;
+	Mask = 3;
+	Contents = array OIDAsKey <global DirectoryServer <Package>> [4] {}
+    }
+
+    array Set <String> own_tops_contents [4] {
+	own_tops_contents [0] = local (null_string);
+    }
+    local Set <String> own_tops {
+	DefaultCapacity = 16;
+	ExpansionFactor = 2;
+	ExpansionIncrement = 2;
+	Count = 1;
+	Nbits = 2;
+	Mask = 3;
+	Contents = array (own_tops_contents);
+    }
+
+    local String delimiter {
+	ACO = {}
+	Len = 1;
+	Str = array char [] { ":"; }
+    }
+
+    local String system_name {
+	ACO = {}
+	Len = 8;
+	Str = array char [] { ":catalog"; }
+    }
+
+    array array names_table [ARRAY_SIZE_OF_CATALOG_NAMES] {
+#include "catalogname.h"
+    }
+
+    local StringArray names {
+	ExpansionFactor = 2;
+	InitialTableSize = 4;
+	ShrinkFactor = 2;
+	ShrinkThreshold = 4;
+	Table = array (names_table);
+	NumberOfElement = NUMBER_OF_CATALOG_NAMES;
+    }
+
+    OwnMap = local (own_map);
+    SystemMap = local (system_map);
+    Members = local (members);
+    OwnTops = local (own_tops);
+    Delimiter = local (delimiter);
+    SystemName = local (system_name);
+    ID = oid (0000000000000000);
+    InitialLengthOfNames = 4;
+    Names = local (names);
+    Debug = local (debug);
+}

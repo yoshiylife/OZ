@@ -1,0 +1,264 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.16 例外</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.16 例外">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION000616000000000000000>5.16 例外</A></H2>
+ <A NAME=langlangmanualexcept>　</A>
+<P>
+例外処理はプログラミングにおいて大域脱出の機能を提供するメカニズムであ
+る。  OZ++
+  言語では、ネットワークを介したグローバルメソッド 
+(<A HREF="node33.html#langlangmanualclassmember">5.13.2</A> 節参照) 起動を含む、すべてのメソッ
+ドおよびオペレータ (<A HREF="node32.html#langlangmanualrecord">5.12</A> 節参照) の起動におい
+て大域脱出が可能である。
+<P>
+ OZ++
+  言語の例外処理は、例外を発生させる <code>raise</code>文と発生し
+た例外を受け取る例外文によって記述する。
+<P>
+<H3><A NAME=SECTION000616100000000000000>5.16.1 例外の種類</A></H3>
+ <A NAME=langlangmanualexceptkind>　</A>
+<P>
+  OZ++
+  言語の例外処理で扱える例外にはシステム定義の例外とユーザ定義の例
+外がある。これらの例外は、システムでは区別されることなく同様に処理され
+る。
+<P>
+システム定義の例外には以下のものがある。
+<P>
+<UL><LI> <tt> Abort</tt>
+<P>
+<LI> <tt> ChildAborted</tt> 
+<LI> <tt> ObjectNotFound</tt> 
+<LI> <tt> ClassNotFound</tt>
+<LI> <tt> CodeNotFound</tt> 
+<LI> <tt> LayoutNotFound</tt> 
+<LI> <tt> GlobalInvokeFailed</tt> 
+<LI> <tt> NoMemory</tt> 
+<LI> <tt> ForkFailed</tt>
+<LI> <tt> KillSelf</tt>
+<LI> <tt> ChildDoubleFault</tt>
+<LI> <tt> IllegalInvoke</tt>
+<LI> <tt> NarrowFailed</tt>
+<LI> <tt> ArrayRangeOverflow</tt>
+<LI> <tt> TypeCorrectionFailed</tt>
+</UL>
+<P>
+ユーザ定義の例外は、shared 
+において宣言する (<A HREF="node35.html#langlangmanualsharedexcept">5.15.2</A> 節参照) 。
+<P>
+<P>
+<P>
+ユーザ定義の例外の場合には例外名の前に、それを定義した shared 名を記述
+し、システム定義の例外は単にその例外名だけを記述する。
+<P>
+また、例外には任意の型のパラメータを一つのみ設定することもできる。
+<P>
+<H3><A NAME=SECTION000616200000000000000>5.16.2 例外の発生</A></H3>
+ <A NAME=langlangmanualexceptuser>　</A>
+<P>
+<PRE>except_stmt
+        | 'raise' exception_label2 ';'
+        | 'raise' ';'
+        ;
+
+exception_label2
+        : exception_name
+        | exception_name '(' exp ')'
+        ;
+
+exception_name
+        : SHAREDNAME '::' IDENTIFIER
+        | IDENTIFIER
+        ;
+</PRE>
+<P>
+ユーザは任意の例外を発生することができる。
+<P>
+<code>raise</code>文は通常、
+<blockquote> <code>raise SharedString::OutOfRange (100)</code>
+</blockquote>
+のように例外名の指定が必要であるが、例外ハンドラの中でのみ例外名を省略した記
+述が可能である。この場合は、受け取った例外を現在のメソッド呼び出しの連
+鎖の1つ前に送る (例外のreraise) という意味になる。
+<P>
+<H3><A NAME=SECTION000616300000000000000>5.16.3 例外文</A></H3>
+<P>
+<PRE>except_stmt
+        : 'try' block 'except''{' except_body default_except_block '}'
+        ;
+</PRE>
+<P>
+例外文は次のように例外ブロックと例外ハンドラリストからなる。
+<P>
+<PRE>String str;
+        :
+try 
+  {      // 例外ブロック
+    str-&gt;At (100);        
+  } 
+except 
+  {      // 例外ハンドラリスト
+  SharedString::OutOfRange (index)  //例外ハンドラ
+    {
+      str-&gt;At (str-&gt;Length () - 1);
+    }
+  default 
+    {
+        :
+      raise;
+    }
+  }
+}
+</PRE>
+<P>
+例外ブロックには通常の処理内容を記述し、そこで発生した例外を補足するた
+めの処理を例外ハンドラリストに記述する。
+また例外ブロックはネストすることができる。
+<P>
+<H3><A NAME=SECTION000616400000000000000>5.16.4 例外ハンドラリスト</A></H3>
+<P>
+<PRE>except_body
+        : /* empty */
+        | except_body exception_labels block 
+        ;
+
+default_except_block
+        : /* empty */
+        | 'default' block
+        ;
+
+exception_labels
+        : exception_label 
+        | exception_labels ',' exception_label 
+        ;
+
+exception_label
+        : exception_name 
+        | exception_name '(' IDENTIFIER ')'
+        ;
+</PRE>
+<P>
+例外ハンドラリストには、0個以
+上の例外ハンドラを記述し、各例外ハンドラにおいて例外ブロックの実行時に
+発生する可能性のある例外に対する処理を記述する。
+<P>
+以下のような形式で記述する。
+<P>
+<PRE>except
+  {
+    A::Except         // 例外名: ユーザ定義の例外
+      {
+        ...           // 例外発生時の処理
+      }
+    Abort (           // 例外名: システム定義の例外
+      {
+        ...
+      }
+   }
+</PRE>
+<P>
+例外ハンドラには例外名に<code>default</code>を指定したものを記述することが可
+能である。この例外ハンドラは同じ例外ハンドラリストにある他の例外ハンド
+ラで指定されていない例外を受け取るためのものであり、発生した例外に対す
+る処理は特に行なわないが例外ブロックで獲得した資源の解放処理が必要であ
+るという場合などに利用するためのものである。
+<P>
+<H3><A NAME=SECTION000616500000000000000>5.16.5 例外捕捉のセマンティクス</A></H3>
+<P>
+まず例外ブロックが実行される。その実行中に、
+<P>
+<UL><LI> 例外が発生しない場合
+<P>
+例外ブロックを終了し例外文の次の文に制御が移動する
+<P>
+<LI> 例外ハンドラで指定されていない例外が発生した場合
+<P>
+例外ブロックを含むメソッドの実行が中断され、それまでのメソッドを呼び出し
+を逆順にたどって例外を受け取るメソッド (例外ブロックを持つメソッド) に
+例外が委譲される。
+<P>
+例外を受け取るメソッドが存在しない場合は、ランタイムエラーとなる
+<P>
+<LI> 例外ハンドラで指定された例外が発生した場合
+<P>
+例外が発生した時点で、その例外ハンドラに制御が移動する
+<P>
+例外ハンドラが終了すると例外文の次の文に制御が移動する
+</UL>
+<P>
+<PRE>class A {
+  public: m1, m2;
+
+  int m1() 
+    {
+      ...
+      m2();
+      ...
+    }
+
+  int m2()
+    {
+       try 
+         {
+           ...
+         }
+       except {
+         Abort
+           {
+             ...
+           }
+         AnyWhere::Quit 
+           {
+             ...
+           }
+       }
+    }  
+}
+</PRE>
+<P>
+上の例で、<tt> A</tt> のインスタンスに対してメソッド <tt> m1</tt> を起動すると、
+そのメソッドの中からメソッド <tt> m2</tt> が起動される。そして、<tt> m2</tt> 
+ではまず例外ブロックが実行される。その実行中に、
+<P>
+<UL><LI> 例外が発生しなかった場合
+<P>
+例外文の次の文に制御が移動するので、<tt> m2</tt> の実行を終了し、
+<tt> m1</tt> に制御が戻る
+<P>
+<LI> 例外が発生した場合
+<P>
+<UL><LI> <tt> Abort</tt> もしくは <tt> Quit</tt> の例外の場合
+<P>
+それぞれの例外ハンドラが実行され、それが終了すると、<tt> m2</tt> の実行を
+終了し、<tt> m1</tt> に制御が戻る
+<P>
+<LI> <tt> Abort</tt>、<tt> Quit</tt> 以外の例外の場合
+<P>
+対応する例外ハンドラが定義されていないため、例外の委譲を行なう。ところ
+がこの例では、例外を受け取るメソッドが存在しないので、ランタイムエラー
+となる
+</UL></UL>
+<P>
+上の例のようにいずれの例外ハンドラでも処理されず例外がランタイムエラー
+となった場合、 OZ++
+  システムではデバッガの起動等を行なうことが可能なメカ
+ニズムが実行系において用意される。
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

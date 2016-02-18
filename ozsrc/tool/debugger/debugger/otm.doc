@@ -1,0 +1,25 @@
+・ListObjects()
+・ListObjectsOfStatus()
+・ListLoadedObjects()
+・ListReadyObjects()
+・ListSuspendedObjects()
+・ListSwappedOutObjects()
+・IsPermanentObject()
+・IsSuspendedObject()
+・WasSafelyShutdown()
+・WhichStatus()
+
+Global Object List
+
+List
+	All
+	Specify...
+	Loaded
+	Ready
+	Suspended
+	SwappedOut
+	--
+	Quit
+
+[Object ID] [Status] [Permanet] [Safely]
+

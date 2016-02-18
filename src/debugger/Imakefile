@@ -1,0 +1,34 @@
+DESTDIR		= ${OZROOT}
+BINDIR		= /bin
+CC		= gcc
+INCLUDES	= -I. -I../executor -I../../include
+CFLAGS		= -g -ffixed-i0 -O $(INCLUDES) #-Wall
+LOCAL_LDFLAGS	= -g -static
+LOCAL_LIBRARIES	= /usr/lib/debug/malloc.o
+PROGRAM		= debugger
+
+	SRCS	= debugger.c id.c name.c print.c io.c hash.c \
+		  class.c inst.c code.c inspect.c ncl.c
+	OBJS	= debugger.o id.o name.o print.o io.o hash.o \
+		  class.o inst.o code.o inspect.o ncl.o
+
+AllTarget($(PROGRAM))
+NormalProgramTarget($(PROGRAM),$(OBJS),,$(LOCAL_LIBRARIES),)
+
+install::
+	@if [ "$(DESTDIR)" = "" ]; then \
+	   echo "***" ;\
+	   echo "You must be set environment variable: OZROOT" ;\
+	   echo "***" ;\
+	   exit 1 ;\
+	 fi
+
+InstallMultipleFlags($(PROGRAM) inspect,$(BINDIR),-m 755)
+DependTarget()
+
+inspect: Imakefile
+	@echo "Create shell script(sh): inspect"
+	@( echo "#!/usr/bin/csh -f">inspect; \
+	   echo limit descriptors 200>>inspect; \
+	   echo 'wish -f $$OZROOT/lib/gui/debugger/inspect.tcl $$*'>>inspect; )
+

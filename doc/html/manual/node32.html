@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.12 Record</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.12 Record">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION000612000000000000000>5.12 Record</A></H2>
+ <A NAME=langlangmanualrecord>&#160;</A>
+<P>
+<PRE>record_def
+        : RECORD CLASSNAME '{' record_body '}'
+        ;
+
+record_body
+        : record_member_decls
+        | record_body STRINGS
+        ;
+</PRE>
+<P>
+A record is one of the user-defined types.  It can define both data members and operators to handle the members.
+<P>
+<H3><A NAME=SECTION000612100000000000000>5.12.1 Members and Operators</A></H3>
+ <A NAME=langlangmanualrecordmember>&#160;</A>
+<P>
+<PRE>record_member_decls
+        : /* empty */
+        | record_member_decls record_member_decl 
+        ;
+
+record_member_decl
+        : member_var_decl
+        | member_operator_decl
+        ;
+
+member_var_decl
+        : quals_type vars_list_noinit ';'
+        ; 
+
+quals_type
+        : simple_quals_type
+        | class_quals_type
+        ;
+
+vars_list_noinit
+        : vars_noinit
+        | vars_list_noinit ',' vars_noinit
+        ;
+
+vars_noinit
+        : vars
+        ;
+
+member_operator_decl
+        | quals_type m_members block
+        | IDENTIFIER '(' args ')' block
+        ;
+
+m_members
+        : processes IDENTIFIER '(' args ')' arrays 
+        | processes '(' m_members ')' arrays 
+        ;
+</PRE>
+<P>
+A member may be of either record type or fundamental type.  This is based on the idea that records of user-defined types in OZ++ language are an extensions of fundamental types.
+<P>
+Like instance variables of class types, members and operators are neither encapsulated nor have access controls, so they can all be accessed directly.
+<P>
+Also, initial setups can not be performed in a member declaration.
+<P>
+<PRE>record A {
+  int a = 10;   // error: initial setups can't be performed.
+}
+</PRE>
+<P>
+Assignment to a member can also be possible by setting its initial value at the time of declaration of variables.
+<P>
+<PRE>Declaration:
+
+record class Point {
+  int x, y;
+}
+
+record class Rectangle {
+  Point nw, se;
+
+  int Width()
+    {
+       return se.x - nw.x;
+    }
+
+  int Height()
+    {
+       return nw.y - se.y;
+    }
+}
+
+Usage:
+
+Rectangle rect = { { 10, 10 }, { 100, 100 } }; 
+     // initialization during declaration 
+rect.nw.x = 110;                      // member assignment 
+size = rect.Width() * rect.Height();  // operator call
+</PRE>
+<P>
+Furthermore, if 0 is used as rvalue to variables of a record type, all
+members of the record have 0 as their rvalue (see Section
+<A HREF="node24.html#langlangmanualdatatypezero">5.4.2</A>).  For example,
+<P>
+<PRE>Rectangle r;
+
+r = 0;
+</PRE>
+<P>
+is
+<P>
+<PRE>r = { 0, 0 };
+</PRE>
+<P>
+this means that
+<P>
+<PRE>r = { { 0, 0 }, { 0, 0} }
+</PRE>
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

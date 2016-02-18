@@ -1,0 +1,18 @@
+(*class* #0001000002000761 0
+(*list*
+(*list* #00010000020001b5 #00010000020001b6 0)
+(*list* #0001000002000779 #000100000200077a 0)
+)
+(*list*
+(*declaration* New (*method* void (*list* (*array* char ) ) 4) constructor #0001000002000760 0 0)
+(*declaration* Launch (*method* void (*list*) 4) public #0001000002000779 0 2)
+(*declaration* SetPath (*method* void (*list* #00010000020003bd 0 ) 4) public #0001000002000779 0 4)
+(*declaration* Import (*method* void (*list* #00010000020003bd 0 (*array* #00010000020003bd 0 ) (*array* #00010000020002e7 0 ) ) 5) public #0001000002000779 0 3)
+(*declaration* Quit (*method* void (*list*) 5) public #0001000002000779 0 1)
+(*declaration* SelectPath (*method* #00010000020003bd 0 (*list*) 5) public #0001000002000779 0 5)
+(*declaration* SuperNew (*method* void (*list* (*scqf* #0001000002fffffd 0 4) (*array* char ) ) 4) protected #000100000200077a 0 0)
+(*declaration* Owner (*scqf* #0001000002fffffd 0 4) protected #000100000200077a 0 Owner)
+(*declaration* Retrieve (*method* (*array* #00010000020002e7 0 ) (*list* (*array* #00010000020003bd 0 ) ) 0) protected #000100000200077a 0 6)
+(*declaration* Export (*method* void (*list* (*array* #00010000020003bd 0 ) ) 0) protected #000100000200077a 0 7)
+)
+)

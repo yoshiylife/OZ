@@ -1,0 +1,86 @@
+/*
+ * Copyright(c) 1994-1997 Information-technology Promotion Agency, Japan(IPA)
+ *
+ * All rights reserved.
+ * This software and documentation is a result of the Open Fundamental
+ * Software Technology Project of Information-technology Promotion Agency, 
+ * Japan(IPA).
+ * 
+ * Permissions to use, copy, modify and distribute this software are governed  * by the terms and conditions set forth in the file COPYRIGHT, located in 
+ * this release package.
+ */
+
+* To start:
+ - Set search paths so that non-standard commands such as gcc, perl, 
+   X Window (e.g. imake) can be executed.
+
+ - Make a symbolic link of "Makefile" to "Makefile.ini".
+
+ - Set the variables CONFIG and PROJECT of Makefile.ini in the following 
+   way (if the setups of CONFIG and PROJECT are changed, repeat these 
+   instructions):
+
+    CONFIG:    the path to the configuration directory of X Window
+        e.g.  CONFIG=/usr/X11R6/lib/X11/config
+    PROJECT:   the path to the directory expanded by an archive
+               (If NFS is used, this directory must be accessible through 
+               NFS)
+        e.g.  CONFIG=/usr/local/src/OZ++--RXXX
+
+* To compile source files:
+ - Execute "make World."
+        e.g.  make World >& World.log &
+              tail -f World.log
+
+* To install the OZ++ system:
+ - Become a super user.
+
+ - Set the environment variable OZROOT to the directory where the OZ++ 
+   system is installed. (If NFS is used, this directory must be accessible 
+   through NFS.)
+        e.g.  setenv OZROOT /usr/local/oz++
+
+ - Execute "make install."
+        e.g.  make install >& install.log & tail -f install.log
+
+ - Refer to doc/README.nucleus to set necessary variables.
+   (These setups can be made very simply by executing "make setup.")
+
+ - Refer to the files in doc/  to activate the OZ++ system.
+
+* To make an archive (e.g. OZ++-RX.tar.gz):
+ - If you are a super user, exit from your super user's account.
+
+ - Execute "make tar".
+
+* To make an experimental OZ++ system using an already installed OZ++ system:
+ - Edit the files .cshrc .login .profile to set the environment variable 
+   OZROOT to the directory where the OZ++ system is used.
+
+ - Change the current directory to one where the OZ++ system has already 
+   been installed.  (This directory must be different from the one where 
+   the archive is installed.)
+
+ - Execute "make link".
+
+ - If necessary, replace the symbolic links to the directory containing the 
+   experimental files.
+
+** Caution:
+ - The directory in which the archive is expanded must not be the same as 
+   the directory where the OZ++ system is installed.
+
+ - Do not execute "xmkmf -a".
+
+ - When the command "make" is executed, the last step "boot-class" takes 
+   quite  a long time to process.
+
+ - Refer to src/boot-class/README, if you wish to make changes in 
+   src/boot-class.
+   About 60 Mbytes of disk space are required to either compile or install 
+   the OZ++ system.
+
+ - Compiling the OZ++ system in an SS10 Sun workstation takes about one hour.
+
+ - Installing the system in an SS10 Sun workstation takes about half an hour.
+

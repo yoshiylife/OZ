@@ -1,0 +1,299 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.20 デバッグ文</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.20 デバッグ文">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION000620000000000000000>5.20 デバッグ文</A></H2>
+ <A NAME=langlangmanualdebug>　</A>
+<P>
+デバッグ文とは、 OZ++
+  言語におけるデバッグ時のメッセージ出力のための文と
+その処理のために必要な処理を記述する複文の総称である。デバッグ文は通常
+は実行の対象にならないが、デバッガによる操作により実行の対象となる。
+<P>
+デバッグ文はキーワード '<tt> debug</tt>' で始まり、次に述べる 2 つの形式
+がある。
+<P>
+<H3><A NAME=SECTION000620100000000000000>5.20.1 形式 1</A></H3>
+<P>
+<PRE>debug_stmt
+        : 'debug' '(' exp ',' STRING ')' ';'
+        | 'debug' '(' exp ',' STRING ',' exp ')' ';'
+        | 'debug' '(' 'default' ',' STRING ')' ';'
+        | 'debug' '(' 'default' ',' STRING ',' exp ')' ';'
+        ;
+</PRE>
+<P>
+デバッグ時にメッセージを出力するための文である。キーワード '<b>
+debug</b>' に続く '(' と')'で囲まれた中の一番目にはメッセージの送信先を指
+定し、グローバル・オブジェクト ID となる式を記述する。また、次の値は特別な送
+信先を示す。
+<P>
+<TABLE BORDER>
+<TR>
+<TD>値</TD>               <TD>送信先</TD>
+</TR>
+<TR></TR>
+<TR>
+<TD><B>0</B></TD>       <TD>当該プロセスの起点のデバッガ</TD>
+</TR>
+<TR>
+<TD><B>default</B></TD> <TD>当該エグゼキュータのデバッガ</TD>
+</TR>
+</TABLE>
+
+<P>
+指定された送信先のグローバル・オブジェクトがデバッガと結びついていない
+場合、送信先はそのデバッガが存在するエグゼキュータ上のデバッガとなる。
+また送るべきデバッガがない場合、デバッグ・メッセージを破棄する。
+<P>
+二番目は文字列定数であり、C 言語の関数 <tt> printf()</tt> と類似した書式文
+字列 (後述) を指定することができる。この書式文字列に基づいて三番目以降
+の値を編集し、その結果を送信先へ送る。コンパイル時には、その書式文字列
+に含まれる書式指示文字と三番目以降に続く値の型の整合性がチェックされる。
+<P>
+<PRE>例
+
+// 当該プロセスの起点のデバッガに送る
+debug (0, &quot;send debug message to process\n&quot;);
+
+// 当該グローバル・オブジェクトに送る
+debug (cell, &quot;send debug message to global object\n&quot;);
+
+// 当該エグゼキュータのデバッガに送る
+debug (default, &quot;send debug message to debugger\n&quot;);
+</PRE>
+<P>
+<H3><A NAME=SECTION000620200000000000000>5.20.2 形式 2</A></H3>
+<P>
+<PRE>debug_stmt
+        |  'debug' block
+</PRE>
+<P>
+デバッグのために実行する複文である。この複文中に形式 1 を記述すること
+もできる。例えば、先述の形式 1 によるメッセージの送信先を計算する場合
+やオブジェクトの視覚化等のために使用する。
+<P>
+キーワード '<b> debug</b>' に続いて通常の複文 (ブロック) を記述する。
+通常の複文と異なるのは、デバッガの操作によって初めて実行の対象となる点である。
+<P>
+<PRE>例
+  
+// 当該エグゼキュータのオブジェクトマネージャにデバッグ・メッセージを送る
+
+debug 
+  {
+    global ObjectManager om;
+
+    om = Where() ;
+    debug (om, &quot;send debug message to OM\n&quot;);
+  }
+</PRE>
+<P>
+<H3><A NAME=SECTION000620300000000000000>5.20.3 書式文字列</A></H3>
+<P>
+書式文字列は、通常の文字と書式を構成する文字を含み、文字列の終端である
+ヌル文字(0x00)までの文字の連続した並びである。書式の指定は、文字 '%'
+で始まり、次のような形式である。
+<P>
+<PRE>%[&lt;flags&gt;][&lt;width&gt;][.&lt;precision&gt;][&lt;size&gt;]&lt;type&gt;
+</PRE>
+<P>
+&lt;<I>flags</I>&gt; , &lt;<I>width</I>&gt; ,
+&lt;<I>precision</I>&gt , &lt;<I>size</I>&gt;
+
+は省略することが可能である。
+<P>
+&lt;<I>flags</I>&gt; には、次に示す文字 (フラグ) を
+
+0 個以上組み合わせて指定することができる。
+<P>
+<TABLE BORDER>
+<TR>
+<TH NOWRAP>フラグ</TH><TH>効果</TH>
+</TR>
+<TR></TR>
+<TR>
+<TD>-</TD><TD>変換結果を左詰めにする (デフォルト: 変換結果は右詰めにする)。
+</TR>
+<TR>
+<TD>+</TD><TD>符号付き変換結果は、常に先頭に符号 ( + または - ) を付ける(デフォルト：負の値を変換する時にのみ先頭に符号を付ける)。</TD>
+</TR>
+<TR>
+<TD>空白</TD><TD>符号付き変換の最初の文字が符号でない場合、先頭にスペースを置く( + が優先される)。</TD>
+</TR>
+<TR>
+<TD>#</TD><TD>代替形式に変換する。</TD>
+</TR>
+</TABLE>
+
+<P>
+&lt;<I>width</I>&gt;には、変換結果の最小幅を次の形式で指定する。
+<TABLE BORDER>
+<TR>
+<TH NOWRAP>&lt;<I>width</I>&gt;</TH><TH>効果</TH>
+</TR>
+<TR></TR>
+<TR>
+<TD>10 進の文字列</TD><TD>変換結果が最小幅より短い場合は&lt;<I>flags</I>&gt;の指示を踏まえて空白を埋める。
+</TR>
+<TR>
+<TD>0 で始まる 10 進の文字列</TD>
+                <TD>変換結果が最小幅より短い場合は左に文字'0'を埋める。</TD>
+</TR>
+<TR>
+<TD>*</TD><TD>引数リスト (値の並び) から最小幅を指定する値( int型) を得る。</TD>
+</TR>
+</TABLE>
+
+<P>
+&lt;<I>precision</I>&gt;には、文字'.'に続いて精度を次の形式で指定する。
+<TABLE BORDER>
+<TR>
+<TH NOWRAP>&lt;<I>precision</I>&gt;</TH><TH>効果</TH>
+</TR>
+<TR></TR>
+<TR>
+<TD>10 進の文字列</TD><TD>小数点以下の数字の桁数、あるいは、文字数を表す。</TD>
+</TR>
+<TR>
+<TD>0 (ゼロ)</TD><TD>変換型が'S'の場合、文字列自身の長さを表す。</TD>
+</TR>
+<TR>
+<TD>*</TD><TD>引数リスト(値の並び) から精度を指定する値 (int型) を得る。</TD>
+</TR>
+</TABLE>
+
+<P>
+入力値サイズ&lt;<I>size</I>&gt;には、入力値のサイズを表す
+次の文字を指定する。但し、変換型&lt;<I>type</I>&gt;で入力値の
+サイズが決まっている場合、&lt;<I>size</I>&gt;は無視される。
+<TABLE BORDER>
+<TR>
+<TH NOWRAP>&lt;<I>size</I>&gt;</TH><TH>引数の解釈</TH>
+</TR>
+<TR></TR>
+<TR>
+<TD>h</TD><TD>2 バイトのデータ</TD>
+</TR>
+<TR>
+<TD>l</TD><TD>8 バイトのデータ</TD>
+</TR>
+</TABLE>
+
+<P>
+&lt;<I>type</I>&gt;には、値をどのように変換するかを
+表す次の文字を指定する。
+<TABLE BORDER>
+<TR>
+<TH NOWRAP>&lt;<I>type</I>&gt;</TH><TH>入力値</TH><TH>書式</TH>
+</TR>
+<TR></TR>
+<TR>
+<TD>d</TD><TD>整数</TD><TD>符号付き 10 進整数</TD>
+</TR>
+<TR>
+<TD>i</TD><TD>整数</TD><TD>符号付き 10 進整数</TD>
+</TR>
+<TR>
+<TD>o</TD><TD>整数</TD><TD>符号なし 8 進整数</TD>
+</TR>
+<TR>
+<TD>u</TD><TD>整数</TD><TD>符号なし 10 進整数</TD>
+</TR>
+<TR>
+<TD>x</TD><TD>整数</TD><TD>符号なし 16 進整数 (a,b,c,d,e,fを使用)</TD>
+</TR>
+<TR>
+<TD>X</TD><TD>整数</TD><TD>符号なし 16 進整数 (A,B,C,D,E,Fを使用)</TD>
+</TR>
+<TR>
+<TD>f</TD><TD>浮動小数点数</TD><TD>符号付きの[<B>-</B>]ddd.ddd形式</TD>
+</TR>
+<TR>
+<TD>e</TD><TD>浮動小数点数</TD><TD>符号付きの[<B>-</B>]d.ddd e[<B>+-</B>]ddd形式</TD>
+</TR>
+<TR>
+<TD>c</TD><TD>文字</TD><TD>1 つの文字</TD>
+</TR>
+<TR>
+<TD>%</TD><TD>なし</TD><TD>'%'文字</TD>
+</TR>
+<TR></TR>
+<TR>
+<TD>S</TD><TD>OZ文字列</TD><TD>ヌル文字までの印字</TD>
+</TR>
+<TR>
+<TD>P</TD><TD>プロセス変数</TD><TD>プロセス ID</TD>
+</TR>
+<TR>
+<TD>O</TD><TD>グーバル・オブジェクト</TD><TD>オブジェクト ID</TD>
+</TR>
+<TR>
+<TD>V</TD><TD>ローカル・オブジェクト</TD><TD>バージョン ID</TD>
+</TR>
+<TR>
+<TD>C</TD><TD>ローカル・オブジェクト</TD><TD>コンフィギュアードクラス ID</TD>
+</TR>
+<TR>
+<TD>T</TD><TD>ローカル・オブジェクト</TD><TD>パート番号 (符号なし 10 進整数扱い)</TD>
+</TR>
+<TR>
+<TD>A</TD><TD>ローカル・オブジェクト</TD><TD>パート数 (符号付き 10 進整数扱い)</TD>
+</TR>
+</TABLE>
+
+<UL>
+<LI>上記の`ID'の印字の書式は、&lt;<I>ID を表す 16 桁の 16 進文字列</I>&gt;
+である。つまり、&lt;<I>precision</I>&gt;は 16 に固定である。
+<P>
+<LI> スタティック・クラスのローカル・オブジェクトに対して
+     適用できない&lt;<I>type</I>がある。
+</UL>
+<P>
+
+<P>
+<PRE>例
+
+int integer = 1;
+long long_integer = 2LL;
+char str[] = &quot;Test&quot; ;
+global Object gobj = Where();
+Test lobj=&gt;New();
+int @p ;
+
+debug (0, &quot;integer = %d\n&quot;, integer);
+// 印字結果: integer = 1
+
+debug (0, &quot;long integer = %ld\n&quot;, long_integer);
+// 印字結果: long integer = 2
+
+debug (0, &quot;%S%S\n&quot;, &quot;str = &quot;, str);
+// 印字結果: str = Test
+
+debug (0, &quot;process ID = %P\n&quot;, p);
+// 印字結果: process = 0
+
+debug (0, &quot;global object ID = %O\n&quot;, gobj);
+// 印字結果: global object ID = 0001000001000001
+
+debug (0, &quot;configured ID = %C\n&quot;, lobj);
+// 印字結果: configured ID = 0001000002002fff
+</PRE>
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

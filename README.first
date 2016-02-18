@@ -1,0 +1,73 @@
+/*
+ * Copyright(c) 1994-1997 Information-technology Promotion Agency, Japan(IPA)
+ *
+ * All rights reserved.
+ * This software and documentation is a result of the Open Fundamental
+ * Software Technology Project of Information-technology Promotion Agency, 
+ * Japan(IPA).
+ * 
+ * Permissions to use, copy, modify and distribute this software are governed 
+ * by the terms and conditions set forth in the file COPYRIGHT, located in 
+ * this release package.
+ */
+
+This document describes the execution environment and the directory
+configuration of the OZ++ system.
+
+o Execution Environment
+
+The OZ++ system should be executed in the following environment:
+
+  - SunOS 4.1.3, or 4.1.4
+    whose kernel has been reconfigured to use shared memory, required.
+  - Disk space of 60MB for make and 60MB for installation, required.
+  - Swap space of 40MB required at the time of exceution.
+  - Sparc Station 2, or faster desired.
+
+
+o Necessary Tools
+
+The following tools are required to use the demo system of OZ++:
+
+  - X Window System (Release 5 or later is desirable)
+  - Tcl(7.3)/Tk(3.6)
+     (jp-patch, add-input3.6, and TkPixmap3.6 are required.)
+     This can be ftp'd from ftp.aud.alcatel.com:/tcl.
+  - gcc 2.7.0
+  - perl 4.* or 5.*
+  - gzip
+
+o Contents of the Directory
+
+OZ++-R5/COPYRIGHT       copyright and license notice (English)
+        COPYRIGHT.JIS   copyright and license notice (Japanese)
+        INSTALL         how to install (English)
+        INSTALL.JP      how to install (Japanese)
+        Imakefile       for system installation purposes
+        Makefile.ini    for system installation purposes
+        README.first    read this file first (English)
+        README.first.JP read this file first (Japanese)
+        ReleaseNote     release note (English)
+        ReleaseNote.JP  release note (Japanese)
+        doc/            various documents
+        include/        header files for tools running in UNIX
+        ozsrc/          source files written in OZ++ language (not used in
+                        make)
+        src/            source files (used in make)
+
+
+o How to install
+
+  1. Unfold the tar file.
+
+    Example) $ cd /usr/local/src
+             $ gzip -cd OZ++-R5.tar.gz | tar xf -
+
+  2. You'll find a directory named OZ++-R5 and a file named INSTALL in the
+     directory.  Follow the instructions written in INSTALL.
+
+
+o How to operate OZ++ system
+
+OZ++ system should be operated properly by operators understanding the contents
+of the file doc/README.site.

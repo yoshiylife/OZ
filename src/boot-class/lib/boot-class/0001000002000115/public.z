@@ -1,0 +1,15 @@
+(*class* #0001000002000115 0
+(*list*
+(*list* #0001000002000187 #0001000002000188 0)
+)
+(*list*
+(*declaration* New (*method* void (*list*) 0) constructor #0001000002000115 0 0)
+(*declaration* Clear (*method* void (*list*) 0) public #0001000002000115 0 1)
+(*declaration* Lookup (*method* (*scqf* #0001000002000043 0 4) (*list* (*scqf* #0001000002000404 0 4) ) 0) public #0001000002000115 0 2)
+(*declaration* Remove (*method* void (*list* (*scqf* #0001000002000404 0 4) ) 0) public #0001000002000115 0 3)
+(*declaration* Set (*method* void (*list* (*scqf* #0001000002000404 0 4) (*scqf* #0001000002000043 0 4) ) 0) public #0001000002000115 0 4)
+(*declaration* Setup (*method* void (*list* (*scqf* int 2) (*array* (*scqf* #0001000002000404 0 4) ) (*array* (*scqf* #0001000002000043 0 4) ) ) 0) public #0001000002000115 0 5)
+(*declaration* Lock (*method* void (*list*) 1) public #0001000002000187 0 0)
+(*declaration* Unlock (*method* void (*list*) 1) public #0001000002000187 0 1)
+)
+)

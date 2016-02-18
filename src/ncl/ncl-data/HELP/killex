@@ -1,0 +1,27 @@
+NFE(1)              Nucleus Front-End Built-In-Command               NFE(1)
+
+NAME
+     "killex" - send a signal to a executor, or terminate a executor
+
+SYNOPSIS
+     killex -signal <Executor-ID>
+
+DESCRIPTION
+     killex sends the signal to the executor.
+     List of signal names:
+
+       TERM .... Termination of the executor
+       INT  .... Create of the executor shell
+       HUP  .... Forcible termination of the executor
+
+EXAMPLE
+     nfe> es
+     Executor Entry count(1)
+       USER       PID        EXID        FD   STAT     BOOT TIME      RHOST
+     ozguest    19316  0003000101000000   6  Active  04/07 16:35:58  oz
+     nfe> killex -TERM 101
+      + Successful in forcible termination of the Executor(0x000101)
+     nfe> es
+     Executor Entry count(0)
+     nfe>
+

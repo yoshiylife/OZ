@@ -1,0 +1,2 @@
+5 KindOfClassPart
+	00010000020008f1

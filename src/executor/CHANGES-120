@@ -1,0 +1,40 @@
+Version 1.20
+主な修正内容
+	・executor のデバッグシンボルのハッシュテーブルに
+	　n_type が0x24のシンボルも登録するように変更した。[dyload.c]
+	・コンフィギュレーションセットの導入に伴う変更。[alloc.c,alloc.h]
+		OzExecAllocateLocalObject() の引数が ConfigID となる。
+		（従って、コンフィギュレーションデーモンを呼び出さない）
+		OzExecGetConfigID() を新規に作成する。
+		（コンフィギュレーションデーモンを呼び出すための関数）
+	・関数 OzOmObjectTableStatus() で、STOP 状態を含むオブジェクトの
+	　状態を返すように修正した。[object-table.c]
+	・関数 OzOmObjectTableRemove() で、例外を発生しない。但し、返り値の
+	　型を int として、その値の意味を次のようにした。[object-table.c]
+		 > 0 : 当該オブジェクトは参照中である。
+		== 0 : 正常終了。
+		 < 0 : 指定されたオブジェクトは、存在しない、
+			又は、オブジェクトの状態が不適切である。
+			以下はエグゼキュータの内部仕様（非公開事項）
+				>0:op_count の値。
+				-1:オブジェクトの entry が獲得できない。
+				-2:オブジェクトが STOP 以外の状態である。
+	・idle_thread のスケジュール状況を調べるための関数 OzIdleTime() を
+	　作成した。[threads.c]
+		関数 int OzIdleTime( int aInterval ) ;
+		戻り値	0 〜 約100
+			0 は、idle_thread がスケジュールされることがない、
+			あるいは、測定単位（1 tick）以下の間のみスケジュール
+			されたことを示す。
+			100 以上は、指定された時間の間に idle_thread 以外に
+			スケジュールされたスレッドがないことを表す。
+		引数
+			aInterval := 統計時間（秒）
+	・関数 OzSleep() での時間待ちを行っているスレッドの状態を
+	　新しく状態 WAIT_TIMER とした。[threads.c, thr.h]
+	・WAIT_SUSPEND 状態のスレッドをサスペンドできるように
+	　関数 OzSuspendThread()を修正した。[threads.c]
+	・既に一時停止の状態のグローバルオブジェクトの自動ＧＣを行わないように
+	　修正した。[load-image.c]
+	・関数 OzExecFrokProcess() で、起点のチャネルの作成時に、
+	　caller を 0 に設定するように修正した。[process.c]

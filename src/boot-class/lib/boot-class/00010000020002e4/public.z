@@ -1,0 +1,8 @@
+(*class* #00010000020002e4 5
+(*list*)
+(*list*
+(*declaration* OTReady (*scqf* int 1) public #00010000020002e4 0 OTReady)
+(*declaration* OTQueue (*scqf* int 1) public #00010000020002e4 0 OTQueue)
+(*declaration* OTStop (*scqf* int 1) public #00010000020002e4 0 OTStop)
+)
+)

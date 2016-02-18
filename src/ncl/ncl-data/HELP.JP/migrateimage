@@ -1,0 +1,24 @@
+NFE(1)                  NFE 組み込みコマンド                   NFE(1)
+
+　[名前]
+　　　　migrateimage - エグゼキュータ image の移動
+
+　[形式]
+　　　　migrateimage Executor-ID [Directory-path]
+　　　　migrateimage -r Executor-ID New-OZROOT
+
+　[機能説明]
+　　　　Executor-ID で指定されたエグゼキュータの image を Directory-path
+　　　　で指定されたディレクトリに移動する。
+　　　　Directory-path を省略すると、 $OZROOT/images の直下に移動する。
+
+　[migrateimage オプション]
+　　　　-r　Executor-ID で指定されたエグゼキュータの image の OZROOT を、 
+　　　　　　New-OZROOT に変更する。 New-OZROOT を省略することはできない。
+
+　[使用例]
+　　　　nfe> migrateimage 001001 /home/nick/images
+　　　　　            :
+　　　　nfe> migrateimage -r 001002 /home/nick/new-oz++
+　　　　　            :
+        nfe>

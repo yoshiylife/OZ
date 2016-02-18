@@ -1,0 +1,14 @@
+#! /bin/sh
+#
+#  Copyright (c) 1994-1997 Information-technology Promotion Agency, Japan
+#
+#  All rights reserved.  No guarantee.
+#  This technology is a result of the Open Fundamental Software Technology
+#  Project of Information-technology Promotion Agency, Japan (IPA).
+#
+(while read i
+ do
+   echo sb \'$i\' $1
+ done ; echo quit) | cfed |
+nawk '{ printf "%s:%s/%s/'$2'\n", $1, dir, $1;
+      }' dir=OZROOT/lib/boot-class

@@ -1,0 +1,58 @@
+ClassListFileReader
+ClassListFileTokenReader
+ClassLogFileReader
+ClassLogFileTokenReader
+ClassPackageID
+ConfiguredClass
+Date
+DefaultExtractor
+DefaultToken
+EOFToken
+FIFO<MirrorOperation>
+FIFO<Token>
+IdentifierExtractor
+IdentifierToken
+ImplementationPart
+IntegerExtractor
+IntegerToken
+Iterator<Token>
+LexicalError
+MirroredClassPackage
+MirrorOperation
+NewClassListFileReader
+NewClassListFileTokenReader
+NewLineAndHatchedCommentDisposer
+NewLineDisposer
+NewLineExtractor
+NotifierWindow
+OIDExtractor
+OIDSet<global ClassID>
+OIDToken
+OriginalClassPackage
+PrivateDotiFileReader
+PrivateDotiTokenReader
+PrivateDotsFileReader
+PrivateDotsTokenReader
+ProtectedPart
+PublicPart
+RootPart
+SimpleArray<global ClassPackageID>
+SimpleArray<global ConfiguredClassID>
+SimpleArray<global VersionID>
+SimpleTable<global Class,FIFO<MirrorOperation>>
+SimpleTable<global Class,int>
+SimpleTable<global Class,Waiter>
+SimpleTable<global ClassID,ClassPart>
+SimpleTable<global ClassID,Date>
+SimpleTable<global ClassPackageID,MirroredClassPackage>
+SimpleTable<global ClassPackageID,OriginalClassPackage>
+Stream
+String
+StringExtractor
+StringToken
+SubString
+Time
+TokenReader
+UnixCommand
+UnixIO
+VersionString

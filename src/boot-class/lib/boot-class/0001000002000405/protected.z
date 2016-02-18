@@ -1,0 +1,8 @@
+(*class* #0001000002000405 0
+(*list*
+(*list* #000100000200006e #000100000200006f 0)
+)
+(*list*
+(*declaration* New (*method* void (*list*) 4) constructor #000100000200006e 0 0)
+)
+)

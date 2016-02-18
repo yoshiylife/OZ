@@ -1,0 +1,12 @@
+#define	IHaveSubdirs
+#define	PassCDebugFlags	/**/
+
+SUBDIRS	= executor oz++ pixmaps thread
+
+all::
+
+MakeSubdirs($(SUBDIRS))
+
+depend::
+
+clean::

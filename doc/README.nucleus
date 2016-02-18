@@ -1,0 +1,355 @@
+/*
+ * Copyright(c) 1994-1997 Information-technology Promotion Agency, Japan(IPA)
+ *
+ * All rights reserved.
+ * This software and documentation is a result of the Open Fundamental
+ * Software Technology Project of Information-technology Promotion Agency, 
+ * Japan(IPA).
+ * 
+ * Permissions to use, copy, modify and distribute this software are governed 
+ * by the terms and conditions set forth in the file COPYRIGHT, located in 
+ * this release package.
+ */
+
+1. Nucleus manual
+
+NAME
+     ncl - nucleus
+
+SYNOPSIS
+     ncl
+
+DESCRIPTION
+     Nucleus carries out the management (activation, generation) 
+     of executor in general.  It has the following functions:
+
+       * Provides information for the solution of network address
+         Finds a solution for the network address of another unknown 
+         executor when a demand arrives from the executor.
+       * Carries out management of executor inside station
+         Grasps the executor state when the executor is activated.
+       * Broadcasts
+         Nucleus enables broadcasts inside the site.
+         There are two types of broadcasts performed by the nucleus:
+           - solution for network address
+           - search for class, name
+
+     The shell variable OZROOT is root directory of OZ.
+
+FILES
+     * $OZROOT/etc/ncl-data/NCL_table
+       When activated, nucleus obtains its nucleus table from a 
+       file.
+       At present, it is used by the half router nucleus to enable 
+       them to recognize each other.
+       Nucleus acts as the physical transceiver of broadcasts with
+       other nucleus.
+       If the nucleus can not transceive broadcasts because other 
+       nucleus are beyond the range of physical transcription, the 
+       half router inside the site acts as the 'middle-man' of 
+       transcriptions.
+     * $OZROOT/etc/site-id
+       Nucleus obtains its site-id from a file.
+     * $OZROOT/bin/executor
+       The command path of executor.
+     * $OZROOT/etc/ncl-data/EXID/<Hostname>
+       This is the Executor-ID Management Information File.  The nucleus
+       stores the Executor-ID of the executor managed by the nucleus in
+       this file.  The Executor-ID is necessary for the generation of a
+       executor image.  The Executor-ID Management Nucleus also has an
+       Executor-ID of the site. 
+     * $OZROOT/etc/ncl-data/ExID_manage.log
+       This is the Log information of allocations for the Executor-ID
+       which only the Executor-ID Management Nucleus can update. 
+     * $OZROOT/etc/ncl-data/log/<Hostname>
+       Log file of Nucleus.
+
+SHARED MEMORY
+     Nucleus, when activated, allocates shared memory with keys
+     1 and 2 to the entities of executor table and Hash table 
+     respectively.
+     This is used to manage the network addresses of executors 
+     that are either activated by the nucleus, or whose search 
+     for the network address solution is successful.
+
+2. Nucleus Front-End manual
+
+NAME
+     nfe - Nucleus Front-End
+
+SYNOPSIS
+     nfe [Hostname]
+
+DESCRIPTION
+     nfe is a tool which connects itself to a nucleus and manages
+     its generation state.
+     If a hostname is specified to ncl as a parameter, it connects
+     itself to the nucleus with that hostname, and exchanges
+     information with it by means of built-in commands.  If no
+     parameters are specified, nfe connects itself to its own host
+     nucleus.
+
+FILES
+     * $HOME/.nclrc
+       When nfe is activated, it executes the nfe command script
+       $HOME/.nclrc.  The built-in commands of nfe can be written 
+       in this script.
+
+         Example:
+           % cat $HOME/.nclrc
+           alias c cex
+           alias h help
+
+EXAMPLE
+     % nfe host1
+           :
+     nfe> help
+     help            nclshutdown     es              cex
+     ncltbl          env             man             et
+     alias           source          who             newimage
+     exidlist        exidment        exidrm          killex
+     quit
+     nfe> quit
+
+CAUTION
+     Never start up executors which have same executor ID at a
+     time.
+
+3. Activation of the Nucleus
+
+  The nucleus is activated as a UNIX command from a terminal.  At the
+time of activation, the nucleus also activates the following file
+transfer daemons:
+
+    - OZFileReceiver ....  File Receiving Daemon
+    - OZFileSender   ....  File Transmitting Daemon
+
+If any failure occurs in activating these daemons, the nucleus can not
+be activated.
+
+4. How to Terminate the Nucleus
+
+  The nucleus termination process is performed by nclshutdown, which
+is a built-in command in the nucleus front end (nfe).  The termination
+process is performed as follows:
+
+    (1) Disconnection of a Half Rooter Nucleus.
+      If the nucleus is a half router nucleus, disconnect other half
+      routers.
+    (2) Forcible Termination of the Executor
+      Forcible termination takes place when the terminating nucleus
+      sends the break signal SIGTERM to all executors activated from
+      this nucleus.  After terminating the executors, the nucleus
+      removes the following two files under the directory /tmp:
+
+       * Dm%06x .... %06x is the Exec-ID
+       * Oz%06x .... %06x is the Exec-ID
+
+    (3) Deletion of the Executor Table
+      The executor table is made up of shared memories which are shared
+      by the executors. The nucleus deletes all the shared memories.
+    (4) Notification of Completion of Termination Process to the 
+      Nucleus Front-End (nfe)
+      All connecting nucleus front ends (nfe) are notified of completion
+      of the termination process.
+
+5. Forcible Termination of the Nucleus
+
+  The nucleus, being activated as a daemon, can be terminated (forcibly)
+by using the UNIX command kill.  The nucleus is forcibly terminated by
+sending either of the break signals SIGHUP(1) or SIGTERM(15).
+ If the nucleus is terminated abnormally, the shared memory might remain
+intact.  If the nucleus is not to be re-activated, it is advisable to
+delete this memory with the UNIX command ipcrm.
+
+6. Set up of Nucleus Table
+
+  The nucleus table ($OZROOT/etc/ncl-data/NCL_table) is a text file which
+states the role of the specified nucleus.  When you start up the nucleus,
+it reads the file. 
+In the nucleus table, you register the name or IP address of the host on
+which the special nucleus runs by using an editor. 
+
+6.1 Configuration of halfrouter nucleus
+
+The halfrouter nucleus relays a physical broadcast at a site and enables
+a logical broadcast to enter it.  If the site consists of multiple
+segments (a transceivable range of a physical broadcast), each segment
+must contain a halfrouter nucleus. 
+
+    Example:
+       A site 1 consists of two segments.
+           Segment A:
+               hostname1, hostname2
+           Segment B:
+               hostname3, hostname4
+
+       If both range A and range B are to be considered as being inside
+       the same site, the nucleus table ($ZOROOT/etc/ncl-data/NCL_table)
+       should be written as follows.
+       Let hostname1 and hostname3 be a halfrouter nucleus.
+
+           % cat NCL_table
+           HALFROUTER:hostname1:
+           HALFROUTER:hostname3:
+
+       In this case, when hostname2 transmits the broadcast message, it
+       is sent to all segments of the site as follows:
+
+       (1) Hostname1 receives the braodcast message.  Since this host can
+           recognize itself as a halfrouter, it introduces broadcast
+           demands to other halfrouters (hostname3). 
+       (2) When hostname3 receives the broadcast demand from hostname1,
+           it sends a physical broadcast. 
+       (3) Hostname4 receives this broadcast.
+
+6.2 Configuration of Executor-ID Management Nucleus
+
+The Executor-ID Management Nucleus manages all the Executor-IDs which are
+given at the site.  It allocates the specified numbers of Executor-IDs
+when on other nucleus requests it. 
+It is guaranteed that no Executor-ID overlaps another at a site, because
+central management of the Executor-ID is done by the Executor-ID Management
+Nucleus. 
+
+    Example: 
+        The Executor-ID Management Nucleus is assumed to be specified in
+        the nucleus table when the OZ++ system is installed.  However, we
+        describe how to specify the Executor-ID Management Nucleus by
+        assuming the case where the nucleus table is changed. 
+        If you want to put hostnameN as an Executor-ID Management Nucleus,
+        you have to type in the nucleus table ($OZROOT/etc/ncl-data/NCL_table)
+        as follows.  You must not write multiple Executor-ID Management
+        Nucleus in it.)
+
+            % cat NCL_table
+            EXIDMANAGE:hostnameN:
+
+As the Executor-ID Management Nucleus does not allow the timing of a
+request from the nucleus to be specified at a site, you are advised to
+set this up in a station which is always operating.
+
+6.3 Configuration of a Relay Nucleus
+
+The relay nucleus communicates with the application gateway, and relays the
+transmission of demands to and reception of demands from other sites.
+The setup of a relay nucleus defines the application gateway corresponding
+to the relay nucleus in the nucleus table.
+
+     RELAYNCL:<IP-Address of Relay Nucleus>:<OZAG IP-Address>
+
+For those nuclei registered as relay nuclei, it is necessary to maintain
+mutual consistency between these nuclei and the relay nuclei registered in
+the local site information of the application gateway.
+For example, when the relay nucleus is set to bun13, and the application
+gateway is set to bunax3:
+
+     % cat $OZROOT/etc/apgw_LSiteInfo
+     0005:bun13:3777:CLOSE_SITE
+     % cat $OZROOT/etc/ncl-data/NCL_table
+     REALYNCL:bun13:bunax3
+
+7. Description of the Executor-ID Management Information File
+
+  The Executor-ID Management Information File is a text file.  It stores
+Executor-ID kept by nucleus.  Since this file is generated and updated
+automatically, you only need to recover it when some trouble occurs.
+Just after the OZ++ system is installed, no nucleus has an Executor-ID.
+When you generate some executor image, a nucleus requests the Executor-ID
+from the Executor-ID Management Nucleus and obtains the specified numbers
+ of Executor-ID.  It is assumed that the contents of the Executor-ID
+Management Information File are as follows:
+
+    #
+    # Informations of ExecutorID Management
+    #
+    IN_ACTIVITY:ExecutorID(1000), Rest(100)
+    RESERVATION:ExecutorID(0000), Rest(0)
+
+In these contents, you can use the Executor-ID from 1000 (hex) and the
+amount 100(hex) of Executor-ID is kept.  If the amount of Rest is less
+than a(hex), the Executor-ID Management Nucleus is requested to keep
+Executor-ID as a reservation, and the result is written in the RESERVATION
+line.
+For the Executor-ID Management Nucleus, management information items
+include not only the above, but also the following statement, because it
+manages the Executor-ID of a site.
+
+    EXID_OF_SITE:0001100
+
+This means that the Executor-ID is available from 1100 in the current
+site.  The value 0 is appropriate in the line of IN_ACTIVITY and
+RESERVATION if the Executor-ID Management Information File of the
+Executor-ID Management Nucleus has been lost because of some trouble.
+However, the EXID_OF_SITE line of Executor-ID Management Information must
+be recovered using log information ($OZROOT/etc/ncl-data/ExID_manage.log). 
+
+8. Trouble-shooting with the Nucleus
+
+  Sometimes the nucleus can not be activated.  Reasons are thought to be 
+as follows:
+
+  (1) Files essential for activating the nucleus can not be opened.
+    The files required while activating the nucleus are:
+
+     * $OZROOT/etc/ncl-data/NCL_table
+     * $OZROOT/etc/site-id
+
+    This is considered to be because:
+
+     * The setup of the environment variable OZROOT is incorrect.
+     * The setup of file permissions under the directory $OZROOT is 
+       incorrect.
+     * There are some errors in the description of the nucleus table 
+       ($OZROOT/etc/ncl-data/NCL_table).
+
+  (2) The port used by the nucleus can not be bound.
+    The following message is displayed:
+
+       init_ncl_port: bind: Address already in use.
+       init_ncl_port: Other Nucleus start up already?
+
+    This is considered to be because:
+
+     * The station already contains an activated nucleus, and another one 
+       is about to be activated.
+     * The port is already bound by an application other than the nucleus.
+
+  (3) The shared memory can be neither created nor attached.
+    The nucleus allocates two types of shared memories to be used as 
+    executor tables.  These shared memories can be created by  keys 1 and 2.
+    If other applications are using the same key shared memory, the nucleus
+    can not be activated without user permission.  If the shared memory is 
+    to be re-utilized, user permission should be altered.  However, this 
+    might adversely affect other applications.
+
+  (4) The file transfer daemons (OZFileReceiver and OZFileSender) can not
+      be created.
+
+    The previously activated nucleus might have been terminated forcibly.
+    If the nucleus is terminated abnormally, the file transfer daemons
+    remain activated. In such cases, the UNIX command 'ps' can be used to
+    check the process id's of file transfer daemons, and using the UNIX
+    command 'kill' can be used to kill these processes.
+
+  (5) The Executor-ID Management File can not be opened.
+
+    The following message is displayed.
+
+        init_exid_mnginfo: Can't open Executor-ID management file(.....)
+
+    This is considered to be because:
+
+      * In the case of the Executor-ID Management Nucleus, the Executor-ID
+        Management Information File has been removed by some reason, such
+        as, trouble in the file system or human error. 
+      * In the case of an ordinary nucleus, the user-ID of the OS process
+        of the nucleus or the permission mode of the Executor-ID Management
+        Information File has been changed.
+
+    How to recover:
+      Recover the Executor Management Information using log information
+      ($OZROOT/etc/ncl-data/ExID_manage.log).  Refer to section 7 for further
+      information. 
+
+

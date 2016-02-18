@@ -1,0 +1,18 @@
+(*class* #000100000200002b 0
+(*list*
+(*list* #0001000002000187 #0001000002000188 0)
+)
+(*list*
+(*declaration* New (*method* void (*list* int ) 0) constructor #000100000200002a 0 0)
+(*declaration* Reset (*method* void (*list*) 0) public #000100000200002a 0 1)
+(*declaration* Revert (*method* void (*list*) 0) public #000100000200002a 0 2)
+(*declaration* Set (*method* void (*list*) 0) public #000100000200002a 0 3)
+(*declaration* Test (*method* int (*list*) 1) public #000100000200002a 0 4)
+(*declaration* Lock (*method* void (*list*) 1) public #0001000002000187 0 0)
+(*declaration* Unlock (*method* void (*list*) 1) public #0001000002000187 0 1)
+(*declaration* SuperNew (*method* void (*list*) 0) protected #0001000002000188 0 2)
+(*declaration* Value int protected #000100000200002b 0 Value)
+(*declaration* LockCondition OZ_ConditionRec protected #0001000002000188 0 LockCondition)
+(*declaration* Locking int protected #0001000002000188 0 Locking)
+)
+)

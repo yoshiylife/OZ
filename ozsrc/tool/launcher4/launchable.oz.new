@@ -1,0 +1,14 @@
+abstract class Launchable : Object( rename Go Go2; rename Stop Stop2; ){
+ public: Launch, Initialize, Go, Stop, Deleted, Clone, Title, Summary;
+   void Launch() : abstract;
+
+   void Initialize () {}
+
+   void Go(){}
+   void Stop(){}
+   void Deleted(){}
+   Launchable Clone(){}
+   String Title(){}
+   String Summary(){}
+
+ }

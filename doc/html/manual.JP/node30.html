@@ -1,0 +1,292 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.10 文</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.10 文">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION000610000000000000000>5.10 文</A></H2>
+ <A NAME=langlangmanualstatement>　</A>
+<P>
+<PRE>stmt
+        : comp_stmt
+        | not_comp_stmt
+        ;
+
+not_comp_stmt
+        : ';'
+        | exp_stmt
+        | select_stmt
+        | iterate_stmt
+        | jump_stmt
+        | except_stmt
+        | c_stmt
+        | concurrent_stmt
+        | debug_stmt
+        ;
+</PRE>
+<P>
+文には以下のものがある。
+<P>
+<UL><LI> 式文
+<LI> 複文 (ブロック)
+<LI> 宣言文
+<LI> 選択文
+<LI> 反復文
+<LI> ジャンプ文
+<LI> 例外処理文
+<LI> 他言語インタフェース (C 文)
+<LI> 並行プログラミングのための文
+<LI> デバッグ文
+</UL><H3><A NAME=SECTION000610100000000000000>5.10.1 式文</A></H3>
+<P>
+<PRE>exp_stmt
+        : exp ';'
+        ;
+</PRE>
+<P>
+式を評価する文である。式文の副作用は、次の文が実行される前に完了する。
+<tt> exp</tt> を省略している式文は、空文と呼ばれる。空文は反復文 
+(<A HREF="node30.html#langlangmanualstatementitrn">5.10.5</A> 節参照) の本体を空にする場合などに利用さ
+れる。
+<P>
+<H3><A NAME=SECTION000610200000000000000>5.10.2 宣言文</A></H3>
+<P>
+<PRE>var_decls
+        : /* empty */
+        | var_decls var_decl 
+        ;
+
+var_decl
+        : simple_quals_type simple_vars_list ';'
+        | class_quals_type class_vars_list ';'
+        ;
+</PRE>
+<P>
+新しい識別子をブロックに取り入れることを宣言する文である。 
+(<A HREF="node31.html#langlangmanualdecl">5.11</A> 節参照)
+<P>
+宣言で取り入れた識別子が既に外側のブロックで宣言されている場合、その
+外側の宣言はそのブロック内では隠されそのブロックを脱出すると再び効果を
+持つようになる。
+<P>
+各ブロックで宣言された局所変数はブロックを脱出する時点で破壊される。
+<P>
+<H3><A NAME=SECTION000610300000000000000>5.10.3 複文 (ブロック) </A></H3>
+<P>
+<PRE>comp_stmt
+        : block
+        ;
+
+block
+        : '{'   block_contents '}'
+        ;
+
+block_contents 
+        : var_decls stmts
+        ;
+
+stmts
+        : /* empty */
+        | stmts stmt
+        ;
+</PRE>
+<P>
+一つの文しか使えない場所でも複数の文を使えるように、複数の文をひとまと
+めにする文で、ブロックとも呼ぶ。
+<P>
+文を一つも持たないブロックを空ブロックと呼ぶ。
+<P>
+<H3><A NAME=SECTION000610400000000000000>5.10.4 選択文</A></H3>
+<P>
+<PRE>select_stmt
+        : if_exp if_body
+        | 'switch' '(' exp ')' '{' label_stmt '}'
+        ;
+
+if_exp
+        : 'if' '(' exp ')' 
+        ;
+
+if_body 
+        : stmt 
+        | stmt 'else' stmt
+        ;
+
+label_stmt
+        : label not_comp_stmts
+        | label_stmt label not_comp_stmts 
+        ;
+label
+        : 'case' exp ':'
+        | 'default' ':'
+        ;
+
+not_comp_stmts
+        : /* empty */
+        | not_comp_stmts not_comp_stmt
+        ;
+</PRE>
+<P>
+いくつかの制御の流れから条件に応じて一つを選択する文である。
+<P>
+選択文の中の <tt> stmt</tt> は、単一の宣言 (<A HREF="node31.html#langlangmanualdecl">5.11</A> 節
+参照) であってはならない。これを許すと、スコープが明確でない、無駄な名
+前を導入することになる。
+<P>
+<PRE>if (i) 
+  int a = 7;        // エラー
+
+if (i)
+  {
+    int a = 7;      // OK: aはブロック内で有効
+  }
+</PRE>
+<P>
+<tt> case</tt> ラベルの式には定数の一次
+式 (<A HREF="node29.html#langlangmanualexpfirstexp">5.9.1</A> 節参照) のみが使用可能である。
+<P>
+<H3><A NAME=SECTION000610500000000000000>5.10.5 反復文</A></H3>
+ <A NAME=langlangmanualstatementitrn>　</A>
+<P>
+<PRE>iterate_stmt
+        : 'while' '(' exp ')' stmt
+        | 'do' stmt 'while' '(' exp ')' ';'
+        | 'for' '(' exp_or_null ';' exp_or_null ';' exp_or_null ')' stmt
+        ;
+
+exp_or_null
+        : /* empty */
+        | exp
+        ;
+</PRE>
+<P>
+繰り返しの構造を記述する文である。
+<P>
+反復文の中の <tt> stmt</tt> は、単一の宣言 (<A HREF="node31.html#langlangmanualdecl">5.11</A> 節
+参照) であってはならない。
+<P>
+<H3><A NAME=SECTION000610600000000000000>5.10.6 ジャンプ文</A></H3>
+<P>
+<PRE>jump_stmt
+        : 'break' ';'
+        | 'continue' ';'
+        | 'return' ';'
+        | 'return' exp ';'
+        ;
+</PRE>
+<P>
+無条件に制御を移動するための文である。
+<P>
+<H3><A NAME=SECTION000610700000000000000>5.10.7 例外処理文</A></H3>
+ <A NAME=langlangmanualstatementexcept>　</A>
+<P>
+<PRE>except_stmt
+        : 'try' block 'except' '{' except_body default_except_block '}'
+        | 'raise' exception_label2 ';'
+        | 'raise' ';'
+        ;
+
+except_body
+        : /* empty */
+        | except_body exception_labels block 
+        ;
+
+default_except_block
+        : /* empty */
+        | 'default' block
+        ;
+
+exception_labels
+        : exception_label 
+        | exception_labels ',' exception_label 
+        ;
+
+exception_label
+        : exception_name 
+        | exception_name '(' IDENTIFIER ')'
+        ;
+
+exception_label2
+        : exception_name
+        | exception_name '(' exp ')'
+        ;
+
+exception_name
+        : SHAREDNAME EXCEPTNAME
+        | IDENTIFIER
+        ;
+</PRE>
+<P>
+例外を受けとり処理する文と例外を発生する文である。(<A HREF="node36.html#langlangmanualexcept">5.16</A> 節参照)
+<P>
+<H3><A NAME=SECTION000610800000000000000>5.10.8 他言語インタフェース</A></H3>
+<P>
+<PRE>c_stmt
+        : 'inline' '&quot;C&quot;'  '{' inline_body '}'
+        ;
+
+inline_body
+        : /* empty */
+        | inline_body STRINGS
+        ;
+</PRE>
+<P>
+ OZ++
+  言語のソースコード中に C 言語のソースコードを記述する他言語
+インタフェースのための文である。 (<A HREF="node42.html#langlangmanualotherif">5.22</A> 節参
+照)
+<P>
+<H3><A NAME=SECTION000610900000000000000>5.10.9 並行プログラミングのための文</A></H3>
+ <A NAME=langlangmanualstatementconcurrent>　</A>
+<P>
+<PRE>concurrent_stmt:
+          'detach' exp ';'
+        | 'kill' exp ';'
+        | 'abort' ';'
+        | 'abortable' ';'
+        | 'wait' exp ';'
+        | 'signal' exp ';'
+        | 'signalall' exp ';'
+        ;
+</PRE>
+<P>
+これらは、 OZ++
+  言語によって並行プログラミングを実現するための言語要素
+の一部である。
+<P>
+<tt> detach</tt>、<tt> kill</tt>、<tt> abort</tt>、<tt> abortable</tt> はプロセスに対す
+る処理 (<A HREF="node28.html#langlangmanualprocessoperation">5.8.3</A> 節参照) を記述するため
+のものである。
+<P>
+他の三つは、スレッド間の同期のための <tt> condition</tt> 型の変数に対する
+演算である (<A HREF="node39.html#langlangmanualconcurrent">5.19</A> 節参照) 。
+<P>
+<H3><A NAME=SECTION0006101000000000000000>5.10.10  デバッグ文 </A></H3>
+<P>
+<PRE>debug_stmt:
+        : 'debug' '(' exp ',' STRING ')' ';'
+        | 'debug' '(' exp ',' STRING ',' exp ')' ';'
+        | 'debug' '(' 'default' ',' STRING ')' ';'
+        | 'debug' '(' 'default' ',' STRING ',' exp ')' ';'
+        | 'debug' compound_stmt
+        ;
+</PRE>
+<P>
+デバッグ時の、メッセージ出力や必要な処理を記述するための文である 
+(<A HREF="node40.html#langlangmanualdebug">5.20</A> 節参照) 。
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

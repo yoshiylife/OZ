@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.12 レコード</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.12 レコード">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION000612000000000000000>5.12 レコード</A></H2>
+ <A NAME=langlangmanualrecord>　</A>
+<P>
+<PRE>record_def
+        : RECORD CLASSNAME '{' record_body '}'
+        ;
+
+record_body
+        : record_member_decls
+        | record_body STRINGS
+        ;
+</PRE>
+<P>
+レコードは利用者定義型の一つである。レコードには、データであるメンバと、
+メンバを操作するためのオペレータを定義することが可能である。
+<P>
+<H3><A NAME=SECTION000612100000000000000>5.12.1 メンバ、オペレータ</A></H3>
+ <A NAME=langlangmanualrecordmember>　</A>
+<P>
+<PRE>record_member_decls
+        : /* empty */
+        | record_member_decls record_member_decl 
+        ;
+
+record_member_decl
+        : member_var_decl
+        | member_operator_decl
+        ;
+
+member_var_decl
+        : quals_type vars_list_noinit ';'
+        ; 
+
+quals_type
+        : simple_quals_type
+        | class_quals_type
+        ;
+
+vars_list_noinit
+        : vars_noinit
+        | vars_list_noinit ',' vars_noinit
+        ;
+
+vars_noinit
+        : vars
+        ;
+
+member_operator_decl
+        | quals_type m_members block
+        | IDENTIFIER '(' args ')' block
+        ;
+
+m_members
+        : processes IDENTIFIER '(' args ')' arrays 
+        | processes '(' m_members ')' arrays 
+        ;
+</PRE>
+<P>
+メンバの型は、基本型もしくはレコードに限られる。これは  OZ++
+  言語の利用
+者定義型において、レコードは基本型を拡張するためのものであるという考え
+方に基づいている。
+<P>
+メンバ、オペレータはクラス型のインスタンス変数のようにカプセル化さ
+れず、アクセス制御もなく、すべて直接アクセスすることが可能である。
+<P>
+またメンバの宣言では、初期設定は行なえない。
+<P>
+<PRE>record A {
+  int a = 10;        // エラー: 初期設定はできない。
+}
+</PRE>
+<P>
+メンバへの代入は、レコード型の変数の宣言時に初期値を設定することで行なう
+ことも可能である。
+<P>
+<PRE>定義
+
+record class Point {
+  int x, y;
+}
+
+record class Rectangle {
+  Point nw, se;
+
+  int Width()
+    {
+       return se.x - nw.x;
+    }
+
+  int Height()
+    {
+       return nw.y - se.y;
+    }
+}
+
+利用
+
+Rectangle rect = { { 10, 10 }, { 100, 100 } }; // 宣言時の初期化 
+rect.nw.x = 110;                               // メンバへの代入 
+size = rect.Width() * rect.Height();           // オペレータの呼び出し
+</PRE>
+<P>
+またレコード型の変数に対して右辺値として 0 を用いた場合には、そのレコー
+ドのすべてのメンバに対して右辺値として 0 が用いられることになる 
+(<A HREF="node24.html#langlangmanualdatatypezero">5.4.2</A> 節参照) 。例えば、
+<P>
+<PRE>Rectangle r;
+
+r = 0;
+</PRE>
+<P>
+は、
+<P>
+<PRE>r = { 0, 0 };
+
+つまり、
+
+r = { { 0, 0 }, { 0, 0} }
+</PRE>
+の意味となる。
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

@@ -1,0 +1,12 @@
+(*class* #00010000020003d9 8
+(*list*)
+(*list*
+(*declaration* New (*method* void (*list*) 0) constructor #00010000020003d8 0 1)
+(*declaration* Extract (*method* #00010000020003e2 8 (*list* #00010000020003b6 0 ) 2) public #00010000020003d8 0 0)
+(*declaration* IsAlphanumeric (*method* int (*list* int ) 0) protected #00010000020003d9 0 2)
+(*declaration* IsDigit (*method* int (*list* int ) 0) protected #00010000020003d9 0 3)
+(*declaration* IsHexaDigit (*method* int (*list* int ) 0) protected #00010000020003d9 0 4)
+(*declaration* IsLetter (*method* int (*list* int ) 0) protected #00010000020003d9 0 5)
+(*declaration* IsSpace (*method* int (*list* int ) 0) protected #00010000020003d9 0 6)
+)
+)

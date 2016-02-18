@@ -1,0 +1,29 @@
+NFE(1)              Nucleus Front-End Built-In-Command               NFE(1)
+
+NAME
+     "source" - reads and comprehends command script file of nfe.
+
+SYNOPSIS
+     source nfe-script-file
+
+DESCRIPTION
+     "source" executes the read-and-built command of the nfe-scri-
+     pt-file specified as the argument.
+     Commands in the script file are ignored, if the line begins wi-
+     th '#' or is blank.
+
+EXAMPLE
+     % cat test.src
+     #
+     # TEST
+     #
+     alias h help
+     alias c  cex
+     % nfe
+         :
+     nfe> source test.src
+         :
+     nfe> alias
+     alias h help
+     alias c cex
+

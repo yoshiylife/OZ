@@ -1,0 +1,31 @@
+NFE(1)              Nucleus Front-End Built-In-Command               NFE(1)
+
+NAME
+     "exidlist" - This command prints the maintenance information of
+                  Executor-ID.
+
+SYNOPSIS
+     newimage
+
+DESCRIPTION
+     When newimage finishes normally, this command registers an
+     Executor-ID acquired as the maintenance information of itself.
+     The maintenance information of the Executor-ID consists of
+     following items:
+        - Executor-ID
+        - Executor-Name
+        - Remarks
+
+FILE
+     * $OZROOT/images/<EXID>/exid.info
+       This is a file for the maintenance information of the Executor-ID.
+       The maintenance information of the Executor-ID is generated when
+       newimage finishes normally.
+
+EXAMPLE:
+     nfe> newimage -n TESTEX -c "FOR-DEBUG"
+              :
+     nfe> exidlist
+      EXID     EX-NAME                COMMENT
+     00025f    TESTEX                 FOR-DEBUG
+

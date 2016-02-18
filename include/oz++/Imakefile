@@ -1,0 +1,15 @@
+INCDIR	= /include
+HEADERS = \
+	class-type.h \
+	debug.h \
+	layout-info.h \
+	object-image.h \
+	object-type.h \
+	object.h \
+	ozlibc.h \
+	sysexcept.h \
+	type.h
+
+all::
+
+InstallMultipleFlags($(HEADERS),$(INCDIR)/oz++,$(INSTINCFLAGS))

@@ -1,0 +1,42 @@
+#! /bin/sh
+cmdname=`basename $0` ;
+ext= ;
+cmd="tail -f" ;
+usage () {
+	echo "Usage: $cmdname Executor-ID [extension] [-c command...]" ;
+	exit $1 ;
+}
+
+if [ $# -eq 1 ]; then
+	eid=$1 ;
+elif [ $# -eq 2 ]; then
+	eid=$1 ;
+	ext=.$2 ;
+elif [ $# -ge 3 ]; then
+	eid=$1 ;
+	if [ "$2" = "-c" ]; then
+		shift 2 ;
+		cmd=$* ;
+	else
+		ext=$2 ;
+		if [ "$3" = "-c" ]; then
+			shift 3 ;
+			cmd=$* ;
+		else
+			usage 1 ;
+		fi
+	fi
+else
+	usage 2 ;
+fi
+
+chdir ${OZROOT:?"You must be setenv."}/images ;
+exid=`expr substr 000000$eid \`expr length "$eid" + 1\` 6` ;
+if [ ! -d $exid ]; then
+	echo "$cmdname: Can't chdir $OZROOT/images/$exid." ;
+	echo "$cmdname: I need Executor-ID."
+	exit 1 ;
+fi
+chdir $exid ;
+
+exec $cmd ozlog$ext

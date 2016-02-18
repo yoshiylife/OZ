@@ -1,0 +1,17 @@
+(*class* #000100000200031d 0
+(*list*
+(*list* #0001000002000322 #0001000002000323 0)
+)
+(*list*
+(*declaration* New (*method* void (*list*) 0) constructor #000100000200031d 0 0)
+(*declaration* Search (*method* #0001000002000322 8 (*list* #000100000200038c 0 ) 0) public #0001000002000322 0 4)
+(*declaration* Gather (*method* void (*list* #00010000020004d1 0 #00010000020003bd 0 ) 0) public #0001000002000322 0 3)
+(*declaration* PutLink (*method* void (*list* #00010000020003bd 0 #0001000002000322 8 ) 1) public #0001000002000322 0 5)
+(*declaration* DeleteLink (*method* void (*list* #00010000020003bd 0 ) 0) public #000100000200031d 0 2)
+(*declaration* ExistLink (*method* int (*list* #00010000020003bd 0 ) 0) public #000100000200031d 0 1)
+(*declaration* ReleaseLink (*method* void (*list* #00010000020003bd 0 ) 0) public #000100000200031d 0 3)
+(*declaration* Clone (*method* #0001000002000322 8 (*list*) 0) public #0001000002000322 0 0)
+(*declaration* Fullname (*method* #000100000200038c 0 (*list*) 0) public #0001000002000322 0 2)
+(*declaration* GetSubs (*method* #000100000200038c 0 (*list* int ) 0) public #000100000200031d 0 4)
+)
+)

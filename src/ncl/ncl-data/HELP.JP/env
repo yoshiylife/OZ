@@ -1,0 +1,23 @@
+NFE(1)                  NFE 組み込みコマンド                   NFE(1)
+
+　[名前]
+　　　　env - nfe の環境を表示する。
+
+　[形式]
+　　　　env
+
+　[機能説明]
+　　　　現在設定されている nfe の環境に関して次のような項目の表示
+        を行う。
+
+　　　　　・UNIX シェル変数 OZROOT の設定
+　　　　　・エグゼキュータのコマンドパス
+　　　　　・nfe ヘルプファイルのディレクトリパス
+
+　[使用例]
+　　　　nfe> env
+　　　　OZROOT = /home/oz++
+
+　　　　*Executor command: /home/oz++/bin/executor
+　　　　*Directory path for NFE help command: /home/oz++/etc/ncl-data/HELP
+

@@ -1,0 +1,45 @@
+・枯れた部分の#ifdefの削除
+
+・対コンパイラ、対 OM、エグゼキュータ内各モジュール間インターフェース
+  の明確化
+
+・処理系、OM とのインターフェース、および、ozlibc 以外の OzXXX の
+  関数名の排除（一部）。
+
+・エグゼキュータ内部のモジュール間での不要なエキスポートの排除（一部）。
+
+・オブジェクト GC の安定化。シグナルスタック上で実行中のスレッド
+  について、シグナルスタックからも保守的マーキングを行なうことにした。
+
+・シグナルスタック関連のデータ、関数を、memory.c から threads.c に移管
+
+・code GC のバグフィックス。プロセスの fork の際、OzForkProcess からの
+  復帰のタイミングで OzExecFreeImplementation が行なわれると、その
+  タイミングで GC 対象となるので非常にマズイ。次のように解決した。
+	(1) OzForkProcess の先頭で OzExecGetMethodImplementation し、
+	    その imp->code->cid を改めて OzGetClassCode する。
+	(2) fork_process_stub の最後でその code を OzReleaseCode
+	    する。
+
+・OzAbortThread は、abortable でない cv で待っているスレッドに対して
+  も、signal と同様の効果をもたらす。そこで、wait の実装で、スレッド
+  の wait_cv とともに、abortable かどうかのフラグをスレッドにセット
+  することにした。
+
+・OzLoadImage 中の例外発生に対処するためにハンドラを追加した。
+
+・オブジェクトのプリロードに失敗すると、Bus Error になる。
+=> OM は、OzOmObjectTableLoad の返り値が 0 ならば、
+   GoAndMelt を呼んではいけない。
+=> ただし、エグゼキュータ側にも次のバグがあったので、fix した。
+	・OtInvokePre で、DECODE_FAIL のとき、0 (エラー)を返す
+	  ようにした。
+	・GiGlobalInvokeStub で、ERROR を返すとき、local-channel
+	  の実装内で、signal するようにした。
+
+・DestroyHeap のバグフィックス。
+
+・新ディレクトリ構成への対応。
+
+・void MmReportHeap(Heap h) で、ncell が 0 ならdiv zeroになるという
+  バグのフィックス

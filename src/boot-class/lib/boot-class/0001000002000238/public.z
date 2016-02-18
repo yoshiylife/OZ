@@ -1,0 +1,9 @@
+(*class* #0001000002000238 5
+(*list*)
+(*list*
+(*declaration* IllegalInvoke (*method* int (*list*) 0) public #0001000002000238 0 0)
+(*declaration* Unbalanced (*method* int (*list*) 0) public #0001000002000238 0 1)
+(*declaration* NotSpawned (*method* int (*list*) 0) public #0001000002000238 0 2)
+(*declaration* UnknownCommand (*method* int (*list* #00010000020003bd 0 ) 0) public #0001000002000238 0 3)
+)
+)

@@ -1,0 +1,17 @@
+(*class* #0001000002000337 8
+(*list*)
+(*list*
+(*declaration* New (*method* void (*list*) 4) constructor #0001000002000336 0 0)
+(*declaration* Go (*method* void (*list*) 4) public #0001000002fffffd 0 0)
+(*declaration* Removing (*method* void (*list*) 4) public #0001000002fffffd 0 2)
+(*declaration* Stop (*method* void (*list*) 4) public #0001000002fffffd 0 1)
+(*declaration* Flush (*method* void (*list*) 4) public #0001000002fffffd 0 4)
+(*declaration* Where (*method* (*scqf* #00010000020002b2 0 4) (*list*) 4) public #0001000002fffffd 0 3)
+(*declaration* AddName (*method* void (*list* (*array* char ) ) 4) public #0001000002000336 0 1)
+(*declaration* RemoveName (*method* void (*list* (*array* char ) ) 4) public #0001000002000336 0 2)
+(*declaration* RegisterToNameDirectory (*method* void (*list*) 0) protected #0001000002000337 0 3)
+(*declaration* UnRegisterFromNameDirectory (*method* void (*list*) 0) protected #0001000002000337 0 5)
+(*declaration* SetInitialLengthOfNames (*method* void (*list*) 0) protected #0001000002000337 0 4)
+(*declaration* Names #00010000020003a7 0 protected #0001000002000337 0 Names)
+)
+)

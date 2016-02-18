@@ -1,0 +1,10 @@
+(*class* #00010000020007a0 5
+(*list*)
+(*list*
+(*declaration* Boot (*scqf* int 1) public #00010000020007a0 0 Boot)
+(*declaration* Original (*scqf* int 1) public #00010000020007a0 0 Original)
+(*declaration* Mirror (*scqf* int 1) public #00010000020007a0 0 Mirror)
+(*declaration* Snapshot (*scqf* int 1) public #00010000020007a0 0 Snapshot)
+(*declaration* Private (*scqf* int 1) public #00010000020007a0 0 Private)
+)
+)

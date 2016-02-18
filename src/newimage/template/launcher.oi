@@ -1,0 +1,12 @@
+/*
+  oid (000001) : object manager;
+  oid (000002) : class object;
+  oid (000003) : name directory;
+  oid (000004) : DNS resolver;
+  oid (000005) : launcher;
+  oid (000006) : catalog;
+*/
+
+#include "launcher.h"
+
+global LauncherSS l = 000005 {}

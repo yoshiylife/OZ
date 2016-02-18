@@ -1,0 +1,650 @@
+/*
+ * Copyright(c) 1994-1997 Information-technology Promotion Agency, Japan(IPA)
+ *
+ * All rights reserved.
+ * This software and documentation is a result of the Open Fundamental
+ * Software Technology Project of Information-technology Promotion Agency, 
+ * Japan(IPA).
+ * 
+ * Permissions to use, copy, modify and distribute this software are governed 
+ * by the terms and conditions set forth in the file COPYRIGHT, located in 
+ * this release package.
+ */
+
+                       OZ++ system, Version 1, Release 5
+
+                            `newimage' user's manual
+
+     Tsukuba Research Laboratory Of Open Fundamental Software Technology
+
+
+Contents
+
+1. Introduction
+2. Object Image Files
+3. How to use `newimage'
+ 3.1 Invocation of `newimage'
+ 3.2 Selection of configuration
+ 3.3 Setting of the Class Object
+ 3.4 Setting the Name Directory
+ 3.5 Setups of the Launcher
+ 3.6 Setups of the Catalog
+ 3.7 Setups of the Object Manager
+4. Available Options
+5. Standard configurations
+ 5.1 Site master
+ 5.2 Station master
+ 5.3 Slave with a class
+ 5.4 Slave without a class
+ 5.5 Stand alone
+6. Error Messages of oic
+7. Interruption of `Newimage'
+
+
+1. Introduction
+
+This document describes how to use the  tool `newimage' which  prepares  object
+images of the OZ++ distributed object management system.
+   In OZ++, the computation is executed by  communicating  distributed  objects
+placed  on distributed executors.  To execute user objects, objects of the OZ++
+distributed object management system (hereafter called management objects)  are
+required.  These  objects should be created when the executors are created, and
+`newimage' is a tool to do that.
+   The  usage  of  the `newimage' is  described  in   following.   Please   see
+README.site about which kind of objects should be placed where in your site.
+
+2. Object Image Files
+
+In OZ++, 2 kind of objects exist.  One is `global object' which has  an  object
+ID  valid in global and can be invoked even from other executors.  The other is
+`local object' which belongs to a global object.  It is not allowed to access a
+local object from outside of its global object.
+   In general, an executor can run  more  than  one  global  object.  A  global
+object  can  be  persistent.  A  global  object  which has a persistent copy is
+called `persistent object'.  Each persistent object is saved in a file together
+with  its local objects.  The object representation used here is called `object
+image'.  The file containing an object image is  called ` object  image  file'.
+Object image files are stored in the following manner.
+
+        $OZROOT/images/000101/objects/000001
+                                      000002
+                                      000003
+                       000102/objects/000001
+                                      000002
+                                        :
+
+Directly below the  $OZROOT/image  directory, there  are  executor  directories
+whose  names are expressed in 6 hexa-decimal digits representing the sequential
+number part of  the  executor  ID.  This  directory  is  called  `object  image
+directory.'  Each  object image directory contains an `objects' directory which
+contains object image files of its persistent global objects.  The file name of
+an object image file is expressed in 6  hexa-decimal  digits  representing  the
+sequential number part of the object ID.
+   In the example above, in a site whose ID is 0001, there  are  two  executors
+whose executor IDs are:
+
+        0001 000101 000000
+        0001 000102 000000
+
+And they have objects
+
+        0001 000101 000001
+        0001 000101 000002
+        0001 000101 000003
+and
+        0001 000102 000001
+        0001 000102 000002
+
+respectively.
+   An object image  directory  can  be  built  outside  of  the  $OZROOT/images
+directory  and  make  a  symbolic link by appropriate usage of `newimage'.  See
+section 4. about it.
+
+3. How to use `newimage'
+
+In this section, invocation and operations of `newimage' is described in order.
+
+ 3.1 Invocation of `newimage'
+
+`Newimage' is an interactive tool for creating object images  of  an  executor.
+To invoke it, type the following nfe command:
+
+        nfe> newimage
+
+Options and arguments available at the invocation time are described in section
+4.
+   `Newimage' checks the setting  parameters  interactively  in  the  following
+order:
+
+    o class object
+    o name directory
+    o launcher
+    o catalog
+    o object manager
+
+Finally, the object image file is written by invoking the object image compiler
+(oic).  The process is as follows.
+   When `newimage' is invoked, the following error messages may be displayed in
+the output.
+
+        template directory ($OZROOT/lib/image-template) doesn't exist.
+
+This means, the template directory cannot be found ($OZROOT will be substituted
+by an appropriate path of OZROOT).  In  this  case, some  errors  are  possible
+during installation of the OZ++ system.  Re-install the entire system.
+
+ 3.2 Selection of configuration
+
+When `newimage' is invoked, the following inquiry appears:
+
+        What kind of image do you want?
+            1. Site master
+            2. Station master
+            3. Slave with a class object
+            4. Slave with no class object
+            5. Stand alone
+            9. Fully customized
+            0. Help
+        ? 
+
+Standard configurations are provided in 1-5, and you can  fully  customize  the
+configuration  by  selecting  9.  You  can  find brief explanations of standard
+configurations in 0: help.
+   The  following  sections  explain  full-customization.  Section  5  provides
+detailed explanations of standard configurations.
+
+ 3.3 Setting of the Class Object
+
+Setting of a class object depends on whether it is taken from  other  executors
+or being prepared in this executor.
+
+  3.3.1 Preparing Class Object in this Executor
+
+   In this case, reply `y' to:
+
+        Do you need a local class object for this executor (y/n) ?
+
+Then, you'll be asked:
+
+        What kind of class do you need (1 .. normal, 2 .. with monitor) [1] ?
+
+`With monitor' means that a window for monitoring the class  delivery  will  be
+displayed.  Either will do.
+   Next, the  system inquires whether or not the class object should manage the
+`boot-classes'.
+
+	Does it manage boot-classes (y/n) ? 
+
+`Boot-classes' are classes of objects required to run before setting up a
+development environment (The OZ++ Workbench), which can compile and add any
+class (see README.site).
+   Next, the  system  inquires  whether  or  not  the  class  object  should be
+registered to the name directory.
+
+        Do you want to name the class object (y/n) ?
+
+   You can attach as many names as you like.
+   Class objects are used from many programs such  as  compiler  front-end  and
+from  other  executors as described in 3.3.2.  In these cases, the class object
+is referred to by its name given here, so do not forget this  name.  Note  that
+different class objects cannot have the same name.
+
+  3.3.2 Employing Other Class Objects
+
+Although it is possible not to make a class object on an executor, at least one
+remote class object is required to provide class informations to the executor.
+   You can make a class-less executor by replying `n' to:
+
+        Do you need a local class object for this executor (y/n) ?
+
+Then, the following will be displayed:
+
+        How many remote class objects do you employee ?
+
+After inputting the appropriate number:
+
+        What is the name (i)
+
+will be displayed (`i' will be substituted by a number in 0-origin).  Input the
+name of the class object to be employed.
+   Note that every class object employed in this manner  must  share  the  same
+OZROOT  with  this  executor.  In  most cases, the executor will be on the same
+station with this executor, or on executors on the remote stations sharing  the
+OZROOT  by  some  kind of remote file systems (e.g. NFS).  Excessive caution is
+required because `newimage' cannot check  whether  or  not  this  condition  is
+satisfied, and the system cannot work correctly if it is not.
+
+ 3.4 Setting the Name Directory
+
+In this release, because newimage cannot configure  the  distribution  and  the
+replication of the name directory system, creating more than one name direcotry
+in  a  domain  is useless.  Thus, usually, only if you are building an executor
+which plays a central role in your domain, reply `y' to:
+
+        Do you need a local name directory (y/n) ?
+
+If you have already had a name directory in the domain, reply `n'.
+
+  3.4.1 Making a Name Directory
+
+If the name directory is to be made, the following setups must be done.
+   Since the name directory is  automatically  loaded  by  an  invocation  from
+object manager, either will do to:
+
+        Do you want to preload the name directory (y/n) ?
+
+   Next, the name of the domain which is managed by the name directory is asked
+for.
+
+        What domain does the name directory manage ?
+
+Reply any string.  We recommend to use your DNS domain name (such as ipa.go.jp)
+because it can avoid confusion.
+
+  3.4.2 Not Making a Name Directory
+
+In this case, the following is asked:
+
+        You can set an object ID as the name directory for this executor.
+        Or, at the first execution of this executor, the name directory
+        is searched by broadcasting.
+        Do you set an object ID as the name directory (y/n) ?
+
+Either will do since the domain's name directory is automatically found by  the
+broadcast  mechanism  provided by the nucleus.  If you reply `y', the following
+will be asked:
+
+        What is the global object ID ?
+
+Input the object ID  of  your  name  directory.  The  object  ID  of  the  name
+directory made by `newimage' always consists of the following:
+
+        site ID (4) + executor number (6) + 000003
+
+(n) represents the number of hexa-decimal digits.  For example, the  object  ID
+of a name directory on the executor 0x101 which is in the site 1 will be:
+
+        0001000101000003
+
+Or, you can reply 0000000000000000.  It is the same case as replying `n'.  That
+is, a name directory requirement message will be broadcast among nuclei in your
+site when this executor is started.
+
+ 3.5 Setups of the Launcher
+
+        Do you need a Launcher (y/n) ?
+and
+        Do you want to preload the launcher (y/n) ?
+
+can be replied to any way you like.  However, it is usual to preload a launcher
+since  no  programs (including  the  launcher) can  be  launched  if a launcher
+doesn't work on the executor.
+
+ 3.6 Setups of the Catalog
+
+If a catalog is to be made in this executor, reply `y' to:
+
+        Do you need a local catalog (y/n) ?
+
+   Only one catalog can be named as `:catalog' in a domain.  In  this  release,
+since the newimage cannot configure the distribution and the replication of the
+catalog  system,  more  than  one catalog in a domain is useless.  Thus, do not
+create an extra catalog if you already have one.  It is usually enough to  make
+a catalog on an executor which plays a central role in your domain.
+   If you create a catalog, Reply `y' to:
+
+        Do you want to preload the catalog (y/n) ?
+
+   If you want to name the catalog, reply `y' to:
+
+        Do you want to name the catalog (y/n) ?
+
+   Since the workbench and launcher refers a catalog named  `:catalog',  it  is
+usually appropriate to name it `:catalog'.
+
+ 3.7 Setups of the Object Manager
+
+   First, input your name.
+
+        Who are you [nnnn] ?
+
+When the environment variable $USER or $LOGNAME is not empty, its name will  be
+displayed in `nnnn'.
+   Next, whether you are making a stand alone object manager is asked:
+
+        Do you make a stand alone object manager (y/n) ?
+
+A stand alone object manager does not require the other management objects such
+as a name directory, and can create and run an application object.  The details
+are described in section 5.5.
+   The next question is skipped when you are not making a  stand  alone  object
+manager:
+
+        Do you refer a class directory of another executor (y/n) ?
+
+The stand alone object manager can  run  by  referring  a  class  directory  of
+another  executor,  which  allows  not  to create local class object and not to
+employ remote class object.  The details are described in  the  description  of
+option `-r'.
+   Next, whether you make changes on  the  boot  time  configuration  table  is
+asked:
+
+        Do you make changes on the boot time configuration table (y/n) ?
+
+When you answer `y', the location of a configuration file is asked:
+
+        What is the file name ?
+
+Answer the  configuration  file  name.  The  details  are  description  in  the
+description of option `-a'.
+   Next, set up the number of daemon processes.
+
+        Do you want to change the default number of fault daemons [2/2/0/2/1/3/2] (y/n) ?
+
+It is better to have fewer processes since they  consume  no  small  amount  of
+resources.  The  default  values  are  quite appropriate in typical cases.  The
+following explains the functions  of  the  daemon  processes, whose  number  is
+adjustable.
+
+    o BroadcastReceiver [2]
+      Receives broadcast messages.
+
+    o CodeFaultDaemon [2]
+      When the executor requires executable code of a class, it  sends  the
+      class ID of the class to the object manager.
+
+    o LayoutFaultDaemon [0]
+      When the executor requires layout information of  a  class, it  sends
+      the  class  ID  of  the  class  to the object manager.  However, this
+      release includes only the  set  for  Sun  OS  4.1.3, so  this  daemon
+      process cannot be activated.
+
+    o ClassRequestDaemon [2]
+      When the executor requires runtime class information of  a  class, it
+      sends the class ID of the class to the object manager.
+
+    o ObjectFaultDaemon [1]
+      When invoking a method of a global object of FROZEN  state, it  sends
+      the object ID of the global object to the object manager.
+
+    o ConfigurationDaemon [3]
+      When the executor  requires  configuration  information  to  make  an
+      object  instance, it  sends  the configured class ID of the object to
+      the object manager.
+
+    o DebuggerClassRqeuestDaemon [2]
+      When debugger requires a class, it sends the class ID to  the  object
+      manager.
+
+   Finally, 
+
+	Do you want to name the object manager (y/n) ?
+
+is inquired.  You can attach as many names as you like.
+
+4. Available Options
+
+`Newimage' recognizes the following options:
+
+    -n  Attach a name to this executor which is recognized by nfe.
+
+    -c  Attach a  comment  to  this  executor.  Comments  can  be  read  by
+        appropriate command from nfe (e.g. exidlist).
+
+    -g  Set the kind of class to `without monitor'.
+
+    -d domain-name
+        Set the name of the  domain  to  which  this  executor  belongs  to
+        `domain-name'.
+
+    -u user-name
+        Set the name of the owner of this executor.
+
+    -k configuration-name
+        Use one of  the  standard  configurations.  `Configuration-name' is
+        one of the following:
+
+            site-master, or 1
+            station-master, or 2
+            slave-with-class, or 3
+            slave-without-class, or 4
+            stand-alone, or 5
+
+    -o image-directory
+        Use image-directory/<EX-ID> to create the object  image  directory.
+        The  object  image  directory  is made not under the $OZROOT/images
+        directory but under the image-directory and a  symbolic  link  from
+        $OZROOT/images/<EX-ID> to image-directory/<EX-ID> is created.
+
+    -a configuration-file-name
+        Use configuration-file-name as the configuration file to  tell  the
+        object manager boot time configurations.  When creating an instance
+        object, an executor asks the configured  class  ID  to  the  object
+        manager  with  the  public version ID.  Usually, the object manager
+        resolves it by asking to the class object.  In some cases, however,
+        an object manager runs without support of class object:  boot  time
+        and  stand  alone configuration.  In such cases, the object manager
+        uses its internal boot time  configuration  table  to  resolve  it.
+        Usually,  the  boot  time configuration table is initialized by the
+        installed version of boot classes instantiated during  the  booting
+        procedures  of  an  object manager and a class object.  This option
+        specifies  a   configuration   file   to   change/add   boot   time
+        configurations in the boot time configuration table.  The format of
+        the configuration file is as following:
+
+            <file> ::= <record>*
+            <record> ::= CLASS-NAME <public-part> <configured-class> '\n'
+            <public-part> ::= OID
+            <configured-class> ::= OID
+
+        Where CLASS-NAME is a valid class name of the OZ++  language.   OID
+        is 16 hexa-decimal digits.  Blanks and TABs can be inserted between
+        the  words.  Newlines  cannot  be  inserted  except  the   position
+        indiacated  by  a `\n'.  Blank lines and lines start with a `#' are
+        interpreted as comments.
+
+    -r executor-ID
+        This option is valid for the  stand-alone  configuration.  For  the
+        stand-alone  configuration, if an executor whose directory contains
+        all classes used by the stand-alone executor  exists  in  the  same
+        OZROOT,  the  stand-alone  executor  can run by referring the class
+        directory directly.  Neither a local class object nor  an  employed
+        remote  class object is required.  This option designates the ID of
+        the executor which provides its class directory to the  stand-alone
+        executor.  When  nof  such  an  executor  is  available on the same
+        OZROOT, the stand-alone executor must have  either  a  local  class
+        object  or  an  employed  remote  class  object  to receive lacking
+        classes.
+
+    -p  Preserve intermediate files created by `newimage'.
+
+Appropriate setting of  these  options  allows  users  to  avoid  corresponding
+setting procedures in newimage.
+
+5. Standard configurations
+
+The following sections explain four kind of standard configurations.
+
+ 5.1 Site master
+
+At first, one name directory and one catalog is enough to run a domain.  A site
+master has these objects, and plays a central role in the  domain.  To  operate
+the  domain,  the  site master (or functionally equivalent executors) is indis-
+pensable.
+   A site master has the following objects:
+
+    o An object manager
+      is named ":object-managers:site-master".  The numbers of daemons  are
+      set to default numbers.
+
+    o A class object
+      is named ":classes:site-master".  It manages the boot-classes and  is
+      preloaded.  The  class  distribution monitor is enabled.  Other class
+      objects are not employed.
+
+    o A name directory
+      is  not  preloaded.  However, since  the  object  manager  invokes  a
+      preload method just after starting up the executor, it will be loaded
+      at that time.
+
+    o A catalog
+      is named ":catalog", and is preloaded.
+
+    o A launcher
+      is preloaded.
+
+   Furthermore, options for the following settings can be specified.  If any of
+these options are omitted, they can be specified interactively.
+
+    o Configuration file (option -a)
+    o Domain name (option -d)
+    o Owner name (option -u)
+
+ 5.2 Station master
+
+A  station  needs  at  least  one  local  class  object  which  provides  class
+information  to  executors on the station, unless the station shares the OZROOT
+with other stations with certain distributed file system (e.g. NFS), and  class
+information  is  provided  from  the stations.  A station master is an executor
+which has a class object for  managing  boot  classes.  It  can  provide  class
+information  to  other executors on the station and executors on other stations
+sharing the OZROOT with it.  A station master cannot be stopped if such  client
+executors are running.
+
+   A station master has the following objects:
+
+    o An object manager
+      is named ":object-managers:<EXID>".  <EXID>  is  substituted  by  the
+      sequential number part of the executor ID (6 digits starting from the
+      5th digit in 16 hexa-decimal digits).  The numbers of daemons are set
+      to default numbers.
+
+    o A class object
+      is named  ":classes:<EXID>".  It  manages  the  boot-classes  and  is
+      preloaded.  The  class  distribution monitor is enabled.  Other class
+      objects are not employed.
+
+    o A launcher
+      is preloaded.
+
+   It has neither a name directory nor a catalog.
+   Furthermore, options for following settings can  be  specified.  If  any  of
+these options are omitted, they can be specified interactively.
+
+    o Configuration file (option -a)
+    o Domain name (option -d)
+    o Owner name (option -u)
+
+ 5.3 Slave with a class
+
+It is not necessary for an executor to have a class object if it can get  class
+informations  from  other  executors.  However, you will often feel the need to
+have it for efficiency.  A slave with a class is an executor which has a  class
+object that does not manage the boot-classes.
+   A slave with a class is the same as a station master except that  the  class
+object doesn't manage the boot-classes.
+
+ 5.4 Slave without a class
+
+An executor which doesn't have a class object.  Class information  is  provided
+from  remote class objects.  It is the same as a slave with a class except that
+it doesn't have a class object.  Furthermore,  a  slave  without  a  class  can
+employ  remote  class  objects.  Class  objects  to  be  employed  can  be  set
+interactively by `newimage'.
+
+ 5.5 Stand alone
+
+An executor which can run without any other objects.  That is, a site master or
+a station master is  not  required  to  run  this  executor.  However,  if  the
+application itself requires another object, e.g. a name directory or a catalog,
+running  them  is  necessary.  Class objects are not required if a condition is
+met.  That is, since class files are required in  runtime,  if a  class  object
+which  has  all classes required by the stand alone executor exists on the same
+OZROOT, the executor, by directly referring its class directory, can  run  with
+neither creating new class object nor employing a remote class object.  If such
+a  class object does not exist, even the stand alone executor must have a class
+object locally ore on remote.
+
+    o A stand alone object manager
+      is named ":object-managers:<EXID>".  <EXID>  is  substituted  by  the
+      sequential number part of the executor ID (6 digits starting from the
+      5th digit in 16 hexa-decimal digits).  The numbers of daemons are set
+      to default numbers.
+
+There is no other object.
+   Furthermore, options for following settings can  be  specified.  If  any  of
+these options are omitted, they can be specified interactively.
+
+    o Configuration file (option -a)
+    o Domain name (option -d)
+    o Owner name (option -u)
+
+   There is no Launcher for the stand alone executor.  Instead of the Launcher,
+the stand alone object manager can create and run an application  object.  This
+object  is  created  as  a  global object.  And its class must be a subclass of
+class Startable.  The class must define a following public method:
+
+        void Initialize(): global
+
+The method Initialize is called once just after the creation.  As well  as  the
+usual  global  object, method Go isn't called when the creation, and succeeding
+starting-up of this executor calls Go, not Initialize.
+   The stand alone object manager opens a  dialog  window  after  start-up.  By
+this window, you can set up an application object.
+   At first, a configuration file is asked:
+
+        Configuration File [none]:
+
+If the configuration file specified at newimage time  has  enough  information,
+you   can   simply   type   return  to  this  question.  Otherwise,  additional
+configuration file can be specified.  If the specified file doesn't exist,  the
+same question will be repeated.
+   Next,  the  configured  class  ID of the application object to be created is
+asked:
+
+        Configured Class ID:
+
+16 hexa-decimal digits  are  required.  Any  other  answer  causes  a  repeated
+question.  Correct  answer  creates the object and calls the method Initialize.
+If the created  object  is  made  permanent  during  its  execution,  the  next
+starting-up  of  this  executor  simply executes the object and doesn't ask the
+configured class ID to create an object.  If the permanent  object  is  removed
+during the execution, again a configured class ID is asked next time.
+   After successful creation of an application object, the object is started to
+run.  However, if the  configuration  file  doesn't  have  enough  information,
+following question is asked:
+
+        Configured Class ID for xxxxxxxxxxxxxxxx:
+
+xxxxxxxxxxxxxxxx is a public version ID  of  a  class.  Answer  the  configured
+class ID.
+
+6. Error Messages of oic
+
+In case of abnormalities in the  setups  and  installations, there  are  times,
+although  very  rare, when  the  object  image  compiler `oic' outputs an error
+message.  In these cases, not much can be done  by  the  user.  However, he/she
+can check the following.
+
+ (a) Is the `sb' running properly?
+
+   From the command line, type
+
+        % sb Class 0
+
+and check if 16 hexa-decimal  digits  are  displayed.  If `sb' is  not  running
+properly,  it   is   possible   that   a  school  file  for  the  boot  classes
+`$OZROOT/etc/boot-school' has not been installed properly.  In this case, it is
+better to re-install the OZ++ system and take notice of error messages from it.
+
+ (b) Is the Makefile.oibuild installed properly?
+
+   Check if `$OZROOT/lib/Makefile.oibuild' exists and make sure that  its  size
+is not zero.
+
+7. Interruption of `Newimage'
+
+   If `newimage' is  interrupted  by  `SIGHUP',  `SIGINT',  or  `SIGTERM',  the
+directory containing the object image file is completely erased.  If `newimage'
+is to be interrupted without erasing this directory, use `SIGQUIT' (which is ^\
+from terminals).

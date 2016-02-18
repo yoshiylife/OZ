@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.21 Object クラス</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.21 Object クラス">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION000621000000000000000>5.21 Object クラス</A></H2>
+ <A NAME=langsecObject>　</A> <A NAME=langlangmanualobjectclass>　</A>
+<P>
+  OZ++
+  システムでは、エグゼキュータ単位にその上に生成されたすべてのグロー
+バルオブジェクトを、オブジェクトマネージャと呼ばれるグローバルオブジェ
+クトによって管理する。ところで、オブジェクトマネージャを  OZ++
+  言語のク
+ラスによって実装するには、同じエグゼキュータ上にあるすべてのグローバル
+オブジェクトに対する処理を記述するため、任意のクラスのグローバルオブジェ
+クトに対する処理が記述できなければならない。ところが、このために任意の
+クラスに適合する型に加え、オブジェクトマネージャがグローバルオブジェク
+トを管理するための共通の処理 (メソッド) も必要となる。しかし、これを各
+グローバルオブジェクトを生成するクラスに必ず記述するという規約を設ける
+ことは、プログラマに負担をかけることになる。
+<P>
+この負担を軽減するために、オブジェクトマネージャが必要とするすべての処
+理をメソッドとして持ち、さらにすべてのクラスに対してコンパイル時に自動
+的に mix-in されるクラスとして、 Object クラスを用意する。これによりオ
+ブジェクトマネージャはすべてのグローバルオブジェクトを Object クラスの
+インスタンスとして処理することが可能となる。また、Object クラスに定義
+されるメソッドに関して、各クラス毎に特別な処理が必要な場合には、プ
+ログラマはメソッドの再定義によって記述することができる。
+<P>
+オブジェクトクラスの mix-in は継承と同じ機構により実装される。したがっ
+て、継承のないスタティッククラスには mix-in できないため、スタティック
+クラスのグローバルオブジェクトのインスタンスをオブジェクトマネージャが
+扱うことができない。このために、スタティッククラスからグローバルオブジェ
+クトのインスタンスを生成することを禁止している。
+<P>
+<H3><A NAME=SECTION000621100000000000000>5.21.1 クラスインタフェース</A></H3>
+<P>
+Object クラスは以下のようなメソッドを持つ。
+<P>
+<UL><LI> <tt> void Go ()</tt>
+<P>
+オブジェクトマネージャ
+ は、オブジェクトを仮想記憶上にロードした後、他のメソッドの呼び出
+しを可能とする直前に一度だけ <tt> Go ()</tt> メソッドを呼び出す。プログラ
+マは各クラスで <tt> Go ()</tt> を再定義することで、オブジェクトの起
+動時の処理を記述できる。
+<P>
+<tt> Go ()</tt> から、それ自身のメソッドを (間接的にでも) 起動するのは、デッ
+ドロックを引き起こすので注意が必要である。
+<P>
+<LI> <tt> void Shutdown ()</tt>
+<P>
+オブジェクトマネージャ
+ は、エグゼキュータ
+ を終了させる直前など、オブジェクトを停止させる際に、一
+度だけ <tt> Shutdown ()</tt> を呼び出す。プログラマは各クラスで <tt>
+Shutdown ()</tt> を再定義することで、オブジェクトの停止時の処理を記述でき
+る。<tt> Shutdown ()</tt> 起動後には、次の起動されるまで、
+他のメソッドは呼び出されない。
+<P>
+<tt> Shutdown ()</tt> から、それ自身のメソッドを (間接的にでも) 起動するの
+は、デッドロックを引き起こすので注意が必要である。
+<P>
+<LI> <tt> void Removing ()</tt>
+<P>
+オブジェクトマネージャ
+ は、オブジェクトを削除する際に、一度だけ、メソッド <tt> Removing
+()</tt> を呼び出す。プログラマは各クラスで <tt> Removing ()</tt> を再定義す
+ることで、オブジェクトの削除時の処理を記述できる。 <tt> Removing ()</tt> 
+の起動後には、他のメソッドは呼び出されない。なお、 <tt> Removing ()</tt> が
+呼び出される状況では <tt> Shutdown ()</tt> は呼ばれない。
+<P>
+<tt> Removing ()</tt> から、それ自身のメソッドを (間接的にでも) 
+起動するのは、デッドロックを引き起こすので注意が必要である。ただし、 
+<tt> Removing ()</tt> から <tt> Shutdown ()</tt> を呼び出してもよい。
+<P>
+<LI> <tt> global ObjectManager Where ()</tt>
+<P>
+そのオブジェクトがあるエグゼキュータのオブジェクトマネージャのオブジェ
+クト ID を返す。
+<P>
+<LI> <tt> void Flush ()</tt>
+<P>
+そのオブジェクトのその時点でのイメージを2次記憶上に書き込む。
+<P>
+<LI> <tt> void NewObject (global VersionID vid)</tt>
+<P>
+グローバルオブジェクトを生成するための抽象メソッド。
+</UL>
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

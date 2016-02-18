@@ -1,0 +1,14 @@
+(*class* #0001000002000264 0
+(*list*)
+(*list*
+(*declaration* New (*method* void (*list* #000100000200018c 0 ) 0) constructor #0001000002000263 0 0)
+(*declaration* Broadcast (*method* (*scqf* #0001000002000254 0 4) (*list* (*scqf* #00010000020002b2 0 4) ) 1) public #0001000002000263 0 1)
+(*declaration* Reply (*method* void (*list* (*scqf* #0001000002000254 0 4) ) 1) public #0001000002000263 0 2)
+(*declaration* Status int protected #0001000002000264 0 Status)
+(*declaration* NumberOfReaders (*scqf* int 2) protected #0001000002000264 0 NumberOfReaders)
+(*declaration* Written OZ_ConditionRec protected #0001000002000264 0 Written)
+(*declaration* Value (*scqf* #0001000002000254 0 4) protected #0001000002000264 0 Value)
+(*declaration* anExecutor #000100000200018c 0 protected #0001000002000264 0 anExecutor)
+(*declaration* Waker (*method* void (*list* OZ_ConditionRec (*scqf* int 2) ) 0) protected #0001000002000264 0 3)
+)
+)

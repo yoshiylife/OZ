@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>4.2 チェスの操作説明</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="4.2 チェスの操作説明">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION00052000000000000000>4.2 チェスの操作説明</A></H2>
+<P>
+
+<P>
+<tt> OZ++/Chess
+ </tt>は<tt> OZ++/Frame</tt>
+ の上に実装した表計算プログラムである。
+その特徴は
+<UL><LI> 表計算を行なうためのスクリプト言語を提供している。
+        <LI> スクリプトで演算を行なうクラスを新たに定義できる。
+        <LI> 分散したセルに対して計算を行なうことができる。
+</UL><H3><A NAME=SECTION00052100000000000000>4.2.1 ボードの作成</A></H3>
+<P>
+<A NAME=chessinitboard>　</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD>
+<IMG  ALIGN=BOTTOM ALT="env-chess-init.gif" SRC="figure/env-chess-init.gif">
+</TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>図 4.2--1:</STRONG> 初期画面</CAPTION>
+
+</TABLE>
+</CENTER>
+
+<P>
+図<A HREF="node19.html#chessinitboard">4.2--1</A>は<tt> OZ++/Chess
+ </tt>の初期画面である。
+行数と列数を入力する。
+入力値を反映させるには必ずリターンキーを押さなければならない。
+ボード名はオプションである。
+これを入力することにより
+他のボードのセルからこのボードのセルを参照することができる。
+'Create'ボタンをクリックすると新たなボードを生成して移動する。
+<P>
+<P>
+<H3><A NAME=SECTION00052200000000000000>4.2.2 スクリプトの入力</A></H3>
+<P>
+<A NAME=chessboard>　</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD>
+<IMG  ALIGN=BOTTOM ALT="env-chess-board.gif" SRC="figure/env-chess-board.gif">
+</TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>図 4.2--2:</STRONG> ボード</CAPTION>
+
+</TABLE>
+</CENTER>
+
+<P>
+図<A HREF="node19.html#chessboard">4.2--2</A>はボードの一例である。
+スクリプトは各セルに設定する。
+１行１列のセルにスクリプトを代入するには
+行と列フィールドにそれぞれ1を入力する。
+そしてスクリプトフィールドにスクリプトを記入する。
+<P>
+<H3><A NAME=SECTION00052300000000000000>4.2.3 スクリプトの実行</A></H3>
+<P>
+<tt> OZ++/Chess
+ </tt>のスクリプトは遅延評価である。
+セルに対して実行を指示すると初めて評価される。
+実行を指示するにはセルをクリックしてからリターンキーを押す。
+<P>
+<H3><A NAME=SECTION00052400000000000000>4.2.4 スクリプトの文法</A></H3>
+<P>
+定数　 <BR> 
+	
+もっとも単純なスクリプトは定数である。
+定数には数値と文字の２種類がある。
+数値は整数と小数が記述できる。
+指数表現はない。
+数値と判断されない単語は文字列定数と解釈される。
+<P>
+例：
+<UL><LI> 3
+        <LI> 4.6
+        <LI> -29
+        <LI> Japan
+</UL>
+<P>
+算術演算 <BR>
+<P>
+四則演算を提供している。
+整数どうしの除算は余りが切り捨てられる。
+<P>
+例：
+<UL><LI> 3 + 4
+        <LI> 2 - 8
+        <LI> 3 * 3 * 3.14
+        <LI> 7 / 5
+</UL>
+<P>
+文字列演算 <BR>
+<P>
+文字列演算は結合演算を提供している。
+これは'+'で行なわれる。
+<P>
+例：
+<UL><LI> Star + Wards
+</UL>
+<P>
+セルの参照 <BR>
+<P>
+n行m列のセルを参照するには'n @ m'と記述する。
+またボード名Aのn行m列は'A#n@m'となる。
+さらに':chess:B'という名前でNameDirectoryに登録されている
+ボード名Aのn行m列は':chess:B:A#n@m'となる。
+<P>
+スクリプトの中でセルを参照すると
+そのセルのスクリプトを評価しその評価値を得ることができる。
+スクリプトが自身のセルを評価しようとすると無限再帰となるので注意。
+<P>
+代入 <BR>
+<P>
+セルの参照の右に'='を記述し、さらにその右に式を書くと
+右辺の式を評価した結果が左辺の式に代入される。
+<P>
+例：
+<UL><LI> 2 @ 2 = 3 * 4
+        <LI> 1 @ 1 = ( 2 @ 2 ) + ( 3 @ 3 )
+</UL>
+<P>
+
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

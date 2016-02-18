@@ -1,0 +1,205 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.14 スタティッククラス</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.14 スタティッククラス">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION000614000000000000000>5.14 スタティッククラス</A></H2>
+ <A NAME=langlangmanualstaticclass>　</A>
+<P>
+<PRE>class_def
+        | 'static' 'class' CLASSNAME '{' static_class_body '}' 
+        ;
+
+static_class_body
+        : access_ctrls_no_protected member_decls
+        ;
+</PRE>
+<P>
+スタティッククラスは利用者定義型の一つである。スタティッククラスは、そ
+のインスタンスの内部表現であるイ
+ンスタンス変数およびインスタンスに適用可能なメソッドの定義で構成
+される。スタティッククラスに定義されるインスタンス変数、メソッド
+をスタティッククラスメンバと呼ぶ。
+<P>
+スタティッククラスメンバを持たないスタティッククラスのインスタンスのサ
+イズは、0 ではなく記憶領域を消費する。
+<P>
+以上の点ではスタティッククラスはクラスと同じものと見なすことができるが、
+継承が利用できない点と、グローバルオブジェクトのインスタンスを生
+成できない点にクラスとの違いがある。
+<P>
+<H3><A NAME=SECTION000614100000000000000>5.14.1 スタティッククラス名</A></H3>
+<P>
+スタティッククラス名は、そのスタティッククラス定義のスコープで予約語と
+なる。
+<P>
+スタティッククラスは型である。異なるスタティッククラスは異なる型であり、
+あるスタティッククラスのインスタンスを異なるスタティッククラス型の変数
+に代入することはできない。
+<P>
+<H3><A NAME=SECTION000614200000000000000>5.14.2 スタティッククラスメンバ</A></H3>
+ <A NAME=langlangmanualstaticclassmember>　</A>
+<P>
+一つのスタティッククラス定義の中では同じ名前のスタティッククラスメンバ
+を、二度宣言してはならない。また、メソッドは C++ のように多重定義する
+ことはできない。
+<P>
+<PRE>static class C {
+  int m() { ... }        
+  int m(int p) { ... }         // エラー: メンバ m はすでに宣言されている
+}
+</PRE>
+<P>
+インスタンス変数の宣言では、初期設定は行なえない。
+<P>
+<PRE>static class C {
+  int a = 10;         // エラー: 初期設定はできない。
+}
+</PRE>
+<P>
+<tt> m_quals</tt> がないメソッドは、そのメソッドが起動された場合、ロー
+カルアクセスとして実行されるローカルメソッド 
+(<A HREF="node33.html#langlangmanualclassmember">5.13.2</A>節参照) となる。
+<P>
+<tt> m_quals</tt> が付加されたメソッドは、その指定によって以下のよう
+な性質を持つ。
+<P>
+<UL><LI> <tt> locked</tt>
+<P>
+指定されたメソッドの起動に関して排他制御を行なうことを要求する
+<P>
+<tt> locked</tt> のメソッドを一つ以上持つスタティッククラスから生成された
+インスタンスはモニタとなる。
+<P>
+</UL>
+<P>
+スタティッククラスからグローバルオブジェクトのインスタンスを生成するこ
+とができない (理由については <A HREF="node41.html#langlangmanualobjectclass">5.21</A> 節参
+照) ため、グローバルメソッドを指定することはできない。したがって、メソッ
+ドの引数の型にスタティッククラスが使用される場合には、その引数に渡され
+るインスタンスはすべてローカルオブジェクトとなる。
+<P>
+<PRE>static class C {
+  int m1() { ... } 
+    // ローカルメソッド
+  int m2() : locked { ... }
+    // 排他制御を行なうローカルメソッド
+  int m3() : global { ... } 
+    // エラー: グローバルメソッドは指定できない
+  int m4() : global locked { ... }
+    // エラー: グローバルメソッドは指定できない
+  int m5(global C c) { ... }
+    // エラー: スタティッククラス型の引数ではグローバルオブジェクトは渡せない
+}
+</PRE>
+<P>
+またクラスと同様に、後方で定義されるメンバを利用する場合には、前方参照
+が可能であり、プロトタイプ宣言は不要である。
+<P>
+<H3><A NAME=SECTION000614300000000000000>5.14.3 アクセス制御</A></H3>
+ <A NAME=langlangmanualstaticclassaccesscontrol>　</A>
+<P>
+スタティッククラス定義では、各スタティッククラスメンバの外部に対する公
+開/非公開の指定を行なう。
+<P>
+スタティッククラスメンバのアクセス制御には以下の二つの指定が可能である。
+<P>
+<UL><LI> <tt> public</tt>
+<P>
+インスタンスに対するメソッド起動が可能なように公開する。
+<P>
+<tt> public</tt> はメソッドに対してのみ指定することができる。
+<P>
+<LI> <tt> constructor</tt>
+<P>
+インスタンス生成のために利用されるメソッドをコンストラクタ
+(<A HREF="node38.html#langlangmanualconstructor">5.18</A>節参照) に指定する。
+<P>
+コンストラクタに指定するメソッドは、必ず返り値の型が <tt> void</tt> でなけ
+ればならない。
+</UL>
+<P>
+アクセス制御の指定がないものは <tt> private</tt> となり、非公開なものとなる。
+<P>
+継承が利用できないため、クラスにある <tt> protected</tt> の指定はスタティッ
+ククラスでは利用できない。
+<P>
+<PRE>static class C {
+  public: m1, m2; 
+  constructor: create, create2; // エラー: create2() の返り値が void でない
+
+  int m1() { ... }
+  int m2() { ... }
+  int m3() { ... } // 指定がないので private となる
+  void create() { ... }
+  int create2() { ... } 
+}
+</PRE>
+<P>
+<H3><A NAME=SECTION000614400000000000000>5.14.4 self</A></H3>
+<P>
+クラスと同様にメソッドの中で、そのメソッドの起動対象のインスタンスを、
+予約語 <tt> self</tt> によって参照することができる 
+(<A HREF="node33.html#langlangmanualclassself">5.13.4</A> 節参照)。
+<P>
+<H3><A NAME=SECTION000614500000000000000>5.14.5 インスタンスの生成</A></H3>
+<P>
+あるスタティッククラス型の変数は宣言された直後はインスタンス
+への参照をもたず、値として 0 を持っている 
+(<A HREF="node24.html#langlangmanualdatatypezero">5.4.2</A> 節参照) 。この変数に対
+して、インスタンスを生成しそれを参照するようにするには、そのスタティッ
+ククラスに定義されたコンストラクタを呼び出すことによって行なう。
+<P>
+また、インスタンスの代入およびメソッドの引数渡しはすべて参照によって行
+なわれる。
+<P>
+<PRE>static class C {
+  constructor: create;
+ 
+  void create() { ... } 
+}
+
+C c;
+c=&gt;create(); // コンストラクタを呼び出してインスタンスを生成し、
+             // 生成されたインスタンスの参照を c に代入
+</PRE>
+<P>
+またクラスのインスタンスと同様に、スタティッククラス型の変数に 0 を代
+入することによって、その変数がそれまで持っていたあるインスタンスへの参
+照を切ることが可能である。
+<P>
+<PRE>A a
+
+a=&gt;create();
+...
+a = 0; // インスタンスへの参照を切る
+</PRE>
+<P>
+<H3><A NAME=SECTION000614600000000000000>5.14.6 総称パラメータの利用</A></H3>
+<P>
+スタティッククラスにも総称パラメータを使用することが可能であり、利用方
+法はクラスの場合と同様である。
+<P>
+<PRE>static class Collection&lt;T&gt; {
+  public: Add;
+
+  T Add (T content) { ... }
+}
+</PRE>
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

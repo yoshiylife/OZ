@@ -1,0 +1,17 @@
+AnswersOfClassBroadcast
+ArchitectureID
+BooleanHolder
+BroadcastParameter
+ClassBroadcastManager
+ConfigurationCacheExpirer
+Executor
+NameDirectoryBroadcastManager
+ObjectTableEntry
+SimpleArray<Alarmable>
+SimpleArray<global Class>
+SimpleTable<global VersionID,global ConfiguredClassID>
+SimpleTable<global Object,ObjectTableEntry>
+SimpleTable<unsigned int,SimpleArray<Alarmable>>
+SuspensionStateTransition
+Timer
+Waiter

@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.23 メソッド実行</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.23 メソッド実行">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION000623000000000000000>5.23 メソッド実行</A></H2>
+ <A NAME=langlangmanualmethodexec>　</A>
+<P>
+ここでは、 OZ++
+  言語のクラス、スタティッククラスのメソッド、およびレコー
+ドのオペレータの実行時の動作について述べる 
+(<A HREF="node33.html#langlangmanualclassmember">5.13.2</A>、
+<A HREF="node34.html#langlangmanualstaticclassmember">5.14.2</A>、
+<A HREF="node32.html#langlangmanualrecordmember">5.12.1</A> 節参照) 。
+<P>
+<H3><A NAME=SECTION000623100000000000000>5.23.1 クラスのメソッド</A></H3>
+<P>
+クラスのメソッドは、private のものとそれ以外のものとで実行時の動作
+が異なる。
+<P>
+<UL><LI> private メソッド
+<P>
+ private メソッドはそれが定義されたクラス中で
+のみ利用されるため、コンパイル時に静的に実行コードが決定される。したがって、
+ソースコード中のメソッド起動は、コンパイル時に
+単なる関数呼び出しの形式に変換される。
+<P>
+ <LI> private 以外のメソッド
+<P>
+ private 以外のメソッドは、対応する実行コードが動的にロードされ、その
+ロードされたものが実行される。したがって、ソースコード中のメソッド起動
+は、実行時にロードされる実行コードの中でそのメソッドに対応するものが呼
+び出されるように変換されなければならない。
+<P>
+また動的束縛が行なわれるため、変数の型ではなく、その変数が参照している
+インスタンスの型に応じて実行されるメソッドが決定される。さらに、グロー
+バルメソッドの起動の場合には、引数のローカルオブジェクトのコピー等の特
+別な処理が必要である。
+<P>
+このように private 以外のメソッド起動では、単純な関数呼び出しではなく、
+エグゼキュータのランタイムルーチンを利用した特殊な処理が行なわれる。
+<P>
+</UL><H3><A NAME=SECTION000623200000000000000>5.23.2 スタティッククラスのメソッド、オペレータ</A></H3>
+<P>
+スタティッククラスのメソッドおよびレコードのオペレータは、アクセス制御
+の指定に無関係にすべて単なる関数呼び出しとして実行される。
+<P>
+ところで public のメソッドは、すべて他のクラス等で利用されるため、それ
+らのコンパイル後の関数の名前は  OZ++
+  システム全体でユニークでなければな
+らない。コンパイラでは、これらの関数名にそれが定義されているスタティッ
+ククラスまたはレコードの ID を含めることによってこれを保証している。
+<P>
+
+<P>
+
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

@@ -1,0 +1,10 @@
+(*class* #00010000020003f0 0
+(*list*)
+(*list*
+(*declaration* New (*method* void (*list*) 0) constructor #00010000020003f0 0 0)
+(*declaration* NewWithString (*method* void (*list* #00010000020003bd 0 ) 0) constructor #00010000020003f0 0 1)
+(*declaration* NewWithArrayOfChar (*method* void (*list* (*array* char ) ) 0) constructor #00010000020003f0 0 2)
+(*declaration* Get (*method* (*array* char ) (*list*) 1) public #00010000020003f0 0 3)
+(*declaration* Set (*method* void (*list* (*array* char ) ) 1) public #00010000020003f0 0 4)
+)
+)

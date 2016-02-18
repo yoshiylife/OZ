@@ -1,0 +1,12 @@
+(*class* #000100000200005f 5
+(*list*)
+(*list*
+(*declaration* ElementNotFound (*method* int (*list* OZ_Generic ) 0) public #000100000200005f 0 0)
+(*declaration* Empty (*method* int (*list*) 0) public #000100000200005f 0 1)
+(*declaration* InternalError (*method* int (*list* OZ_Generic ) 0) public #000100000200005f 0 2)
+(*declaration* InvalidIntParameter (*method* int (*list* int ) 0) public #000100000200005f 0 3)
+(*declaration* InvalidParameter (*method* int (*list*) 0) public #000100000200005f 0 4)
+(*declaration* RedefinitionOfKey (*method* int (*list* OZ_Generic ) 0) public #000100000200005f 0 5)
+(*declaration* UnknownKey (*method* int (*list* OZ_Generic ) 0) public #000100000200005f 0 6)
+)
+)

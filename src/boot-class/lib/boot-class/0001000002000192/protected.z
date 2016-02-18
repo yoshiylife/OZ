@@ -1,0 +1,9 @@
+(*class* #0001000002000192 0
+(*list*)
+(*list*
+(*declaration* New (*method* void (*list*) 0) constructor #0001000002000191 0 0)
+(*declaration* GetIText (*method* #000100000200020a 8 (*list*) 0) public #0001000002000191 0 1)
+(*declaration* GetOText (*method* #00010000020002d6 8 (*list*) 0) public #0001000002000191 0 2)
+(*declaration* GetIOText (*method* #00010000020001ec 8 (*list*) 0) public #0001000002000191 0 3)
+)
+)

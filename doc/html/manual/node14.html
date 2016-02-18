@@ -1,0 +1,406 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>3.3 Operations of Compiler Front End (CFE)</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="3.3 Operations of Compiler Front End (CFE)">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION00043000000000000000>3.3 Operations of Compiler Front End (CFE)</A></H2>
+<P>
+<H3><A NAME=SECTION00043100000000000000>3.3.1 Outline of Functions in the Compiler Front End (CFE)</A></H3>
+<P>
+This document presents the function of CFE which is activated from 
+Work Bench.
+<P>
+<H3><A NAME=SECTION00043200000000000000>3.3.2 Programming in OZ++</A></H3>
+<P>
+Here we explain the necessary concepts to perform programming in OZ++.
+<P>
+Class <BR>
+<P>
+  In OZ++, a class is given a distinguishable ID (version ID) unique to 
+the entire system. Each class is managed by means of this ID.  In other 
+words, each class is managed by its version.  This version classifies 
+the function of a class into the following three parts.  Each part is 
+given a different version ID.
+<P>
+<OL><LI> There is an interface part (i.e. public part) for passing 
+messages.  This part corresponds to the signature of a public member.
+This part must be recompiled to make any alterations made on this part 
+effective for classes using public members.
+<P>
+<LI> There is an interface part (i.e. protected part) to be used 
+through inheritance.  This part corresponds to the signatures and the 
+type of instance variables of protected methods.  Recompilation is 
+necessary to make any alterations effective for subclasses of this class.
+<P>
+<LI> There is an implementation part for the interfaces of 1 and 2.
+The definition of instance variables also corresponds to this part.
+Any alterations made to this part can be made effective without 
+recompilation (as mentioned later).
+</OL>
+  Among these three parts, there is a descending relation in the order: 
+public part, protected part, and implementation part.  Each part has 
+an upper part, and several lower parts.  Any of the lower parts can 
+be specified to its default version.  The default versions are used 
+if the user does not specify version.  Moreover, the public part has 
+a root part as its upper part.  This root part is representative of 
+all versions for a given class.
+<P>
+The Language Processor <BR>
+<P>
+  A class is distinguished by its ID in the entire system of the OZ++.
+However, while programming, it is necessary to denote class names 
+in source codes.  Therefore, the compiler must convert class names 
+into ID's.  For this purpose, we introduce a conversion table called 
+the school.  The school is a list of pairs of class names and ID's, 
+and while programming it provides a local space for labels of a class.
+<P>
+   In object oriented programming, using only the interface exposed by 
+classes leads to programming which is independent of the implementation 
+of classes. By combining this characteristic with the framework of 
+version management, it is possible to delay the implementation part's 
+version of a class used in the program.  Thus, flexible operations 
+like this becomes possible in OZ++.  In the language processor, an 
+investigation into the use of the interface is carried out by accessing 
+the interface information in the public or protected part. To obtain 
+the information used in this investigation, the compiler not only 
+generates execution codes but also outputs information concerning the 
+interface of both public and protected parts.  Therefore, compilation 
+of a class in OZ++ involves processing the class in three parts: public, 
+protected, and implementation.  The output of each part is registered 
+in the class management system.  The investigation of interfaces is 
+carried out by obtaining this information.
+<P>
+The versions to be used are determined as follows:
+<P>
+<UL><LI> For the class using the public part, versions up to its public 
+part are determined during compilation, and the version of its 
+implementation part is determined during instance generation.
+<P>
+<LI> For the inheriting class, versions up to its protected part are 
+determined during compilation, and the version of its implementation 
+part is determined during instance generation.
+</UL>
+  The process that determines the implementation part's version during 
+instance generation is called the configure.  The information resulting 
+from this configure (i.e. configuration) is also class information, and 
+is managed by the class management system.
+<P>
+Compilations <BR>
+<P>
+Compilations are performed after activating the compiler front end and 
+by specifying a school on the Work Bench.  In OZ++, compilations are 
+performed in three parts. Each part has the following constraints:
+<P>
+<OL><LI> Compilation of Each Part
+<P>
+<UL><LI> The upper part has to be compiled before the lower part.  
+For example, to compile the protected part, the public part must first 
+be compiled.
+<LI> Depending on the school, compilation converts a class name into an
+ID.  Therefore, the class being used must exist in the specified school.
+</UL>
+<P>
+<LI> Compilation of Public Part
+<UL><LI> The class of the protected part, which is inherited, must be
+compiled.
+</UL>
+<P>
+<LI> Compilation of Implementation Part
+<UL><LI> The class of the public part, which is used, must compiled.
+</UL></OL>
+<P>
+Upgrading Versions <BR>
+<P>
+The version of a class is upgraded by specifying it during the compilation
+of the three parts.  If version upgrading is specified, the upgrading of 
+parts lower than the one specified is demanded to the class management 
+system.  For example, if version upgrading is specified during 
+compilation of the public part, the class management system creates new 
+versions for all three parts below the public part.  Furthermore, new 
+version ID's are given to the three parts.
+<P>
+Generic class terminology <BR>
+<P>
+<UL><LI> Formal generic class
+<P>
+Generic class with undefined type parameter
+<P>
+<LI> Real generic class
+<P>
+Formal generic class with specified type parameter
+</UL><H3><A NAME=SECTION00043300000000000000>3.3.3 List of Functions</A></H3>
+<P>
+<TABLE BORDER>
+<TR VALIGN=TOP>
+<TH>Menu</TH> <TH>Menu Item</TH> <TH>Function</TH>
+</TR>
+<TR>
+</TR>
+<TR VALIGN=TOP>
+<TD ROWSPAN=6>CFE</TD>
+    <TD>Open...</TD>       <TD>To use a different school</TD>
+</TR>
+<TR VALIGN=TOP>
+    <TD>Close</TD>         <TD>To close</TD>
+</TR>
+<TR VALIGN=TOP>
+    <TD>Add...</TD>        <TD>To add of source files</TD>
+</TR>
+<TR VALIGN=TOP>
+    <TD>Remove</TD>        <TD>To delete source files</TD>
+</TR>
+<TR VALIGN=TOP>
+    <TD>Preference...</TD> <TD>Different setups</TD>
+</TR>
+<TR VALIGN=TOP>
+    <TD>Quit</TD>          <TD>To terminate CFE</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD ROWSPAN=2>Compile</TD>
+    <TD>One...</TD>        <TD>To compile one file</TD>
+</TR>
+<TR VALIGN=TOP>
+    <TD>All...</TD>        <TD>To compile multiple files</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD ROWSPAN=2>Configure</TD>
+    <TD>One...</TD>        <TD>To configure one file</TD>
+</TR>
+<TR VALIGN=TOP>
+    <TD>All...</TD>        <TD>To configure multiple files</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD ROWSPAN=5>Generic</TD>
+    <TD>One...</TD>
+                           <TD>To generate a real generic to one class. <BR>
+                               Also possible to regenerate real generics 
+                               (present only in the School) which have been
+                               generated from the specified formal generic 
+                               class.</TD>
+</TR>
+<TR VALIGN=TOP>
+    <TD>All...</TD>
+                           <TD>Generates the real generics needed during the of Compiles's All...</TD>
+</TR>
+<TR VALIGN=TOP>
+    <TD>Detail</TD>        <TD>Displays real generic name need to be generated</TD>
+</TR>
+<TR VALIGN=TOP>
+    <TD>Discard Classes</TD>
+                           <TD>Discards real generic name need to be generated</TD>
+</TR>
+<TR VALIGN=TOP>
+    <TD>Discard Files</TD> <TD>Discards all files that are generated incomplete</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD COLSPAN=2>Window</TD>
+                           <TD>To switch windows</TD>
+</TR>
+</TABLE>
+
+<P>
+List of Functions in Dialogs <BR>
+<P>
+<TABLE BORDER>
+<TR VALIGN=TOP>
+<TH>Menu</TH> <TH>Command</TH> <TH>Item, Button</TH> <TH>Function</TH>
+</TR>
+<TR>
+</TR>
+<TR VALIGN=TOP>
+<TD ROWSPAN=3>CFE</TD>
+    <TD ROWSPAN=3>Preference...</TD>
+        <TD>Class Object Name</TD> <TD>Inputs the Class Object Name</TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>Current Directory</TD> <TD>File Selector can be activated by double clicking.</TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>Language</TD>             <TD>English/Japanese</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD ROWSPAN=16>Compile</TD>
+    <TD ROWSPAN=10>One...</TD>
+        <TD>New (Menu Button)</TD> <TD>Gives an ID<BR>
+(Effective for those not belonging to a School)</TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>...public</TD>            <TD>Renewal(Create) of public<BR>
+                                          Stars the compilation of a new class</TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>...protected</TD>         <TD>Renewal of protected</TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>...implementation</TD>    <TD>Renewal of implementation</TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>Public</TD>               <TD><BR></TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>Protected</TD>            <TD>Can not be used in record, static class, or shared.</TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>Public &amp; Protected</TD> <TD><BR></TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>Implementation</TD>       <TD>Can not be used in record, static class, or shared.</TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>All</TD>                  <TD><BR></TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>Cancel</TD>               <TD>Cancels</TD>
+</TR>
+<TR VALIGN=TOP>
+    <TD ROWSPAN=6>All...</TD>
+        <TD>New</TD>                  <TD><BR></TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>Public &amp; Protected</TD> <TD><BR></TD> 
+</TR>
+<TR VALIGN=TOP>
+        <TD>Implementation</TD>       <TD><BR></TD> 
+</TR>
+<TR VALIGN=TOP>
+        <TD>Again</TD>                <TD>UNIX, without version</TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>Retry</TD>                <TD>Executes after initializing the log</TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>Cancel</TD>               <TD>Cancels</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD ROWSPAN=5>Configure</TD>
+    <TD ROWSPAN=3>One...</TD>
+        <TD>Go</TD>                   <TD>Executes</TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>Cancel</TD>               <TD>Cancels</TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>Other...</TD>             <TD>Selects other implementation part</TD>
+</TR>
+<TR VALIGN=TOP>
+    <TD ROWSPAN=2>All...</TD>
+        <TD>Retry</TD>                <TD>Executes after initializing the log</TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>Cancel</TD>               <TD>Cancels</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD ROWSPAN=9>Generic</TD>
+    <TD ROWSPAN=7>One...</TD>
+        <TD>Class Name</TD>             <TD>Inputs the class name of either real generic or formal generic class</TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>Again (Menu Button)</TD> <TD>Specifies this to regenerate real generic classes</TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>...from public</TD>       <TD>Renewal from public part</TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>...from protected</TD>    <TD>Renewal from protected part</TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>...only implementation</TD> <TD>Renewal only implementation part</TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>Go</TD>                   <TD>Executing classes that have not been regenerated</TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>Cancel</TD>               <TD>Cancels</TD>
+</TR>
+<TR VALIGN=TOP>
+    <TD ROWSPAN=2>All...</TD>
+        <TD>Go</TD>                   <TD>Executes</TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>Cancel</TD>               <TD>Cancels</TD>
+</TR>
+</TABLE>
+
+<P>
+How to Use the File Selector <BR>
+<P>
+<blockquote> Double clicking on the 'directory' moves directories.
+<P>
+Double clicking on the 'file' selects of files.
+</blockquote>
+<P>
+<UL><LI>  To select a directory...
+<P>
+Activate the Select button in select<BR> 
+Double click while holding down the control key
+</UL>
+<P>
+Cautions <BR>
+<P>
+Activate &quot;One ...&quot; of Compile or Configure after selecting a file.
+<P>
+<H3><A NAME=SECTION00043400000000000000>3.3.4 Upgrading Versions</A></H3>
+<P>
+In the processors of this version and those yet to be released, the version
+ of classes can be upgraded.  However, precompiled classes can not 
+be overwritten.  Therefore, if a part which has already been generated 
+is recompiled, an error message is displayed.  In such cases, upgrading 
+of the version is performed as follows:
+<P>
+<OL><LI> After selecting the checkbox 'New Version', compile the part to 
+be generated.
+<LI> However, when compiling an entirely new class, instead of New 
+Version, simply select New.
+</OL>
+<P>
+Furthermore, if the version is upgraded in the compilation of Public and 
+Protected, new ID's must be given not only to the part to be compiled 
+but also to the parts below.  For example, if this is performed, give 
+new ID's for all three parts Public, Protected, and Implementation. 
+This eventually causes the contents of the school to change.
+<P>
+<H3><A NAME=SECTION00043500000000000000>3.3.5 Configure</A></H3>
+<P>
+It is necessary to execute Configure to use classes that have been 
+compiled as far as implementation.
+<P>
+In Configure, it is necessary to specify which version of the 
+implementation part of classes and all ancestors of classes. However, 
+the implementation part included the school will be used if no version 
+is specified.
+<P>
+To execute &quot;One...&quot;, it is possible to select the implementation part 
+by clicking &quot;Other...&quot; of each class.
+<P>
+<H3><A NAME=SECTION00043600000000000000>3.3.6 Regenerating real generic</A></H3>
+<P>
+Regenerating specified real generic is possible by using Again in One... 
+of Generic. In this case, a new version will be generated. For this, it 
+is necessary to specify the source (part) for regeneration.
+<P>
+There are two ways to specify real generic for regeneration:
+<UL><LI> Specify real generic class name
+<P>
+Regenerates specified real generic
+<P>
+<LI> Specify character string of real generic class name up to &quot;<b>&lt;</b>&quot;
+<P>
+Regenerates all real generic classes with the same class name as the 
+specified character string located within the school. For example, when 
+specifying character string &quot;Set&quot; for a real generic called Set<b>&lt;</b>String<b>&gt;</b>, 
+other classes generated from Set<b>&lt;</b>*<b>&gt;</b> (such as Set<b>&lt;</b>School<b>&gt;</b>) 
+included in the school will be held objective for regeneration.
+</UL>
+<P>
+	<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

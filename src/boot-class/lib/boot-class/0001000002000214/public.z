@@ -1,0 +1,7 @@
+(*class* #0001000002000214 8
+(*list*)
+(*list*
+(*declaration* Launch (*method* void (*list*) 2) public #0001000002000214 0 0)
+(*declaration* Initialize (*method* void (*list*) 0) public #0001000002000214 0 1)
+)
+)

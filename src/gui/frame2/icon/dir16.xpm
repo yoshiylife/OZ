@@ -1,0 +1,23 @@
+/* XPM */
+static char * dir16_xpm[] = {
+"16 16 4 1",
+" 	s None	c None",
+".	c black",
+"X	c gray",
+"o	c white",
+"                ",
+"  ..            ",
+"  .X... ..      ",
+" ..oXoX.Xo..    ",
+" .o...oXoXo.    ",
+" .oooo..XoXo..  ",
+" .oooooo...Xo.  ",
+" .ooooooooo...  ",
+" .oooooooooX..  ",
+" .oooooooooo..  ",
+" ..ooooXoooX..  ",
+"   ...ooXXoo..  ",
+"      ..oooX..X ",
+"        ...o..X ",
+"           ...  ",
+"                "};

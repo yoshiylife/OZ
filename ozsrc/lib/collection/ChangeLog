@@ -1,0 +1,236 @@
+Sat Mar 30 11:26:19 1996  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* sarray.oz (SimpleArray::Shrink)
+	  locked メソッドである Capacity を呼び出していたので、デッドロッ
+	  クを引き起こしていた。直接 length Table を求めるように変更した。
+
+Mon Jan 22 23:15:40 1996  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* stable.oz (SimpleTable<*,*>::Clear)
+	  Clear を atomic な処理に変更した。
+
+Fri Jan 19 09:00:20 1996  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* 95Sep.1 を更新
+
+Fri Jan  5 16:10:33 1996  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* orderedcltn.oz (OrderedCollection <TContent>::At)
+	  実装仕様を変更。 Size () を越える値が指定された場合は例外が返る
+	  ようにした。
+
+Sat Nov 11 22:44:55 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* ここで Sep.1 を更新
+
+Thu Nov  9 12:01:43 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* set.oz (Set <TContent>)
+	  テーブルの拡張時のインスタンス変数の再設定の処理に誤りがあっ
+	  たので修正した。
+
+	* oidset.oz (OIDSet <TContent>)
+	  !!NEW CLASS!!
+	  オブジェクト ID の集合を表すクラスを作成した。
+
+Wed Oct 11 22:38:27 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* ここで Sep.1 を更新
+
+Thu Oct  5 11:35:43 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* string.oz (String::Str2OID)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  ArrayOfCharOperators::Str2OID を呼び出して OID 文字列から OIDを
+	  生成するメソッドを追加した。
+
+Mon Oct  2 18:16:47 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* substring.oz (SubString::AtoI, StrChr, StrRChr)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  String::AtoI, StrChr, StrRChr を public として継承するようにした 
+
+Sat Sep 30 14:30:23 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* ここで Sep.1 に更新
+
+Mon Sep 11 06:50:36 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* ここで Jun.2 を更新
+
+Fri Sep  1 16:24:43 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* sarray.oz (SimpleArray::Set)
+	  引数の配列を free していたのを、 free しないように変更した。
+
+	* ここで Jun.2 を更新
+
+Thu Aug  3 20:33:41 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* acops.oz (ArrayOfCharOperators)
+	  引数に 0 が指定されたことが原因で segmentation fault を起こさな
+	  いように変更した。
+
+	* ここで Jun.2 を更新
+
+Thu Jul 27 15:42:13 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz)
+
+	* sarray.oz (SimpleArray::AddArray)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  配列を追加できるようにした。
+
+Fri Jun 16 03:44:10 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* stable.oz (SimpleTable::FindIndex)
+	  テーブルを拡張して rehash する際、 rehash を誘発したアクセスに対
+	  して、正しい index を求められない障害があり、修正した。
+
+Wed Jun 14 01:26:00 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* string.oz (String::Hash)
+	  ArrayOfCharOperators::Hash の引数に Str を入れていたが、 
+	  subclass で正しく動作しないので、 Content () を入れるようにした。
+
+Tue Jun 13 08:00:46 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* acops.oz (ArrayOfCharOperators)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  record とした。
+
+Sat Jun 10 10:47:06 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* collectable.oz (Collectable <*>)
+	  magnitude.oz (Magnitude <*>)
+	  !!NEW CLASS!!
+	  Collection の要素が従うべき protocol を規定した抽象クラスを用意
+	  した。
+
+Fri Jun  9 00:02:17 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* acops.oz (ArrayOfCharOperators::Hash)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  Hash を ArrayOfCharOperators のメソッドとした。
+
+	* string.oz (String::Hash)
+	  String::Hash は ArrayOfCharOperators::Hash を呼ぶように変更した。
+
+	* string.oz (String::ReSize)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  メソッド ReSize は不要なので削除した。
+
+Sun Jun  4 20:05:35 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* set.oz (Set <*>::NewWithSize)
+	  これまで、大きさ 0 で NewWithSize しようとすると例外を上げていた
+	  が、これをやめて、大きさ 1 で NewWithSize したのと同じに解釈する
+	  こととした。
+
+Fri Jun  2 11:15:05 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* sarray.oz (SimpleArray <*>::Expand)
+	  最初の容量が 0 だった場合には Expand しても 0 のままだったので、
+	  新しい容量を InitialTableSize とするように変更した (音川さんの指
+	  摘による)。
+
+Sat May 20 22:53:27 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* set.oz (Set):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  メソッド Difference, Intersection, Union を public とした。
+
+Thu May 18 21:53:32 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* library 関係のディレクトリ collection と string を統合した。
+
+Mon May 15 18:33:39 1995  NISHIOKA Toshihiro  (nishioka@hotate.mri.co.jp)
+
+	* acops.oz (ArrayOfCharOperators):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  OID を表す文字列から OID を取り出すメソッド Str2OID を作成した。
+
+Sat May 13 09:52:53 1995  NISHIOKA Toshihiro  (nishioka@hotate.mri.co.jp)
+
+	* stable.oz (SimpleTable <TKey, TValue>):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  キーの集合を返すメソッド SetOfKeys を実装した。
+
+Mon May  8 02:56:19 1995  NISHIOKA Toshihiro  (nishioka@hotate.mri.co.jp)
+
+	* starray.oz (StringArray):
+	  !!NEW CLASS!!
+	  char [] を要素に持つ SimpleArray を作成した。
+
+	* set.oz (Set <*>):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  IsEqual, IsSuperSetOf, IsSubSetOf の引数の型を Collection <*> に
+	  した。
+
+	* collection.oz (Collection <*>):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  IsEqual を public とした。
+
+Sun May  7 14:05:48 1995  NISHIOKA Toshihiro  (nishioka@hotate.mri.co.jp)
+
+	* cl-exc.oz (CollectionExceptions <*>):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  例外 Invalied Parameter を追加した。
+
+	* sarray.oz (SimpleArray <*>): 
+	  !!NEW CLASS!!
+	  == で比較可能な要素の配列を表現する安価なクラスを作成した。
+
+Thu May  4 22:21:31 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* collection.oz (Collection), set.oz (Set),
+	  dictionary.oz (Dictionary), sequencedcltn.oz (SequencedCollection),
+	  orderedcltn.oz (OrderedCollection):
+	  !!PUBLIC INTERFACE CHANGED (Collection and its subclasses)!!
+	  Collection 自体は Compare できないものとした。
+	  すなわち、一般の Collection は SortedOrderedCollection や 
+	  SortableSet の要素にはなれなくなった。
+
+Mon Apr 24 16:01:38 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* library 関係の directory の分割を行った。
+	  collection, string, token-reader はそれぞれ別の library となった。
+
+	* Dictionary::OccurrencesOf bug fix.
+	  要素が存在するときに、 1 以外の数が返る可能性があったのを修正し
+	  た (dictionary.oz)。
+
+	* library 関係の directory の分割を行った。
+	  collection, string, token-reader はそれぞれ別の library となった。
+
+	* これより上が、 Release 2 に向けての修正である。
+
+Fri Mar 10 16:22:23 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* acops.oz (ArrayOfCharOperators):
+	  strcmp などの libc 関数を、 ozlibc の関数で置き換えた。
+
+	* Set::ReSize に、古い内容を clear しないという障害があり、対処し
+	  た。
+
+Fri Mar 10 10:42:44 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* SimpleTable::Expand の呼ばれるタイミングを、 FindIndexOf でテー
+	  ブル占有率が一定値を越えた場合に一本化した。
+
+Sat Mar  4 14:22:30 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz)
+
+	* SimpleTable <*,*>::RemoveKey が、テーブルを実装して
+	  いる配列の最後の要素を削除しようとするときにオーバーランする障害
+	  があることが分かったので、対処した。
+
+Thu Mar  2 19:25:06 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz)
+
+	* SimpleTable<*,*>::IncludesKey で、自動変数 k を誤って宣言
+	  している箇所を修正した。
+
+	* Set::Hash を public とした。
+
+Sun Feb 26 22:37:31 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* string.oz (String):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  機能を追加した (AtoI など)。

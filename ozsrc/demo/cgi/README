@@ -1,0 +1,82 @@
+###############################################################################
+Copyright(c) 1994-1996 Information-technology Promotion Agency, Japan(IPA)
+
+All rights reserved.
+This software and documentation is a result of the Open Fundamental
+Software Technology Project of Information-technology Promotion Agency,
+Japan(IPA).
+
+Permissions to use, copy, modify and distribute this software are governed
+by the terms and conditions set forth in the file COPYRIGHT, located in
+this release package.
+###############################################################################
+
+			    OZCGI library
+
+o What is the OZCGI library?
+
+To use WWW browsers as your GUI, use this class library.  The OZCGI is a server
+which dispatches requests from a WWW server to OZ++ applications.  You can
+invoke OZCGI by launching OZCGILaunchable.  OZCGI registers itself to the
+domain's name directory as the name ":cgi".  Your application should call the
+method GetRequest to get requests from WWW server designating a form ID as an
+argument.  Then, the argument part of a URL from WWW server is returned as an
+HTMLMessage object.  You must retrieve a value of "request_id" from the
+HTMLMessage, and send returning HTML text to the OZCGI by method PutResult.
+
+o Contents
+
+    ozcgi.oz       -- OZCGI
+        The class of OZCGI.  Used as global object.
+    ozcgi-const.oz -- OZCGIConstants
+    wn.oz          -- WaitingNumber
+        They are used in implementation of class OZCGI.
+
+    ozcgil.oz      -- OZCGILaunchable
+        The launchable object of OZCGI.  To use OZCGI, launch an instance of
+        this class.
+
+    htmlmessage.oz -- HTMLMessage
+        Represent the argument part of a URL from the WWW server.
+
+    htmlm-exc.oz   -- HTMLMessageExceptions
+    ststable.oz    -- SimpleTable <String, TValue>
+    sttable.oz     -- SimpleStringTable <TValue>
+        They are used in implementation of class HTMLMessage.
+
+    cgi-bin/t.cgi  -- You should put it at cgi-bin directory of your WWW
+                      server.
+    Enquet/        -- A programming example (OZ++ Enquet).
+
+o How to compile:
+
+Socket library (ozsrc/lib/socket) is required to compile this library.
+
+    1. Open appropriate school which includes the socket library in your
+       workbench.
+    2. Select all *.oz files in this directory in your compiler front end.
+    3. Give New public version IDs to all classes by selecting "Compile",
+       "All", "New", then "from public" from the menu of compiler front end in
+       order.
+    4. Compile "Public & Protected" of "All" classes.
+    5. At the end of "Public & Protected" compilation, a "Some messages were
+       generated" window will appear.  Close it.
+    6. Cancel the "Implementation" compilation.
+    7. Compile "All" part on ststable.oz.
+    8. You will get "Some message were generated. Do you examine now?" window.
+       Confirm it and close the displayed window.
+    9. Compile "All" part on sttable.oz.
+   10. You will get "Some message were generated. Do you examine now?" window.
+       Confirm it and close the displayed window.
+   11. Generate "All" classes.
+   12. Compile "Public & Protected" of "All" classes, again.
+   13. Proceed to compilation of "Implementation".
+   14. In the way of "Implementation" compilation, a "Some messages were
+       generated. Do you examine now?" window will appear.  Confirm it and
+       close the displayed window.
+   15. Cancel configuration.
+   16. After cancelation, "Some messages were generated" window will appear.
+       Close it.
+   17. Generate "All" classes.
+   18. Compile "Implementation" of "All" classes, and confirm to configure.
+       That's all.

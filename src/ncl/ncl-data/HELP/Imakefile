@@ -1,0 +1,7 @@
+DESTDIR	= ../../../..
+HELPS	= alias cex env es et exidlist exidment exidrm help killex man \
+	  ncl nclshutdown ncltbl newimage nfe quit source who migrateimage
+
+AllTarget()
+InstallMultipleDest(install,$(HELPS),/etc/ncl-data/HELP)
+DependTarget()

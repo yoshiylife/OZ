@@ -1,0 +1,4 @@
+5 CollectionExceptions<global ConfigurationID>
+	000100000200044f
+0 ConfigurationID
+	000100000200010b	000100000200010c	000100000200010d

@@ -1,0 +1,318 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.20 Debug Statement</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.20 Debug Statement">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION000620000000000000000>5.20 Debug Statement</A></H2>
+ <A NAME=langlangmanualdebug>&#160;</A>
+<P>
+The debug statement is a generic name of the statement for the output message
+and the multi-statement for the process.
+Debug statement is not executed for normal execution, 
+but be executed under the control of debugger.
+<P>
+A debug statement begins with '<tt> debug</tt>', and has the following two forms:
+<P>
+<H3><A NAME=SECTION000620100000000000000>5.20.1 Form 1</A></H3>
+<P>
+<PRE>debug_stmt
+        : 'debug' '(' exp ',' STRING ')' ';'
+        | 'debug' '(' exp ',' STRING ',' exp ')' ';'
+        | 'debug' '(' 'default' ',' STRING ')' ';'
+        | 'debug' '(' 'default' ',' STRING ',' exp ')' ';'
+        ;
+</PRE>
+<P>
+This statement is outputting messages during debugging .  
+The first parameter between parentheses following keyword '<tt> debug</tt>' is
+the destination where the message to be sent, and the formulae to global 
+object ID may be used.
+Moreover, the following value indicates the special destination to be sent.
+<P>
+<TABLE BORDER>
+<TR>
+<TD>Value</TD>               <TD>Address to be sent</TD>
+</TR>
+<TR></TR>
+<TR>
+<TD><B>0</B></TD>       <TD>Debugger at starting point of concerned process</TD>
+</TR>
+<TR>
+<TD><B>default</B></TD> <TD>Debugger of concerned executor \\  \hline\hline</TD>
+</TR>
+</TABLE>
+
+<P>
+If the destination global object does not connect with the debugger, 
+the receiver is a debugger on the executor where the global object exists.
+Furthermore, if there is no debugger to be sent, 
+the debug message will be discarded.
+<P>
+The second parameter is the format character string constant which is 
+similar to the function <tt> printf()</tt> of C language.  
+The values after the third parameter are formatted based upon this format
+character string, and its results are sent to the destination.  
+On compiling, it checks adjustments of the format description involving 
+the format character strings and 
+of the type of value after the third parameter.
+<P>
+<PRE>Example;
+
+// To send a message to the debugger at starting point of the 
+// concerned process.
+debug (0, &quot;send debug message to process\n&quot;);
+
+// To send a message to the global object concerned.
+debug (cell, &quot;send debug message to global object\n&quot;);
+
+// To send a message to the debugger of the executor concerned.
+debug (default, &quot;send debug message to debugger\n&quot;);
+</PRE>
+<P>
+<H3><A NAME=SECTION000620200000000000000>5.20.2 Form 2</A></H3>
+<P>
+<PRE>debug_stmt
+        |  'debug' block
+</PRE>
+<P>
+This is a multiple statement to execute for debugging.  
+A debug statement of form 1 can be included in this multiple statement.  
+For example, it is used when the result of calculation is used as a destination parameter of form 1,
+and when the object is visualized, and so on.
+<P>
+The multiple statement follows to the keyword '<b> debug</b>'.  
+The different point of the ordinary multiple statement is that it becomes 
+to be executed by operation of the debugger.
+<P>
+<PRE>Example;
+  
+// Debug message is sent to the object manager of
+// the executor concerned.
+
+debug 
+  {
+    global ObjectManager om;
+
+    om = Where() ;
+    debug (om, &quot;send debug message to OM\n&quot;);
+  }
+</PRE>
+<P>
+<H3><A NAME=SECTION000620300000000000000>5.20.3 Format Character Strings</A></H3>
+<P>
+A format character string is a sequence of ordinary characters, 
+characters constituting the format, and the null character(0x00) at the end.
+<P>
+Directive of the format begins with the character '%', 
+and it takes following style:
+<P>
+<PRE>%[&lt;flags&gt;][&lt;width&gt;][.&lt;precision&gt;][&lt;size&gt;]&lt;type&gt;
+</PRE>
+<P>
+&lt;<I>flags</I>&gt; , &lt;<I>width</I>&gt; ,
+&lt;<I>precision</I>&gt , &lt;<I>size</I>&gt;
+
+are enabled to omit. In (flags), it is enabled to specify by combining more than 0 characters (flag) as follows;
+<P>
+<TABLE BORDER>
+<TR>
+<TH NOWRAP>flag</TH><TH>Effects</TH>
+</TR>
+<TR></TR>
+<TR>
+<TD>-</TD><TD>This puts the result of change on the left (default: the result 
+of the change is  put on the right)
+</TR>
+<TR>
+<TD>+</TD><TD>Signed result of change puts a sign (+ or -) at the start of 
+the character string (default: puts sign at the start when 
+it changes to a minus value)</TD>
+</TR>
+<TR>
+<TD>blank</TD><TD>If the first character of the indicated change is not a sign, it puts a space at the start (+ takes preference).</TD>
+</TR>
+<TR>
+<TD>#</TD><TD>This can change to an alternative form.</TD>
+</TR>
+</TABLE>
+
+<P>
+In $\langle$ width $\rangle$ , the minimum size of the change should be 
+reserved by the following forms.
+<TABLE BORDER>
+<TR>
+<TH NOWRAP>&lt;<I>width</I>&gt;</TH><TH>Effects</TH>
+</TR>
+<TR></TR>
+<TR>
+<TD>decimal char strings</TD><TD>If the result of the change is shorter 
+than the minimum size, the space can fill up, depending upon the command 
+$\langle$flags$\rangle$.</TD>
+</TR>
+<TR>
+<TD>decimal starts with 0</TD>
+<TD>If the result of the change is shorter than the minimum 
+size, the character '0' is put at the left side.</TD>
+</TR>
+<TR>
+<TD>*</TD><TD>This can get the value (int type) reserving the minimum size
+ from the parameter list (value's row).</TD>
+</TR>
+</TABLE>
+
+<P>
+In $\langle$precision$\rangle$ , precision is designated on the heels of character '.'.
+<TABLE BORDER>
+<TR>
+<TH NOWRAP>&lt;<I>precision</I>&gt;</TH><TH>Effects</TH>
+</TR>
+<TR></TR>
+<TR>
+<TD>decimal char strings</TD><TD>This indicates the number of figures 
+after the decimal point or the number of characters.</TD>
+</TR>
+<TR>
+<TD>0 (zero)</TD><TD>If the type of change is 'S', this indicates the 
+length of the character strings. </TD>
+</TR>
+<TR>
+<TD>*</TD><TD>This can get the value (int type) reserving the precision 
+from the parameter list (value's row).</TD>
+</TR>
+</TABLE>
+
+<P>
+In the size of input value $\langle$size$\rangle$, the following characters 
+should indicate the size of the input value.  However, when the size of the 
+input value is determined in the converted type $\langle$type$\rangle$, 
+$\langle$size$\rangle$ is neglected.
+<TABLE BORDER>
+<TR>
+<TH NOWRAP>&lt;<I>size</I>&gt;</TH><TH>Interpretation of parameter</TH>
+</TR>
+<TR></TR>
+<TR>
+<TD>h</TD><TD>2 byte data</TD>
+</TR>
+<TR>
+<TD>l</TD><TD>8 byte data</TD>
+</TR>
+</TABLE>
+
+<P>
+In $\langle$type$\rangle$, the following character should indicate how to 
+change the value.
+<TABLE BORDER>
+<TR>
+<TH NOWRAP>&lt;<I>type</I>&gt;</TH><TH>input value</TH><TH>form</TH>
+</TR>
+<TR></TR>
+<TR>
+<TD>d</TD><TD>integer</TD><TD>signed decimal integer</TD>
+</TR>
+<TR>
+<TD>i</TD><TD>integer</TD><TD>signed decimal integer</TD>
+</TR>
+<TR>
+<TD>o</TD><TD>integer</TD><TD>unsigned octal integer</TD>
+</TR>
+<TR>
+<TD>u</TD><TD>integer</TD><TD>unsigned decimal integer</TD>
+</TR>
+<TR>
+<TD>x</TD><TD>integer</TD><TD>unsigned hexadecimal integer(using a-f)</TD>
+</TR>
+<TR>
+<TD>X</TD><TD>integer</TD><TD>unsigned hexadecimal integer(using A-F)</TD>
+</TR>
+<TR>
+<TD>f</TD><TD>floating point</TD><TD>signed [$-$]ddd.ddd form</TD>
+</TR>
+<TR>
+<TD>e</TD><TD>floating point</TD><TD>signed [$-$]d.ddd e[$+-$]ddd form</TD>
+</TR>
+<TR>
+<TD>c</TD><TD>character</TD><TD>one character</TD>
+</TR>
+<TR>
+<TD>%</TD><TD>non</TD><TD>'\%' character</TD>
+</TR>
+<TR></TR>
+<TR>
+<TD>S</TD><TD>OZ char Strings</TD><TD>printing characters until null character</TD>
+</TR>
+<TR>
+<TD>P</TD><TD>process variable</TD><TD>process ID</TD>
+</TR>
+<TR>
+<TD>O</TD><TD>global object</TD><TD>object ID</TD>
+</TR>
+<TR>
+<TD>V</TD><TD>local object</TD><TD>version ID</TD>
+</TR>
+<TR>
+<TD>C</TD><TD>local object</TD><TD>configured class ID</TD>
+</TR>
+<TR>
+<TD>T</TD><TD>local object</TD><TD>number of part (treated as unsigned decimal)</TD>
+</TR>
+<TR>
+<TD>A</TD><TD>local object</TD><TD>part number (treated as signed decimal)</TD>
+</TR>
+</TABLE>
+
+<UL>
+<LI>Printing format of ID described above is $\langle$16 character strings 
+of hexadecimal indicating ID$\rangle$.  Namely, $\langle$precision$\rangle$ 
+is fixed at 16.
+<P>
+<LI>There are some $\langle$type$\rangle$s which are not applied to the 
+local object of the static class.
+</UL>
+<P>
+
+<P>
+<PRE>Example:
+
+int integer = 1;
+long long_integer = 2LL;
+char str[] = &quot;Test&quot; ;
+global Object gobj = Where();
+Test lobj=&gt;New();
+int @p ;
+
+debug (0, &quot;integer = %d\n&quot;, integer);
+// Result of printing: integer = 1
+
+debug (0, &quot;long integer = %ld\n&quot;, long_integer);
+// Result of printing: long integer = 2
+
+debug (0, &quot;%S\n&quot;, &quot;str = &quot;, str);
+// Result of printing: str = Test
+
+debug (0, &quot;process ID = %P\n&quot;, p);
+// Result of printing: process = 0
+
+debug (0, &quot;global object ID = %O\n&quot;, gobj);
+// Result of printing: global object ID = 0001000001000001
+
+debug (0, &quot;configured ID = %C\n&quot;, lobj);
+// Result of printing: configured ID = 0001000002002fff
+</PRE>
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

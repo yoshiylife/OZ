@@ -1,0 +1,17 @@
+(*class* #000100000200062e 0
+(*list*)
+(*list*
+(*declaration* New (*method* void (*list* #0001000002000628 8 ) 0) constructor #000100000200062d 0 0)
+(*declaration* Finish (*method* void (*list*) 0) public #000100000200062d 0 1)
+(*declaration* GetIndex (*method* (*scqf* int 2) (*list*) 0) public #000100000200062d 0 2)
+(*declaration* GetNum (*method* (*scqf* int 2) (*list*) 0) public #000100000200062d 0 3)
+(*declaration* Hash (*method* (*scqf* int 2) (*list*) 0) public #000100000200062d 0 4)
+(*declaration* PostIncrement (*method* #0001000002000623 0 (*list*) 0) public #000100000200062d 0 5)
+(*declaration* Reset (*method* void (*list*) 0) public #000100000200062d 0 6)
+(*declaration* Restart (*method* void (*list*) 0) public #000100000200062d 0 7)
+(*declaration* SetIndex (*method* void (*list* (*scqf* int 2) ) 0) public #000100000200062d 0 8)
+(*declaration* aCollection #0001000002000628 8 protected #000100000200062e 0 aCollection)
+(*declaration* Index int protected #000100000200062e 0 Index)
+(*declaration* Num (*scqf* int 2) protected #000100000200062e 0 Num)
+)
+)

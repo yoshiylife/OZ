@@ -1,0 +1,18 @@
+(*class* #0001000002000314 0
+(*list*)
+(*list*
+(*declaration* NewWithPid (*method* void (*list* int ) 0) constructor #0001000002000313 0 0)
+(*declaration* Kill (*method* void (*list*) 0) public #0001000002000313 0 4)
+(*declaration* SetSignal (*method* int (*list* int ) 0) public #0001000002000313 0 2)
+(*declaration* Status (*method* int (*list*) 1) public #0001000002000313 0 5)
+(*declaration* Wait (*method* int (*list*) 1) public #0001000002000313 0 6)
+(*declaration* IsEqual (*method* int (*list* #0001000002000313 0 ) 0) public #0001000002000313 0 3)
+(*declaration* Hash (*method* (*scqf* int 2) (*list*) 0) public #0001000002000313 0 7)
+(*declaration* Id (*method* int (*list*) 0) public #0001000002000313 0 1)
+(*declaration* Pid int protected #0001000002000314 0 Pid)
+(*declaration* ExitStatus int protected #0001000002000314 0 ExitStatus)
+(*declaration* StatusFlg int protected #0001000002000314 0 StatusFlg)
+(*declaration* Chld (*method* void (*list*) 0) protected #0001000002000314 0 8)
+(*declaration* Finished OZ_ConditionRec protected #0001000002000314 0 Finished)
+)
+)

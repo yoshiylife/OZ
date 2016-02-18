@@ -1,0 +1,38 @@
+DESTDIR	= ${OZROOT}
+BINDIR	= /bin
+#OPTIONS	= -DOFRdDEBUG -DCGC -DOFRDEBUG
+#OPTIONS	= -DOFRdDEBUG -DCGC -DOFRDEBUG -DOFSdDEBUG -DOFSDEBUG
+OPTIONS	= -DCGC 
+INCS	= -I/usr/include
+CC	= gcc
+CFLAGS	= -g -O $(INCS) $(OPTIONS) -Wall
+LOCAL_LDFLAGS	= -g -static
+
+	SRCS	= OzFS.c OzFR.c OzFileSender.c OzFileReceiver.c timefuncs.c
+	OBJS	= OzFS.o OzFR.o OzFileSender.o OzFileReceiver.o timefuncs.o
+
+AllTarget( OzFS OzFR OzFileSender OzFileReceiver )
+
+NormalProgramTarget(OzFS,OzFS.o, , ,)
+NormalProgramTarget(OzFR,OzFR.o, , ,)
+NormalProgramTarget(OzFileSender,OzFileSender.o timefuncs.o, , ,)
+NormalProgramTarget(OzFileReceiver,OzFileReceiver.o timefuncs.o, , ,)
+
+install::
+	@if [ "$(DESTDIR)" = "" ]; then \
+	   echo "***" ;\
+	   echo "You must be set environment variable: OZROOT" ;\
+	   echo "***" ;\
+	   exit 1 ;\
+	 fi
+
+InstallProgram(OzFS,$(BINDIR))
+InstallProgram(OzFR,$(BINDIR))
+InstallProgram(OzFileReceiver,$(BINDIR))
+InstallProgram(OzFileSender,$(BINDIR))
+
+install::
+	MakeDir($(DESTDIR)/tmp)
+	chmod a+rwx $(DESTDIR)/tmp
+
+DependTarget()

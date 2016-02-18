@@ -1,0 +1,20 @@
+DESTDIR		= ${OZROOT}
+GUIDIR		= /lib/gui/debugger
+
+	SCRIPTS	= array.tcl arrayInspect.tcl buildupNow.tcl globalTrace.tcl \
+		  inspect.tcl inspect0.tcl launch.tcl messageCapture.tcl \
+		  object.tcl objectList.tcl processInspect.tcl \
+		  processList.tcl testList.tcl threadList.tcl threadStack.tcl \
+		  unixCommand.tcl
+
+AllTarget()
+
+install::
+	@if [ "$(DESTDIR)" = "" ]; then \
+	   echo "***" ;\
+	   echo "You must be set environment variable: OZROOT" ;\
+	   echo "***" ;\
+	   exit 1 ;\
+	 fi
+
+InstallMultiple($(SCRIPTS),$(GUIDIR))

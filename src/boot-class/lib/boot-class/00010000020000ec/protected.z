@@ -1,0 +1,14 @@
+(*class* #00010000020000ec 8
+(*list*
+(*list* #000100000200043f #0001000002000440 0)
+)
+(*list*
+(*declaration* Execute (*method* int (*list* #000100000200038c 0 ) 2) public #00010000020000eb 0 1)
+(*declaration* GetName (*method* #00010000020003bd 0 (*list*) 0) public #00010000020000eb 0 0)
+(*declaration* IsEqual (*method* int (*list* #00010000020000eb 8 ) 0) public #000100000200043f 0 1)
+(*declaration* Hash (*method* (*scqf* int 2) (*list*) 0) public #000100000200043f 0 0)
+(*declaration* Name #00010000020003bd 0 protected #00010000020000ec 0 Name)
+(*declaration* MyName (*method* (*array* char ) (*list*) 0) protected #00010000020000ec 0 2)
+(*declaration* New (*method* void (*list*) 0) protected #00010000020000ec 0 3)
+)
+)

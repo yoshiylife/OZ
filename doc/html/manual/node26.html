@@ -1,0 +1,290 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.6 Type Conversion</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.6 Type Conversion">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION00066000000000000000>5.6 Type Conversion</A></H2>
+<P>
+In OZ++ language, there are two kinds of type conversions:
+<P>
+<UL>
+<P>
+<LI> Those performed on some operators, 
+according to their operands (i.e. standard conversions)
+<P>
+<LI> Those performed explicitly on class instances (i.e. narrowings) 
+</UL><H3><A NAME=SECTION00066100000000000000>5.6.1 Standard  Conversions</A></H3>
+<P>
+Integral Promotion <BR>
+<P>
+<tt> Char</tt> and <tt> short</tt> , whether or not unsigned, can be used
+wherever integers are used.  If all the values of the original types
+can be expressed as <tt> int</tt>, they are converted to type <tt> int</tt>.
+If not, they are converted into the <tt> unsigned int</tt> type.  This
+process is called integral promotion.
+<P>
+Conversion of Integers <BR>
+<P>
+
+Integers (i.e. <tt> char</tt>, <tt> short</tt>, <tt> int</tt>, <tt> long</tt>, and
+<tt> long long</tt>) are converted into unsigned integers.  If the
+unsigned integers are small numbers, the conversion is equivalent to
+truncating the most significant bits (of the internal representation
+of the numbers).  Otherwise, either extra zeros are added to the right
+hand side or extensions of sign are performed.
+<P>
+Integers and Floating Point Numbers <BR>
+<P>
+<UL><LI> When a floating point number is converted into an integer:
+<P>
+The numbers after the decimal point are truncated; 
+If the floating
+point number is beyond the range of integers, the number is not
+defined; Similarly, if the floating point number is negative, the
+unsigned integer equivalent to it is also not defined.
+<P>
+<LI> When an integer is converted into a floating point number:
+<P>
+ It is converted into a floating point number which is nearest to the
+original integer.  If it can not be expressed as a floating
+point number, the result of conversion is not defined.
+<P>
+</UL>
+<P>
+<tt> float</tt> and <tt> double</tt> <BR>
+<P>
+<UL><LI> When a low precision floating point number is converted into
+a high precision floating point number:
+<P>
+The value does not change.
+<P>
+<LI>   When a high precision floating point number is converted into
+a low precision floating point number:
+<P>
+
+The integer is converted into a floating point number which is nearest
+to the original integer.  However, if the number can not be expressed
+as a floating point number, the result of conversion is not defined
+<P>
+</UL>
+<P>
+Arithmetic Conversions <BR>
+<P>
+Operators can cause the following kinds of type conversions:
+<P>
+<BR> 
+If either of the operands is of the <tt> double</tt> type,<BR> 
+the other is also converted into <tt> double</tt>.<BR> 
+Otherwise,<BR> 
+if either of the operands is of the <tt> float</tt> type,<BR> 
+the other is also converted into <tt> float</tt>.<BR> 
+Otherwise, integral promotion is performed on both operands.
+<BR> 
+If either of the operands is of the <tt> unsigned long</tt> type,<BR> 
+the other is also converted into <tt> unsigned long</tt>.<BR> 
+Otherwise,<BR> 
+if either of the operands is of the <tt> long</tt> type,<BR> 
+if the other is <tt> unsigned long</tt>,<BR> 
+and if the <tt> unsigned int</tt> type can be expressed as <tt> long</tt>,<BR> 
+it is converted into <tt> long</tt>.<BR> 
+Otherwise the <tt> unsigned int</tt> type can not be expressed<BR> 
+as long, both operand is converted into <tt> unsigned long</tt>.<BR> 
+Otherwise, the other operand is also converted into <tt> long</tt>.<BR> 
+Otherwise,<BR> 
+if either of the operands is of the <tt> unsigned int</tt> type,<BR> 
+the other is also converted into <tt> unsigned int</tt>.<BR> 
+Otherwise, both operands are <tt> int</tt>. <BR>
+<P>
+<H3><A NAME=SECTION00066200000000000000>5.6.2 Consistency of Types</A></H3>
+ 
+<A NAME=langlangmanualtypeexchangeconsistency>&#160;</A>
+<P>
+When considering the assignment operation
+<P>
+<PRE>        x = e
+</PRE>
+<tt> x</tt> is the left hand side value, 
+ i.e. it may be either an instance
+variable of a class or a local variable of a method.  The <tt> x</tt> may
+be 
+any of the following types:
+<P>
+<UL><LI> Basic data type (see Chapter <A HREF="node24.html#langlangmanualdatatype">5.4</A>)
+<LI> Process derived type (see Chapter <A HREF="node28.html#langlangmanualprocess">5.8</A>)
+<LI> Array derived type (see Chapter <A HREF="node27.html#langlangmanualarray">5.7</A>)
+<LI> User-defined type (see Chapter <A HREF="node25.html#langlangmanualusertype">5.5</A>)
+</UL>
+Otherwise, the type of x is fixed by generic parameters (see Chapter
+<A HREF="node25.html#langlangmanualusertype">5.5</A>).
+<P>
+In OZ++ language, the rules which decide whether or not the above
+assignment is valid are as follows.
+<P>
+The Commutative Rules of Types <BR>
+<P>
+When the type of <tt> x</tt> is <tt> X</tt>, and the type of <tt> y</tt> is <tt>
+Y</tt>, the assignment of <tt> x</tt> into <tt> y</tt> is described as follows.
+<P>
+<PRE>        X x;
+        Y y;
+        x = y;
+</PRE>
+<P>
+This assignment is valid only if any of the following cases are true.
+<P>
+<OL><LI>  <tt> X</tt> and <tt> Y</tt> are of the same type.
+<P>
+<LI>  Both <tt> X</tt> and <tt> Y</tt> are basic type
+ (in this case the laws of type conversions must also be satisfied).
+<P>
+<LI>  <tt> X</tt> is a process derived type of 
+<tt> void</tt> and <tt> Y</tt> is (any type of) a process derived type.
+<P>
+<LI>  <tt> Y</tt> can be adapted to <tt> X</tt> (see next section).
+<P>
+<LI>  <tt> X</tt> is an array derived type of 
+type <tt> Z</tt> and <tt> Y</tt> is an array derived
+type adapted to  <tt> Z</tt> (see next section).
+</OL>
+<P>
+The Adaptation Rules of Types <BR> 
+ 
+<P>
+Only in the following conditions, type <tt> Y</tt> is adapted to type <tt> X</tt>:
+<P>
+<OL><LI>  Both <tt> X</tt> and <tt> Y</tt> are identical.
+<P>
+<LI>  Both <tt> X</tt> and <tt> Y</tt> are class types.  
+<tt> X</tt> has no generic parameters, and <tt> Y</tt> directly inherits <tt>
+X</tt> (see Chapter <A HREF="node37.html#langlangmanualinheritance">5.17</A> ).
+<P>
+<LI>  There is a type <tt> Z</tt> to which <tt> Y</tt> is adapted, 
+and <tt> Z</tt> is adapted to <tt> X</tt>.
+<P>
+</OL>
+<P>
+<PRE>class A {
+  ...
+}
+
+class B : A {
+  ...
+}
+
+class C : B {
+  ...
+}
+</PRE>
+<P>
+In the above examples, by the second rule of adaptation, <tt> C</tt> is
+adapted to <tt> B</tt>, and similarly <tt> B</tt> is adapted to <tt> A</tt>.
+Hence, according to the third rule of adaptation, <tt> C</tt> is adapted to
+<tt> A</tt>.  Therefore, the following assignments are valid.
+<P>
+<PRE>        A a;
+        C c;
+
+        a = c;
+</PRE>
+<P>
+<H3><A NAME=SECTION00066300000000000000>5.6.3 Narrowing</A></H3>
+<P>
+Consider the consistency of the above sample codes.  After <tt> a</tt> is
+assigned to <tt> c</tt>, <tt> a</tt> refers to the instance of class <tt> C</tt>.
+Therefore, in this case, type of <tt> a</tt> is convertible 
+from <tt> A</tt>
+to <tt> C</tt>.
+<P>
+Thus, when instances of a class (e.g. <tt> C</tt>) are accessed as classes
+above it 
+ (e.g. <tt> A</tt>), the type currently being accessed can be
+converted so that this class accesses other classes
+below the class 
+representing the type.  This kind of type conversions is called <b>
+narrowing</b>.
+<P>
+OZ++ is a language in which the type check is performed
+statically.  Narrowing is an exceptional case, where type checks are
+performed dynamically.  If narrowing fails, a system exception <tt>
+NarrowFailed</tt> (see Section <A HREF="node36.html#langlangmanualexceptkind">5.16.1</A>) is
+generated.
+<P>
+<PRE>A a1, a2;
+B b1, b2, b3;
+C c1, c2, c3;
+
+c1=&gt;new();          // generates the instance of C
+b1=&gt;new();          // generates the instance of B
+        
+a1 = c;             // assigns the reference of the instance
+                    // of C to a1, and accesses this as A
+a2 = b1;            // assigns the reference of the instance
+                    // of B to a2, and accesses this as A
+
+c2 = narrow(C, a1); // the instance of C is accessed as C
+b2 = narrow(B, a1); // the instance of C is accessed as B
+b3 = narrow(B, a2); // the instance of B is accessed as B
+
+c3 = narrow(C, a2); // error: because a2 is referring to 
+                    // the instance of B
+</PRE>
+<P>
+In the above example, instances of classes <tt> C</tt> and <tt> B</tt> are
+generated.  These instances, which are accessed as <tt> A</tt>, are
+narrowed to be accessed as <tt> C</tt> and <tt> B</tt>.  In the last
+statement, as the instance of <tt> B</tt> is tried to be accessed as its
+child class <tt> C</tt>, the narrowing fails.
+<P>
+Narrowing does not use the types of variables in the program, but
+types of instances referred to when
+the execution of variables 
+take
+place.  This may cause actions which might have been unpredictable
+during the coding of the program.  This, eventually, might be
+dangerous.  However, sometimes this effect can also be used to
+abstract particular classes from the instances, as shown in the
+following example:
+<P>
+<PRE>class A {
+  ...
+}
+
+class B : A {
+  ...
+}
+
+class C {
+  public: m1;
+
+  void m1(A a)
+   {
+     B b;
+
+     try 
+       {
+         b = narrow(B, a);
+       }
+     except
+       {
+         // a is not an instance of B.
+       }
+    }
+}
+</PRE>
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

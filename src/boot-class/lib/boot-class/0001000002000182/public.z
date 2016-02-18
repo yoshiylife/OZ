@@ -1,0 +1,13 @@
+(*class* #0001000002000182 0
+(*list*)
+(*list*
+(*declaration* NewWithParser (*method* void (*list* #00010000020002ec 8 ) 0) constructor #0001000002000182 0 0)
+(*declaration* SetParser (*method* #00010000020002ec 8 (*list* #00010000020002ec 8 ) 0) public #0001000002000182 0 1)
+(*declaration* PutCommand (*method* void (*list* #00010000020000eb 8 ) 0) public #0001000002000182 0 2)
+(*declaration* GetCommand (*method* #00010000020000eb 8 (*list* #00010000020003bd 0 ) 0) public #0001000002000182 0 3)
+(*declaration* Spawn (*method* void (*list* #00010000020003bd 0 #000100000200048a 8 ) 0) public #0001000002000182 0 4)
+(*declaration* EventLoop (*method* void (*list*) 0) public #0001000002000182 0 5)
+(*declaration* GetOText (*method* #00010000020002d6 8 (*list*) 0) public #0001000002000182 0 6)
+(*declaration* Execute (*method* void (*list* #000100000200038c 0 ) 0) public #0001000002000182 0 7)
+)
+)

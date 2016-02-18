@@ -1,0 +1,13 @@
+(*class* #00010000020003cc 0
+(*list*)
+(*list*
+(*declaration* New (*method* void (*list*) 0) constructor #00010000020003cc 0 0)
+(*declaration* IsSuspended (*method* int (*list*) 1) public #00010000020003cc 0 1)
+(*declaration* Resumed (*method* void (*list*) 1) public #00010000020003cc 0 2)
+(*declaration* ResumeStart (*method* void (*list*) 1) public #00010000020003cc 0 3)
+(*declaration* Suspended (*method* void (*list*) 1) public #00010000020003cc 0 4)
+(*declaration* SuspendFailed (*method* void (*list*) 1) public #00010000020003cc 0 5)
+(*declaration* SuspendStart (*method* void (*list*) 1) public #00010000020003cc 0 6)
+(*declaration* WaitResumeIfSuspended (*method* void (*list*) 1) public #00010000020003cc 0 7)
+)
+)

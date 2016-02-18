@@ -1,0 +1,236 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>3.4 インスペクタの操作説明</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="3.4 インスペクタの操作説明">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION00044000000000000000>3.4 インスペクタの操作説明</A></H2>
+<P>
+<H3><A NAME=SECTION00044100000000000000> 名前</A></H3>
+<P>
+inspect - インスペクタ
+<H3><A NAME=SECTION00044200000000000000> 形式</A></H3>
+<P>
+inspect [Local Executor ID]
+<P>
+<H3><A NAME=SECTION00044300000000000000> 機能</A></H3>
+<P>
+指定されたエグゼキュータ
+  上のグローバルオブジェクト
+  あるいは、プロセス・スタックの内容を表示する。
+同一ＷＳ上で実行されていないエグゼキュータ
+  の場合、引数[Local Executor ID]で指定した
+エグゼキュータ
+  を用いてアドレス解決を行うことにより、そのエグゼキュータ
+  の グローバルオブジェクト
+  あるいは、
+プロセス・スタックのインスペクトが可能である。また、OZ++ におけるプロセスの意味に
+従って、複数エグゼキュータ
+  にまたがるプロセスのスタックの内容も表示することができる。
+このコマンドにより表示されるウィンドウは、表示したい対象をダブルクリックすることにより
+より詳細な情報を表示するという方針に従って作成されている。（逆に、ダブルクリックしてもウィンドウが
+現われない場合は、その機能が未サポートであることを意味する）
+表示される主なウィンドウには次の種類がある。
+<UL><LI>	Debugger <BR> 
+	このコマンドを実行すると最初に現われるウィンドウである。
+	インスペクトの対象とするエグゼキュータ
+  のＩＤやアドレス解決に用いるエグゼキュータ
+  のＩＤを
+	指定することができる。このウィンドウにある各ボタンの機能は次のようになっている。
+<P>
+<TABLE BORDER>
+<TR VALIGN=TOP>
+<TH NOWRAP>ボタン名</TH>     <TH>機能</TH>
+</TR>
+<TR>
+</TR>
+<TR VALIGN=TOP>
+<TD>Object List</TD>  <TD>Global Object List ウィンドウを表示する。</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD>Process List</TD> <TD>Process List ウィンドウを表示する。</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD>Quit</TD>         <TD>全てのウィンドウを閉じ、インスペクタを終了する。</TD>
+</TR>
+</TABLE>
+
+<P>
+<LI>	Global Object List <BR> 
+	ウィンドウ（Debugger）の[Object List]ボタンを押すと現われるウィンドウである。
+	ウィンドウ（Debugger）で指定されたエグゼキュータ
+  上のグローバルオブジェクト
+  の一覧を表示する。
+	このウィンドウにある各ボタンの機能は次のようになっている<A NAME=tex2html6 HREF="footnode.html#1212">※</A>。
+<P>
+<TABLE BORDER>
+<TR VALIGN=TOP>
+<TH NOWRAP>ボタン名</TH>     <TH>機能</TH>
+</TR>
+<TR>
+</TR>
+<TR VALIGN=TOP>
+<TD>Refresh</TD>      <TD>表示内容を最新の状態にする。</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD>Inspect</TD>      <TD>選択されているグローバルオブジェクトの
+                          [Global Object Inspect]ウィンドウを表示する。
+                          また、そのグローバルオブジェクトの状態を一時停止に
+                          する。</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD>Snap</TD>         <TD>選択されているグローバルオブジェクトのインスタンス変数
+                          の内容を一端保存した上で[Global Object Inspect]ウィン 
+                          ドウを表示する。この場合には、[Global Object Inspect]
+                          ウィンドウ表示中のグローバルオブジェクトの一時停止は
+                          行われない。</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD>Status</TD>       <TD>選択されているグローバルオブジェクトのオブジェクトマネ
+                          ジャが保持している状態を表示する。</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD>Close</TD>        <TD>このウィンドウ（Global Object List）を閉じる。</TD>
+</TR>
+</TABLE>
+
+<P>
+<LI>	Process List <BR> 
+	ウィンドウ（Debugger）の[Process List]ボタンを押すと現われるウィンドウである。
+	ウィンドウ（Debugger）で指定されたエグゼキュータ
+  を起点とするプロセスの一覧を表示する。
+	このウィンドウにある各ボタンの機能は次のようになっている<A NAME=tex2html7 HREF="footnode.html#1223">※</A>。
+<P>
+<TABLE BORDER>
+<TR VALIGN=TOP>
+<TH NOWRAP>ボタン名</TH>     <TH>機能</TH>
+</TR>
+<TR>
+</TR>
+<TR VALIGN=TOP>
+<TD>Object List</TD>  <TD>Global Object List ウィンドウを表示する。</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD>Refresh</TD>      <TD>表示内容を最新の状態にする。</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD>Inspect</TD>      <TD>選択されているプロセスの[Process Inspect]ウィンドウを
+                          表示する。また、そのプロセスの実行状態を一時停止にする。</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD>Kill</TD>         <TD>選択されているプロセスを強制終了させる。</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD>Status</TD>       <TD>選択されているプロセスの実行状態を表示する。</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD>Close</TD>        <TD>このウィンドウ（Process List）を閉じる。</TD>
+</TR>
+</TABLE>
+
+<P>
+<LI>	Object Inspect <BR> 
+	オブジェクト
+  の内容を表示する。
+	このウィンドウにある各ボタンの機能は次のようになっている。
+<P>
+<TABLE BORDER>
+<TR VALIGN=TOP>
+<TH NOWRAP>ボタン名</TH>     <TH>機能</TH>
+</TR>
+<TR>
+</TR>
+<TR VALIGN=TOP>
+<TD>Refresh</TD>      <TD>表示内容を最新の状態にする。</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD>Inspect</TD>      <TD>選択されているオブジェクトの[Object Inspect]ウィンドウ
+                          を表示する。</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD>Process</TD>      <TD>このグローバルオブジェクト（セル）を参照し、かつ、
+                          プロセスの起点が当該エグゼキュータ上にあるプロセスの
+                          一覧を表示する。</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD>Close</TD>        <TD>このウィンドウ（Object Inspect）を閉じる。但し、
+                          グローバルオブジェクトを表示しているウィンドウ
+                         （ウィンドウのタイトルがGlobal Object Inspectとなって
+                          いる）の場合は、このウィンドウから派生した全ての
+                          ウィンドウを閉じる。また、そのグローバルオブジェクトが                          一時停止の状態である場合は、グローバルオブジェクトの状                          態を一時停止の状態から開放する。</TD>
+</TR>
+</TABLE>
+
+<P>
+<LI>	Process Inspect <BR> 
+	プロセス・スタックの内容を表示する。
+	このウィンドウにある各ボタンの機能は次のようになっている<A NAME=tex2html8 HREF="footnode.html#1244">※</A>。
+<P>
+<TABLE BORDER>
+<TR VALIGN=TOP>
+<TH NOWRAP>ボタン名</TH>     <TH>機能</TH>
+</TR>
+<TR>
+</TR>
+<TR VALIGN=TOP>
+<TD>Inspect</TD>      <TD>選択されているオブジェクトの[Object Inspect]ウィンドウ
+                          を表示する。</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD>Kill</TD>         <TD>当該プロセスを強制終了させる。</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD>Close</TD>        <TD>このウィンドウ（Object Inspect）を閉じる。当該プロセス                          の実行状態を一時停止の状態から開放する。</TD>
+</TR>
+</TABLE>
+
+	</UL><H3><A NAME=SECTION00044400000000000000> 環境変数</A></H3>
+<P>
+<DL COMPACT>
+<DT>OZHOME
+<DD>OZ++ のホームディレクトリ
+<P>
+<DT>OZSITE_ID
+<DD>サイトＩＤ
+<P>
+<DT>OZCLASSPATH
+<DD>クラスのディレクトリ
+<P>
+<P>
+</DL>
+
+<H3><A NAME=SECTION00044500000000000000> 注意</A></H3>
+<P>
+<UL><LI>	引数[Local Executor ID]の指定では、１６進による指定の場合は先頭に 0x を付ける必要がある。
+<LI>	オブジェクト
+  の内容を表示中は、そのオブジェクト
+  が属するセル（グローバルオブジェクト
+  ）は一時停止状態になる。但し、この一時停止の
+	状態は、オブジェクトマネージャ
+  とは無関係に行われる。
+<LI>	プロセス・スタックを表示中は、そのプロセスは一時停止の状態になる。結果（排他制御等の影響）として、
+	他のプロセスに影響を与えることもある。
+<LI>	このインスペクタは、OZ++ システムが正常に動作をしていることを前提としている。従って、エグゼキュータ
+  自体が停止
+	<A NAME=tex2html9 HREF="footnode.html#1266">※</A>
+	している場合、インスペクタはエグゼキュータ
+  の再開を待つことになる。
+</UL><H3><A NAME=SECTION00044600000000000000> 例</A></H3>
+<P>
+<PRE>inspect 0x101
+</PRE>
+#１６進で１０１のエグゼキュータ
+  をアドレス解決のためのエグゼキュータ
+  としてインスペクタを起動
+<P>
+	<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

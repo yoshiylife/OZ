@@ -1,0 +1,11 @@
+(*class* #00010000020001a3 5
+(*list*)
+(*list*
+(*declaration* CannotOpenFile (*method* int (*list* (*array* char ) ) 0) public #00010000020001a3 0 0)
+(*declaration* CannotRead (*method* int (*list* int ) 0) public #00010000020001a3 0 1)
+(*declaration* CannotWrite (*method* int (*list* int ) 0) public #00010000020001a3 0 2)
+(*declaration* IllegalCharacter (*method* int (*list* int ) 0) public #00010000020001a3 0 3)
+(*declaration* SyntaxError (*method* int (*list* #00010000020003e2 8 ) 0) public #00010000020001a3 0 4)
+(*declaration* UnexpectedEOFInString (*method* int (*list*) 0) public #00010000020001a3 0 5)
+)
+)

@@ -1,0 +1,10 @@
+(*class* #00010000020002e7 0
+(*list*)
+(*list*
+(*declaration* New (*method* void (*list*) 0) constructor #00010000020002e7 0 0)
+(*declaration* GetConfigurationTable (*method* #0001000002000115 0 (*list*) 0) public #00010000020002e7 0 1)
+(*declaration* GetSchool (*method* #0001000002000356 0 (*list*) 0) public #00010000020002e7 0 2)
+(*declaration* SetConfigurationTable (*method* void (*list* #0001000002000115 0 ) 0) public #00010000020002e7 0 3)
+(*declaration* SetSchool (*method* void (*list* #0001000002000356 0 ) 0) public #00010000020002e7 0 4)
+)
+)

@@ -1,0 +1,9 @@
+#define	IHaveSubdirs
+#define	PassCDebugFlags	CDEBUGFLAGS="$(CDEBUGFLAGS)"
+DESTDIR	= ../../..
+SUBDIRS	= EXID HELP HELP.JP log
+
+AllTarget()
+InstallNonExecFile(NCL_table,/etc/ncl-data)
+DependTarget(NCL_table)
+MakeSubdirs( $(SUBDIRS) )

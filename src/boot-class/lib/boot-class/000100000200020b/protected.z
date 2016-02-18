@@ -1,0 +1,15 @@
+(*class* #000100000200020b 8
+(*list*)
+(*list*
+(*declaration* OpenWithName (*method* void (*list* #00010000020003bd 0 ) 2) public #000100000200020a 0 0)
+(*declaration* Close (*method* void (*list*) 2) public #000100000200020a 0 1)
+(*declaration* GetLine (*method* #00010000020003bd 0 (*list*) 2) public #000100000200020a 0 2)
+(*declaration* GetString (*method* #00010000020003bd 0 (*list* int ) 2) public #000100000200020a 0 3)
+(*declaration* GetChar (*method* char (*list*) 2) public #000100000200020a 0 4)
+(*declaration* GetTillAChar (*method* #00010000020003bd 0 (*list* char ) 2) public #000100000200020a 0 5)
+(*declaration* GetTillAString (*method* #00010000020003bd 0 (*list* #00010000020003bd 0 ) 2) public #000100000200020a 0 6)
+(*declaration* UngetString (*method* void (*list*) 2) public #000100000200020a 0 7)
+(*declaration* UngetChar (*method* void (*list*) 2) public #000100000200020a 0 8)
+(*declaration* Eof (*method* int (*list*) 2) public #000100000200020a 0 9)
+)
+)

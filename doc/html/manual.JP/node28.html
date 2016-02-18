@@ -1,0 +1,300 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.8 プロセス</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.8 プロセス">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION00068000000000000000>5.8 プロセス</A></H2>
+ <A NAME=langlangmanualprocess>　</A>
+<P>
+ここでは  OZ++
+  言語の並行プログラミング 
+(<A HREF="node39.html#langlangmanualconcurrent">5.19</A> 節参照) を実現するための言語要素の一つで
+あるプロセス派生型について述べる。
+<P>
+<H3><A NAME=SECTION00068100000000000000>5.8.1  OZ++
+  におけるプロセスの概念</A></H3>
+<P>
+ OZ++
+  言語においてはメソッドの実行の処理は、以下の手順で行なわれる。
+<P>
+<OL><LI> メソッドを起動するオブジェクトがメッセージを生成する
+<P>
+<LI> 受信するオブジェクトにメッセージを送信する
+<P>
+<LI> メッセージを受けとったオブジェクトは計算を実行する
+<P>
+<LI> 計算結果をメッセージとして、送信したオブジェクトに返事を送る
+</OL>
+<P>
+ここでメッセージを受信したオブジェクトは、別のオブジェクトに対してメッ
+セージを送信することができる。つまり、メソッドの実行はネストが可能である。
+<P>
+したがって一般にメソッドの実行はメソッド起動の連鎖となり、このメソッド
+起動の連鎖を  OZ++
+  ではプロセスとして扱うことができる。
+<P>
+ OZ++
+  のプロセスは以下のようなものである。
+<P>
+<UL><LI> プロセスに親子関係はない
+<P>
+<LI> あるプロセスに対して、それを生成したプロセスとは異なるプロセス
+がその終了を待つことができる
+<P>
+</UL><H3><A NAME=SECTION00068200000000000000>5.8.2 プロセス派生型</A></H3>
+<P>
+上で述べたように  OZ++
+  ではメソッド起動時にプロセスを生成することができ
+る。この生成されたプロセスを格納するための変数の型のために、プロセス派
+生型がある。任意の型から派生した型を作ることが可能であり、元の型
+が <tt> foo</tt> 型 であった場合、<tt> foo</tt> 型を返すプロセスの型となる。
+<P>
+以下の形式で変数宣言の中で定義される 
+(<A HREF="node31.html#langlangmanualdeclarationvar">5.11.6</A> 節参照) 。
+<P>
+<PRE>class A;
+
+int @p1;           // intを返すプロセス
+A @p2;             // クラスAを返すプロセス
+char @p3[];        // char型の要素を持つ配列を返すプロセス
+void @4            // 任意の型を返すプロセス
+</PRE>
+<P>
+上の例の <tt> p4</tt> のように、派生させる元の型に <tt> void</tt> を使うことに
+よって、任意のプロセスを格納可能な変数を宣言することが可能である。
+<P>
+プロセス型において 0 が右辺値として用いられた場合は、いずれのプロセス
+も参照していないことを表す。したがって、宣言された直後のプロセス型のオ
+ブジェクトは 0 を持つ。また、0 を代入することにより、いずれのプロセス
+も参照していない状態にすることができる 
+(<A HREF="node24.html#langlangmanualdatatypezero">5.4.2</A> 節参照) 。
+<P>
+<H3><A NAME=SECTION00068300000000000000>5.8.3 プロセスに対する操作</A></H3>
+ <A NAME=langlangmanualprocessoperation>　</A>
+<P>
+プロセスに対する操作には以下のものがある。
+<P>
+<UL><LI> 生成 (<tt> fork</tt>)
+<P>
+<LI> 連結 (<tt> join</tt>)
+<P>
+<LI> 分離 (<tt> detach</tt>)
+<P>
+<LI> 終了 (<tt> kill</tt>)
+<P>
+<LI> アボート (<tt> abort</tt>)
+</UL>
+<P>
+生成 <BR>
+<P>
+プロセスはメソッド起動時に明示的にプロセスの生成を指定した場合に生成さ
+れる。
+<P>
+メッセージ式では、以下のように記述される 
+(<A HREF="node29.html#langlangmanualexpunary">5.9.4</A> 節参照) 。
+<P>
+<PRE>exp
+        | 'fork' exp INVOKE IDENTIFIER '(' arg_list ')'
+</PRE>
+<P>
+<PRE>class A {
+  public: m1;
+
+  int m1() { ... }
+}
+
+A a1;
+int @p1;                   // プロセス
+
+a1=&gt;new();
+p1 = fork a1-&gt;m1();        // プロセスの生成
+</PRE>
+<P>
+生成された新しいプロセスとそれを生成したプロセスは並行実行される。
+<P>
+連結 <BR>
+<P>
+生成したプロセスの終了を待ち、そのプロセスによって実行されるメソッドの
+結果を得るための操作を、連結 (<tt> join</tt>) と呼ぶ。
+<P>
+これは以下のように式として記述される 
+(<A HREF="node29.html#langlangmanualexpunary">5.9.4</A> 節参照) 。
+<P>
+<PRE>exp
+        | 'join' exp
+</PRE>
+<P>
+<PRE>class A {
+  public: m1;
+
+  int m1() { ... }
+}
+
+A a;
+int @p, result;
+
+a=&gt;new();
+p = fork a-&gt;m1();        // プロセスの生成
+...
+result = join p;        // 連結してプロセスpが返すint型の返り値を得る
+</PRE>
+<P>
+すでに実行が終了しているプロセスに対して連結を指定した場合、そのプロセ
+スが返した値を返し、すぐに制御が戻る。上の例で、制御が <tt> result =
+join p</tt> に到達する前に <tt> a-&gt;m1()</tt> のメソッド起動の処理が終了した場
+合には、連結の部分に到達するまでプロセス <tt> p</tt> は返り値を保持し、そ
+こへ達するとその返り値を返す。
+<P>
+また、プロセスの実行の終了を待つという動作は一つのプロセスに対して一度
+しかできず、二回目以降はエラーとなる。
+<P>
+<PRE>A a;
+int @p, r1, r2;
+
+a=&gt;new();
+p = fork a-&gt;m1();
+...
+r1 = join p;
+...
+r2 = join p;         // エラー: 二度目のjoin
+</PRE>
+<P>
+分離 <BR>
+<P>
+生成したプロセスに対してその実行の終了を待たないようにする操作を、分
+離 (<tt> detach</tt>) と呼ぶ。
+<P>
+以下のように記述される (<A HREF="node30.html#langlangmanualstatementconcurrent">5.10.9</A> 節
+参照) 。
+<P>
+<PRE>concurrent_stmt:
+        |  'detach' exp ';'
+</PRE>
+<P>
+<PRE>class A;
+
+A a;
+int @p;
+
+a=&gt;new();
+p = fork a-&gt;m1();
+...
+detach p;        // プロセスを分離
+...
+detach p;        // NOP: すでに分離しているプロセスを分離
+</PRE>
+<P>
+上の例では、すでに分離したプロセスを再び分離しようとしているが、 OZ++
+  で
+は二回目以降の分離は何も実行されず無害と定義する。
+<P>
+連結と分離 <BR>
+<P>
+生成されたプロセスに対しては連結と分離のいずれか一方の演算しか許され
+ない。つまり、連結したプロセスに対して分離した場合、および分離したプロセ
+スに対して連結した場合は、共にエラーとなる。
+<P>
+<PRE>class A
+
+A a;
+int @p1, @p2, result;
+
+a=&gt;new();
+p1 = fork a-&gt;m1();
+p2 = fork a-&gt;m1();
+...
+
+if (result = join p1)
+  {
+    detach p2;
+    ...
+    result = join p2;         // エラー: 分離したプロセスは連結できない
+  }
+else
+  {
+    detach p1;                // エラー: 連結したプロセスは分離できない
+    ...
+  }
+</PRE>
+<P>
+終了 <BR>
+<P>
+生成したプロセスに対してその実行の終了を待たずに強制的に終了させる操作
+を、終了 (<tt> kill</tt>) と呼ぶ。
+<P>
+以下のように記述される (<A HREF="node30.html#langlangmanualstatementconcurrent">5.10.9</A> 節
+参照) 。
+<P>
+<PRE>concurrent_stmt:
+        |  'kill' exp ';'
+</PRE>
+<P>
+<PRE>class A;
+
+A a;
+int @p;
+
+a=&gt;new();
+p = fork a-&gt;m1();
+...
+kill p;        // プロセスを終了
+</PRE>
+<P>
+終了操作をされたプロセスは直ちに終了するとは限らず、実際に終了するタイ
+ミングは終了操作がされた後、以下のいずれかの条件を満たす場合である。
+<P>
+<UL><LI> プロセスが <tt> wait</tt> 文を実行中で、かつそのプロセスが実
+行中のオブジェクトのモニタロックが空いている場合は、wait が解除され終
+了操作が有効になる (<A HREF="node39.html#langlangmanualconcurrentcondition">5.19.1</A> 節参照)。
+<P>
+<LI> プロセスが <tt> wait</tt> 文を実行しようとした場合。
+<P>
+<LI> プロセスが <tt> abortable</tt> 文 (後述) を実行した場合。
+</UL>
+<P>
+プロセスの実際の終了操作はシステム例外 <tt> Abort</tt> の発生である 
+(<A HREF="node39.html#langlangmanualconcurrentcondition">5.19.1</A> 節参照)。
+<P>
+<tt> abortable</tt> 文はプログラマが意図的にプロセスの終了操作の効果を有効
+にする位置を記述する場合に利用する。実行中のメソッドを含むプロセスに対
+して終了操作が行なわれない場合には、効果がない。
+<P>
+アボート <BR>
+<P>
+現在実行中のメソッドを含むプロセスを強制的に終了させる操作
+を、アボート (<tt> abort</tt>) と呼ぶ。
+<P>
+以下のように記述される (<A HREF="node30.html#langlangmanualstatementconcurrent">5.10.9</A> 節
+参照) 。
+<P>
+<PRE>concurrent_stmt:
+        |  'abort' ';'
+</PRE>
+<P>
+<PRE>method ()
+  {     
+    ...    
+    abort;        // アボート
+    ...           // not reached
+  }
+</PRE>
+<P>
+アボートが実行されるとシステム例外 <tt> Abort</tt> が発生する 
+(<A HREF="node39.html#langlangmanualconcurrentcondition">5.19.1</A> 節参照)。
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

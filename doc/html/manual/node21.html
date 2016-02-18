@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.1 Introduction</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.1 Introduction">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION00061000000000000000>5.1 Introduction</A></H2>
+<P>
+OZ++ is an object-oriented environment based on exchanging and sharing
+objects, and the language used for programming in this environment is
+called OZ++ language.  OZ++ language is a distributed object-oriented
+programming language which enables location transparent programming
+with objects distributed on the network.  It has following features:
+<P>
+<UL><LI> Strong type system
+<P>
+<LI> Class name space
+<P>
+<LI> Multi-thread programming
+</UL>
+<P>
+OZ++ language is based on C language.  That is, the following items of
+C can also be used in OZ++:
+<P>
+<UL><LI> Almost all expressions used in C syntax
+	(i.e. the operators of C can also be used as in OZ++)
+<LI> All control structures
+<LI> All fundamental types and their conversions  
+</UL>
+<P>
+However, the some feature of C language described below cannot be
+used.  This is because if invalid pointers are used, the resulting
+damage to the Executor might prevent users from accessing shared
+objects.  These restrictions are necessarily to maintain the
+object-oriented characteristic of OZ++ language and the stability of
+the entire system.
+<P>
+<UL><LI> Some parts of the type system
+ (i.e. structures, unions, pointer types, enumerated types,
+ type definitions, etc)
+<P>
+<LI> Type definitions
+<P>
+<LI> User-defined functions
+</UL>
+<P>
+For low level programming and use of C language library resources, an
+external language interface is available.  With this feature,
+statements in C language can be written under some constraints.
+<P>
+In addition, to make OZ++ a distributed object-oriented programming
+language, we include the following elements (which are not available
+in C language):
+<P>
+<UL><LI> Three user-defined types (class, static class, record)
+<LI> Message expressions
+<LI> Concurrent programming
+<LI> Exception handling
+</UL>
+<P>
+Using these user-defined types(classes and static classes), and
+message expressions, users can write program with object-oriented
+features.  Multiple inheritance is possible in classes.  Methods are
+dynamically bound.  In contrast, static classes doesn't have
+the feature of inheritance and the dynamic binding of methods.
+<P>
+Also in OZ++, we provide objects in the form of global objects and
+local objects:
+<P>
+<UL><LI> Global objects <BR> 
+objects that can be accessed in distributed environments
+<P>
+<LI> Local objects<BR> 
+objects that are the parts of global objects
+</UL>
+<P>
+In OZ++, by using message expressions among global objects in
+different computers, distributed programming is possible through the
+network.
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

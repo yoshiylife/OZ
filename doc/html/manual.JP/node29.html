@@ -1,0 +1,211 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.9 式</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.9 式">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION00069000000000000000>5.9 式</A></H2>
+<P>
+<PRE>exp
+        : exp_no_comma
+        | exp_comma
+        ;
+</PRE>
+<P>
+式には次のものがある。
+<P>
+<UL><LI> 一次式
+<LI> 単項式
+<LI> 二項演算式
+<LI> 条件式
+<LI> カンマ式
+</UL><H3><A NAME=SECTION00069100000000000000>5.9.1 一次式</A></H3>
+ <A NAME=langlangmanualexpfirstexp>　</A>
+<P>
+<PRE>exp_no_comma
+        | exp_var 
+        | exp '.' IDENTIFIER
+        | exp_value 
+        | '(' exp ')' 
+        | exp '-&gt;' IDENTIFIER '(' arg_list ')'
+        | IDENTIFIER '(' arg_list ')' 
+        | exp '.' IDENTIFIER '(' arg_list ')' 
+        | exp '=&gt;' IDENTIFIER '(' arg_list ')' inst_option
+        | exp '++'
+        | exp '--'
+
+arg_list
+        : /* empty */
+        | exp_no_comma
+        | exp_comma
+        ;
+</PRE>
+<P>
+一次式には次のものがある。
+<P>
+<UL><LI> 識別子
+<LI> 定数
+<LI> 括弧で囲まれた式
+<LI> メッセージ式
+<LI> インスタンスの生成
+<LI> 後置インクリメント/デクリメント
+</UL><H3><A NAME=SECTION00069200000000000000>5.9.2 メッセージ式</A></H3>
+<P>
+メッセージ式はクラスおよびスタティッククラスのメソッド、レコードのオペ
+レータの起動を行なう式である。以下のようにメソッドとオペレータで記述形
+式は異なる。
+<P>
+<UL><LI> メソッド
+<P>
+<PRE>        | exp '-&gt;' IDENTIFIER '(' arg_list ')'
+</PRE>
+<P>
+<LI> オペレータ
+<P>
+<PRE>        | exp '.' IDENTIFIER '(' arg_list ')'
+</PRE>
+</UL>
+<P>
+<PRE>// class A
+// record B
+
+A a;
+B b;
+
+a-&gt;m1();
+b.m1();
+</PRE>
+<P>
+<H3><A NAME=SECTION00069300000000000000>5.9.3 インスタンスの生成</A></H3>
+<P>
+<PRE>exp_no_comma
+        | exp '=&gt;' IDENTIFIER '(' arg_list ')' inst_option
+
+inst_option
+        : /* empty */
+        | '@' exp 
+        ;
+</PRE>
+<P>
+クラスおよびスタティッククラスのインスタンスの生成およびコンスト
+ラクタの起動を行なう式である。
+<P>
+<PRE>class A;
+
+A a;
+
+a=&gt;m1();
+</PRE>
+<P>
+グローバールオブジェクトを生成する場合には、生成場所の指定が可能である 
+(<A HREF="node38.html#langlangmanualconstructor">5.18</A> 節参照)。
+<P>
+<H3><A NAME=SECTION00069400000000000000>5.9.4 単項式</A></H3>
+ <A NAME=langlangmanualexpunary>　</A>
+<P>
+<PRE>exp_no_comma
+        | 'fork' exp
+        | 'join' exp
+        | '++' exp 
+        | '--' exp 
+        | '!' exp 
+        | '~' exp 
+        | '+' exp 
+        | '-' exp 
+        | 'length' exp
+</PRE>
+<P>
+単項式は一次式に対して単項演算を行なう式である。
+<P>
+単項演算には、次のものがある。
+<P>
+<UL><LI> プロセスの生成 (<A HREF="node28.html#langlangmanualprocessoperation">5.8.3</A> 節参照)
+<P>
+<LI> プロセスの連結 (<A HREF="node28.html#langlangmanualprocessoperation">5.8.3</A> 節参照)
+<P>
+<LI> 算術演算
+<P>
+<LI> インクリメント/デクリメント
+<P>
+<LI> 論理否定
+<P>
+<LI> ビットワイズ反転
+<P>
+<LI> 配列の長さ (<A HREF="node27.html#langlangmanualarray">5.7</A> 節参照)
+</UL><H3><A NAME=SECTION00069500000000000000>5.9.5 二項演算</A></H3>
+<P>
+<PRE>exp_no_comma
+        | exp '*' exp 
+        | exp '/' exp 
+        | exp '%' exp 
+        | exp '+' exp 
+        | exp '-' exp 
+        | exp '&lt;&lt;' exp 
+        | exp '&gt;&gt;' exp 
+        | exp '==' exp 
+        | exp '!=' exp 
+        | exp '&lt;' exp 
+        | exp '&lt;=' exp 
+        | exp '&gt;' exp 
+        | exp '&gt;=' exp 
+        | exp '&amp;' exp 
+        | exp '^' exp 
+        | exp '|' exp 
+        | exp '||' exp 
+        | exp '&amp;&amp;' exp 
+        | exp '=' exp 
+        | exp '*=' exp 
+        | exp '/=' exp 
+        | exp '%=' exp 
+        | exp '+=' exp 
+        | exp '-=' exp 
+        | exp '&lt;&lt;=' exp 
+        | exp '&gt;&gt;=' exp 
+        | exp '&amp;=' exp 
+        | exp '^&gt;=' exp 
+        | exp '|=' exp
+</PRE>
+<P>
+二項演算には、次のものがある。
+<P>
+<UL><LI> 乗法演算
+<LI> 加法演算
+<LI> シフト演算
+<LI> 関係演算
+<LI> ビットワイズ論理演算
+<LI> 条件演算
+<LI> 代入
+</UL><H3><A NAME=SECTION00069600000000000000>5.9.6 条件式</A></H3>
+<P>
+<PRE>exp_no_comma
+        | exp '?' exp ':' exp
+</PRE>
+<P>
+条件が真の場合 <tt> ?</tt> の後の式を評価し、
+それを式の値とする。条件が偽の場合、<tt> :</tt> の後の式を評価し、
+それを式の値とする。
+<P>
+<H3><A NAME=SECTION00069700000000000000>5.9.7 カンマ式</A></H3>
+<P>
+<PRE>exp_comma
+        : exp ',' exp
+        ;
+</PRE>
+<P>
+カンマで区切られた式で、左から右に次々と式を評価し、最後の式をその値とする。
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

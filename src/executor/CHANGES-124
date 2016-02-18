@@ -1,0 +1,144 @@
+Version 1.24
+主な修正内容
+	・thrAttachThreadIO()を呼び出す時に、ThrBlockSignal() を行って
+	　いなかった。[file.c]
+	・OzAccept()で獲得されたファイル記述子にたいして
+	　thrAttachThreadIO()の呼出しを行なっていなかった。[file.c]
+	・#define STDARGなしで<stdarg.h>スタイルとなるように
+	　src/executor/circuits.h
+	　src/executor/debugSupport.c
+	　src/executor/g-invoke.h
+	　src/executor/global-invoke.c
+	　src/executor/global-trace.c
+	　src/executor/local-channel.c
+	　src/executor/ozlib.c
+	　src/executor/print.h
+	　src/executor/process.c
+	　src/executor/remote.c
+	　src/executor/sig.h
+	　src/executor/signal.c
+	　src/executor/thr.h
+	　src/executor/threads.c
+	　include/executor/global-invoke.h
+	　を変更した。
+
+	・ozlibc に次の関数を加えた。[ozlibc.c,oz++/ozlibc.h]
+	　char	*OzStrerror( int errnum ) ;
+		引数errnumに対応したエラーメッセージへのポインタを返す。
+		該当するメッセージがなければ、NULL を返す。
+	　char	*OzStrsignal( int signum ) ;
+		引数signumに対応したシグナルメッセージへのポインタを返す。
+		該当するメッセージがなければ、NULL を返す。
+	  int	OzDup( int fildes ) ;
+		system call dup() 相当。
+
+	・OzKill()の戻り値の仕様を変更
+		正常終了時は、戻り値としてＵＮＩＸプロセスＩＤを返す。
+		ＵＮＩＸプロセスと結び付いていない場合は、常に０を返す。
+
+	・関数 OzStrtol(), OzStrtoul(), OzStrtoll(), OzStrtoull() を作成
+		スケジューラ動作中に strtol(), atoi() を呼び出している
+		所を上記の関数を使うように修正。
+		[ozlibc.c,oz++/ozlibc.h]
+		[load-image.c,object-table.c,sched_shell.c]
+
+	・クラスのコード、レイアウト情報が既にロードされている状態で、
+	　再度それらの情報がロードされようとした場合にエラーメッセージを
+	　出力するよう変更。[code-layout.c]
+
+	・実行時クラス情報が既にロードされている状態で、
+	　再度その情報がロードされようとした場合にエラーメッセージを
+	　出力するよう変更。[class-table.c]
+
+	・スケジューラのシェル(sched_shell.c)を他のモジュールと同じように
+	　初期化処理等を行うように変更。[main.c,sched_shell.c]
+
+	・スケジューラのシェルを起動する度に同じコマンドが重複して
+	　登録されるバグを修正。[sched_shell.c]
+
+	・以下の関数を新規作成し、これに伴って関連する所を修正。
+		int OzSetPriority(), int OzGetPriority()
+		int OzSetStdIn( int ), int OzGetStdIn()
+		int OzSetStdOut( int ), int OzGetStdOut()
+		int OzSetStdErr( int ), int OzGetStdErr()
+		int OzBlockSuspend(), int OzUnBlockSuspend( int )
+
+	・sched_shell.c を shell.c (インクルード shell.h）に変更。
+	・switch.h のインクルードを適切にした。
+	・ncl-if.c, dyload.c をマルチスレッド環境で動作するように修正した。
+
+	・エグゼキュータのCWDを$OZROOT/images/<EXID>に変更。
+
+	・その他のバグ、あるいは、不適切プログラムの修正。
+
+	・スレッドの生成ができない事が原因でOZ++のプロセスをフォークでき
+	 　なかった場合も例外 ForkFailed を発生するようにした。
+
+	・oz++/sysexcept.h で定義されていたシステム例外をexternにし、
+	　定義（実体）をエグゼキュータ内(exception.c)に置いた。
+
+	・OzExecReAllocateArray() の３番目の引数(number:配列の要素数)が
+	　負の数である場合、例外 ArrayRangeOverflow を発生する。
+
+	・クラスのdynamic load時にOZに関係しないものをリンクしないようにした。
+	　リンクするものは次の通り。[dyload.c]
+	　先頭の文字が '_oz'（大文字と小文字の区別なし）、'.'、'___' で
+	　始まるシンボルと __setjmp、_errno の２つ。（但し、'___main' を除く）
+
+	・次のシンボルがエグゼキュータのスタティックリンク時に含まれるように
+	　した。[dyload.c]
+	　___cmpdi2 ___divdi3 ___moddi3 ___muldi3
+	　___ucmpdi2 ___udivdi3 ___udivmoddi4 ___umoddi3
+	　
+	・関数 OzMktime() を作成。
+
+	・エグゼキュータの起動時にスレッド数のＭＡＸを指定することができる。(t)
+
+	・エグゼキュータからＯＭへのUNIXシグナル(SIGTERM)の通知
+		SIGTERM    エグゼキュータの正常終了（ＯＭ経由）。
+
+		int	OzOmWaitShutdownRequest(void) ;
+		int	OzOmShutdownRequest(void) ;
+		戻り値は、関数の終了ステータス
+		-1 OzOm...Request()(SIGTERMを含む)は既に呼び出されている。
+		-2 OzOmWaitShutdownRequest()で待ちのスレッドがない。
+		-3 その他のエラー
+	・全てのオブジェクトをコンパクション付きでＧＣするようにした。
+	　（但し、既に一時停止状態のオブジェクトはコンパクションなし）
+
+	・エグゼキュータはＯＭを起動するために生成する最初のプロセスを
+	　を join 待ちし、例外が発生した場合、関数 OzOmStarted() を
+	　引数に 0 以外を指定して呼び出す。例外が発生しなければ、
+	　OzOmStarted()を引数に 0 を指定して呼び出す。
+	　（現在、OzOmStarted(0)の呼出しはOMが行っている）
+	　（関数名 OzOmStarted() -> NifStarted() に変更）
+
+	・制御端末を設定した。
+
+	・コンソールへの出力を ozlog を読み取るデーモンにした。
+
+	・組み込みコマンドで、abort を実行すると、例外のLONGJMP後の
+	　例外ＩＤの比較時に SIGSEGV 等になってしまう。
+	　原因は、gcc-2.7.0で既に導入されたCSE(common subexpression elimination)
+	　のために、LONGJUMPを想定しないregisterの使い方が行われていた。
+	　解決は、OZ++コンパイラによって生成されるCソースのgccによる
+	　コンパイル時に -frerun-cse-after-loop を付けるようにした。
+	　（但し、現在、executor(thread)自体のコンパイル時には付けていない。）
+
+	・デバッグシンボルのロード等。
+
+	・実装の便利性のため同一のファイル記述子で複数のスレッドが
+	　ＩＯ待ちになることができるようにした。
+
+	・グローバルアクセス時に、narrow 相当の操作に失敗した場合
+	　（あるいは、クラスの違うグローバルオブジェクトへのアクセス）、
+	　IllegalInvoke 例外を発生するが、その後、当該セルを参照する
+	　スレッドのリストからそのスレッドを取り除く処理等が行われて
+	　いなかった。
+
+	・エグゼキュータの起動時に作成する .gdbinit 内容をクラスの
+	　シンボルのロードを行わないように変更。[startup.c]
+
+	・thrSwitch()での各スレッドに固有な大域変数の処理方法を変更。[thread.c]
+
+	・スレッドＩＤが 999 を越えないように修正。[thread.c]

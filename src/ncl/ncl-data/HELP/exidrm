@@ -1,0 +1,27 @@
+NFE(1)              Nucleus Front-End Built-In-Command               NFE(1)
+
+NAME
+     "exidrm" - This command deletes the maintenance information of the
+                Executor-ID
+
+SYNOPSIS
+     exidrm Executor-ID
+
+DESCRIPTION
+     This command deletes the maintenance information of the Executor-ID
+     disused.
+
+FILE
+     * $OZROOT/image/<EXID>/exid.info
+       This is a file for the maintenance information of the Executor-ID.
+       The maintenance information of the Executor-ID is generated when
+       newimage finishes normally.
+
+EXAMPLE:
+     nfe> newimage -n TESTEX -c FOR-DEBUG
+              :
+     nfe> exidlist
+      EXID     EX-NAME                COMMENT
+     00025f    TESTEX                 FOR-DEBUG
+     nfe> exidrm 25f
+

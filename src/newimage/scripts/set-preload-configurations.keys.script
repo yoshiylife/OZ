@@ -1,0 +1,29 @@
+#! /bin/sh -f
+#
+#  Copyright (c) 1994-1997 Information-technology Promotion Agency, Japan
+#
+#  All rights reserved.  No guarantee.
+#  This technology is a result of the Open Fundamental Software Technology
+#  Project of Information-technology Promotion Agency, Japan (IPA).
+#
+(while read i
+ do
+   echo sb \'$i\' 7
+   echo sb \'$i\' 0
+ done ; echo quit ) < preload-configurations.src | cfed |
+(c=0
+ flag=0
+ while read i
+ do
+   case $flag in
+    0)
+     name=$i
+     flag=1;;
+    1)
+     id=$i
+     flag=0
+     echo "	configuration_key_table [$c] = oid ($id); /* $name */"
+     c=`expr $c + 1`;;
+   esac
+ done) \
+> preload-configurations.keys

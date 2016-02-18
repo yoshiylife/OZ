@@ -1,0 +1,87 @@
+Fri Jan 19 09:00:42 1996  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* 95Sep.1 を更新
+
+Wed Jan 10 20:46:06 1996  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* timer.oz (Timer), alarmable (Alarmable)
+	  !!NEW CLASS!!
+	  インターバルタイマーと、インターバルタイマーを利用できるクラスの
+	  抽象クラスを新規に作成した。
+
+Sat Nov 11 22:45:14 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* ここで Sep.1 を更新
+
+Wed Oct 11 22:40:21 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* ここで Sep.1 を更新
+
+Fri Oct  6 09:52:47 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* waiter.oz (Waiter::Timer)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  一定時間待ち合わせてから Abort するメソッドを追加した。
+
+Wed Oct  4 15:47:59 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* time.oz (Time::NewWithTime)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  特定の時間値で初期化するコンストラクタを追加した。
+
+	* date.oz (Date)
+	  !!NEW CLASS!!
+	  時刻を表すクラス Date を作った。 (時間を表す Time とは別のもの。)
+
+Sat Sep 30 14:30:44 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* ここで Sep.1 に更新
+
+Thu Aug  3 20:38:02 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* ここで Jun.2 を更新
+
+Wed Jun 14 01:20:10 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* fops.oz (FileOperators::Symlink):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  シンボリックリンクを作成する演算子 Symlink を定義した。
+
+Tue Jun 13 08:00:29 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* fops.oz (FileOperators):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  record とした。
+
+Fri Jun  2 11:24:58 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* sesem.oz (SharedAndExclusiveSemaphore):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  アンロック状態にリセットする public メソッド Reset を実装した。
+
+Sun May 14 15:50:26 1995  NISHIOKA Toshihiro  (nishioka@hotate.mri.co.jp)
+
+	* fops.oz (FileOperators): 
+	  !!PUBLIC INTERFACE CHANGED!!
+	  ファイルを移動するメソッド Move を作った。
+
+Sat May 13 21:27:00 1995  NISHIOKA Toshihiro  (nishioka@hotate.mri.co.jp)
+
+	* fops.oz (FileOperators):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  ファイルがあるかどうか調べるメソッド IsExists を作った。
+
+	* ディレクトリ libraries/misc を作った。
+
+Thu Mar 23 00:43:20 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz)
+
+	* fops.oz (FileOperators):
+	  executor の fork をなるべく行わないために、 mkdir や rm を fork
+	  するのを避け、 OzCopy, OzMkdir, OzUnlink などの関数を利用するよ
+	  うにした。
+
+Fri Mar 10 10:42:44 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* fops.oz (FileOperators):
+	  メソッド List で、 0 初期化されていない OZ_Array に対して 
+	  OZArrayAlloc を実行していた障害を改修した。

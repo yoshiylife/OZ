@@ -1,0 +1,36 @@
+
+　[名前]
+　　　　nfe - ニュクリアスフロントエンド
+
+　[形式]
+　　　　nfe [Hostname]
+
+　[機能説明]
+　　　　nfe はニュクリアス(ncl)と接続してエグゼキュータの生成/状態の
+　　　　管理を行うツールである。
+　　　　nfe は引数で指定された hostname のニュクリアスと接続し、組み
+　　　　込みコマンドによりニュクリアスと情報の交換を行う。引数が指定さ
+　　　　れない場合、自ホストのニュクリアスと接続する。
+
+　[ファイル]
+　　　　・$HOME/.nclrc
+　　　　　nfe は起動時に $HOME/.nclrc が存在すれば、nfe コマンドスク
+　　　　　リプトとして実行する。nfe コマンドスクリプトには、nfe の組
+　　　　　み込みコマンドを書いておくことができる。
+
+　　　　　　例：
+                % cat $HOME/.nclrc
+                alias c cex
+                alias h help
+
+　[使用例]
+　　　　% nfe host1
+　　　　　　　　　:
+　　　　nfe> help
+　　　　help            nclshutdown     es              cex
+　　　　ncltbl          env             man             et
+　　　　alias           source          who             newimage
+　　　　migrateimage    exidlist        exidment        exidrm
+　　　　killex          quit
+　　　　nfe> ^D
+

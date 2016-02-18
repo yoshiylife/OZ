@@ -1,0 +1,8 @@
+(*class* #000100000200002f 0
+(*list*)
+(*list*
+(*declaration* New (*method* void (*list*) 0) constructor #000100000200002f 0 0)
+(*declaration* Enter (*method* void (*list*) 1) public #000100000200002f 0 1)
+(*declaration* Exit (*method* void (*list*) 1) public #000100000200002f 0 2)
+)
+)

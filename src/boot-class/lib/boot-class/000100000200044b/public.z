@@ -1,0 +1,17 @@
+(*class* #000100000200044b 0
+(*list*)
+(*list*
+(*declaration* New (*method* void (*list*) 0) constructor #000100000200044b 0 0)
+(*declaration* NewWithSize (*method* void (*list* (*scqf* int 2) ) 0) constructor #000100000200044b 0 1)
+(*declaration* Add (*method* #0001000002000115 0 (*list* (*scqf* #000100000200010b 0 4) #0001000002000115 0 ) 1) public #000100000200044b 0 2)
+(*declaration* At (*method* #0001000002000115 0 (*list* (*scqf* int 2) ) 1) public #000100000200044b 0 4)
+(*declaration* AtKey (*method* #0001000002000115 0 (*list* (*scqf* #000100000200010b 0 4) ) 1) public #000100000200044b 0 3)
+(*declaration* Capacity (*method* (*scqf* int 2) (*list*) 1) public #000100000200044b 0 6)
+(*declaration* Clear (*method* void (*list*) 1) public #000100000200044b 0 5)
+(*declaration* IncludesKey (*method* int (*list* (*scqf* #000100000200010b 0 4) ) 1) public #000100000200044b 0 7)
+(*declaration* KeyAt (*method* (*scqf* #000100000200010b 0 4) (*list* (*scqf* int 2) ) 1) public #000100000200044b 0 8)
+(*declaration* RemoveKey (*method* #0001000002000115 0 (*list* (*scqf* #000100000200010b 0 4) ) 1) public #000100000200044b 0 9)
+(*declaration* SetOfKeys (*method* (*array* (*scqf* #000100000200010b 0 4) ) (*list*) 1) public #000100000200044b 0 10)
+(*declaration* Size (*method* (*scqf* int 2) (*list*) 1) public #000100000200044b 0 11)
+)
+)

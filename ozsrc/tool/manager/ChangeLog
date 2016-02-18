@@ -1,0 +1,169 @@
+Tue Apr  2 19:47:45 1996  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* omsi.oz (ObjectManagerServiceInterface)
+	  !!PROTECTED INTERFACE CHANGED!!
+	  サポートするコマンドを増やした。
+
+Thu Feb  8 22:28:07 1996  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* dnsmaintainer.oz (DNSResolverMaintainer)
+	  !!NEW CLASS!!
+	  DNSResolver のメンテナンスインタフェースを開発した。
+
+	* dnsstarter.oz (DNSResolverStarter)
+	  !!NEW CLASS!!
+	  DNSResolver を生成し、必要最低限の初期設定を行って起動するための
+	  ランチャブルを開発した。
+
+Sat Nov 11 22:46:56 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* ここで Sep.1 を更新
+
+Thu Nov  9 11:46:05 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* exporter.oz (PackageExporter)
+	  !!NEW CLASS!!
+	  あるエグゼキュータで開発したクラスの開発を、別のエグゼキュータで
+	  支障なく続けられるために、あるパッケージに載っているクラスパート
+	  すべてについて、そのすべてのバージョンとコンフィギュアドクラスを、
+	  あるクラスオブジェクトから別のクラスオブジェクトに配送するツール
+	  を作成した。
+
+	* dropper.oz (Dropper), confsetter (DefaultConfigurationSetter)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  CatalogTool のサブクラスにした。
+
+	* catalogtool.oz (CatalogTool)
+	  !!NEW CLASS!!
+	  カタログからパッケージを得て、そこにあるクラスに対する操作を行う
+	  ようなツール全般を抽象化したクラス CatalogTool を作成した。
+
+Wed Oct 11 22:41:28 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* ここで Sep.1 を更新
+
+Sat Sep 30 14:31:14 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* ここで Sep.1 に更新
+
+Wed Sep 13 23:40:34 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* otest.oz (ConfigurationSetTester)
+	  !!NEW CLASS!!
+	  class Object の、 configuration set の取扱を試験するテストスーツ
+	  を作成した。
+
+Mon Sep 11 06:51:07 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* ここで Jun.2 を更新
+
+Sat Sep  2 12:43:36 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* sdtest.oz (SchoolDirectoryTester::CheckIsaDiretory)
+	  DirectoryServer::IsaDirectory も検査するようにした。
+
+Fri Sep  1 15:34:50 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* cltest.oz (ClassTester::CreateNewPartTest)
+	  Class::SetItAsDefaultConfiguredClass も検査するように変更した。
+
+	* ここで Jun.2 を更新
+
+Sun Aug 20 10:54:30 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* cio.oz (ClassObjectServiceInterface::DescribePublicPart)
+	  default configured class があれば、それを表示するようにした。
+
+Thu Aug  3 20:38:17 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* ここで Jun.2 を更新
+
+Wed Jul  5 10:59:13 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* cltest.oz (ClassTester):
+	  WhichKind のテストを追加した。
+
+Fri Jun 16 03:11:52 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* ccom.oz (ClassCommands):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  cio.oz (ClassObjectServiceInterface::Set, Show)
+	  新たなコマンド unalias, set, show を追加した。
+
+Wed Jun 14 21:36:59 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* ccom.oz (ClassCommands):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  cio.oz (ClassObjectServiceInterface::NOP)
+	  新たなコマンド NOP を追加した。
+
+Tue Jun 13 11:27:11 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* ccom.oz (ClassCommands):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  新たなコマンド Send を追加した。
+
+Mon Jun 12 21:34:00 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* newschooltest.oz (NeuSchoolTester):
+	  !!NEW CLASS!!
+	  計量化し、種別情報を入れた新しいスクールの test suits を作成した。
+
+Wed May 17 08:43:33 1995  NISHIOKA Toshihiro  (nishioka@hotate.mri.co.jp)
+
+	* withkterm.oz (LaunchableWithKterm):
+	  !!PROTECTED INTERFACE CHANGED!!
+	  Yes/No を入力させるメソッド ReadYN を作成した。
+
+Sat May 13 09:53:54 1995  NISHIOKA Toshihiro  (nishioka@hotate.mri.co.jp)
+
+	* addname.oz (NameEntryChanger), cio.oz (ClassObjectServiceInterface),
+	  confchanger.oz (ConfigurationCacheChanger),
+	  omsi.oz (ObjectManagerServiceInterface),
+	  sdstart.oz (SchoolDirectoryStarter), tester.oz (Tester):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  上記のクラスは LaunchableWithKterm の subclass とした。
+
+	* withkterm.oz (LaunchableWithKterm):
+	  !!NEW CLASS!!
+	  kterm を開いて入出力するような Launchable の抽象クラスを作成した。
+
+Tue Mar 28 00:53:41 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* addname.oz (NameEntryChanger):
+	  !!NEW CLASS!!
+	  NameDirectory に entry を追加する Launchable を作成した。
+
+Mon Mar 27 13:39:12 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* cio.oz (ClassObjectServiceInterface):
+	  !!NEW CLASS!!
+	  Class の service interface の第 0 版を作成した。
+
+Sun Mar 26 10:48:26 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* confchanger.oz (ConfigurationCacheChanger):
+	  !!NEW CLASS!!
+	  OM の configuration table cache の entry を変更する Launchable 
+	  を作成した。
+
+Thu Mar 23 02:06:29 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* kterm を Interface に持つ、 test suits の抽象クラス Tester を作
+	  成した。
+
+Sun Feb 26 22:39:06 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* test suits を充実させた。
+	     - ClassTester
+	         Launch すると、その executor 上のクラスの基本的な機能に欠
+		 陥がないことを確認する。
+
+	     - NameDirectoryTester
+	         Launch すると、その executor から参照している name
+		 directory の基本的な機能に欠陥がないことを確認する。
+
+	     - SchoolDirectoryTester
+	         Launch すると、 school system を生成して、その機能に欠陥
+		 がないことを確認する。終了後、生成された school system 
+		 は削除される。

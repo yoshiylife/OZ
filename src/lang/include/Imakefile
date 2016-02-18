@@ -1,0 +1,10 @@
+OZINCDIR=../../../include
+
+AllTarget()
+
+depend::
+	@(if [ ! -d executor ]; then $(LN) $(OZINCDIR)/executor .; fi)
+	@(if [ ! -d oz++ ]; then $(LN) $(OZINCDIR)/oz++ .; fi)
+
+clean::
+	$(RM_CMD) executor oz++

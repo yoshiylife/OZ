@@ -1,0 +1,8 @@
+(*class* #0001000002000263 0
+(*list*)
+(*list*
+(*declaration* New (*method* void (*list* #000100000200018c 0 ) 0) constructor #0001000002000263 0 0)
+(*declaration* Broadcast (*method* (*scqf* #0001000002000254 0 4) (*list* (*scqf* #00010000020002b2 0 4) ) 1) public #0001000002000263 0 1)
+(*declaration* Reply (*method* void (*list* (*scqf* #0001000002000254 0 4) ) 1) public #0001000002000263 0 2)
+)
+)

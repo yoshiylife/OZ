@@ -1,0 +1,29 @@
+DESTDIR	= ${OZROOT}
+BINDIR	= /bin
+CC	= gcc
+#PROF	= -p
+INCLUDES= -I. -I../../include
+CFLAGS	= $(PROF) -O -g -ffixed-i0 -Wall $(INCLUDES) #-DNOEXCEPT
+#CFLAGS	= $(PROF) -O -g -Wall $(INCLUDES) #-DNOEXCEPT
+ASFLAGS	= -P $(BOOTSTRAPCFLAGS)
+
+	SRCS	= signal.c stack.c sparc.s thread.c monitor.c \
+		  unix-io.c file.c print.c strtobin4.c strtobin8.c \
+		  ozlibc.c timer.c breakpoint.c shell.c
+	OBJS	= signal.o stack.o sparc.o thread.o monitor.o \
+		  unix-io.o file.o print.o strtobin4.o strtobin8.o \
+		  ozlibc.o timer.o breakpoint.o shell.o
+
+NormalLibraryObjectRule()
+NormalLibraryTarget(thread,$(OBJS))
+
+install::
+	@if [ "$(DESTDIR)" = "" ]; then \
+	   echo "***" ;\
+	   echo "You must be set environment variable: OZROOT" ;\
+	   echo "***" ;\
+	   exit 1 ;\
+	 fi
+
+InstallLibrary(thread,/lib)
+DependTarget()

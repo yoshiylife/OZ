@@ -1,0 +1,26 @@
+INCLUDES = -I$(OZROOT)/include -I$(OZROOT)/lib/boot-class
+LDOPTIONS = -L$(OZROOT)/lib
+LIB = -loibuild
+DEPLIB = $(OZROOT)/lib/liboibuild.a
+CC = gcc 
+CFLAGS = $(INCLUDES)
+PROGRAM = oib
+
+SRCS = objects_main.c objects.c 
+OBJS =	objects_main.o objects.o 
+
+HEADERS = objects.h
+
+all: $(PROGRAM)
+$(PROGRAM): $(OBJS) $(DEPLIB)
+	rm -f $@
+	$(CC) -o $@ $(OBJS) $(LDOPTIONS) $(LIB)
+
+clean:
+	rm -f $(SRCS) $(OBJS) $(HEADERS) *~ *.bak \#* $(PROGRAM) 
+clean-image:
+	rm -f [0-9]*
+clean-all:
+	rm -f $(SRCS) $(OBJS) $(HEADERS) *~ *.bak \#* $(PROGRAM) [0-9]*
+
+

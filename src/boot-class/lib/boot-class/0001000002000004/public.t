@@ -1,0 +1,4 @@
+7 ArrayOfCharOperators
+	0001000002000004
+0 Object
+	0001000002fffffd	0001000002fffffe	0001000002ffffff

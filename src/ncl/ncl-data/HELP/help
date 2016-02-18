@@ -1,0 +1,30 @@
+NFE(1)              Nucleus Front-End Built-In-Command               NFE(1)
+
+NAME
+     "help" - displays the explanations for built-in-command of 
+              nfe.
+
+SYNOPSIS
+     help [-j] [built-in-command-name]
+
+DESCRIPTION
+     If a command name is specified as an argument, the explanat-
+     ions for the command are displayed. If no arguments are sp-
+     ecified, the list of built-in-commands is displayed.
+
+       Option:
+help OPTIONS
+     -j  displays the explanations in Japanese.
+
+EXAMPLE
+     nfe> help
+     help            nclshutdown     es              cex
+     ncltbl          env             man             et
+     alias           source          who             newimage
+     migrateimage    exidlist        exidment        exidrm
+     killex          quit
+     nfe> help cex
+                :
+     Manual of built-in-command
+                :
+ 

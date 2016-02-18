@@ -1,0 +1,214 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.4 Basic Data Types</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.4 Basic Data Types">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION00064000000000000000>5.4 Basic Data Types</A></H2>
+ <A NAME=langlangmanualdatatype>&#160;</A>
+<P>
+OZ++ language has the following types of basic data types.
+<P>
+<UL><LI> Character Type (<tt> char</tt>)
+<P>
+<tt> Unsigned</tt> can also be specified.
+<P>
+<LI> Integer Type (<tt> short, int, long, long long</tt>)
+<P>
+This represents the type for integral number.  Three types of
+different sized integers, <tt> short</tt>, <tt> int</tt>, <tt> long</tt>, and <tt>
+long long</tt>, can be used.  <tt> Unsigned</tt> can also be specified for
+each.
+<P>
+<LI> Floating Point Number Type (<tt> float, double</tt>)
+<P>
+This represents the type for floating point numbers.  Two types of different sized floating point numbers can be used, i.e. <tt> float</tt> and <tt> double</tt>.
+<P>
+<LI> Condition Variable Type (<tt> condition</tt>)
+<P>
+This type represents condition variables used to synchronize threads
+(see Chapter <A HREF="node39.html#langlangmanualconcurrent">5.19</A>).
+<P>
+
+<P>
+</UL>
+<P>
+
+<P>
+Basic data types are interpreted as values.  Assignments and
+comparisons following the types are executed against the values.  In
+addition, when basic data types are used for assignments, return
+values, or call by value arguments of method calls after the types,
+the following events take place:
+<P>
+<UL><LI> For condition type
+<P>
+The reference is passed on.
+<P>
+<LI> Otherwise
+<P>
+All the values are copied.
+</UL>
+<P>
+<PRE>int a, b;
+
+a = 2;            // 2 is copied into a
+b = a;            // the value of a is copied into b 
+if (a &lt; 10)       // the value of a (i.e. 2) is compared
+  {               // to the value 10 
+    math-&gt;log(2); // the value of a (i.e. 2) is copied, and
+                  // substituted into the call by value argument
+  }
+</PRE>
+<P>
+In OZ++ language, the space consumed by basic data types is not
+implementation dependent as in C and C++ languages, but is fixed.  
+
+The alignments of the basic types depend on the execution environment.
+<P>
+<CENTER>
+<TABLE BORDER>
+<CAPTION ALIGN=TOP><STRONG>Table 5.1--4:</STRONG>Size of Basic Data Types</CAPTION>
+<TR>
+<TH>Type</TH><TH>Size (Unit: Byte)</TH>
+</TR>
+<TR ALIGN=CENTER>
+<TD><TT>char</TT></TD>  <TD>1</TD>
+</TR>
+<TR ALIGN=CENTER>
+<TD><TT>short</TT></TD> <TD>2</TD>
+</TR>
+<TR ALIGN=CENTER>
+<TD><TT>int</TT></TD>   <TD>4</TD>
+</TR>
+<TR ALIGN=CENTER>
+<TD><TT>float</TT></TD> <TD>4</TD>
+</TR>
+<TR ALIGN=CENTER>
+<TD><TT>long</TT></TD>  <TD>8</TD>
+</TR>
+<TR ALIGN=CENTER>
+<TD><TT>double</TT></TD><TD>8</TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<P>
+<H3><A NAME=SECTION00064100000000000000>5.4.1 Operations</A></H3>
+<P>
+In basic data types, excluding <tt> condition</tt>, operations similar to
+those of C language (as shown in table
+<A HREF="node24.html#tablanglangmanualdataop">5.4--2</A>) can also be used.
+<P>
+<A NAME=tablanglangmanualdataop>&#160;</A>
+<P>
+<CENTER>
+<TABLE BORDER>
+<CAPTION ALIGN=TOP><STRONG>Table 5.1--5:</STRONG>The Operator Precedence and Direction of Evaluation</CAPTION>
+<TR>
+<TH>Operator</TH><TH>Dir. of Eval.</TH>
+</TR>
+<TR>
+<TD><TT>()</TT></TD><TD ALIGN=CENTER>L to R</TD>
+</TR>
+<TR>
+<TD><TT>! ~ ++ -- + - &amp;(unary operator)</TD><TD ALIGN=CENTER>R to L</TD>
+</TR>
+<TR>
+<TD><TT>* / %</TT></TD><TD ALIGN=CENTER>L to R</TD>
+</TR>
+<TR>
+<TD><TT>+ -</TT></TD><TD ALIGN=CENTER>L to R</TD>
+</TR>
+<TR>
+<TD><TT>&lt;&lt; &gt;&gt;(binary operator)</TD><TD ALIGN=CENTER>L to R</TD>
+</TR>
+<TR>
+<TD><TT>&lt; &lt;= &gt; &gt;=</TT></TD><TD ALIGN=CENTER>L to R</TD>
+</TR>
+<TR>
+<TD><TT>== !=</TT></TD><TD ALIGN=CENTER>L to R</TD>
+</TR>
+<TR>
+<TD><TT>&amp;</TT></TD><TD ALIGN=CENTER>L to R</TD>
+</TR>
+<TR>
+<TD><TT>^</TT></TD><TD ALIGN=CENTER>L to R</TD>
+</TR>
+<TR>
+<TD><TT>|</TT></TD><TD ALIGN=CENTER>L to R</TD>
+</TR>
+<TR>
+<TD><TT>&amp;&amp;</TT></TD><TD ALIGN=CENTER>L to R</TD>
+</TR>
+<TR>
+<TD><TT>||</TT></TD><TD ALIGN=CENTER>L to R</TD>
+</TR>
+<TR>
+<TD><TT>?:(trinary operator)</TT></TD><TD ALIGN=CENTER>R to L</TD>
+</TR>
+<TR>
+<TD><TT>= += -= *= /= %= &amp;= |= ^= &lt;&lt;= &gt;&gt;=</TT></TD><TD ALIGN=CENTER>R to L</TD>
+</TR>
+<TR>
+<TD><TT>,</TT></TD><TD ALIGN=CENTER>L to R</TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<P>
+<H3><A NAME=SECTION00064200000000000000>5.4.2 0 (Zero)</A></H3>
+ <A NAME=langlangmanualdatatypezero>&#160;</A>
+<P>
+0 can be used against all types in OZ++ language.  As shown below, the
+meaning of 0 is determined by the data type where it is used.
+<P>
+
+<P>
+<PRE>class A;
+
+int i = 0;     // This means the integer 0.
+
+A a;
+if (a == 0)    // This shows that no reference is made
+               // to any instances of the class
+  ...
+</PRE>
+<P>
+<UL><LI> For basic data types, except the type <tt> condition</tt>, 
+this shows the value represented by 0 in that type.
+<P>
+<LI> For <tt> condition</tt> type, this shows that no reference is made. 
+<P>
+<LI> For class types and static class types, this means that there is no
+      bind for the variable to instance
+ (see  Chapters <A HREF="node33.html#langlangmanualclass">5.13</A> and
+ <A HREF="node34.html#langlangmanualstaticclass">5.14</A>).
+<P>
+<LI> For record types, this shows that all members of the record are
+      0 (see Chapter <A HREF="node32.html#langlangmanualrecord">5.12</A>).
+<P>
+<LI> For array types, this means that there is no bind for the variable
+  to instance of array
+ (see Chapter <A HREF="node27.html#langlangmanualarray">5.7</A>).
+<P>
+<LI> For process derived types, this means that
+there is no bind for the variable to any processes
+ (see Chapter <A HREF="node28.html#langlangmanualprocess">5.8</A>).
+</UL>
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

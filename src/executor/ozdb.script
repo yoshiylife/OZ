@@ -1,0 +1,16 @@
+#! /bin/sh
+if [ $# -ne 1 ]; then
+	echo "Usage: $0 Executor-ID" ;
+	exit 2 ;
+fi
+
+chdir ${OZROOT:?"You must be setenv."}/images ;
+exid=`expr substr 000000$1 \`expr length "$1" + 1\` 6` ;
+if [ ! -d $exid ]; then
+	echo "$0: Can't chdir $OZROOT/images/$exid." ;
+	echo "$0: I need Executor-ID."
+	exit 1 ;
+fi
+chdir $exid ;
+
+exec gdb

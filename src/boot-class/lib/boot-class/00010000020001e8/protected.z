@@ -1,0 +1,12 @@
+(*class* #00010000020001e8 8
+(*list*
+(*list* #0001000002000200 #0001000002000201 0)
+(*list* #00010000020002cc #00010000020002cd 0)
+)
+(*list*
+(*declaration* Read (*method* #0001000002000034 0 (*list* int ) 2) public #0001000002000200 0 0)
+(*declaration* Eof (*method* int (*list*) 2) public #0001000002000200 0 1)
+(*declaration* Write (*method* #00010000020002cc 8 (*list* #0001000002000034 0 int ) 2) public #00010000020002cc 0 0)
+(*declaration* WriteAll (*method* #00010000020002cc 8 (*list* #0001000002000034 0 ) 2) public #00010000020002cc 0 1)
+)
+)

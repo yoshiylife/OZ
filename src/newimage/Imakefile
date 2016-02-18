@@ -1,0 +1,12 @@
+#define IHaveSubdirs
+#define PassCDebugFlags CDEBUGFLAGS="$(CDEBUGFLAGS)"
+
+DESTDIR=${OZROOT}
+IMGDIR=/images
+SUBDIRS=scripts oidhash template
+
+MakeSubdirs($(SUBDIRS))
+DependSubdirs($(SUBDIRS))
+
+install::
+	-$(MKDIRHIER) $(DESTDIR)$(IMGDIR) && chmod 0777 $(DESTDIR)$(IMGDIR)

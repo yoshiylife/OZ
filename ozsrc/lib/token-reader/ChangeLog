@@ -1,0 +1,96 @@
+Wed Mar 20 15:06:30 1996  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* stream.oz (Stream::New)
+	  OpenFlag を使わずに、 fcntl.h を include するようにした。
+
+Sat Nov 11 22:45:40 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* ここで Sep.1 を更新
+
+Fri Oct 13 01:37:56 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* stream.oz (Stream::Open)
+	  fd が unsigned int 型になっていたのを (-1 が返ることがあるので)
+	  int 型に直した。
+
+Wed Oct 11 22:41:05 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* ここで Sep.1 を更新
+
+Sat Sep 30 14:30:59 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* ここで Sep.1 に更新
+
+Thu Aug  3 20:37:33 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* ここで Jun.2 を更新
+
+Wed Jul  5 16:14:14 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* freader.oz (FileReader::IsEndOfToken):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  public メソッド IsEndOfToken を追加した。
+
+Tue Jul  4 23:10:44 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* treader.oz (TokenReader::IsEndOfToken):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  public メソッド IsEndOfToken を追加した。
+	  この実装に用いるため、 protected メソッド PeekATokenABuffer も追
+	  加した。
+
+Fri Jun  2 13:02:40 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* stextractor.oz (StringExtractor):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  抽出される token は、両端の " を除いた文字列とした。
+	  また、バッファ長お初期値を変更できるように、 protected メソッド 
+	  SetBufferSize を追加した。
+
+Thu May 25 18:14:50 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* fr-exc.oz (FileReaderExceptions):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  OzWrite の失敗を表す CannotWrite (int) を追加した。
+	  parameter は errno。
+	  また、 CannotOpenFile の parameter を errno に変更した。
+
+Fri May 19 02:57:30 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* freader.oz (FileReader):
+	  !!PROTECTED INTERFACE CHANGED!!
+	  abstract class とした。 instantiation のときに、対応する token
+	  reader を初期化するためのメソッド InitializeTokenReader を 
+	  abstract method として追加した。
+
+Sun May 14 00:59:37 1995  NISHIOKA Toshihiro  (nishioka@hotate.mri.co.jp)
+
+	* stream.oz (Stream):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  出力ストリームとしても使えるように、 PutStr などの出力メソッドを
+	  追加した。
+	  ファイルのオープンでフラグを指定できるように、コンストラクタ 
+	  NewWithFlag を追加した。
+
+	* openmode.oz (OpenFlag):
+	  オープンのフラグを表す定数を定義した shared OpenFlag を定義した。
+
+Sun May  7 14:04:03 1995  NISHIOKA Toshihiro  (nishioka@hotate.mri.co.jp)
+
+	* treader.oz (TokenReader), simpletreader.oz (SimpleTokenReader):
+	  !!NEW CLASS!!
+	  TokenReader を完全に抽象クラスとし、実装例としてクラス 
+	  SimpleTokenReader を作成した。
+	  これに伴い、インスタンス変数 ExtractorTable の大きさは、抽象メソッ
+	  ド ExtractorInit の実装で定めることとした。
+
+Mon Apr 24 13:20:26 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* !!PUBLIC INTERFACE CHANGED (FileReader, ClassListFileReader,
+	                              PrivateDotiFileReader)!!
+	  FileReader を誤って Token の subclass としていたのを直した。
+
+	* library 関係の directory の分割を行った。
+	  collection, string, token-reader はそれぞれ別の library となった。
+
+	* これより上が、 Release 2 に向けての修正である。

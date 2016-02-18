@@ -1,0 +1,208 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.14 Static Class</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.14 Static Class">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION000614000000000000000>5.14 Static Class</A></H2>
+ <A NAME=langlangmanualstaticclass>&#160;</A>
+<P>
+<PRE>class_def
+        | 'static' 'class' CLASSNAME '{' static_class_body '}' 
+        ;
+
+static_class_body
+        : access_ctrls_no_protected member_decls
+        ;
+</PRE>
+<P>
+A static class is one of user-defined types.  It is made up of instance variables (i.e. the internal representation of its instances), and definitions of methods applicable to instances.  Static class members are the instance variables defined in a static class.
+<P>
+A static class instance having no class members consumes memory areas. 
+<P>
+Static class is very similar to a class on the above points.  However,
+it differs from a class in that multiple inheritance can not be used here,
+and that instances of global objects can not be generated.
+<P>
+<H3><A NAME=SECTION000614100000000000000>5.14.1 Static Class Name</A></H3>
+<P>
+A static class name is a reserved word in the scope of a static class definition.
+<P>
+A static class also represents a type.  Different static classes represent different types.  A static class instance can not be assigned to variables of different class types.
+<P>
+<H3><A NAME=SECTION000614200000000000000>5.14.2 Static Class Members</A></H3>
+ <A NAME=langlangmanualstaticclassmember>&#160;</A>
+<P>
+Inside a static class definition, static class members of the same
+name must not be declared more than twice.  Also, overloading
+of methods as in C++ language are not possible.
+<P>
+<PRE>static class C {
+  int m() { ... }        
+  int m(int p) { ... }  // error: the class member m 
+}                       // is already declared
+</PRE>
+<P>
+Initialization can not be
+performed 
+in the declaration of instance variables.
+<P>
+
+<P>
+<PRE>static class C {
+  int a = 10;           // error: initial setups can't
+}                       //  be performed
+</PRE>
+<P>
+If methods, having no <tt> m_quals</tt> are executed, they become local methods executed as local accesses (see Section <A HREF="node33.html#langlangmanualclassmember">5.13.2</A>).
+<P>
+Methods, to which <tt> m_quals</tt> are added, have the following properties if specified by <tt> m_quals</tt>.
+<P>
+<UL><LI> <tt> locked</tt>
+<P>
+This specifies exclusive controls of invocation of the methods.
+<P>
+Instances generated from a static class having more than one <tt>
+locked</tt> method are called monitors.
+<P>
+</UL>
+<P>
+Instances of a global object can not be generated from a static class
+(see Chapter <A HREF="node41.html#langlangmanualobjectclass">5.21</A>).  For this reason, a
+global method can not be specified from a static class.  Therefore,
+when static classes are used as types of method arguments, all the
+instances passed to these arguments become local objects.
+<P>
+<PRE>static class C {
+  int m1() { ... } 
+    // a local method
+  int m2() : locked { ... }
+    // a local method of exclusive controls
+  int m3() : global { ... } 
+    // error: global methods can not be specified
+  int m4() : global locked { ... }
+    // error: global methods can not be specified
+  int m5(global C c) { ... }
+    // error: global objects can not be passed to
+    // parameters of static class type
+}
+</PRE>
+<P>
+
+Static classes are similar to classes in the sense that reference can
+be made to the beginning to use members defined at the end.  Also,
+prototype declarations are not necessary.
+<P>
+<H3><A NAME=SECTION000614300000000000000>5.14.3 Access Controls</A></H3>
+ <A NAME=langlangmanualstaticclassaccesscontrol>&#160;</A>
+<P>
+The definition of a static class specifies whether each static class member is 
+open / not-open 
+to outside.
+<P>
+The following two specifications are possible for the access control
+of static class members.
+<P>
+<UL><LI> <tt> public</tt>
+<P>
+Static class members are open, so that method activation against
+instances is possible and <tt> public</tt> can be specified only to
+methods
+<P>
+<LI> <tt> constructor</tt>
+<P>
+Methods used for instance generation are specified in the constructor
+(see Chapter <A HREF="node38.html#langlangmanualconstructor">5.18</A>).
+<P>
+Methods specifying constructors must have return values of the <tt>
+void</tt> type.
+<P>
+</UL>
+<P>
+Those classes for which access controls are not specified become <tt>
+private</tt> and not-open.
+<P>
+Since inheritance is not allowed in static classes, specification of
+<tt> protected</tt> in classes can not be used in static classes.
+<P>
+<PRE>static class C {
+  public: m1, m2; 
+  constructor: create, create2; 
+   // error: the return value of create2() is not void
+
+  int m1() { ... }
+  int m2() { ... }
+  int m3() { ... }  // since there are no
+         // specifications, it is 
+         // considered as private
+  void create() { ... }
+  int create2() { ... } 
+}
+</PRE>
+<P>
+<H3><A NAME=SECTION000614400000000000000>5.14.4  self</A></H3>
+<P>
+As in classes, instances which are to be activated in a method can be
+referred by the reserved word <tt> self</tt> (see Section
+<A HREF="node33.html#langlangmanualclassself">5.13.4</A>).
+<P>
+<H3><A NAME=SECTION000614500000000000000>5.14.5 Instance Generation</A></H3>
+<P>
+
+Variables of a static class immediately after declaration have no
+references to instances.  Instead they have zero as their values (see
+Section <A HREF="node24.html#langlangmanualdatatypezero">5.4.2</A>).  By calling the
+constructors defined in a static class, the generated instances can be
+referred against these variables.
+<P>
+
+Moreover, all instance assignments and parameter passings of methods
+are performed by references.
+<P>
+<PRE>static class C {
+  constructor: create;
+ 
+  void create() { ... } 
+}
+
+C c;
+c=&gt;create(); // generates an instance by
+  // calling the constructor, and assigns
+  // the reference of the generated instance to c
+</PRE>
+<P>
+Also, like class instances, by assigning 0 to the variables of static class type, it is possible to clear the reference of instances belonging to the variables.
+<P>
+<PRE>A a
+
+a=&gt;create();
+...
+a = 0; // this removes the reference to the instance
+</PRE>
+<P>
+<H3><A NAME=SECTION000614600000000000000>5.14.6 The Use of Generic Parameters</A></H3>
+<P>
+Generic parameters can also be used in static classes.  This usage is similar to that of classes.
+<P>
+<PRE>static class Collection&lt;T&gt; {
+  public: Add;
+
+  T Add (T content) { ... }
+}
+</PRE>
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

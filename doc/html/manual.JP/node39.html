@@ -1,0 +1,265 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.19 並行プログラミング</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.19 並行プログラミング">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION000619000000000000000>5.19 並行プログラミング</A></H2>
+ <A NAME=langlangmanualconcurrent>　</A>
+<P>
+ここでは  OZ++
+  言語の特徴の一つである並行プログラミングのための言語要素
+について述べる。
+<P>
+  OZ++
+  はオブジェクト指向のシステムであり、オブジェクトに対してメッセー
+ジが送信されそれに応じたメソッドが実行される。この時一つのオブジェクト
+に対して複数のメソッドが同時に実行可能となっている。
+<P>
+このような並行プログラミングをサポートするために  OZ++
+  言語では以下のも
+のが言語要素として用意されている。
+<P>
+<OL><LI> 排他制御に関するメソッド属性 
+(<A HREF="node33.html#langlangmanualclassmember">5.13.2</A> 節参照)
+<P>
+<LI> プロセス派生型とそれに対する演算 (<A HREF="node28.html#langlangmanualprocess">5.8</A>
+節参照)
+<P>
+<LI> プロセス間の同期のための条件変数を表す基本型としての <tt>
+condition</tt> 型とそれに対する演算
+</OL>
+<P>
+1 はクラスおよびスタティッククラスのメソッド定義において、メソッド起動
+に対して排他制御のためにロックを得るか否かをメソッドの属性として指定す
+るものである。これを指定することによって、そのクラスから生成されるイン
+スタンスは自動的にモニタとなり、排他制御についてはユーザのプログ
+ラミングが不要となる。ただしモニタのネストは許さないため、ロックを必要
+とするメソッドの中から起動されたメソッドの連鎖が再び自分に戻ってくるよ
+うな場合はデッドロックを引き起こすのでプログラミングには注意が必要であ
+る。
+<P>
+<PRE>class A {
+  public: m0;
+
+  void m0(B b) 
+    {
+      b-&gt;m1(self);
+    }
+}
+
+class B {
+  public: m1;
+
+  int m1(A a) : locked 
+    {
+      a-&gt;m0(self); 	
+        // ロックを得るメソッド中でモニタのオブジェクトを渡すのは危険
+    }
+}
+
+B b;
+A a;
+
+b=&gt;new();
+a=&gt;new();
+b-&gt;m1(a);               // デッドロック
+</PRE>
+<P>
+2 はスレッドのメソッド起動の連鎖をひとかたまりとして扱うことによって、
+プロセスというマクロなレベルでの並行プログラミングを可能にしている。ま
+た、プロセスの生成はユーザが制御を行なう。
+<P>
+3 は並行実行される複数のプロセス間の同期制御をサポートするためのもの
+である。 OZ++
+  ではプロセス間の同期を必要とするオブジェクトはモニタでなけ
+ればならない。
+<P>
+
+<P>
+
+<P>
+
+<P>
+
+<P>
+ OZ++
+  言語では、ユーザが必要な並行動作の記述レベルに応じてこ
+れら三つの言語要素を使い分けることによって、柔軟な並行プログラミングが
+可能である。
+<P>
+<H3><A NAME=SECTION000619100000000000000>5.19.1  condition 型</A></H3>
+ <A NAME=langlangmanualconcurrentcondition>　</A>
+<P>
+<tt> condition</tt> 型は並行実行されるプロセス間の同期を制御するための条件
+変数を表す基本型 (<A HREF="node24.html#langlangmanualdatatype">5.4</A> 節参照) である。
+<P>
+エグゼキュータの実装によって決定されるある決まった大きさの記憶領域を消
+費する。
+<P>
+<tt> condition</tt> 型に対しては以下の演算が可能である。
+<P>
+<UL><LI> <tt> wait</tt>
+<LI> <tt> signal</tt>
+<LI> <tt> signalall</tt>
+</UL>
+<P>
+また、これらの演算を行なうメソッドは locked の属性を持たなければならない。
+<P>
+<tt> wait</tt> <BR>
+<P>
+条件変数に対してこれが実行されると、以下の処理が行なわれる。
+<P>
+<OL><LI> モニタロックを解放し、条件変数の実行待ちのキューに入る
+<LI> 他のプロセスがその条件変数に <tt> signal</tt> すると、キューから取り出され
+実行が再開される
+<LI> 当該プロセスは再びモニタロックを得ようとする
+</OL>
+<P>
+このように <tt> signal</tt> によってすぐに <tt> wait</tt> しているプロセスに制
+御が渡るわけではないので, <tt> wait</tt> はループで囲まれている必要がある。
+<P>
+例えば、バッファが空になるまで待つという処理は、
+<P>
+<PRE>condition c;
+
+if (バッファが空)
+  {
+    wait c;
+  }
+</PRE>
+<P>
+ではなく、
+<P>
+<PRE>condition c;
+
+while (バッファが空)
+  {
+    wait c;
+  }
+</PRE>
+<P>
+と記述しなければならない。
+<P>
+<tt> signal</tt> <BR>
+<P>
+条件変数のキューの先頭のプロセスの実行を再開する。キューが空の場合、副
+作用はない。
+<P>
+<tt> signalall</tt> <BR>
+<P>
+条件変数のキューのすべてのプロセスの実行を再開する。キューが空の場合、
+副作用はない。
+<P>
+<H3><A NAME=SECTION000619200000000000000>5.19.2 プログラム例</A></H3>
+<P>
+<PRE>class Pen {
+  public: Draw;
+
+  // 文字列をホワイトボードに書くためグローバルメソッド
+  void Draw(WhiteBoard wb, String str) : global 
+    {
+      ...
+      wb-&gt;Draw(str);
+      ...
+    }
+  ...
+};
+
+// ホワイトボードに書かれたもの (Item) を管理するために List&lt;Item&gt; を親にしている
+class WhiteBoard : List&lt;Item&gt; {
+  public: Draw;
+
+  Pen aPen;
+
+  // 文字列をホワイトボードに表示するためのメソッド
+  void Draw(String str) : local 
+    {
+      ...
+    }
+  ...
+};
+
+// 共有ホワイトボードを表すクラス
+class SharedWhiteBoard : 
+  WhiteBoard (
+    // WhiteBoardから継承するメソッドDrawをWDrawに改名
+    rename Draw WDraw;
+  ) {
+
+  public: GetBlack, GetRed, PutBlack, PutRed, Draw;
+	
+  // ペンが使用されていることを示すフラッグ
+  int BlackInUse, RedInUse;
+
+  // ペンの使用が終った時に同期をとるための条件変数
+  condition BlackIsFree, RedIsFree;
+
+  Pen Black, Red;
+
+  // 使用するペンを取るためのメソッド
+  Pen GetBlack() : locked, global 
+    {
+      while (BlackInUse) 
+        wait BlackIsFree;
+      BlackInUse = 1;
+      return Black;
+    }
+
+  // GetRed の定義は省略
+ 
+  // 使用済みのペンを返すためのメソッド
+  void PutBlack() : locked, global 
+    {
+      BlackInUse = 0;
+      signal BlackIsFree;
+    }
+
+  // PutRed の定義は省略
+
+  // 文字列を共有ホワイトボードに表示するためのメソッド
+  void Draw(String str) : local 
+    {
+      ...
+      WDraw(str);
+      ...
+    }
+  ...
+};
+</PRE>
+<P>
+この例は、二本のペン (<tt> Black</tt> と <tt> Red</tt>) を備えた共有ホワイトボー
+ド(クラス <tt> SharedWhiteBoard</tt>) を表現するものである。
+<P>
+この共有ホワイトボードに対する文字列の表示は、以下の手順で行なわれる。
+<P>
+<OL><LI> まず必要な色のペンを取得する (メソッド <tt> GetBlack()</tt> または 
+<tt> GetRed()</tt> を実行)
+<P>
+<LI> 取得したペンで文字列を書く (取得したペンのオブジェクトに対して 
+クラス Pen のメソッド <tt> Draw()</tt> を実行)
+<P>
+<LI> 使用済みのペンを返却する (メソッド <tt> PutBlack()</tt> または <tt>
+PutRed()</tt>を実行)
+</OL>
+<P>
+ここでは、ペンの取得および返却の処理に排他制御が必要なため、これらのメ
+ソッドに対して <tt> locked</tt> を指定している。さらに、一本のペンに対する
+取得と返却の処理の間では同期が必要なため、条件変数 (<tt> BlackFree</tt> と 
+<tt> RedFree</tt>) を用いてこれを実現している。
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

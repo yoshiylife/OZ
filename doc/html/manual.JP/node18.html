@@ -1,0 +1,987 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>4.1  OZ++/Frame
+  の操作説明</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="4.1  OZ++/Frame
+  の操作説明">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION00051000000000000000>4.1  OZ++/Frame
+  の操作説明</A></H2>
+<P>
+
+<P>
+本節では、<tt> OZ++/Frame</tt>
+  の基本的な操作方法と、ジャンクショップ
+  ブラウザの操作方法を説明する。
+<P>
+
+<P>
+<H3><A NAME=SECTION00051100000000000000>4.1.1 概観</A></H3>
+<P>
+
+<P>
+<tt> OZ++/Frame</tt>
+  のGUIの概観を図<A HREF="node18.html#figframegagui">4.1--1</A>に示す。
+ウィンドウは、メニューとスライド/スクリーン表示領域とから構成される。
+スライド/スクリーン表示領域は、コアシステムライブラリ
+  の要求を受け付けて
+ウィジェット
+  を描画する領域である。
+ミューテータ
+  の機能は、メニューから起動される処理として実装されている。
+<P>
+
+<P>
+<A NAME=figframegagui>　</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD>
+<IMG  ALIGN=BOTTOM ALT="env-frame-ga-gui.gif" SRC="figure/env-frame-ga-gui.gif">
+</TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>図 4.1--1:</STRONG> GUIの概観</CAPTION>
+</TABLE>
+</CENTER>
+
+
+<P>
+
+<P>
+<H3><A NAME=SECTION00051200000000000000>4.1.2 メニュー</A></H3>
+<P>
+
+<P>
+メニューには、以下の種類がある。
+<P>
+<UL><LI> <tt> Frame</tt>: <tt> OZ++/Frame</tt>
+  自身の操作。
+<LI> <tt> Series</tt>: スライドとスクリーンの操作。
+<LI> <tt> Goto</tt>: スライドの切り替え。
+<LI> <tt> Widget</tt>: ウィジェット
+  の操作。
+<LI> <tt> Junkshop</tt>: ジャンクショップ
+  の操作。
+</UL>
+<P>
+各メニューを図<A HREF="node18.html#figframegamenus">4.1--2</A>に示す。
+<P>
+
+<P>
+<A NAME=figframegamenus>　</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD COLSPAN=2 ALIGN=CENTER VALIGN=BOTTOM>
+<IMG SRC="figure/env-frame-menu-frame.gif">
+</TD>
+<TD COLSPAN=2 ALIGN=CENTER VALIGN=BOTTOM>
+<IMG SRC="figure/env-frame-menu-series.gif">
+</TD>
+<TD COLSPAN=2 ALIGN=CENTER VALIGN=BOTTOM>
+<IMG SRC="figure/env-frame-menu-goto.gif">
+</TD>
+</TR>
+<TR>
+<TD COLSPAN=2 ALIGN=CENTER>
+(1)<TT>Frame</TT>メニュー
+</TD>
+<TD COLSPAN=2 ALIGN=CENTER>
+(2)<TT>Series</TT>メニュー
+</TD>
+<TD COLSPAN=2 ALIGN=CENTER>
+(3)<TT>Goto</TT>メニュー
+</TD>
+</TR>
+<TR>
+<TD HEIGHT=20></TD>
+</TR>
+<TR>
+<TD></TD>
+<TD COLSPAN=2 ALIGN=CENTER VALIGN=BOTTOM>
+<IMG SRC="figure/env-frame-menu-widget.gif">
+</TD>
+<TD COLSPAN=2 ALIGN=CENTER VALIGN=BOTTOM>
+<IMG SRC="figure/env-frame-menu-junkshop.gif">
+</TD>
+<TD></TD>
+</TR>
+<TR>
+<TD></TD>
+<TD COLSPAN=2 ALIGN=CENTER>
+(4)<TT>Widget</TT>メニュー
+</TD>
+<TD COLSPAN=2 ALIGN=CENTER>
+(5)<TT>Junkshop</TT>メニュー
+</TD>
+<TD></TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>図 4.1--2</STRONG>:メニュー</CAPTION>
+</TABLE>
+</CENTER>
+
+
+<P>
+メニューの各項目を選択したときに起動される処理は以下の通りである。
+<P>
+<UL><LI> <tt> Frame</tt>メニュー
+
+<UL><LI> <tt> Quit</tt>: <tt> OZ++/Frame</tt>
+  を終了する。
+</UL>
+<P>
+<LI> <tt> Series</tt>メニュー
+
+<UL><LI> <tt> Series Info...</tt>: シリーズの情報を表示する。
+<LI> <tt> Delete Slide...</tt>: 表示されているスライドを削除する。
+</UL>
+<P>
+<LI> <tt> Goto</tt>メニュー
+
+<UL><LI> <tt> First</tt>: 先頭のスライドに切り替える。
+<LI> <tt> Prev</tt>: 前のスライドに切り替える。
+<LI> <tt> Next</tt>: 次のスライドに切り替える。
+<LI> <tt> Last</tt>: 最後のスライドに切り替える。
+</UL>
+<P>
+<LI> <tt> Widget</tt>メニュー
+
+<UL><LI> <tt> Info...</tt>: ウィジェット
+  の属性情報を表示する。
+<LI> <tt> Delete...</tt>: ウィジェット
+  を削除する。
+</UL>
+<P>
+<LI> <tt> Junkshop</tt>メニュー
+
+<UL><LI> <tt> open</tt>: ジャンクショップ
+  ブラウザを開く。
+<LI> <tt> close</tt>: ジャンクショップ
+  ブラウザを閉じる。
+</UL></UL>
+<P>
+
+<P>
+<H3><A NAME=SECTION00051300000000000000>4.1.3 スライドの操作</A></H3>
+<P>
+
+<P>
+スライドの操作は、すべてメニューから行う。
+<P>
+<UL>
+<LI> <b><b> 切り替え</b></b>
+
+<P>
+<tt> Goto</tt>メニューで、
+先頭(<tt> First</tt>)、前(<tt> Prev</tt>)、次(<tt> Next</tt>)、最後(<tt> Last</tt>)
+の各スライドに切り替えられる。
+<P>
+
+<LI> <b><b> 削除</b></b>
+
+<P>
+<tt> Series</tt>メニューで<tt> Delete Slide...</tt>項目を選択すると、
+図<A HREF="node18.html#figframegaslidedelete">4.1--3</A>に示すスライド削除確認ウィンドウが開くの
+で、削除するならば<tt> Delete</tt>ボタンを、削除を取り消すならば
+<tt> Cancel</tt>ボタンを押す。
+<P>
+  
+<P>
+<A NAME=figframegaslidedelete>　</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD>
+<IMG  ALIGN=BOTTOM ALT="env-frame-delete-slide.gif"
+ SRC="figure/env-frame-delete-slide.gif">
+</TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>図 4.1--3:</STRONG> スライド削除確認ウィンドウ</CAPTION>
+</TABLE>
+</CENTER>
+
+  
+<P>
+
+<LI> <b><b> ジャンクショップ
+  からのインポート</b></b>
+
+<P>
+<tt> Junkshop</tt>メニューの<tt> open</tt>でジャンクショップ
+  ブラウザを開いて
+ジャンクショップ
+  ブラウザのスライドエクスポート操作を実行すれば、
+ジャンクショップ
+  に登録されているスライドを取り込むことができる。
+詳細は<A HREF="node18.html#sectionusingjsfromframe">4.1.5.3</A>節を参照されたい。
+</UL>
+<P>
+
+<P>
+<H3><A NAME=SECTION00051400000000000000>4.1.4 ウィジェット
+  の操作</A></H3>
+<P>
+
+<P>
+ウィジェット
+  の操作には、スライド/スクリーン表示領域のウィジェット
+  に対して
+直接行う操作と、メニューから起動する操作がある。
+スライド/スクリーン表示領域上のウィジェット
+  操作では、
+マウスやキーボード操作で発生する
+イベントをウィジェット
+  に送ることができる。
+メニューからは、ウィジェット
+  の属性値の表示と変更、およびウィジェット
+  の削除ができる。
+<P>
+<UL>
+<LI> <b><b> マウスおよびキーボードによる操作</b></b>
+
+<P>
+スライド/スクリーン表示領域に表示されている各ウィジェット
+  は、
+マウスやキーボード操作で発生するイベントを受け付ける。
+各イベントを発生させるための操作を、表<A HREF="node18.html#tableframegaoperations">4.1--1</A>
+に示す。
+<P>
+  
+<P>
+<A NAME=tableframegaoperations>　</A>
+<P>
+<TABLE BORDER>
+<CAPTION ALIGN=top><STRONG>表 4.1--1:</STRONG> イベントと操作の対応</A>
+<TR VALIGN=TOP>
+<TH NOWRAP>ウィジェット</TH> <TH NOWRAP>イベント</TH> <TH>操作</TH>
+</TR>
+<TR>
+</TR>
+<TR VALIGN=TOP>
+<TD><TT>button</TT></TD>      <TD><TT>ButtonMouseUp</TT></TD>
+                              <TD>マウス左ボタンクリック</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD><TT>radiobutton</TT></TD> <TD><TT>RadioButtonSelected</TT></TD>
+                              <TD>マウス左ボタンクリック</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD><TT>checkbutton</TT></TD> <TD><TT>CheckButton</TT></TD>
+                              <TD>マウス左ボタンクリック</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD><TT>field</TT></TD>       <TD><TT>FieldTextChanged</TT></TD>
+                              <TD>マウス左ボタンクリックの後、
+                                  <TT>return</TT>キー押下</TD>
+</TR>
+</TABLE>
+
+
+<P>
+
+<LI> <b><b> ウィジェット
+  の属性値の表示と変更</b></b>
+
+<P>
+ウィジェット
+  の属性値を表示するには、以下の手順で操作する。
+<P>
+<OL><LI> <tt> Widget</tt>メニューの<tt> Info...</tt>項目を選択する。
+<LI> 属性値を表示したいウィジェット
+  の上でマウスをクリックして、
+ウィジェット
+  を選択する。
+</OL>
+<P>
+上記の操作を行うと、図<A HREF="node18.html#figframegawidgetinfo">4.1--4</A>のような
+ウィジェット
+  属性ウィンドウが開く。
+<P>
+  
+<P>
+<A NAME=figframegawidgetinfo>　</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD ALIGN=CENTER VALIGN=BOTTOM><IMG ALIGN=BOTTOM
+ ALT="env-frame-info-widget.gif"
+ SRC="figure/env-frame-info-widget.gif"></TD>
+<TD WIDTH=20></TD>
+<TD ALIGN=CENTER VALIGN=BOTTOM><IMG ALIGN=BOTTOM
+ ALT="env-frame-info-widget2.gif"
+ SRC="figure/env-frame-info-widget2.gif"></TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER>(1) <TT>button</TT>ウィジェットの場合</TD>
+<TD></TD>
+<TD ALIGN=CENTER>(2) <TT>string</TT>ウィジェットの場合</TD>
+</TR>
+</TABLE>
+<CAPTION><STRONG>図 4.1--4:</STRONG> ウィジェット属性ウィンドウ<BR></CAPTION>
+</CENTER>
+
+  
+<P>
+属性値の変更は、ウィジェット
+  属性ウィンドウの各属性項目を操作することで行う。
+<P>
+<UL>
+<LI> <b><b> 値を入力する属性</b></b>
+
+<P>
+値を文字列または数値で与える属性は、属性値を表示しているフィールドを
+マウス左ボタンでクリックし、新しい値を入力する。
+<tt> name</tt>, <tt> label</tt>, <tt> geom</tt>, <tt> size</tt>, <tt> value</tt>,
+<tt> text</tt>の各属性値は、この操作方法で変更する。
+<P>
+
+<LI> <b><b> 値を選択する属性</b></b>
+
+<P>
+幾つかの決められた値から一つを選択する属性は、
+選択ボタンで適切な値を選択する。
+<tt> state</tt>, <tt> justify</tt>, <tt> font</tt>, <tt> fontsize</tt>の
+各属性値は、この操作方法で変更する。
+<P>
+
+<LI> <b><b> カラー属性</b></b>
+
+<P>
+カラーを指定する属性の値は、ウィジェット
+  属性ウィンドウにその値の色で
+表示される。
+その色の部分をマウス左ボタンでクリックすると、
+図<A HREF="node18.html#figframegacolor">4.1--5</A>に示すカラー設定ウィンドウが開くので、
+RGBの3原色の調合または、カラーパレットからの選択によって、
+希望の色を設定する。
+<P>
+  
+<P>
+<A NAME=figframegacolor>　</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD>
+<IMG  ALIGN=BOTTOM ALT="env-frame-info-color.gif"
+ SRC="figure/env-frame-info-color.gif">
+</TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>図 4.1--5:</STRONG> カラー設定ウィンドウ</CAPTION>
+
+</TABLE>
+</CENTER>
+
+  
+<P>
+</UL>
+<P>
+
+<P>
+<LI> <b><b> ウィジェット
+  の削除</b></b>
+
+<P>
+ウィジェット
+  を削除するには、以下の手順で操作する。
+<P>
+<OL><LI> <tt> Widget</tt>メニューの<tt> Delete...</tt>項目を選択する。
+<LI> 属性値を表示したいウィジェット
+  の上でマウスをクリックして、
+ウィジェット
+  を選択する。
+</OL>
+<P>
+上記の操作を行うと、図<A HREF="node18.html#figframegawidgetdelete">4.1--6</A>のような
+ウィジェット
+  削除確認ウィンドウが開く。
+削除するならば<tt> Delete</tt>ボタンを、削除を取り止めるならば
+<tt> Cancel</tt>ボタンを押す。
+<P>
+  
+<P>
+<A NAME=figframegawidgetdelete>　</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD>
+<IMG  ALIGN=BOTTOM ALT="env-frame-delete-widget.gif"
+ SRC="figure/env-frame-delete-widget.gif">
+</TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>図 4.1--6:</STRONG> ウィジェット削除確認ウィンドウ</CAPTION>
+
+</TABLE>
+</CENTER>
+
+  
+<P>
+</UL>
+<P>
+
+<P>
+<H3><A NAME=SECTION00051500000000000000>4.1.5 ジャンクショップ
+ </A></H3>
+<P>
+
+<P>
+ジャンクショップ
+  は、<tt> OZ++/Frame</tt>
+  用のインスタンスリポジトリである。
+<tt> OZ++/Frame</tt>
+  で作成したスライドやウィジェット
+  などの部品に名前を付けて格納し、
+また<tt> OZ++/Frame</tt>
+  に取り込むことができる。
+ジャンクショップ
+  は、ネームディレクトリにエントリ名<tt> &quot;:junkshop&quot;</tt>で
+登録される、グローバルオブジェクトである。
+<P>
+この節では、
+ジャンクショップ
+  を起動するためのジャンクショップ
+  スタータと、
+ジャンクショップ
+  の内容をブラウズするためのジャンクショップ
+  ブラウザの使用方法を説明する。
+また、<tt> OZ++/Frame</tt>
+  からジャンクショップ
+  ブラウザを使ってオブジェクトをジャンクショップ
+  に登録し、
+取り出す方法を説明する。
+<P>
+
+<P>
+ジャンクショップ
+  スタータ <BR>
+<P>
+
+<P>
+ジャンクショップ
+  スタータは、以下の機能を持つ。
+<P>
+<UL><LI> ジャンクショップ
+  オブジェクトが存在しているか調べる。
+<LI> 新しいジャンクショップ
+  オブジェクトを起動する。
+</UL>
+<P>
+ジャンクショップ
+  スタータのGUIを図<A HREF="node18.html#figframejsstarter">4.1--7</A>に示す。
+<P>
+
+<P>
+<A NAME=figframejsstarter>　</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD WIDTH=50> </TD>
+<TD>
+<IMG  ALIGN=BOTTOM ALT="env-frame-js-starter.gif"
+ SRC="figure/env-frame-js-starter.gif">
+</TD>
+<TD WIDTH=50> </TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>図 4.1--7:</STRONG> ジャンクショップスタータのGUI</CAPTION>
+
+</TABLE>
+</CENTER>
+
+
+<P>
+操作方法は以下の通りである。
+<P>
+<UL>
+<LI> <tt> Ping</tt>: <b><b> ジャンクショップ
+  オブジェクトの存在確認</b></b>
+
+<P>
+<tt> Ping</tt>ボタンを押す。
+ネームディレクトリにエントリ名<tt> &quot;:junkshop&quot;</tt>で
+オブジェクトが登録されていて
+かつそのオブジェクトが確かにジャンクショップ
+  である
+(クラス<tt> Junkshop</tt>のインスタンスである)
+ならば図<A HREF="node18.html#figframejsstarterpingdialog">4.1--8</A>(1)に示すダイアログが、
+エントリ名<tt> &quot;:junkshop&quot;</tt>で登録されたオブジェクトが存在しないならば
+図<A HREF="node18.html#figframejsstarterpingdialog">4.1--8</A>(2)に示すダイアログが、
+別の(クラス<tt> Junkshop</tt>以外の)クラスのオブジェクトがエントリ名<tt>
+&quot;:junkshop&quot;</tt>で登録されていた場合は
+図<A HREF="node18.html#figframejsstarterpingdialog">4.1--8</A>(3)に示すダイアログが開く。
+<P>
+  
+<P>
+<A NAME=figframejsstarterpingdialog>　</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD ALIGN=CENTER VALIGN=BOTTOM><IMG  ALIGN=BOTTOM
+ ALT="env-frame-js-starter-pingack.gif"
+ SRC="figure/env-frame-js-starter-pingack.gif"></TD>
+<TD WIDTH=20></TD>
+<TD ALIGN=CENTER VALIGN=BOTTOM><IMG  ALIGN=BOTTOM
+ ALT="env-frame-js-starter-pingnack.gif"
+ SRC="figure/env-frame-js-starter-pingnack.gif"></TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER>(1) ジャンクショップが存在する場合</TD>
+<TD></TD>
+<TD ALIGN=CENTER>(2) ジャンクショップが存在しない場合</TD>
+</TR>
+<TR>
+<TD HEIGHT=20></TD>
+</TR>
+<TR>
+<TD COLSPAN=3 ALIGN=CENTER VALIGN=BOTTOM><IMG  ALIGN=BOTTOM
+ ALT="env-frame-js-starter-pingerror.gif"
+ SRC="figure/env-frame-js-starter-pingerror.gif"></TD>
+</TR>
+<TR>
+<TD COLSPAN=3 ALIGN=CENTER>(3) 別クラスのオブジェクトがエントリ名<TT>:junkshop</TT>
+で登録されている場合</TD>
+</TR>
+<TR>
+<TD HEIGHT=20></TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>図 4.1--8:</STRONG> ジャンクショップスタータの
+<TT>Ping</TT>操作に対する応答ダイアログ</CAPTION>
+
+</TABLE>
+</CENTER>
+
+  
+<P>
+
+<LI> <tt> Start</tt>: <b><b> ジャンクショップ
+  の起動</b></b>
+
+<P>
+<OL><LI> <tt> Start</tt>ボタンを押す。
+<P>
+<LI> ジャンクショップ
+  オブジェクトのインスタンシエートとネームディレクトリへの登録に
+成功した場合は、図<A HREF="node18.html#figframejsstarterstartdialog">4.1--9</A>(1)に示す
+ダイアログが開く。
+ネームディレクトリにエントリ名<tt> &quot;:junkshop&quot;</tt>で登録された
+オブジェクトが存在する場合には、
+図<A HREF="node18.html#figframejsstarterstartdialog">4.1--9</A>(2)に示す
+問合せダイアログが開く。
+新たにジャンクショップ
+  オブジェクトをインスタンシエートしてネームディレクトリの
+エントリを置き換える場合には、このダイアログで<tt> Yes</tt>ボタンを押す。
+起動処理を終了する場合は、<tt> No</tt>ボタンを押す。
+<A NAME=itemframejsstartquery>　</A>
+<P>
+<LI> <A HREF="node18.html#itemframejsstartquery">2</A>で<tt> Yes</tt>を選択し、
+ジャンクショップ
+  の起動が成功した場合は図<A HREF="node18.html#figframejsstarterstartdialog">4.1--9</A>(1)
+のダイアログが開く。
+失敗した場合は図<A HREF="node18.html#figframejsstarterstartdialog">4.1--9</A>(3)
+</OL>
+<P>
+  
+<P>
+<A NAME=figframejsstarterstartdialog>　</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD ALIGN=CENTER VALIGN=BOTTOM><IMG  ALIGN=BOTTOM
+ ALT="env-frame-js-starter-startack.gif"
+ SRC="figure/env-frame-js-starter-startack.gif"></TD>
+<TD WIDTH=20></TD>
+<TD ALIGN=CENTER VALIGN=BOTTOM><IMG  ALIGN=BOTTOM
+ ALT="env-frame-js-starter-startquery.gif"
+ SRC="figure/env-frame-js-starter-startquery.gif"></TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER>(1) ジャンクショップの起動が成功した場合</TD>
+<TD></TD>
+<TD ALIGN=CENTER>(2) ジャンクショップが存在する場合</TD>
+</TR>
+<TR>
+<TD HEIGHT=20></TD>
+</TR>
+<TR>
+<TD COLSPAN=3 ALIGN=CENTER VALIGN=BOTTOM><IMG  ALIGN=BOTTOM
+ ALT="env-frame-js-starter-starterror.gif"
+ SRC="figure/env-frame-js-starter-starterror.gif"></TD>
+</TR>
+<TR>
+<TD COLSPAN=3 ALIGN=CENTER>(3) ジャンクショップスタータの起動が失敗した場合</TD>
+</TR>
+<TR>
+<TD HEIGHT=20></TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>図 4.1--9:</STRONG> ジャンクショップスタータの
+<TT>Start</TT>操作に対する応答ダイアログ</CAPTION>
+
+</TABLE>
+</CENTER>
+
+  
+<P>
+</UL>
+<P>
+
+<P>
+ジャンクショップ
+  ブラウザ <BR>
+<P>
+
+<P>
+ジャンクショップ
+  ブラウザは、ジャンクショップ
+  の内容をブラウズするツールである。
+ジャンクショップ
+  ブラウザのGUIを図<A HREF="node18.html#figframejsbrowser">4.1--10</A>に示す。
+<P>
+
+<P>
+<A NAME=figframejsbrowser>　</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD>
+<IMG  ALIGN=BOTTOM ALT="env-frame-js-browser.gif" SRC="figure/env-frame-js-browser.gif">
+</TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>図 4.1--10:</STRONG> ジャンクショップブラウザのGUI</CAPTION>
+
+</TABLE>
+</CENTER>
+
+
+<P>
+GUIは、操作ボタン、フィルタ、リストの三つの部分から構成される。
+リストは、オブジェクトの種類別に分類されて表示されている。
+フィルタのチェックボタンを操作すことで、
+表示したい(したくない)オブジェクトの種類を選択できる。
+<P>
+ジャンクショップ
+  ブラウザは、以下の機能を提供する。
+<P>
+<UL><LI> ジャンクショップ
+  の内容の表示/再読み込み
+<LI> オブジェクトの登録名の変更
+<LI> オブジェクトの削除
+</UL>
+
+再読み込み操作を行うと、ジャンクショップ
+  の最新の状態が
+ジャンクショップ
+  ブラウザの表示に反映される。
+<P>
+以下に、操作方法を示す。
+<P>
+<UL>
+<LI> <tt> Rescan</tt>: <b><b> ジャンクショップ
+  の内容の再読み込み</b></b>
+
+<P>
+<tt> Rescan</tt>ボタンを押す。
+<P>
+
+<LI> <tt> Rename</tt>: <b><b> 登録名の変更</b></b>
+
+<P>
+<OL><LI> リスト内の要素をマウス左ボタンでクリックして
+変更したい登録名を選択し(図<A HREF="node18.html#figframejsbrowserrename">4.1--11</A>(1))、
+<tt> Rename</tt>ボタンを押す。
+<P>
+<LI> ポップアップウィンドウが開くので、新しい登録名を入力する
+(図<A HREF="node18.html#figframejsbrowserrename">4.1--11</A>(2))。
+処理を継続するならば<tt> OK</tt>ボタンを、
+中止するならば<tt> Cancel</tt>ボタンを押す。
+<A NAME=itemframejsrenamequery>　</A>
+<P>
+<LI> <A HREF="node18.html#itemframejsrenamequery">2</A>で
+<tt> OK</tt>ボタンを選択した場合、
+図<A HREF="node18.html#figframejsbrowserrename">4.1--11</A>(3)に示す確認ダイアログ
+が開くので、登録名を変更するか処理を中止するかによって、
+<tt> Rename</tt>ボタンまたは<tt> Cancel</tt>ボタンを押す。
+</OL>
+<P>
+  
+<P>
+<A NAME=figframejsbrowserrename>　</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD ALIGN=CENTER VALIGN=BOTTOM><IMG  ALIGN=BOTTOM
+ ALT="env-frame-js-browser-rename.gif"
+ SRC="figure/env-frame-js-browser-rename.gif"></TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER>(1) エントリの選択</TD>
+</TR>
+<TR>
+<TD HEIGHT=20></TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER VALIGN=BOTTOM><IMG  ALIGN=BOTTOM
+ ALT="env-frame-js-browser-renameinput.gif"
+ SRC="figure/env-frame-js-browser-renameinput.gif"></TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER>(2) 新しい名前の入力</TD>
+</TR>
+<TR>
+<TD HEIGHT=20></TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER VALIGN=BOTTOM><IMG  ALIGN=BOTTOM
+ ALT="env-frame-js-browser-renamequery.gif"
+ SRC="figure/env-frame-js-browser-renamequery.gif"></TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER>(3) 名前変更の確認</TD>
+</TR>
+<TR>
+<TD HEIGHT=20></TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>図 4.1--11:</STRONG> ジャンクショップブラウザの
+<TT> Rename</TT>操作</CAPTION>
+
+</TABLE>
+</CENTER>
+
+  
+<P>
+
+<LI> <tt> Delete</tt>: <b><b> エントリの削除</b></b>
+
+<P>
+<OL><LI> リスト内の要素をマウス左ボタンでクリックして
+変更したい登録名を選択し、<tt> Delete</tt>ボタンを押す。
+<P>
+<LI> 図<A HREF="node18.html#figframejsbrowserdelete">4.1--12</A>に示す確認ダイアログ
+が開くので、エントリを削除するか処理を中止するかによって、
+<tt> Delete</tt>ボタンまたは<tt> Cancel</tt>ボタンを押す。
+</OL>
+<P>
+  
+<P>
+<A NAME=figframejsbrowserdelete>　</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD WIDTH=50> </TD>
+<TD>
+<IMG  ALIGN=BOTTOM ALT="env-frame-js-browser-delete.gif"
+ SRC="figure/env-frame-js-browser-delete.gif">
+</TD>
+<TD WIDTH=50> </TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>図 4.1--12:</STRONG> ジャンクショップブラウザの<TT> Delete</TT>操作確認ダイアログ</CAPTION>
+
+</TABLE>
+</CENTER>
+
+  
+<P>
+
+<LI> <tt> Filter</tt>: <b><b> 表示リストの選択</b></b>
+
+<P>
+フィルタ部分に表示可能なエントリの種類を示すチェックボタンがあるので、
+表示したいものをチェックする。
+起動時は、<tt> none</tt>がチェックされている。
+<tt> none</tt>がチェックされると、他のすべてのチェックがキャンセルされ、
+すべての種類のリストが表示される
+(図<A HREF="node18.html#figframejsbrowserfilter">4.1--13</A>)。
+<P>
+  
+<P>
+<A NAME=figframejsbrowserfilter>　</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD ALIGN=CENTER VALIGN=BOTTOM><IMG  ALIGN=BOTTOM
+ ALT="env-frame-js-browser-filter2.gif"
+ SRC="figure/env-frame-js-browser-filter2.gif"></TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER>(1) <TT>slide</TT>と<TT>widget</TT>を表示</TD>
+</TR>
+<TR>
+<TD HEIGHT=20></TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER VALIGN=BOTTOM><IMG  ALIGN=BOTTOM
+ ALT="env-frame-js-browser-filter1.gif"
+ SRC="figure/env-frame-js-browser-filter1.gif"></TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER>(2) <TT>slide</TT>だけを表示</TD>
+</TR>
+<TR>
+<TD HEIGHT=20></TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER VALIGN=BOTTOM><IMG  ALIGN=BOTTOM
+ ALT="env-frame-js-browser-filter3.gif"
+ SRC="figure/env-frame-js-browser-filter3.gif"></TD>
+</TR>
+<TR>
+<TD COLSPAN=3 ALIGN=CENTER>(3) <TT>none</TT>をチェック</TD>
+</TR>
+<TR>
+<TD HEIGHT=20></TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>図 4.1--13:</STRONG> ジャンクショップブラウザの
+<TT>Filter</TT>操作</CAPTION>
+
+</TABLE>
+</CENTER>
+
+  
+<P>
+</UL>
+<P>
+
+<P>
+ジャンクショップ
+  ブラウザを<tt> OZ++/Frame</tt>
+  から使う <BR>
+<P>
+<A NAME=sectionusingjsfromframe>　</A>
+
+<P>
+ジャンクショップ
+  ブラウザは、ジャンクショップ
+  から<tt> OZ++/Frame</tt>
+  にオブジェクトを取り込む、
+または<tt> OZ++/Frame</tt>
+  で作成したオブジェクトをジャンクショップ
+  に登録する場合に、
+<tt> OZ++/Frame</tt>
+  とジャンクショップ
+  ブラウザのインタフェースとして利用できる。
+<tt> OZ++/Frame</tt>
+  から起動した場合、図<A HREF="node18.html#figframejsbrowserwithowner">4.1--14</A>
+のように<tt> ImportSlide</tt>および<tt> ExportSlide</tt>
+ボタンが有効になる
+(図<A HREF="node18.html#figframejsbrowser">4.1--10</A>では、これらのボタンが無効になっている)。
+<P>
+
+<P>
+<A NAME=figframejsbrowserwithowner>　</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD WIDTH=50> </TD>
+<TD>
+<IMG  ALIGN=BOTTOM ALT="env-frame-js-browser-withowner.gif"
+ SRC="figure/env-frame-js-browser-withowner.gif">
+</TD>
+<TD WIDTH=50> </TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>図 4.1--14:</STRONG> <TT> OZ++/Frame</TT>から起動したジャンクショップブラウザ</CAPTION>
+
+</TABLE>
+</CENTER>
+
+
+<P>
+以下に、操作方法を説明する。
+<P>
+<UL>
+<LI> <tt> ImportSlide</tt>: <b><b> <tt> OZ++/Frame</tt>
+  のカレントスライドのジャンクショップ
+  への登録</b></b>
+
+<P>
+<OL><LI> <tt> ImportSlide</tt>ボタンを押す。
+<P>
+<LI> 図<A HREF="node18.html#figframejsimportquery">4.1--15</A>に示す登録名入力ウィンドウが
+開くので、ジャンクショップ
+  に登録する名前を入力する。
+<tt> OZ++/Frame</tt>
+  のカレントスライドを確認し、登録を実行するならば<tt> OK</tt>ボタンを
+押し、操作を中止する場合は<tt> Cancel</tt>ボタンを押す。
+</OL>
+<P>
+  
+<P>
+<A NAME=figframejsimportquery>　</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD>
+<IMG  ALIGN=BOTTOM ALT="env-frame-js-browser-importquery.gif"
+ SRC="figure/env-frame-js-browser-importquery.gif">
+</TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>図 4.1--15:</STRONG> <TT> ImportSlide</TT>操作の登録名入力ウィンドウ</CAPTION>
+
+</TABLE>
+</CENTER>
+
+  
+<P>
+
+<LI> <tt> ExportSlide</tt>: <b><b> ジャンクショップ
+  から<tt> OZ++/Frame</tt>
+  へのスライドの取り込み</b></b>
+
+<P>
+<OL><LI> <tt> slide</tt>オブジェクトのリストから取り込むエントリを選択する。
+<P>
+<LI> <tt> ExportSlide</tt>ボタンを押す。
+<P>
+<LI> 図<A HREF="node18.html#figframejsexportquery">4.1--16</A>に示す確認ダイアログが開くので、
+処理を実行するならば<tt> Export</tt>ボタンを押し、
+中止するならば<tt> Cancel</tt>ボタンを押す。
+</OL>
+<P>
+  
+<P>
+<A NAME=figframejsexportquery>　</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD>
+<IMG  ALIGN=BOTTOM ALT="env-frame-js-browser-exportquery.gif"
+ SRC="figure/env-frame-js-browser-exportquery.gif">
+</TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>図 4.1--16:</STRONG> <TT> ExportSlide</TT>操作の確認ダイアログ</CAPTION>
+
+</TABLE>
+</CENTER>
+
+  
+<P>
+</UL>
+<P>
+
+<P>
+
+<P>
+	<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

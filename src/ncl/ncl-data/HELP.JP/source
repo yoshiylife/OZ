@@ -1,0 +1,26 @@
+NFE(1)                  NFE 組み込みコマンド                   NFE(1)
+
+　[形式]
+　　　　source nfe-script-file
+
+　[機能説明]
+　　　　引数で指定された nfe-script-file を読み込み組み込みコマン
+　　　　ドを実行する。
+　　　　スクリプトファイルは、行の先頭が '#' であるか、空行であれば無視
+　　　　される。
+
+　[使用例]
+　　　　% cat test.src
+　　　　#
+　　　　# TEST
+　　　　#
+　　　　alias h  help
+　　　　alias c  cex
+　　　　% nfe
+　　　　　　　：
+　　　　nfe> source test.src
+　　　　　　　：
+　　　　nfe> alias
+　　　　alias h help
+　　　　alias c cex
+

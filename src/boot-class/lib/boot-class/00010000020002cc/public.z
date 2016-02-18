@@ -1,0 +1,7 @@
+(*class* #00010000020002cc 8
+(*list*)
+(*list*
+(*declaration* Write (*method* #00010000020002cc 8 (*list* #0001000002000034 0 int ) 2) public #00010000020002cc 0 0)
+(*declaration* WriteAll (*method* #00010000020002cc 8 (*list* #0001000002000034 0 ) 2) public #00010000020002cc 0 1)
+)
+)

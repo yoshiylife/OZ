@@ -1,0 +1,12 @@
+DESTDIR		= ${OZROOT}
+BINDIR		= /bin
+CC		= gcc
+INCLUDES	= -I.. -I../../../include
+CFLAGS		= -g -DDEBUG $(INCLUDES)
+LOCAL_LDFLAGS	= -g -static
+
+	SRCS	= OzFGW.c
+	OBJS	= OzFGW.o
+
+SimpleProgramTarget(OzFGW)
+InstallProgramWithFlags(OzFGW,$(BINDIR), -m 555)

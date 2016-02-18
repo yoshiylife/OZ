@@ -1,0 +1,9 @@
+# ! /bin/make -f
+CC= gcc
+CFLAGS=	-g -I${OZROOT}/include -I${OZROOT}/include/ncl -DDEBUG
+
+all: deb
+
+deb: deb.c
+	${CC} -o deb ${CFLAGS} deb.c
+

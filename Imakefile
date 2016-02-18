@@ -1,0 +1,88 @@
+#define	IHaveSubdirs
+#define	PassCDebugFlags	CDEBUGFLAGS="$(CDEBUGFLAGS)"
+PROJECT	= Project
+RELEASE	= Release
+DESTDIR	= ${OZROOT}
+SUBDIRS	= doc ozsrc include src
+
+IMAKE_DEFINES	= -DProject=$(PROJECT) -DRelease=$(RELEASE)
+
+DISTDIR	= OZ++-R$(RELEASE)
+ARCHIVE	= OZ++-R$(RELEASE).tar
+FILES	= Imakefile INSTALL.JP COPYRIGHT.JIS ReleaseNote.JP \
+		COPYRIGHT ReleaseNote
+
+World::
+	@make -f Makefile.ini World
+
+MakeSubdirs($(SUBDIRS))
+
+DependSubdirs($(SUBDIRS))
+
+install link::
+	@echo ""
+	@echo "OZ++ System Release $(RELEASE): Install"
+	@date
+	@echo ""
+	@if [ "$(DESTDIR)" = "" ]; then \
+	   echo "***" ;\
+	   echo "You must be set environment variable: OZROOT" ;\
+	   echo "***" ;\
+	   exit 1 ;\
+	 fi
+	MakeDir($(DESTDIR))
+	@( \
+	   current=$$PWD ;\
+	   cd $(DESTDIR) ;\
+	   $(IMAKE_CMD) -DOzHome=$(DESTDIR) \
+	     -f $$PWD/src/etc/Imakefile.template ;\
+	  )
+
+setup::
+	@( \
+	   cd $(DESTDIR) ;\
+	   make setup ;\
+	  )
+
+tar: clean
+	@for dir in $(SUBDIRS) ;\
+	 do \
+	   sh -xc "find $$dir -name Makefile -exec $(RM) {} \;" ;\
+	 done
+	$(RM) Makefile
+	$(LN) Makefile.ini Makefile
+	@if [ -f $(ARCHIVE) ]; then \
+	   $(RM) $(ARCHIVE).old ;\
+	   $(MV) $(ARCHIVE) $(ARCHIVE).old ;\
+	 fi ;\
+	 if [ -f $(ARCHIVE).gz ]; then \
+	   $(RM) $(ARCHIVE).gz.old ;\
+	   $(MV) $(ARCHIVE).gz $(ARCHIVE).gz.old ;\
+	 fi
+	MakeDir($(DISTDIR))
+	@( \
+	   echo "cd $(DISTDIR)" ;\
+	   cd $(DISTDIR) ;\
+	   sh -xc "$(RM) *;" ;\
+	   for i in $(FILES) $(SUBDIRS) ;\
+	   do \
+	     sh -xc "$(LN) ../$$i" ;\
+	   done ;\
+	   awk '/^CONFIG/{print "CONFIG	="} /^PROJECT/{print "PROJECT	="} \
+	        !/^CONFIG|^PROJECT/ ' < ../Makefile.ini > Makefile.ini \
+	 )
+	@sh -xc "tar chf - $(DISTDIR) | gzip > $(ARCHIVE).gz"
+	@sh -xc "cd $(DISTDIR); $(RM) *;" ;
+	rmdir $(DISTDIR)
+
+.DONE:
+	@echo ""
+	@date
+	@echo "OZ++ System Release $(RELEASE): Complete."
+	@echo ""
+
+.FAILED:
+	@echo ""
+	@date
+	@echo "OZ++ System Release $(RELEASE): Incomplete."
+	@echo ""

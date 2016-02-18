@@ -1,0 +1,12 @@
+*/
+
+/* inherited classes
+#ifndef _OZ000100000200044bP_H_
+#define _OZ000100000200044bP_H_
+
+
+#define OZClassPart0001000002fffffd_0_in_000100000200044b 1
+#define OZClassPart0001000002fffffe_0_in_000100000200044b 1
+#define OZClassPart000100000200044b_0_in_000100000200044b 0
+
+#endif _OZ000100000200044bP_H_

@@ -1,0 +1,107 @@
+ \documentstyle[epsf,oz++-words]{ipa}
+ \begin{document}
+
+\subsection {{\chess}の操作説明}
+
+{\chess}は{\fra}の上に実装した表計算プログラムである。
+その特徴は
+\begin{itemize}
+        \item 表計算を行なうためのスクリプト言語を提供している。
+        \item スクリプトで演算を行なうクラスを新たに定義できる。
+        \item 分散したセルに対して計算を行なうことができる。
+\end{itemize}
+
+\subsubsection{ボードの作成}
+\begin{figure}[h]
+\center
+\epsfile{file=figure/env-chess-init.eps,scale=0.9}
+\caption{初期画面}
+\label{chess:initboard}
+\end{figure}
+
+図\ref{chess:initboard}は{\chess}の初期画面である。
+行数と列数を入力する。
+入力値を反映させるには必ずリターンキーを押さなければならない。
+ボード名はオプションである。
+これを入力することにより
+他のボードのセルからこのボードのセルを参照することができる。
+'Create'ボタンをクリックすると新たなボードを生成して移動する。
+\pagebreak
+
+\subsubsection{スクリプトの入力}
+\begin{figure}[h]
+\center
+\epsfile{file=figure/env-chess-board.eps,scale=0.9}
+\caption{ボード}
+\label{chess:board}
+\end{figure}
+
+図\ref{chess:board}はボードの一例である。
+スクリプトは各セルに設定する。
+１行１列のセルにスクリプトを代入するには
+行と列フィールドにそれぞれ1を入力する。
+そしてスクリプトフィールドにスクリプトを記入する。
+
+\subsubsection{スクリプトの実行}
+{\chess}のスクリプトは遅延評価である。
+セルに対して実行を指示すると初めて評価される。
+実行を指示するにはセルをクリックしてからリターンキーを押す。
+
+\subsubsection{スクリプトの文法}
+subsubsubsection{定数}
+もっとも単純なスクリプトは定数である。
+定数には数値と文字の２種類がある。
+数値は整数と小数が記述できる。
+指数表現はない。
+数値と判断されない単語は文字列定数と解釈される。
+
+例：
+\begin{itemize}
+        \item 3
+        \item 4.6
+        \item -29
+        \item Japan
+\end{itemize}
+
+\subsubsubsection{算術演算}
+四束演算を提供している。
+整数どうしの除算は余りが切り捨てられる。
+
+例：
+\begin{itemize}
+        \item 3 + 4
+        \item 2 - 8
+        \item 3 * 3 * 3.14
+        \item 7 / 5
+\end{itemize}
+
+\subsubsubsection{文字列演算}
+文字列演算は結合演算を提供している。
+これは'+'で行なわれる。
+
+例：
+\begin{itemize}
+        \item Star + Wards
+\end{itemize}
+
+\subsubsubsection{セルの参照}
+n行m列のセルを参照するには'n @ m'と記述する。
+またボード名Aのn行m列は'A\#n@m'となる。
+さらに':chess:B'という名前でNameDirectoryに登録されている
+ボード名Aのn行m列は':chess:B:A\#n@m'となる。
+
+スクリプトの中でセルを参照すると
+そのセルのスクリプトを評価しその評価値を得ることができる。
+スクリプトが自身のセルを評価しようとすると無限再帰となるので注意。
+
+\subsubsubsection{代入}
+セルの参照の右に'='を記述し、さらにその右に式を書くと
+右辺の式を評価した結果が左辺の式に代入される。
+
+例：
+\begin{itemize}
+        \item 2 @ 2 = 3 * 4
+        \item 1 @ 1 = ( 2 @ 2 ) + ( 3 @ 3 )
+\end{itemize}
+
+\end{document}

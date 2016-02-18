@@ -1,0 +1,150 @@
+/*
+ * Copyright(c) 1994-1997 Information-technology Promotion Agency, Japan(IPA)
+ *
+ * All rights reserved.
+ * This software and documentation is a result of the Open Fundamental
+ * Software Technology Project of Information-technology Promotion Agency, 
+ * Japan(IPA).
+ * 
+ * Permissions to use, copy, modify and distribute this software are governed 
+ * by the terms and conditions set forth in the file COPYRIGHT, located in 
+ * this release package.
+ */
+
+OZ++ Debugger  Version 0.00
+
+0. Introduction
+
+   The debugger released with this series performs the following four functions:
+
+1). Activates a launch with a debug flag is set.
+2). Inspects both processes and global objects.
+3). Provides a supplement of debug messages.
+4). Provides a supplement of exceptional (anomalous) messages.
+
+   Function 1) activates the process set by the debug flag.
+   Function 2) inspects the processes and global objects set by the debug
+flag, and operates the debug flag processes.
+   Function 3) records the displayed debug message.
+   Function 4) supplements exceptional messages, and activates the inspector
+of these processes.
+   At present there are two types of inspectors: one that operates by
+itself, and another that is called from a different tool.  In both types,
+the user interfaces involved are entirely different.  However, in future,
+we plans to combine these two interfaces.
+
+1. Activation and Termination
+
+   From the Launcher, which appears after the Executor is activated, an
+object is generated and activated by the class name
+'DebuggerFrontendLaunchable'.  For details of how to launch objects from
+the Launcher, please refer to the README file of the Launcher.  After the
+debugger front end is activated, a window (GUI) appears to execute the
+previously mentioned function.  To terminate, select Quit from the Debugger
+menu of this window.  However, functions which are already being activated
+must be terminated one by one.
+
+
+1). The Launch to which the debug flag is set
+   The debug flag indicates whether or not the debug statement is to be
+executed.  Thus, it can set to each part of objects all the methods of
+public, protected, private and record.  The debug flag is also present in a
+process, and can be set when the process is forked. The Launcher for
+debugging performs this forking of processes to set the debug flag. 
+(Caution: the processes mentioned here are not the UNIX processes, but are
+OZ++ processes.)  Usually, preparation for the supplement of debug messages
+mentioned later is performed before these operations.
+
+
+* Activation and Termination of the Launcher for Debugging
+   The launcher for debugging is activated by selecting the button Launcher
+in the Debugger menu.  However, this Launcher does not have the functions
+of project management or instance management.  It can only fork processes
+where the debug flag is set. However, in this case the class Launchable
+must be inherited.  Press the Close button to terminate this Launcher.
+
+* How to Launch a Program
+a) Input either the class name or the class ID of public to be executed in
+"Class Name".  However, the Launchable must be inherited in this case. 
+This constraint is similar to the one required while activating the
+Launcher of the Executor.  Activation (i.e. launching) of programs is
+performed as specified in the Launchable class.
+
+b) Set the Debug Flag
+Perform the setups for executing debug statements written under the
+specifications of OZ++.  One or more of the following items can be
+selected:
+
+        Public
+        Protected
+        Private
+        Record
+
+These items corresponds to the access control of methods.  Debug statements
+having the selected access control permission are to be executed.
+
+c) Press the Initialize Button
+Press this button to generate objects and call the method Initialize(). 
+When these processes are completed, the button just pressed changes to
+Launch.  Press the Clear button to abandon the generated processes and
+objects and to enable operation on a fresh class.
+
+d) Set the Debug Flag
+
+e) Press the Launch Button
+Press the Launch button to call the method Launch() of the previously
+generated object.  Press the Clear button to abandon the generated
+processes and global objects and to enable operation on a fresh class.
+
+f) Press the Kill Button, If Necessary
+Press the Kill button to cause the command kill, belonging to the OZ++
+specification to terminate the process being executed by the method
+Launch().  However, the Kill button does not behave as the SICKILL of UNI*.
+ This means that unless the program is written under the specifications of
+OZ++, infinite loops can not be stopped.
+
+
+2). Inspector of Processes and Global Objects
+   Select the Process button in the Debugger Menu to display a list of all
+the processes.  Similarly, select the Object button in the Debugger menu to
+display a list of all the objects.  Choose (i.e. double-clicked) the item
+to be inspected from these  lists to display the inspector window.  If a
+process is being inspected, it is temporarily suspended.  Similarly, if a
+global object is under inspection, it is also temporarily suspended.  This
+means that all threads on the global object also end up in a state of
+suspension, so caution is required.  In either case, if the Inspector
+window is closed, it reopens automatically.
+
+
+3). Supplement for Debug Messages
+   Select the Message button in the Debugger menu to supplement the debug
+messages and to display a window that displays these messages.  Debug
+messages generated by the debug statements are displayed at the specified
+address of the window.  If the address is set to default, the debug
+messages appear in the "Default" window.  If the address is either a
+process or a global object, the messages are displayed in the respective
+process or the global object.  For each Executor, only one of these
+functions can be activated at a time.
+
+
+4). Supplement for Exceptional Messages
+   Select the Exception button in the Debugger Menu to supplement all the
+exceptional messages and to display a window these messages.  Exceptional
+messages generated by the processes forked from the relevant Executor are
+also displayed in this window.  If the type of exceptional message selected
+in the Capture menu of this window is generated, process inspection begins
+immediately.  Four types of exceptional messages can be selected:
+
+	Not caught	Exceptional messages not supplemented by the program
+	caught		Exceptional messages supplemented by the program
+	re-raised	Exceptional messages to transfer other exceptional
+			messages
+	DoubleFault	Exceptional messages generated while processing other
+			exceptional messages
+If parameters of the exceptional message are objects, then inspection of
+objects also begins.  If process inspection is terminated, the processing
+of exceptional messages continues.  This function can be activated once at
+a time for each Executor.
+
+
+-- end

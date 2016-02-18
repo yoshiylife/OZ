@@ -1,0 +1,14 @@
+(*class* #00010000020002ab 0
+(*list*
+(*list* #00010000020003e2 #00010000020003e3 0)
+(*list* #00010000020001dd #00010000020001de 0)
+)
+(*list*
+(*declaration* New (*method* void (*list* OZ_Long ) 0) constructor #00010000020001dd 0 0)
+(*declaration* Compare (*method* int (*list* #00010000020003e2 8 ) 0) public #00010000020003e2 0 0)
+(*declaration* Get (*method* (*scqf* #0001000002fffffd 0 4) (*list*) 0) public #00010000020002ab 0 0)
+(*declaration* Hash (*method* (*scqf* int 2) (*list*) 0) public #00010000020003e2 0 1)
+(*declaration* IsEqual (*method* int (*list* #00010000020003e2 8 ) 0) public #00010000020003e2 0 4)
+(*declaration* Type (*method* int (*list*) 0) public #00010000020003e2 0 3)
+)
+)

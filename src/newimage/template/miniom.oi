@@ -1,0 +1,354 @@
+/*
+  oid (000001) : object manager;
+  oid (000002) : class object;
+  oid (000003) : name directory;
+  oid (000004) : DNS resolver;
+  oid (000005) : launcher;
+  oid (000006) : catalog;
+*/
+
+#include "om.h"
+
+#define NOOICBUG
+
+#ifdef __STDC__
+#define STATE_TRANSITION_ENTRY(Number) suspension_state_transition##Number
+#define OBJECT_TABLE_ENTRY(Number) object_table_entry##Number
+#define OID(Number) oid (MAKE_OID (00000##Number))
+#else
+#define STATE_TRANSITION_ENTRY(Number) suspension_state_transition/**/Number
+#define OBJECT_TABLE_ENTRY(Number) object_table_entry/**/Number
+#define OID(Number) oid (MAKE_OID (00000/**/Number))
+#endif
+
+#define MakeAnOTEntry(Number) \
+  local SuspensionStateTransition STATE_TRANSITION_ENTRY (Number) { \
+      Status = 1; \
+  } \
+  local ObjectTableEntry OBJECT_TABLE_ENTRY (Number) { \
+      anExecutor = local (executor); \
+      MyStatus = 1; \
+      O = OID (Number); \
+      Permanent = 1; \
+      Restoring = 0; \
+      SafelyShutdowned = 0; \
+      ShutdownSign = 1; \
+      SomeoneFlushing = 0; \
+      SomeoneRemoving = 0; \
+      Suspending = 0; \
+      Suspension = local (STATE_TRANSITION_ENTRY (Number)); \
+  }
+
+
+global StandAloneOM om = 000001 {
+    local ArchitectureID aid {
+	ID = 1;
+    }
+    local Executor executor {}
+#ifdef NEED_CLASS
+    MakeAnOTEntry (2)
+#endif
+#ifdef NEED_NAME_DIRECTORY
+    MakeAnOTEntry (3)
+#endif
+#ifdef NEED_DNS_RESOLVER
+    MakeAnOTEntry (4)
+#endif
+#ifdef NEED_LAUNCHER
+    MakeAnOTEntry (5)
+#endif
+#ifdef NEED_CATALOG
+    MakeAnOTEntry (6)
+#endif
+    array global Object otm_key_table [128] {
+	OTM_KEY_CLASS
+	OTM_KEY_NAME
+	OTM_KEY_DNS
+	OTM_KEY_LAUNCHER
+	OTM_KEY_CATALOG
+    }
+    array ObjectTableEntry otm_value_table [128] {
+        OTM_VALUE_CLASS
+	OTM_VALUE_NAME
+	OTM_VALUE_DNS
+	OTM_VALUE_LAUNCHER
+	OTM_VALUE_CATALOG
+    }
+    local SimpleTable <global Object, ObjectTableEntry> otm_table {
+        ExpansionFactor = 2;
+        InitialTableSize = 128;
+	KeyTable = array (otm_key_table);
+	Table = array (otm_value_table);
+	Nbits = 7;
+	NumberOfElement = OBJECT_COUNT;
+    }
+    local ObjectTableManager otm {
+	anExecutor = local (executor);
+	Table = local (otm_table);
+    }
+    array global VersionID preload_codes_table [16] {}
+    local SimpleArray <global VersionID> preloading_codes {
+	ExpansionFactor = 2;
+	InitialTableSize = 16;
+	ShrinkFactor = 2;
+	ShrinkThreshold = 4;
+	Table = array (preload_codes_table);
+	NumberOfElement = 0;
+    }
+    array global ConfiguredClassID preload_configured_classes_table [16] {}
+    local SimpleArray <global ConfiguredClassID> preloading_configured_classes{
+	ExpansionFactor = 2;
+	InitialTableSize = 16;
+	ShrinkFactor = 2;
+	ShrinkThreshold = 4;
+	Table = array (preload_configured_classes_table);
+	NumberOfElement = 0;
+    }
+    array global VersionID preloading_layouts_table [16] {}
+    local SimpleArray <global VersionID> preloading_layouts {
+	ExpansionFactor = 2;
+	InitialTableSize = 16;
+	ShrinkFactor = 2;
+	ShrinkThreshold = 4;
+	Table = array (preloading_layouts_table);
+	NumberOfElement = 0;
+    }
+    array global Object preloading_objects_table [16] {
+#ifdef PRELOAD_CLASS
+        preloading_objects [PRELOAD_CLASS] = OID (2);
+#endif
+#ifdef PRELOAD_NAME
+        preloading_objects [PRELOAD_NAME] = OID (3);
+#endif
+#ifdef PRELOAD_DNS
+        preloading_objects [PRELOAD_DNS] = OID (4);
+#endif
+#ifdef PRELOAD_LAUNCHER
+        preloading_objects [PRELOAD_LAUNCHER] = OID (5);
+#endif
+#ifdef PRELOAD_CATALOG
+        preloading_objects [PRELOAD_CATALOG] = OID (6);
+#endif
+    }
+    local SimpleArray <global Object> preloading_objects {
+	ExpansionFactor = 2;
+	InitialTableSize = 16;
+	ShrinkFactor = 2;
+	ShrinkThreshold = 4;
+	Table = array (preloading_objects_table);
+	NumberOfElement = PRELOAD_COUNT;
+    }
+    local Preloader preloader {
+	PreloadingCodes = local (preloading_codes);
+	PreloadingConfiguredClasses = local (preloading_configured_classes);
+	PreloadingLayouts = local (preloading_layouts);
+	PreloadingObjects = local (preloading_objects);
+	anExecutor = local (executor);
+    }
+    local NameDirectoryHolder name_directory_holder {
+#ifdef NEED_NAME_DIRECTORY
+	aNameDirectory = oid (MAKE_OID (000003));
+#else
+	aNameDirectory = oid (REMOTE_NAME_DIRECTORY);
+#endif
+	BroadcastManager = 0;
+	AlreadyCaptured = 0;
+	DomainName = array char [] { DOMAIN_NAME ;}
+	DomainPath = array char [] { DOMAIN_PATH ;}
+    }
+    array global Class class_table_table [16] {}
+    local SimpleArray <global Class> class_table {
+	ExpansionFactor = 2;
+	InitialTableSize = 16;
+	ShrinkFactor = 2;
+	ShrinkThreshold = 4;
+	Table = array (class_table_table);
+	NumberOfElement = 0;
+    }
+    array global Class local_class_table_table [8] {}
+    local SimpleArray <global Class> local_class_table {
+	ExpansionFactor = 2;
+	InitialTableSize = 8;
+	ShrinkFactor = 2;
+	ShrinkThreshold = 4;
+	Table = array (local_class_table_table);
+	NumberOfElement = 0;
+    }
+    array array remote_class_names_table [ARRAY_SIZE_OF_REMOTE_CLASS_NAMES] {
+#include "om-class.h"
+    }
+    local StringArray remote_class_names {
+	ExpansionFactor = 2;
+	InitialTableSize = 4;
+	ShrinkFactor = 2;
+	ShrinkThreshold = 4;
+	Table = array (remote_class_names_table);
+	NumberOfElement = NUMBER_OF_REMOTE_CLASS_NAMES;
+    }
+    local ClassLookupper class_lookupper {
+	InitialCapacityOfClassTable = 16;
+	InitialCapacityOfLocalClassTable = 8;
+	InitialCapacityOfPendingCalls = 4;
+	InitialCapacityOfRemoteClassNames = 4;
+	ClassTable = local (class_table);
+	LocalClassTable = local (local_class_table);
+	PendingCallCount = 0;
+	PendingCalls = 0;
+	PendingCallTimeouts = 0;
+	RemoteClassNames = local (remote_class_names);
+	aTimer = 0;
+    }
+    local ConfigurationDaemon configuration_daemon {
+	OM = 0;
+	anExecutor = local (executor);
+	NumberOfProcesses = CONFIGURATION_DAEMONS;
+    }
+    local SimpleTable <global VersionID, global ConfiguredClassID> boot_conf {
+        ExpansionFactor = 2;
+        InitialTableSize = 128;
+	KeyTable = array global VersionID [128] {}
+	Table = array global ConfiguredClassID [128] {}
+	Nbits = 7;
+	NumberOfElement = 0;
+    }
+    local ConfigurationTable boot_configuration {
+	Table = local (boot_conf);
+    }
+    local SimpleTable <global VersionID, global ConfiguredClassID> conf_cache {
+        ExpansionFactor = 2;
+        InitialTableSize = 128;
+	KeyTable = array global VersionID [1024] {}
+	Table = array global ConfiguredClassID [1024] {}
+	Nbits = 10;
+	NumberOfElement = 0;
+    }
+    local ConfigurationTable configuration_cache {
+	Table = local (conf_cache);
+    }
+    local SimpleTable <global ConfigurationID, ConfigurationTable>
+      conf_tables_table {
+          ExpansionFactor = 2;
+          InitialTableSize = 128;
+	  KeyTable = array global ConfigurationID [8] {}
+	  Table = array ConfigurationTable [8] {}
+	  Nbits = 7;
+	  NumberOfElement = 0;
+      }
+    local ConfigurationTables configuration_tables {
+	Table = local (conf_tables_table);
+    }
+    local BroadcastReceiver broadcast_receiver {
+	OM = 0;
+	NumberOfProcesses = BROADCAST_RECEIVERS;
+	anExecutor = local (executor);
+	aClassLookupper = local (class_lookupper);
+    }
+    local String class_directory {
+	ACO = {}
+	Len = 16;
+	Str = array char [] {
+	    "images/"EXIDString"/classes/";
+	}
+    }
+    local CodeFaultDaemon code_fault_daemon {
+	OM = 0;
+	anExecutor = local (executor);
+	AID = local (aid);
+	NumberOfProcesses = CODE_FAULT_DAEMONS;
+	ClassDirectoryPath = local (class_directory);
+	StandAlone = 1;
+    }
+    local LayoutFaultDaemon layout_fault_daemon {
+	OM = 0;
+	anExecutor = local (executor);
+	AID = local (aid);
+	NumberOfProcesses = LAYOUT_FAULT_DAEMONS;
+	ClassDirectoryPath = local (class_directory);
+	StandAlone = 1;
+    }
+    local ArchitectureID any_aid_for_class_request_daemon {
+	ID = -1;
+    }
+    local ClassRequestDaemon class_request_daemon {
+	OM = 0;
+	anExecutor = local (executor);
+	AID = local (any_aid_for_class_request_daemon);
+	NumberOfProcesses = CLASS_REQUEST_DAEMONS;
+	ClassDirectoryPath = local (class_directory);
+	StandAlone = 1;
+    }
+    local ObjectFaultDaemon object_fault_daemon {
+	OM = 0;
+	anExecutor = local (executor);
+	NumberOfProcesses = OBJECT_FAULT_DAEMONS;
+    }
+    local ArchitectureID any_aid_for_debugger_class_request_daemon {
+	ID = -1;
+    }
+    local DebuggerClassRequestDaemon debugger_class_req_daemon {
+	OM = 0;
+	anExecutor = local (executor);
+	AID = local (any_aid_for_debugger_class_request_daemon);
+	NumberOfProcesses = DEBUGGER_CLASS_REQ_DAEMONS;
+    }
+    local Daemons daemons {
+	aBroadcastReceiver = local (broadcast_receiver);
+	aCodeFaultDaemon = local (code_fault_daemon);
+	aLayoutFaultDaemon = local (layout_fault_daemon);
+	aClassRequestDaemon = local (class_request_daemon);
+	anObjectFaultDaemon = local (object_fault_daemon);
+	aDebuggerClassRequestDaemon = local (debugger_class_req_daemon);
+    }
+    local SharedAndExclusiveSemaphore OT_entry_modifying {
+	Accessing = 0;
+	NumberOfAccessor = 0;
+    }
+    array global VersionID configuration_key_table [SIZEOFCONFIGURATIONTABLE] {
+#include "preload-configurations.keys"
+    }
+    array global ConfiguredClassID configuration_value_table [SIZEOFCONFIGURATIONTABLE] {
+#include "preload-configurations.values"
+    }
+    array array names_table [ARRAY_SIZE_OF_OM_NAMES] {
+#include "miniomname.h"
+    }
+    local StringArray names {
+	ExpansionFactor = 2;
+	InitialTableSize = 4;
+	ShrinkFactor = 2;
+	ShrinkThreshold = 4;
+	Table = array (names_table);
+	NumberOfElement = NUMBER_OF_OM_NAMES;
+    }
+    local Starter starter {
+	Application = 0;
+    }
+
+    AID = local (aid);
+    anExecutor = local (executor);
+    OTM = local (otm);
+    aPreloader = local (preloader);
+    aNameDirectoryHolder = local (name_directory_holder);
+    aClassBroadcastManager = 0;
+    aClassLookupper = local (class_lookupper);
+    aConfigurationDaemon = local (configuration_daemon);
+    Owner = array char [] { OWNER ;}
+    BootConfiguration = local (boot_configuration);
+    ConfigurationCache = local (configuration_cache);
+    ConfigurationCacheExpirationTick = 30; /* 5 minutes */
+    aConfigurationCacheExpirer = 0;
+    aConfigurationTables = local (configuration_tables);
+    aStation = oid (0000000000000000);
+    aDaemons = local (daemons);
+    NumberOfStartingExecutor = 0;
+    OTEntryModifying = local (OT_entry_modifying);
+    SizeOfInitialConfiguration = SIZEOFCONFIGURATIONTABLE;
+    KeysOfInitialConfiguration = array (configuration_key_table);
+    ValuesOfInitialConfiguration = array (configuration_value_table);
+    InitialLengthOfNames = 4;
+    Names = local (names);
+    FirstWarningAtSearchClassImpl = 2;
+    SuccessiveWarningAtSearchClassImpl = 10;
+    ApplicationStarter = local (starter);
+    aTimer = 0;
+}

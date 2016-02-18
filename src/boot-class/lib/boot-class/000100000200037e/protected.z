@@ -1,0 +1,13 @@
+(*class* #000100000200037e 0
+(*list*)
+(*list*
+(*declaration* New (*method* void (*list*) 0) constructor #000100000200037d 0 0)
+(*declaration* ExclusiveEnter (*method* void (*list*) 1) public #000100000200037d 0 1)
+(*declaration* ExclusiveExit (*method* void (*list*) 1) public #000100000200037d 0 2)
+(*declaration* Reset (*method* void (*list*) 1) public #000100000200037d 0 3)
+(*declaration* SharedEnter (*method* void (*list*) 1) public #000100000200037d 0 4)
+(*declaration* SharedExit (*method* void (*list*) 1) public #000100000200037d 0 5)
+(*declaration* Accessing int protected #000100000200037e 0 Accessing)
+(*declaration* NumberOfAccessor int protected #000100000200037e 0 NumberOfAccessor)
+)
+)

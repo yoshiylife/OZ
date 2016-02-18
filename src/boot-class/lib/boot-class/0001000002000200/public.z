@@ -1,0 +1,7 @@
+(*class* #0001000002000200 8
+(*list*)
+(*list*
+(*declaration* Read (*method* #0001000002000034 0 (*list* int ) 2) public #0001000002000200 0 0)
+(*declaration* Eof (*method* int (*list*) 2) public #0001000002000200 0 1)
+)
+)

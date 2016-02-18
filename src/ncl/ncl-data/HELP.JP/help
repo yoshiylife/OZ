@@ -1,0 +1,27 @@
+NFE(1)                  NFE 組み込みコマンド                   NFE(1)
+
+　[名前]
+　　　　help - nfe の組み込みコマンドの説明を表示する。
+
+　[形式]
+　　　　help [-j] [built-in-command-name]
+
+　[機能説明]
+　　　　引数でコマンド名を指定すると、そのコマンドの説明を表示する。引
+　　　　数を指定しなければ、組み込みコマンドのリストを表示する。
+
+　[help オプション]
+　　　　-j　日本語の説明を表示する。
+
+　[使用例]
+　　　　nfe> help
+　　　　help            nclshutdown     es              cex
+　　　　ncltbl          env             man             et
+　　　　alias           source          who             newimage
+　　　　migrateimage    exidlist        exidment        exidrm
+　　　　killex          quit
+　　　　nfe> help cex
+　　　　　            :
+　　　　　　組み込みコマンドの説明表示
+
+

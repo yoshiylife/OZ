@@ -1,0 +1,11 @@
+(*class* #00010000020002a2 0
+(*list*)
+(*list*
+(*declaration* New (*method* void (*list* OZ_Generic ) 0) constructor #00010000020002a1 0 0)
+(*declaration* Compare (*method* int (*list* #00010000020002a1 0 ) 0) public #00010000020002a1 0 1)
+(*declaration* Get (*method* OZ_Generic (*list*) 1) public #00010000020002a1 0 2)
+(*declaration* Hash (*method* (*scqf* int 2) (*list*) 0) public #00010000020002a1 0 3)
+(*declaration* IsEqual (*method* int (*list* #00010000020002a1 0 ) 0) public #00010000020002a1 0 4)
+(*declaration* Set (*method* void (*list* OZ_Generic ) 1) public #00010000020002a1 0 5)
+)
+)

@@ -1,0 +1,19 @@
+(*class* #0001000002000770 0
+(*list*
+(*list* #00010000020001b5 #00010000020001b6 0)
+)
+(*list*
+(*declaration* New (*method* void (*list* (*scqf* #0001000002fffffd 0 4) (*array* char ) ) 4) constructor #000100000200076f 0 0)
+(*declaration* Launch (*method* void (*list*) 4) public #000100000200076f 0 2)
+(*declaration* SetPath (*method* void (*list* #00010000020003bd 0 ) 4) public #000100000200076f 0 4)
+(*declaration* Quit (*method* void (*list*) 5) public #000100000200076f 0 1)
+(*declaration* Import (*method* void (*list* #00010000020003bd 0 (*array* #00010000020003bd 0 ) (*array* OZ_Generic ) ) 5) public #000100000200076f 0 3)
+(*declaration* SelectPath (*method* #00010000020003bd 0 (*list*) 5) public #000100000200076f 0 5)
+(*declaration* aDirectory (*scqf* OZ_Generic 4) protected #0001000002000770 0 aDirectory)
+(*declaration* Path #00010000020003bd 0 protected #0001000002000770 0 Path)
+(*declaration* Owner (*scqf* #0001000002fffffd 0 4) protected #0001000002000770 0 Owner)
+(*declaration* Retrieve (*method* (*array* OZ_Generic ) (*list* (*array* #00010000020003bd 0 ) ) 0) protected #0001000002000770 0 6)
+(*declaration* Export (*method* void (*list* (*array* #00010000020003bd 0 ) ) 0) protected #0001000002000770 0 7)
+(*declaration* ListNames (*method* (*array* #00010000020003bd 0 ) (*list* OZ_Generic ) 0) protected #0001000002000770 0 8)
+)
+)

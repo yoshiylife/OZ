@@ -1,0 +1,6 @@
+#! /bin/sh 
+
+eval $* 2>&1
+echo -n $?
+
+exit 0

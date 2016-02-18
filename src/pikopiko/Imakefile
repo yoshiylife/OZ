@@ -1,0 +1,24 @@
+DESTDIR		= ${OZROOT}
+BINDIR		= /bin
+CC		= gcc
+XPMLIB		= $(USRLIBDIR)/libXpm.a
+LOCAL_LDFLAGS	= -dynamic -L/usr/lib
+INSTPGMFLAGS	= -m 555
+PROGRAM		= pikopiko
+
+	SRCS	= pikopiko.c
+	OBJS	= pikopiko.o
+
+AllTarget($(PROGRAM))
+
+install::
+	@if [ "$(DESTDIR)" = "" ]; then \
+	   echo "***" ;\
+	   echo "You must be set environment variable: OZROOT" ;\
+	   echo "***" ;\
+	   exit 1 ;\
+	 fi
+
+NormalProgramTarget($(PROGRAM),$(OBJS),,$(XPMLIB),$(XLIB))
+InstallProgramWithFlags($(PROGRAM),$(BINDIR),-m 755)
+DependTarget()

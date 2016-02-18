@@ -1,0 +1,12 @@
+(*class* #00010000020001ca 0
+(*list*)
+(*list*
+(*declaration* New (*method* void (*list*) 0) constructor #00010000020001c9 0 0)
+(*declaration* GetBrother (*method* #00010000020001c9 0 (*list*) 0) public #00010000020001c9 0 1)
+(*declaration* GetParent (*method* #00010000020001c9 0 (*list*) 0) public #00010000020001c9 0 2)
+(*declaration* SetBrother (*method* void (*list* #00010000020001c9 0 ) 0) public #00010000020001c9 0 3)
+(*declaration* SetParent (*method* void (*list* #00010000020001c9 0 ) 0) public #00010000020001c9 0 4)
+(*declaration* Parent #00010000020001c9 0 protected #00010000020001ca 0 Parent)
+(*declaration* Brother #00010000020001c9 0 protected #00010000020001ca 0 Brother)
+)
+)

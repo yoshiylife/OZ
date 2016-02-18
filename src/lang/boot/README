@@ -1,0 +1,24 @@
+ファイルの内容
+
+オブジェクトイメージコンパイラ
+emit.c
+	エミットルーチン
+lex.l
+	レキシカルアナライザ
+main.c
+	メインルーチン
+../include/oz++/class-type.h
+object.c
+object.h
+	コンパイラ内部のオブジェクトの構造の処理
+parser.y
+	パーザ
+print.c
+	デバッグ用
+ref.c
+	ラベルの参照のチェックの処理
+
+../include/object-image.h
+../include/types.h
+object-image-lib.c
+	オブジェクトイメージビルダにリンクされるライブラリルーチン

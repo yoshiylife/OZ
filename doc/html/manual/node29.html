@@ -1,0 +1,203 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.9 Expressions</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.9 Expressions">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION00069000000000000000>5.9 Expressions</A></H2>
+<P>
+<PRE>exp
+        : exp_no_comma
+        | exp_comma
+        ;
+</PRE>
+<P>
+The following expressions are available:
+<P>
+<UL><LI> Primary Expressions
+<LI> Unary  Expressions
+<LI> Binary Expressions
+<LI> Condition Expressions
+<LI> Comma Expressions
+</UL><H3><A NAME=SECTION00069100000000000000>5.9.1 Primary Expressions</A></H3>
+ <A NAME=langlangmanualexpfirstexp>&#160;</A>
+<P>
+<PRE>exp_no_comma
+        | exp_var 
+        | exp '.' IDENTIFIER
+        | exp_value 
+        | '(' exp ')' 
+        | exp '-&gt;' IDENTIFIER '(' arg_list ')'
+        | IDENTIFIER '(' arg_list ')' 
+        | exp '.' IDENTIFIER '(' arg_list ')' 
+        | exp '=&gt;' IDENTIFIER '(' arg_list ')' inst_option
+        | exp '++'
+        | exp '--'
+
+arg_list
+        : /* empty */
+        | exp_no_comma
+        | exp_comma
+        ;
+</PRE>
+<P>
+The following primary expressions are available:
+<P>
+<UL><LI> Identifiers
+<LI> Literals
+<LI> Expressions Enclosed in Parentheses
+<LI> Message Expressions
+<LI> Instance Generation
+<LI> Postfix Increments / Decrements
+</UL><H3><A NAME=SECTION00069200000000000000>5.9.2 Message Expressions</A></H3>
+<P>
+
+Method expressions is used to activate operators of records and
+methods of ordinary classes as well as static classes.  The
+description of methods differ from that of operators in the following
+way:
+<P>
+<UL><LI> Method
+<P>
+<PRE>        | exp '-&gt;' IDENTIFIER '(' arg_list ')'
+</PRE>
+<P>
+<LI> Operator
+<P>
+<PRE>        | exp '.' IDENTIFIER '(' arg_list ')'
+</PRE>
+</UL>
+<P>
+<PRE>// class A
+// record B
+
+A a;
+B b;
+
+a-&gt;m1();
+b.m1();
+</PRE>
+<P>
+<H3><A NAME=SECTION00069300000000000000>5.9.3 Generation of Instances</A></H3>
+<P>
+<PRE>exp_no_comma
+        | exp '=&gt;' IDENTIFIER '(' arg_list ')' inst_option
+
+inst_option
+        : /* empty */
+        | '@' exp 
+        ;
+</PRE>
+<P>
+This statement is used to generate instances of ordinary classes and static classes, and to activate constructors.
+<P>
+<PRE>class A;
+
+A a;
+
+a=&gt;m1();
+</PRE>
+<P>
+When instantiating global objects, the location for generation can be specified (see Chapter <A HREF="node38.html#langlangmanualconstructor">5.18</A>).
+<P>
+<H3><A NAME=SECTION00069400000000000000>5.9.4 Unary Expressions</A></H3>
+ <A NAME=langlangmanualexpunary>&#160;</A>
+<P>
+<PRE>exp_no_comma
+        | 'fork' exp
+        | 'join' exp
+        | '++' exp 
+        | '--' exp 
+        | '!' exp 
+        | '~' exp 
+        | '+' exp 
+        | '-' exp 
+        | 'length' exp
+</PRE>
+<P>
+Unary expressions are those which perform unary operations in primary expressions.
+<P>
+The following types of unary expressions are available:
+<P>
+<UL><LI> Generation of Processes (see Section <A HREF="node28.html#langlangmanualprocessoperation">5.8.3</A>)
+<LI> Joining of Processes  (see Section <A HREF="node28.html#langlangmanualprocessoperation">5.8.3</A>) 
+<LI> Arithmetic Operations
+<LI> Increments/Decrements
+<LI> Logical Negations
+<LI> Bitwise Complement
+<LI> Array Lengths (see Chapter <A HREF="node27.html#langlangmanualarray">5.7</A>)
+</UL><H3><A NAME=SECTION00069500000000000000>5.9.5 Binary Operations</A></H3>
+<P>
+<PRE>exp_no_comma
+        | exp '*' exp 
+        | exp '/' exp 
+        | exp '%' exp 
+        | exp '+' exp 
+        | exp '-' exp 
+        | exp '&lt;&lt;' exp 
+        | exp '&gt;&gt;' exp 
+        | exp '==' exp 
+        | exp '!=' exp 
+        | exp '&lt;' exp 
+        | exp '&lt;=' exp 
+        | exp '&gt;' exp 
+        | exp '&gt;=' exp 
+        | exp '&amp;' exp 
+        | exp '^' exp 
+        | exp '|' exp 
+        | exp '||' exp 
+        | exp '&amp;&amp;' exp 
+        | exp '=' exp 
+        | exp '*=' exp 
+        | exp '/=' exp 
+        | exp '%=' exp 
+        | exp '+=' exp 
+        | exp '-=' exp 
+        | exp '&lt;&lt;=' exp 
+        | exp '&gt;&gt;=' exp 
+        | exp '&amp;=' exp 
+        | exp '^&gt;=' exp 
+        | exp '|=' exp
+</PRE>
+<P>
+The following types of binary operations are available:
+<P>
+<UL><LI> Multiplicative Operation
+<LI> Additive Operation
+<LI> Shift Operation
+<LI> Relational Operation
+<LI> Bitwise Operation
+<LI> Conditional Operation
+<LI> Assignment
+</UL><H3><A NAME=SECTION00069600000000000000>5.9.6 Condition Expressions</A></H3>
+<P>
+<PRE>exp_no_comma
+        | exp '?' exp ':' exp
+</PRE>
+<P>
+If the condition is satisfied, the expression following <tt> ?</tt> is evaluated.  Otherwise, the expression following <tt> :</tt> is evaluated.  The value of the expression is considered to be the value of the condition expression.
+<P>
+<H3><A NAME=SECTION00069700000000000000>5.9.7 Comma Expressions</A></H3>
+<P>
+<PRE>exp_comma
+        : exp ',' exp
+        ;
+</PRE>
+<P>
+A series of expressions separated by commas is called a comma expression.  This means that the expressions are evaluated from left to right.  The last expression is considered to be the value of the comma expression.
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

@@ -1,0 +1,15 @@
+(*class* #00010000020002af 5
+(*list*)
+(*list*
+(*declaration* ObjectIsBusy (*method* int (*list* (*scqf* #0001000002fffffd 0 4) ) 0) public #00010000020002af 0 0)
+(*declaration* ClosedObject (*method* int (*list* (*scqf* #0001000002fffffd 0 4) ) 0) public #00010000020002af 0 1)
+(*declaration* FatalError (*method* int (*list* (*array* char ) ) 0) public #00010000020002af 0 2)
+(*declaration* NotLocal (*method* int (*list* (*scqf* #0001000002fffffd 0 4) ) 0) public #00010000020002af 0 3)
+(*declaration* NotPermanent (*method* int (*list* (*scqf* #0001000002fffffd 0 4) ) 0) public #00010000020002af 0 4)
+(*declaration* ObjectAlreadyLoaded (*method* int (*list* (*scqf* #0001000002fffffd 0 4) ) 0) public #00010000020002af 0 5)
+(*declaration* UnknownObject (*method* int (*list* (*scqf* #0001000002fffffd 0 4) ) 0) public #00010000020002af 0 6)
+(*declaration* ProhibitedChangeOwner (*method* int (*list*) 0) public #00010000020002af 0 7)
+(*declaration* ThereIsAnotherResumption (*method* int (*list*) 0) public #00010000020002af 0 8)
+(*declaration* ThereIsAnotherSuspension (*method* int (*list*) 0) public #00010000020002af 0 9)
+)
+)

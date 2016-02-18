@@ -1,0 +1,1018 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>2.4 Nucleus</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="2.4 Nucleus">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION00034000000000000000>2.4 Nucleus</A></H2>
+<P>
+<H3><A NAME=SECTION00034100000000000000>2.4.1 Nucleus manual</A></H3>
+<P>
+<DL ><DT>NAME
+<DD> <P>
+ncl - nucleus
+<DT>SYNOPSIS
+<DD> <P>
+ncl
+<DT>DESCRIPTION
+<DD> <P>
+Nucleus carries out the management (activation, generation) 
+of executor in general.  It has the following functions:
+<blockquote> <UL><LI> Provides information for the solution of network address
+Finds a solution for the network address of another unknown 
+executor when a demand arrives from the executor.
+<LI> Carries out management of executor inside station
+Grasps the executor state when the executor is activated.
+<LI> Broadcasts
+Nucleus enables broadcasts inside the site.
+There are two types of broadcasts performed by the nucleus:
+<UL><LI> solution for network address
+<LI> search for class, name
+</UL></UL></blockquote>
+<P>
+The shell variable OZROOT is root directory of OZ.
+<DT>FILES
+<DD> <P>
+<UL><LI> $OZROOT/etc/ncl-data/NCL_table<BR> 
+When activated, nucleus obtains its nucleus table from a 
+file.
+At present, it is used by the half router nuclei to enable 
+them to recognize each other.
+Nucleus acts as the physical transceiver of broadcasts with
+other nuclei.
+If the nucleus can not transceive broadcasts because other 
+nuclei are beyond the range of physical transcription, the 
+half rooter inside the site acts as the 'middle-man' of 
+transcriptions.
+<LI> $OZROOT/etc/site-id<BR> 
+Nucleus obtains its site-id from a file.
+<LI> $OZROOT/bin/executor<BR> 
+The command path of executor.
+<LI> $OZROOT/etc/ncl-data/EXID/<b>&lt;</b>Hostname<b>&gt;</b><BR> 
+This is the Executor-ID Management Information File.  The nucleus
+stores the Executor-ID of the executor managed by the nucleus in
+this file.  The Executor-ID is necessary for the generation of a
+executor image.  The Executor-ID Management Nucleus also has an
+Executor-ID of the site.
+<LI> $OZROOT/etc/ncl-data/ExID_manage.log<BR> 
+This is the Log information of allocations for the Executor-ID
+which only the Executor-ID Management Nucleus can update.
+<LI> $OZROOT/etc/ncl-data/log/<b>&lt;</b>Hostname<b>&gt;</b><BR> 
+Log file of Nucleus.
+</UL>
+<DT>SHARED MEMORY
+<DD> <P>
+Nucleus, when activated, allocates shared memory with keys
+1 and 2 to the entities of executor table and Hash table 
+respectively.
+This is used to manage the network addresses of executors 
+that are either activated by the nucleus, or whose search 
+for the network address solution is successful.
+<P>
+ </DL>
+<P>
+<H3><A NAME=SECTION00034200000000000000>2.4.2 Nucleus Front-End manual</A></H3>
+<P>
+<DL ><DT>NAME
+<DD> <P>
+nfe - Nucleus Front-End
+<DT>SYNOPSIS
+<DD> <P>
+nfe [Hostname]
+<DT>DESCRIPTION
+<DD> <P>
+nfe is a tool which connects itself to a nucleus and manages
+its generation state.
+If a hostname is specified to ncl as an arguments, it connects
+itself to the nucleus with that hostname, and exchanges
+information with it by means of built-in commands.  If no
+arguments are specified, nfe connects itself to its own host
+nucleus.
+<P>
+<DT>FILES
+<DD> <P>
+<UL><LI> $HOME/.nclrc<BR> 
+When nfe is activated, it executes the nfe command script
+$HOME/.nclrc.  The built-in commands of nfe can be written 
+in this script.
+<PRE>    example:
+        % cat $HOME/.nclrc
+        alias c cex
+        alias h help
+</PRE>
+</UL>
+<DT>EXAMPLE
+<DD> <P>
+<PRE>    % nfe host1
+        :
+    nfe&gt; help
+    help            nclshutdown     es              cex             
+    ncltbl          env             man             et              
+    alias           source          who             newimage        
+    migrateimage    exidlist        exidment        exidrm          
+    killex          quit
+    nfe&gt; quit
+</PRE>
+<P>
+ </DL>
+<P>
+<H3><A NAME=SECTION00034300000000000000>2.4.3 Activation of the Nucleus</A></H3>
+<P>
+The nucleus is activated as a UNIX command from a terminal.  At the
+time of activation, the nucleus also activates the following file
+transfer daemons:
+<blockquote> <UL><LI> OzFileRecevier ....  File Receiving Daemon
+<LI> OzFileSender   ....  File Transmitting Daemon
+</UL></blockquote>
+If any failure occurs in activating these daemons, the nucleus can not
+be activated.
+<P>
+<H3><A NAME=SECTION00034400000000000000>2.4.4 How to Terminate the Nucleus</A></H3>
+<P>
+The nucleus termination process is performed by nclshutdown, which
+is a built-in command in the nucleus front end (nfe).  The termination
+process is performed as follows:
+<P>
+<blockquote> <DL ><DT>(1)
+<DD> Disconnection of a Half Rooter Nucleus.<BR> 
+If the nucleus is a half router nucleus, disconnect other half
+routers.
+<DT>(2)
+<DD> Forcible Termination of the Executor<BR> 
+Forcible termination takes place when the terminating nucleus
+sends the break signal SIGTERM to all executors activated from
+this nucleus.  After terminating the executors, the nucleus
+removes the following two files under the directory /tmp:
+<UL><LI> Dm
+<LI> Oz
+</UL>
+<DT>(3)
+<DD> Deletion of the Executor Table<BR> 
+The executor table is made up of shared memories which are shared
+by the executors. The nucleus deletes all the shared memories.
+<DT>(4)
+<DD> Notification of Completion of Termination Process to the 
+Nucleus Front-End (nfe)
+<DT>(5)
+<DD> All connecting nucleus front ends (nfe) are notified of completion
+of the termination process.
+<P>
+ </DL></blockquote><H3><A NAME=SECTION00034500000000000000>2.4.5 Forcible Termination of the Nucleus</A></H3>
+<P>
+The nucleus, being activated as a daemon, can be terminated (forcibly)
+by using the UNIX command kill.  The nucleus is forcibly terminated by
+sending either of the break signals SIGHUP(1) or SIGTERM(15).
+<P>
+If the nucleus is terminated abnormally, the shared memory might remain
+intact.  If the nucleus is not to be re-activated, it is advisable to
+delete this memory with the UNIX command ipcrm.
+<P>
+<H3><A NAME=SECTION00034600000000000000>2.4.6 Set up of Nucleus Table</A></H3>
+<P>
+The nucleus table ($OZROOT/etc/ncl-data/NCL_table) is a text file which
+states the role of the specified nucleus.  When you start up the nucleus,
+it reads the file.
+<P>
+In the nucleus table, you register the name or IP address of the host on
+which the special nucleus runs by using an editor.
+<P>
+Configuration of halfrouter nucleus <BR>
+<P>
+The halfrouter nucleus relays a physical broadcast at a site and enables
+a logical broadcast to enter it.  If the site consists of multiple
+segments (a transceivable range of a physical broadcast), each segment
+must contain a halfrouter nucleus.
+<P>
+<PRE>    Example:
+       A site 1 consists of two segments.
+           Segment A:
+               hostname1, hostname2
+           Segment B:
+               hostname3, hostname4
+
+       If both range A and range B are to be considered as being inside
+       the same site, the nucleus table ($ZOROOT/etc/ncl-data/NCL_table)
+       should be written as follows.
+       Let hostname1 and hostname3 be a halfrouter nucleus.
+
+           % cat NCL_table
+           HALFROUTER:hostname1:
+           HALFROUTER:hostname3:
+
+       In this case, when hostname2 transmits the broadcast message, it
+       is sent to all segments of the site as follows:
+
+       (1) Hostname1 receives the broadcast message.  Since this host can
+           recognize itself as a halfrouter, it introduces broadcast
+           demands to other halfrouters (hostname3). 
+       (2) When hostname3 receives the broadcast demand from hostname1,
+           it sends a physical broadcast. 
+       (3) Hostname4 receives this broadcast.
+</PRE>
+<P>
+Configuration of Executor-ID Management Nucleus <BR>
+<P>
+The Executor-ID Management Nucleus manages all the Executor-IDs which are
+given at the site.  It allocates the specified numbers of Executor-IDs
+when on other nucleus requests it.
+<P>
+It is guaranteed that no Executor-ID overlaps another at a site, because
+central management of the Executor-ID is done by the Executor-ID Management
+Nucleus.
+<P>
+<PRE>    Example: 
+        The Executor-ID Management Nucleus is assumed to be specified in
+        the nucleus table when the OZ++ system is installed.  However, we
+        describe how to specify the Executor-ID Management Nucleus by
+        assuming the case where the nucleus table is changed. 
+        If you want to put hostnameN as an Executor-ID Management Nucleus,
+        you have to type in the nucleus table ($OZROOT/etc/ncl-data/NCL_table)
+        as follows.  You must not write multiple Executor-ID Management
+        Nucleus in it.)
+
+            % cat NCL_table
+            EXIDMANAGE:hostnameN:
+</PRE>
+<P>
+As the Executor-ID Management Nucleus does not allow the timing of a
+request from the nucleus to be specified at a site, you are advised to
+set this up in a station which is always operating.
+<P>
+Configuration of a Relay Nucleus <BR>
+<P>
+The relay nucleus communicates with the application gateway, and relays the
+transmission of demands to and reception of demands from other sites.
+<P>
+The setup of a relay nucleus defines the application gateway corresponding
+to the relay nucleus in the nucleus table.
+<P>
+<PRE>    RELAYNCL:&lt;IP-Address of Relay Nucleus&gt;:&lt;OZAG IP-Address&gt;
+</PRE>
+<P>
+For those nuclei registered as relay nuclei, it is necessary to maintain
+mutual consistency between these nuclei and the relay nuclei registered in
+the local site information of the application gateway.
+<P>
+For example, when the relay nucleus is set to bun13, and the application
+gateway is set to bunax3:
+<P>
+<PRE>     % cat $OZROOT/etc/apgw_LSiteInfo
+     0005:bun13:3777:CLOSE_SITE
+     % cat $OZROOT/etc/ncl-data/NCL_table
+     RELAYNCL:bun13:bunax3
+</PRE>
+<P>
+<H3><A NAME=SECTION00034700000000000000>2.4.7 Description of the Executor-ID Management Information File</A></H3>
+<P>
+The Executor-ID Management Information File is a text file.  It stores
+Executor-ID kept by nucleus.  Since this file is generated and updated
+automatically, you only need to recover it when some trouble occurs.
+Just after the OZ++ system is installed, no nucleus has an Executor-ID.
+When you generate some executor image, a nucleus requests the Executor-ID
+from the Executor-ID Management Nucleus and obtains the specified numbers
+ of Executor-ID.  It is assumed that the contents of the Executor-ID
+Management Information File are as follows:
+<PRE>      #
+      # Informations of ExecutorID Management
+      #
+      IN_ACTIVITY:ExecutorID(1000),Rest(100)
+      RESERVATION:ExecutorID(0000),Rest(0)
+</PRE>
+In these contents, you can use the Executor-ID from 1000 (hex) and the
+amount 100(hex) of Executor-ID is kept.  If the amount of Rest is less
+than a(hex), the Executor-ID Management Nucleus is requested to keep
+Executor-ID as a reservation, and the result is written in the RESERVATION
+line.
+<P>
+For the Executor-ID Management Nucleus, management information items
+include not only the above, but also the following statement, because it
+manages the Executor-ID of a site.
+<PRE>      EXID_OF_SITE:0001100
+</PRE>
+This means that the Executor-ID is available from 1100 in the current
+site.  The value 0 is appropriate in the line of IN_ACTIVITY and
+RESERVATION if the Executor-ID Management Information File of the
+Executor-ID Management Nucleus has been lost because of some trouble.
+However, the EXID_OF_SITE line of Executor-ID Management Information must
+be recovered using log information ($OZROOT/etc/ncl-data/ExID_manage.log).
+<P>
+<H3><A NAME=SECTION00034800000000000000>2.4.8 Trouble-shooting with the Nucleus</A></H3>
+<P>
+Sometimes the nucleus can not be activated.  Reasons are thought to be 
+as follows:
+<P>
+<DL ><DT>(1)
+<DD> Files essential for activating the nucleus can not be opened.<BR> 
+The files required while activating the nucleus are:
+<UL><LI> $OZROOT/etc/ncl-data/NCL_table
+<LI> $OZROOT/etc/site-id
+</UL>
+This is considered to be because:
+<UL><LI> The setup of the environment variable OZROOT is incorrect.
+<LI> The setup of file permissions under the directory $OZROOT is 
+incorrect
+<LI> There are some errors in the description of the nucleus table 
+($OZROOT/etc/ncl-data/NCL_table).
+</UL>
+<DT>(2)
+<DD> The port used by the nucleus can not be bound.<BR> 
+The following message is displayed:
+<PRE>    init_ncl_port: bind: Address already in use
+    init_ncl_port: Other Nucleus start up already ?
+</PRE>
+This is considered to be because:
+<UL><LI> The station already contains an activated nucleus, and another one 
+is about to be activated.
+<LI> The port is already bound by an application other than the nucleus.
+</UL>
+<DT>(3)
+<DD> The shared memory can be neither created nor attached.<BR> 
+The nucleus allocates two types of shared memories to be used as 
+executor tables.  These shared memories can be created by  keys 1 and 2.
+If other applications are using the same key shared memory, the nucleus
+can not be activated without user permission.  If the shared memory is 
+to be re-utilized, user permission should be altered.  However, this 
+might adversely affect other applications.
+<DT>(4)
+<DD> The file transfer daemons (OZFileReceiver and OZFileSender) can not
+be created.<BR> 
+The previously activated nucleus might have been terminated forcibly.
+If the nucleus is terminated abnormally, the file transfer daemons
+remain activated. In such cases, the UNIX command 'ps' can be used to
+check the process id's of file transfer daemons, and using the UNIX
+command 'kill' can be used to kill these processes.
+<DT>(5)
+<DD> The Executor-ID Management File can not be opened.<BR> 
+The following message is displayed.
+<PRE>    init_exid_mnginfo: Can't open ExecutorID management file(.....)
+</PRE>
+This is considered to be because:
+<UL><LI> In the case of the Executor-ID Management Nucleus, the Executor-ID
+Management Information File has been removed by some reason, such
+as, trouble in the file system or human error.
+<LI> In the case of an ordinary nucleus, the user-ID of the OS process
+of the nucleus or the permission mode of the Executor-ID Management
+Information File has been changed.
+</UL>
+How to recover:<BR> 
+Recover the Executor Management Information using log information
+($OZROOT/etc/ncl-data/ExID_manage.log).  Refer to section 7 for further
+information.
+<P>
+ </DL>
+<P>
+<H3><A NAME=SECTION00034900000000000000>2.4.9 Nucleus Front End Built-In-Command Manual</A></H3>
+<P>
+<PRE>NFE(1)              Nucleus Front-End Built-In-Command               NFE(1)
+</PRE>
+<P>
+<DL ><DT>NAME
+<DD> <P>
+&quot;alias&quot; - substitutes the built-in-commands of nfe.
+<DT>SYNOPSIS
+<DD> <P>
+alias [command1 command2 ... commandN]
+<DT>DESCRIPTION
+<DD> <P>
+&quot;alias&quot; substitutes the strings from command2 .... commandN
+into command1.  If no arguments are specified, a list of
+aliases is displayed.
+<DT>EXAMPLE
+<DD> <P>
+<PRE>    nfe&gt; alias c cex 101
+</PRE>
+<P>
+ </DL>
+<P>
+<BR><HR><BR>
+
+<P>
+<PRE>NFE(1)              Nucleus Front-End Built-In-Command               NFE(1)
+</PRE>
+<P>
+<DL ><DT>NAME
+<DD> <P>
+&quot;cex&quot; - This command generates executors.
+<DT>SYNOPSIS
+<DD> <P>
+cex <b>&lt;</b>Executor-ID or Executor-Name<b>&gt;</b> [Executor options]
+<DT>DESCRIPTION
+<DD> <P>
+     This command calls an Executor.  You have to specify an Executor-ID
+     or an Executor-Name as an argument.  The Executor-ID or the
+     Executor-Name must be registered as its own maintenance information
+     of itself.
+     When you specify an Executor-ID, you have to process it using a
+     hexadecimal number.  If the head character is '$', the following
+     characters are recognized as the Executor-Name.
+<DT>OPTIONS
+<DD> <P>
+<PRE>     -H &lt;size[k]&gt;    Maximum heap size. The Unit of size is Mbyte. If &quot;k&quot;
+                     follows size, the unit is Kbyte(default 16).
+     -M &lt;max&gt;        Maximum number of threads(default 256).
+     -S &lt;site id&gt;    Site ID(default 1).
+     -T &lt;ticks&gt;      Number of ticks in one second.
+     -d              Running executor as a daemon.	
+     -g              Debug mode(enable OzDebugf() output).
+     -i              Hide the global access monitor window.
+     -p              Enable the profile.
+     -s              Open executor shell window.
+     -v              Print the version of executor.
+     -a              Allow linking of all EXTERN symbols of executor.
+     -o              Open console window.
+</PRE>
+<DT>EXAMPLE
+<DD> <P>
+<PRE>     nfe&gt; newimage -n TESTEX -c FOR-DEBUG
+                :
+     nfe&gt; newimage -n SEREX -c SERVER-EXECUTOR
+                :
+     nfe&gt; exidlist
+      EXID     EX-NAME                COMMENT
+     00025f    TESTEX                 FOR-DEBUG
+     000260    SEREX                  SERVER-EXECUTOR
+     nfe&gt; cex $TESTEX
+                :
+     nfe&gt; cex 260
+                :
+</PRE>
+<P>
+ </DL>
+<P>
+<BR><HR><BR>
+
+<P>
+<PRE>NFE(1)              Nucleus Front-End Built-In-Command               NFE(1)
+</PRE>
+<P>
+<DL ><DT>NAME
+<DD> <P>
+&quot;env&quot; - displays the nfe environment.
+<DT>SYNOPSIS
+<DD> <P>
+env
+<DT>DESCRIPTION
+<DD> <P>
+&quot;env&quot; displays the following terms of the environment set by the nfe.
+<blockquote> <UL><LI> The shell variable OZROOT
+<LI> The shell variable DISPLAY
+<LI> The command path of executor
+<LI> The directory path of nfe's help file
+</UL></blockquote>
+<DT>EXAMPLE
+<DD> <P>
+<PRE>    nfe&gt; env
+    OZROOT = /home/oz++
+    DISPLAY = :0.0
+
+    *Executor command: /home/oz++/bin/executor
+    *Directory path for NFE help command: /home/oz++/etc/ncl-data/HELP
+</PRE>
+<P>
+ </DL>
+<P>
+<BR><HR><BR>
+
+<P>
+<PRE>NFE(1)              Nucleus Front-End Built-In-Command               NFE(1)
+</PRE>
+<P>
+<DL ><DT>NAME
+<DD> <P>
+&quot;et&quot; - displays the contents of the executor table.
+<DT>SYNOPSIS
+<DD> <P>
+et
+<DT>DESCRIPTION
+<DD> <P>
+&quot;et&quot; displays the contents of the executor table of nucleus.
+<P>
+The executor table has the following contents.
+<P>
+<blockquote> <UL><LI> Executor ID
+<LI> Network address
+<LI> Location
+<UL><LI> LOCAL(inside its own station)
+<LI> INSITE(inside its own site)
+<LI> OUTSITE(other sites)
+</UL></UL></blockquote>
+<DT>EXAMPLE
+<DD> <P>
+<PRE>    nfe&gt; et
+    Hash table: size(2048)  count(3)
+    EXID                    NET-ADDR              LOCATION
+    0x0003000001000000      ???.??.???.??:?       LOCAL
+    0x0003000002000000      ???.??.???.??:?       LOCAL
+    0x0003000003000000      ???.??.???.??:?       LOCAL
+</PRE>
+<P>
+ </DL>
+<P>
+<BR><HR><BR>
+
+<P>
+<PRE>NFE(1)              Nucleus Front-End Built-In-Command               NFE(1)
+</PRE>
+<P>
+<DL ><DT>NAME
+<DD> <P>
+&quot;exidlist&quot; - This command prints the maintenance information of Executor-ID.
+<DT>SYNOPSIS
+<DD> <P>
+exidlist
+<DT>DESCRIPTION
+<DD> <P>
+When newimage finishes normally, this command registers an
+Executor-ID acquired as the maintenance information of itself.
+The maintenance information of the Executor-ID consists of
+following items:
+<UL><LI> Executor-ID
+<LI> Executor-Name
+<LI> Remarks
+</UL>
+<DT>FILE
+<DD> <P>
+<DT><DD> $OZROOT/images/<b>&lt;</b>EXID<b>&gt;</b>/exid.info<BR> 
+This is a file for the maintenance information of the Executor-ID.
+The maintenance information of the Executor-ID is generated when
+newimage finishes normally.
+<DT>EXAMPLE
+<DD> <P>
+<PRE>     nfe&gt; newimage -n TESTEX -c &quot;FOR-DEBUG&quot;
+              :
+     nfe&gt; exidlist
+      EXID     EX-NAME                COMMENT
+     00025f    TESTEX                 FOR-DEBUG
+</PRE>
+<P>
+ </DL>
+<P>
+<BR><HR><BR>
+
+<P>
+<PRE>NFE(1)              Nucleus Front-End Built-In-Command               NFE(1)
+</PRE>
+<P>
+<DL ><DT>NAME
+<DD> <P>
+&quot;exidment&quot; - This command rewrites the maintenance information of
+             the Executor-ID.
+<DT>SYNOPSIS
+<DD> <P>
+exidment Executor-ID [-n new-name] [-c new-comment]
+<DT>DESCRIPTION
+<DD> <P>
+This command rewrites the contents of the maintenance information
+of the Executor-ID.  It can change the Executor-Name equivalent of
+the Executor-ID, and its remarks.
+<DT>FILE
+<DD> <P>
+<DT><DD> $OZROOT/images/<b>&lt;</b>EXID<b>&gt;</b>/exid.info<BR> 
+This is a file for the maintenance information of the Executor-ID.
+The maintenance information of the Executor-ID is generated when
+newimage finishes normally.
+<DT>EXAMPLE
+<DD> <P>
+<PRE>    nfe&gt; newimage -n TESTEX -c &quot;FOR DEBUG&quot;
+              :
+    nfe&gt; exidlist
+     EXID     EX-NAME                COMMENT
+    00025f    TESTEX                 FOR DEBUG
+    nfe&gt; exidment 25f -n FIXEX1 -c My-Executor
+              :
+    nfe&gt; exidlist
+     EXID     EX-NAME                COMMENT
+    00025f    FIXEX1                 My-Executor
+</PRE>
+<P>
+ </DL>
+<P>
+<BR><HR><BR>
+
+<P>
+<PRE>NFE(1)              Nucleus Front-End Built-In-Command               NFE(1)
+</PRE>
+<P>
+<DL ><DT>NAME
+<DD> <P>
+&quot;exidrm&quot; - This command deletes the maintenance information of the Executor-ID
+<DT>SYNOPSIS
+<DD> <P>
+exidrm Executor-ID
+<DT>DESCRIPTION
+<DD> <P>
+This command deletes the maintenance information of the Executor-ID disused.
+<DT>FILE
+<DD> <P>
+<DT><DD> $OZROOT/images/<b>&lt;</b>EXID<b>&gt;</b>/exid.info<BR> 
+This is a file for the maintenance information of the Executor-ID.
+The maintenance information of the Executor-ID is generated when
+newimage finishes normally.
+<DT>EXAMPLE
+<DD> <P>
+<PRE>    nfe&gt; newimage -n TESTEX -c FOR-DEBUG
+              :
+    nfe&gt; exidlist
+     EXID     EX-NAME                COMMENT
+    00025f    TESTEX                 FOR-DEBUG
+    nfe&gt; exidrm 25f
+</PRE>
+<P>
+ </DL>
+<P>
+<BR><HR><BR>
+
+<P>
+<PRE>NFE(1)              Nucleus Front-End Built-In-Command               NFE(1)
+</PRE>
+<P>
+<DL ><DT>NAME
+<DD> <P>
+&quot;help&quot; - displays the explanations for built-in-command of nfe.
+<DT>SYNOPSIS
+<DD> <P>
+help [-j] [built-in-command-name]
+<DT>OPTIONS
+<DD> <P>
+-j  displays the explanations in Japanese.
+<DT>DESCRIPTION
+<DD> <P>
+If a command name is specified as an argument, the explanations
+for the command are displayed. If no arguments are specified,
+the list of built-in-commands is displayed.
+<DT>EXAMPLE
+<DD> <P>
+<PRE>    nfe&gt; help
+    help            nclshutdown     es              cex             
+    ncltbl          env             man             et              
+    alias           source          who             newimage        
+    migrateimage    exidlist        exidment        exidrm          
+    killex          quit
+    nfe&gt; help cex
+            :
+    Manual of built-in-command
+            :
+</PRE>
+<P>
+ </DL>
+<P>
+<BR><HR><BR>
+
+<P>
+<PRE>NFE(1)              Nucleus Front-End Built-In-Command               NFE(1)
+</PRE>
+<P>
+<DL ><DT>NAME
+<DD> <P>
+&quot;killex&quot; - send a signal to a executor, or terminate a executor
+<DT>SYNOPSIS
+<DD> <P>
+killex -signal <b>&lt;</b>Executor-ID<b>&gt;</b>
+<DT>DESCRIPTION
+<DD> <P>
+killex sends the signal to the executor.
+List of signal names:
+<PRE>    TERM .... Termination of the executor
+    INT  .... Create of the executor shell
+    HUP  .... Forcible termination of the executor
+</PRE>
+<DT>EXAMPLE
+<DD> <P>
+<PRE>    nfe&gt; es
+    Executor Entry count(1)
+      USER       PID        EXID        FD   STAT     BOOT TIME     RHOST
+    ozguest    19316  0003000101000000   6  Active  04/07 16:35:58  oz
+                    :
+    nfe&gt; killex -TERM 101
+     + Successful in forcible termination of the Executor(0x000101)
+    nfe&gt; es
+    Executor Entry count(0)
+    nfe&gt;
+</PRE>
+<P>
+ </DL>
+<P>
+<BR><HR><BR>
+
+<P>
+<PRE>NFE(1)              Nucleus Front-End Built-In-Command               NFE(1)
+</PRE>
+<P>
+<DL ><DT>NAME
+<DD> <P>
+&quot;man&quot; - displays the nucleus manual.
+<DT>SYNOPSIS
+<DD> <P>
+man [-j]
+<DT>OPTIONS
+<DD> <P>
+-j  displays the explanations in Japanese.
+<P>
+ </DL>
+<P>
+<BR><HR><BR>
+
+<P>
+<PRE>NFE(1)              Nucleus Front-End Built-In-Command               NFE(1)
+</PRE>
+<P>
+<DL ><DT>NAME
+<DD> <P>
+&quot;newimage&quot; - This command gives an optional Executor-ID and start
+             command newimage up.
+<DT>SYNOPSIS
+<DD> <P>
+newimage [newimage options]
+<DT>DESCRIPTION
+<DD> <P>
+This command gets an optional Executor-ID from the nucleus and
+allocates it as an argument of the command &quot;newimage,&quot; then start up.
+When newimage finishes normally, this command registers an Executor-ID
+acquired as the maintenance information of itself.
+<DT>OPTIONS
+<DD> <P>
+`Newimage' recognizes the following options:
+<PRE>     -n This option puts a matched name to the obtained Executor-ID.
+        You can nominate it by using an argument for the built-in command
+        &quot;cex&quot; when you start to run an Executor.
+     -c This option puts a remark to the obtained Executor.
+     -g Set the kind of class to `without monitor'.
+     -d domain-name
+        Set the name of the domain to which this executor belongs to
+        `domain-name'.
+     -u user-name
+        Set the name of the owner of this executor.
+     -k configuration-name
+        Use one of the standard configurations.  `Configuration-name' is
+        one of the following:
+
+            site-master, or 1
+            station-master, or 2
+            slave-with-class, or 3
+            slave-without-class, or 4
+
+     -o image-directory-path
+        Target directory of executor image.
+</PRE>
+<DT>FILE
+<DD> <P>
+<DT><DD> $OZROOT/images/<b>&lt;</b>EXID<b>&gt;</b>/exid.info<BR> 
+This file contains maintenance information  of  an  executor
+image, and is created by newimage when the image is successfully
+generated.
+<DT>EXAMPLE
+<DD> <P>
+<PRE>    nfe&gt; newimage -n TESTEX -c &quot;FOR DEBUG&quot;
+                      :
+    nfe&gt; exidlist
+     EXID     EX-NAME                COMMENT
+    00025f    TESTEX                 FOR DEBUG
+    nfe&gt; cex $TESTEX
+                      :
+    nfe&gt;
+</PRE>
+<P>
+ </DL>
+<P>
+<BR><HR><BR>
+
+<P>
+<PRE>NFE(1)              Nucleus Front-End Built-In-Command               NFE(1)
+</PRE>
+<P>
+<DL ><DT>NAME
+<DD> <P>
+&quot;migrateimage&quot; - migrate an executor image
+<DT>SYNOPSIS
+<DD> <P>
+migrateimage Executor-ID [Directory-path] <BR> 
+migrateimage -r Executor-ID New-OZROOT
+<DT>DESCRIPTION
+<DD> <P>
+The executor image of Executor-ID is moved to the directory
+Directory-path.  When Directory-path is omitted, it is moved
+to $OZROOT/images instead.
+<DT>OPTIONS
+<DD> <P>
+<PRE>     -r   The OZROOT of the Executor is changed to &quot;New-OZROOT&quot;.
+</PRE>
+<DT>EXAMPLE
+<DD> <P>
+<PRE>     nfe&gt; migrateimage 001001 /home/nick/images
+              :
+     nfe&gt; migrateimage -r 001002 /home/nick/new-oz++ 
+              :
+     nfe&gt;
+</PRE>
+<P>
+ </DL>
+<P>
+<BR><HR><BR>
+
+<P>
+<PRE>NFE(1)              Nucleus Front-End Built-In-Command               NFE(1)
+</PRE>
+<P>
+<DL ><DT>NAME
+<DD> <P>
+nclshutdown - shuts down (terminates) the nucleus at the
+              specified time
+<DT>SYNOPSIS
+<DD> <P>
+nclshutdown time
+<DT>DESCRIPTION
+<DD> <P>
+nclshutdown tells the nfe the time the nucleus should be 
+automatically shut down.
+The shutdown time is specified as the argument time. If
+&quot;now&quot; is specified, the nucleus is shutdown immediately. 
+Otherwise, the shutdown time is specified in the form of
+a +number which indicates the time in minutes.
+<P>
+As the time to shutdown of the nucleus approaches, warning
+messages are displayed periodically in the nfe.
+<P>
+If CONTROL-D is pressed within the time period specified
+by the +number, shutdown is aborted, and the nfe is terminated.
+<P>
+If the nucleus is shut down, the nfe is terminated
+automatically.
+<P>
+<DT>EXAMPLE
+<DD> <P>
+<PRE>    nfe&gt; nclshutdown now
+</PRE>
+<P>
+ </DL>
+<P>
+<BR><HR><BR>
+
+<P>
+<PRE>NFE(1)              Nucleus Front-End Built-In-Command               NFE(1)
+</PRE>
+<P>
+<DL ><DT>NAME
+<DD> <P>
+&quot;ncltbl&quot; - displays the contents of the nucleus table.
+<DT>SYNOPSIS
+<DD> <P>
+ncltbl
+<DT>DESCRIPTION
+<DD> <P>
+&quot;ncltbl&quot; displays the contents of the nucleus table of nucleus.
+<blockquote> <UL><LI> Type of nucleus
+<UL><LI> EXID_MANAGEMENT(executor ID management nucleus)
+<LI> HALFROUTER(half router nucleus)
+</UL>
+<LI> UNIX host name
+<LI> IP address
+</UL></blockquote> 
+ </DL>
+<P>
+<BR><HR><BR>
+
+<P>
+<PRE>NFE(1)              Nucleus Front-End Built-In-Command               NFE(1)
+</PRE>
+<P>
+<DL ><DT>NAME
+<DD> <P>
+&quot;es&quot; - displays the executor information managed by the nucleus
+       on station.
+<DT>SYNOPSIS
+<DD> <P>
+es
+<DT>DESCRIPTION
+<DD> <P>
+&quot;es&quot; displays the management information of the executor
+generated by the nucleus at its station.
+Management information is as follows:
+<blockquote> <UL><LI> UNIX user whom start up of executor requested by
+<LI> UNIX process ID of the executor
+<LI> Executor ID
+<LI> File Descriptor of the executor socket
+<LI> State of executor
+<UL><LI> Start(exists as a UNIX process)
+<LI> Active(OM is activated, the executor is outside the scope of multicast)
+</UL>
+<LI> Time executor is generated
+<LI> Host name which start up executor requested from 
+</UL></blockquote>
+Once the executor is terminated, executor management information
+is also deleted.
+<DT>EXAMPLE
+<DD> <P>
+<PRE>    nfe&gt; es
+    Executor Entry count(4)
+      USER       PID        EXID        FD   STAT     BOOT TIME     RHOST
+    ozguest    19316  0003000001000000   6  Active  04/07 16:35:58  oz
+    ozguest    19318  0003000002000000   7  Active  04/07 16:36:03  oz
+    ozguest    19320  0003000003000000   8  Active  04/07 16:36:08  oz
+    ozguest    19322  0003000004000000   9  Active  04/07 16:36:13  oz
+</PRE>
+<P>
+ </DL>
+<P>
+<BR><HR><BR>
+
+<P>
+<PRE>NFE(1)              Nucleus Front-End Built-In-Command               NFE(1)
+</PRE>
+<P>
+<DL ><DT>NAME
+<DD> <P>
+&quot;source&quot; - reads and comprehends command script file of nfe.
+<DT>SYNOPSIS
+<DD> <P>
+source nfe-script-file
+<DT>DESCRIPTION
+<DD> <P>
+&quot;source&quot; executes the read-and-built command of the nfe-script-file
+specified as the argument.
+Commands in the script file are ignored, if the line begins with '#'
+or is blank.
+<P>
+<DT>EXAMPLE
+<DD> <P>
+<PRE>    % cat test.src
+    #
+    # TEST
+    #
+    alias h  help
+    alias c  cex
+    % nfe
+        :
+    nfe&gt; source test.src
+        :
+    nfe&gt; alias
+    alias h help
+    alias c cex
+</PRE>
+<P>
+ </DL>
+<P>
+<BR><HR><BR>
+
+<P>
+<PRE>NFE(1)              Nucleus Front-End Built-In-Command               NFE(1)
+</PRE>
+<P>
+<DL ><DT>NAME
+<DD> <P>
+&quot;quit&quot; - terminates nfe.
+<DT>SYNOPSIS
+<DD> <P>
+quit
+<DT>DESCRIPTION
+<DD> <P>
+&quot;quit&quot; terminates nfe.
+<P>
+ </DL>
+<P>
+<BR><HR><BR>
+
+<P>
+<PRE>NFE(1)              Nucleus Front-End Built-In-Command               NFE(1)
+</PRE>
+<P>
+<DL ><DT>NAME
+<DD> <P>
+who - displays the connection condition of the front-end
+      connected to the nucleus.
+<DT>SYNOPSIS
+<DD> <P>
+who
+<DT>DESCRIPTION
+<DD> <P>
+It is important to know about the users connected to the 
+nucleus that nfe exchanges information with.  For this 
+purpose, who displays the following argument of 
+connection condition:
+<P>
+<blockquote> <UL><LI> UNIX user who requested connection
+<LI> file descriptor of nfe socket
+<LI> time period of connection
+<LI> hostname which requested connection
+</UL></blockquote>
+<DT>EXAMPLE
+<DD> <P>
+<PRE>    nfe&gt; who
+    Who Entry count(2)
+      USER    FD   CONNECT-TIME   RHOST
+    ozguest1   6  05/15 19:08:16  oztaro
+    ozguest2   6  05/15 19:08:16  ozjiro
+</PRE>
+<P>
+ </DL>
+<P>
+	<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

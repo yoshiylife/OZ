@@ -1,0 +1,135 @@
+/*
+  oid (000001) : object manager;
+  oid (000002) : class object;
+  oid (000003) : name directory;
+  oid (000004) : DNS resolver;
+  oid (000005) : launcher;
+  oid (000006) : catalog;
+*/
+
+#include "class.h"
+
+global
+#ifdef WITH_NOTIFIER
+       ClassWithNotifier
+#else
+       Class
+#endif
+                        class_object = 000002 {
+    local SimpleTable<global ClassID,ClassPart> table {
+        ExpansionFactor = 2;
+        InitialTableSize = 128;
+	KeyTable = array global ClassID [128] {}
+	Table = array ClassPart [128] {}
+	Nbits = 7;
+	NumberOfElement = 0;
+    }
+    local SimpleTable<global ClassID,Date> originals {
+        ExpansionFactor = 2;
+        InitialTableSize = 128;
+	KeyTable = array global ClassID [128] {}
+	Table = array Date [128] {}
+	Nbits = 7;
+	NumberOfElement = 0;
+    }
+    local SimpleTable<global ClassPackageID,OriginalClassPackage>
+      original_packages {
+	  ExpansionFactor = 2;
+	  InitialTableSize = 16;
+	  KeyTable = array global ClassPackageID [16] {}
+	  Table = array OriginalClassPackage [16] {}
+	  Nbits = 4;
+	  NumberOfElement = 0;
+      }
+    local SimpleTable<global ClassPackageID,MirroredClassPackage> mirrors {
+	ExpansionFactor = 2;
+	InitialTableSize = 16;
+	KeyTable = array global ClassPackageID [16] {}
+	Table = array MirroredClassPackage [16] {}
+	Nbits = 4;
+	NumberOfElement = 0;
+    }
+    local SimpleTable<global ClassID,Date> snapshots {
+	ExpansionFactor = 2;
+	InitialTableSize = 32;
+	KeyTable = array global ClassPackageID [32] {}
+	Table = array Date [32] {}
+	Nbits = 5;
+	NumberOfElement = 0;
+    }
+    local OIDSet<global ClassID> boot_classes {
+	ExpansionFactor = 2;
+	InitialTableSize = 128;
+	Table = array global ClassID [128] {}
+	Nbits = 7;
+	NumberOfElement = 0;
+    }
+    local OIDSet<global ClassID> privates {
+	ExpansionFactor = 2;
+	InitialTableSize = 8;
+	Table = array global ClassID [8] {}
+	Nbits = 3;
+	NumberOfElement = 0;
+    }
+
+    local String log_file_path {
+	ACO = {}
+	Len = 29;
+	Str = array char [] {
+	    LOG_FILE_PATH;
+	}
+    }
+    local String recovering_log_file_path {
+	ACO = {}
+	Len = 33;
+	Str = array char [] {
+	    LOG_FILE_PATH ".rcv";
+	}
+    }
+    local String dead_log_file_path {
+	ACO = {}
+	Len = 33;
+	Str = array char [] {
+	    LOG_FILE_PATH ".ded";
+	}
+    }
+    local ClassLogger class_logger {
+	LogFilePath = local (log_file_path);
+	RecoveringLogFilePath = local (recovering_log_file_path);
+	DeadLogFilePath = local (dead_log_file_path);
+	LogFile = 0;
+	DeadLogFile = 0;
+	Count = 0;
+	Threshold = 100;
+    }
+
+    array array names_table [ARRAY_SIZE_OF_CLASS_NAMES] {
+#include "classname.h"
+    }
+    local StringArray names {
+	ExpansionFactor = 2;
+	InitialTableSize = 4;
+	ShrinkFactor = 2;
+	ShrinkThreshold = 4;
+	Table = array (names_table);
+	NumberOfElement = NUMBER_OF_CLASS_NAMES;
+    }
+
+    ClassDirectoryPath = array char [] { OZCLASSPATH; }
+    ClassListFile = array char [] { OZCLASS; }
+    ClassTable = local (table);
+
+    Originals = local (originals);
+    OriginalPackages = local (original_packages);
+    Mirrors = local (mirrors);
+    Snapshots = local (snapshots);
+    BootClasses = local (boot_classes);
+    Privates = local (privates);
+
+    InitialLengthOfNames = 4;
+    Logger = local (class_logger);
+    Names = local (names);
+#ifdef WITH_NOTIFIER
+    aNotifierWindow = local NotifierWindow {}
+#endif
+}

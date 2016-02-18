@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.23 Execution of Method</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.23 Execution of Method">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION000623000000000000000>5.23 Execution of Method</A></H2>
+ <A NAME=langlangmanualmethodexec>&#160;</A>
+<P>
+This section describes the execution of the method of ordinary class 
+and static class, the operator of the record.
+(see Sections <A HREF="node33.html#langlangmanualclassmember">5.13.2</A>,
+<A HREF="node34.html#langlangmanualstaticclassmember">5.14.2</A>, and
+<A HREF="node32.html#langlangmanualrecordmember">5.12.1</A>).
+<P>
+<H3><A NAME=SECTION000623100000000000000>5.23.1 Method of Class</A></H3>
+<P>
+The <tt> private</tt> method and other methods of the class are executed differently.
+<P>
+<UL><LI> private method
+<P>
+The executing code is statically determined in compiling 
+because the <tt> private</tt> method is used only in the defined class.  
+Consequently, the method activating in the source codes is changed 
+the form of the simple function call.
+<P>
+ <LI> Other methods
+<P>
+The other non-<tt> private</tt> methods load the correspondent execution code 
+dynamically, and execute the code loaded.  
+Accordingly, the method invocation in the source code should be converted 
+to the calling of the correspondent method in execution code loaded.
+<P>
+Furthermore, because of the dynamic binding, the method to be executed is
+not determined by the type of variable, 
+but by the type of instance referred by the variable.
+Moreover, if the global method is invoked, the special process should 
+be performed as like the copy of the local object of the parameter.
+<P>
+In this way, the specific process is executed by using the run time routine 
+of the executor instead of the simple function call.
+<P>
+</UL><H3><A NAME=SECTION000623200000000000000>5.23.2 Method of Static Class, Operator</A></H3>
+<P>
+Both the method of static class and the operator of the record are executed 
+as simple function calls without the access control.
+<P>
+On the other hand, however, the function name after public compiling methods 
+should be unique in the whole system of OZ++ because they are utilized 
+in other classes.  
+This is guaranteed by involving the ID of static class or the record 
+into the function name in compilering.
+
+<P>
+
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

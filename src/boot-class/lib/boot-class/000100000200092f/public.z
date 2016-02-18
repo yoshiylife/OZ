@@ -1,0 +1,9 @@
+(*class* #000100000200092f 0
+(*list*)
+(*list*
+(*declaration* New (*method* void (*list*) 0) constructor #000100000200092f 0 0)
+(*declaration* GetConfiguredClassID (*method* (*scqf* #0001000002000043 0 4) (*list* (*scqf* #0001000002000404 0 4) ) 0) public #000100000200092f 0 2)
+(*declaration* Start (*method* void (*list*) 0) public #000100000200092f 0 1)
+(*declaration* Shutdown (*method* void (*list*) 0) public #000100000200092f 0 3)
+)
+)

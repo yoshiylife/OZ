@@ -1,0 +1,9 @@
+#define IHaveSubdirs
+#define PassCDebugFlags CDEBUGFLAGS="$(CDEBUGFLAGS)"
+
+DESTDIR=${OZROOT}
+BINDIR = /bin
+SUBDIRS = include CFE boot compiler
+
+MakeSubdirs($(SUBDIRS))
+DependSubdirs($(SUBDIRS))

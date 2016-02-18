@@ -1,0 +1,9 @@
+#define	PassCDebugFlags /**/
+
+all::
+
+install::
+
+depend::
+
+clean::

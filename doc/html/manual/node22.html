@@ -1,0 +1,351 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.2 Tokens</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.2 Tokens">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION00062000000000000000>5.2 Tokens</A></H2>
+<P>
+OZ++ language has the following kinds of tokens:
+<P>
+<UL><LI> Comments
+<LI> Identifiers
+<LI> Keywords
+<LI> Literals (integers, characters, floating point numbers, character strings)
+<LI> Operators
+<LI> Delimiters
+</UL>
+<P>
+White spaces (i.e. spaces, tabs, newline, newpage, etc) are ignored except
+as they separate tokens.
+<P>
+When reading a token, the longest possible character string is chosen.
+<P>
+<H3><A NAME=SECTION00062100000000000000>5.2.1 Comments</A></H3>
+<P>
+OZ++ language has two types of comments:
+<P>
+<UL><LI> Begins with <code>/*</code>, and ends with <code>*/</code> .
+<P>
+This style can not be nested.
+<P>
+<LI> Begins with <code>//</code>, and ends with newline codes.
+<P>
+</UL>
+<P>
+Comments are treated as white spaces.
+<P>
+<H3><A NAME=SECTION00062200000000000000>5.2.2 Identifier</A></H3>
+<P>
+This is a string of numbers (or underscores) that begins with
+alphabetical character.  
+underscore.  Lower case and upper case are distinguished as different
+character.  Furthermore, strings of up to 31 characters are
+distinguished.  Distinction of strings of more than 31 characters can
+not be guaranteed.
+<P>
+
+In addition, an identifier of 16 characters containing two underscores
+followed by [0-9a-fA-F] is distinguished as a class name expressed by
+its class ID.
+<P>
+<PRE>__0001000002000101  // expresses the class ID of 0001000002000101
+</PRE>
+<P>
+<H3><A NAME=SECTION00062300000000000000>5.2.3 Keywords</A></H3>
+<P>
+The identifiers of Table <A HREF="#tabkeyword">5.2--1</A> are used as key words.  The
+identifiers <tt> yield</tt>, <tt> foreach</tt>, and <tt> iterator</tt> are not
+used in the present syntax, but are reserved for future use.
+<P>
+<CENTER>
+<TABLE BORDER>
+<CAPTION ALIGN=TOP><STRONG>Table 5.1--1:</STRONG>Keywords</CAPTION>
+<TR><TD>
+<TABLE CELLPADDING=2>
+ <TR>
+<TD>abort</TD><TD>abortable</TD><TD>abstract</TD><TD>alias</TD><TD>break</TD>
+</TR>
+<TR>
+<TD>case</TD><TD>cell</TD><TD>char</TD><TD>class</TD><TD>condition</TD>
+</TR>
+<TR>
+<TD>constructor</TD><TD>continue</TD><TD>debug</TD><TD>default</TD><TD>detach</TD>
+</TR>
+<TR>
+<TD>do</TD><TD>double</TD><TD>else</TD><TD>except</TD><TD>float</TD>
+</TR>
+<TR>
+<TD>for</TD><TD>foreach</TD><TD>fork</TD><TD>global</TD><TD>if</TD>
+</TR>
+<TR>
+<TD>inline</TD><TD>int</TD><TD>iterator</TD><TD>join</TD><TD>kill</TD>
+</TR>
+<TR>
+<TD>length</TD><TD>locked</TD><TD>long</TD><TD>narrow</TD><TD>oid</TD>
+</TR>
+<TR>
+<TD>protected</TD><TD>public</TD><TD>raise</TD><TD>record</TD><TD>rename</TD>
+</TR>
+<TR>
+<TD>return</TD><TD>self</TD><TD>shared</TD><TD>short</TD><TD>signal</TD>
+</TR>
+<TR>
+<TD>signalall</TD><TD>static</TD><TD>switch</TD><TD>try</TD><TD>unsigned</TD>
+</TR>
+<TR>
+<TD>until</TD><TD>void</TD><TD>wait</TD><TD>while</TD><TD>yield</TD>
+</TR>
+</TABLE>
+</TD></TR>
+</TABLE>
+</CENTER>
+
+<P>
+<H3><A NAME=SECTION00062400000000000000>5.2.4 Literals</A></H3>
+<P>
+OZ ++ language has the following types of literals:
+<P>
+<UL><LI> Integer constants
+<P>
+An integer constant is a string of numbers.
+<P>
+<UL><LI> If a string begins with 0, it represents an octal number. 
+Such strings do not contain the numbers 8 or 9.
+<P>
+<LI> If a string with <tt> 0x</tt> or  <tt> 0X</tt>, 
+it represents a hexa-decimal number.
+Such strings contain (both lower case and upper case) letters
+from 'a' to 'f'. They represent from 10 to 16, respectively.
+<P>
+<LI> Otherwise, the string  represents a decimal
+<P>
+</UL>
+<P>
+If <tt> u</tt> or <tt> U</tt> is appended to the string, it represents an <tt>
+unsigned</tt> number, if <tt> l</tt>, or <tt> L</tt> is appended to the string, it
+represents a <tt> long</tt> number, and if <tt> ll</tt>, <tt> lL</tt>, <tt> LL</tt>,
+or <tt> Ll</tt> is appended to the string, it represents a <tt> long long</tt>
+number.
+<P>
+<PRE>123    // the decimal 123 of int type
+0173   // the octal representation of the decimal 123
+0x76   // the hexa-decimal representation of the decimal 123
+123U   // the decimal 123 of unsigned int type
+</PRE>
+<P>
+<LI> Character Constants
+<P>
+A character constant is expressed as a single character enclosed by
+single quotations.  Some non-graphic characters, single quotations,
+etc, can be expressed as escape sequences as shown in Table
+<A HREF="node22.html#tabesc">5.2--2</A>.
+<P>
+<A NAME=tabesc>&#160;</A>
+<P>
+<CENTER>
+<TABLE>
+<CAPTION ALIGN=TOP><STRONG>Table 5.1--2:</STRONG>Escape Sequence</CAPTION>
+<TR><TD WIDTH=30></TD>
+<TABLE BORDER>
+ <TR><TD>newline</TD>        <TD>NLL (LF)</TD><TD>\n</TD></TR>
+ <TR><TD>horizontal tab</TD> <TD>HT</TD>      <TD>\t</TD></TR>
+ <TR><TD>vertical tab</TD>   <TD>VT</TD>      <TD>\v</TD></TR>
+ <TR><TD>backspace</TD>      <TD>BS</TD>      <TD>\b</TD></TR>
+ <TR><TD>carriage return</TD><TD>CR</TD>      <TD>\r</TD></TR>
+ <TR><TD>formfeed</TD>       <TD>FF</TD>      <TD>\f</TD></TR>
+ <TR><TD>audible alert</TD>  <TD>BEL</TD>     <TD>\a</TD></TR>
+ <TR><TD>backslash</TD>      <TD>\</TD>       <TD>\\ </TD></TR>
+ <TR><TD>question mark</TD>  <TD>?</TD>       <TD>\?</TD></TR>
+ <TR><TD>single quote</TD>   <TD>'</TD>       <TD>\'</TD></TR>
+ <TR><TD>double quote</TD>   <TD>&quot;</TD>  <TD>\&quot;</TD></TR>
+ <TR><TD>octal number</TD>   <TD>ooo</TD>     <TD>\ooo</TD></TR>
+ <TR><TD>hex number</TD>     <TD>hh</TD>      <TD><TT>\x</TT>hh</TD></TR>
+</TABLE>
+</TD>
+<TD WIDTH=30></TD></TR>
+</TABLE>
+</CENTER>
+
+<P>
+A character constant has the type <tt> char</tt>, and its value is the
+number in the character set of the machine.
+<P>
+<PRE>'a' '\n'        // the character a, and the newline code
+</PRE>
+<P>
+<LI> Floating Point Constants
+<P>
+A floating point number has an integer part, a decimal point, a
+decimal fraction part, an exponential part after e or E, and a suffix.
+The suffix may be
+<P>
+<UL><LI> <tt> f</tt> or <tt> F</tt> 
+</UL>
+<P>
+If this suffix
+<P>
+<UL><LI> is not present, the number is of <tt> double</tt> type
+<P>
+<LI> is <tt> f</tt> or <tt> F</tt>, the number is of <tt> float</tt> type
+</UL>
+<P>
+<PRE>1.23  1.23E-1       // double type
+1.23F 1.23E-1F      // float type
+</PRE>
+<P>
+<LI> String Literals
+<P>
+Character strings are array derived types of the <tt> char</tt> type (see
+section <A HREF="node27.html#langlangmanualarray">5.7</A>).  A character string is a
+sequence of characters enclosed by double quotations.  Like character
+constants, non graphic characters can be expressed by escape
+sequences.  Newline codes must not be present in a character string.
+<P>
+Adjacent string literals are concatenated, and considered as a single
+one.
+<P>
+<PRE>&quot;OZ++&quot;
+&quot;OZ&quot; &quot;++&quot;         // as &quot;OZ++&quot;
+</PRE>
+<P>
+<LI> User-Defined Constants 
+<P>
+It is possible to declare and use constants inside a <tt> shared</tt> (c.f. Section <A HREF="node35.html#langlangmanualsharedmember">5.15.2</A>).
+<P>
+User-defined constants have the declared types.
+<P>
+<PRE>float Pie = 3.14;        // constant of float type
+int MaxSize = 100;       // constant of int type
+char Name = &quot;MyName&quot;;    // constant of array 
+                         // derived type of the char type
+</PRE>
+</UL><H3><A NAME=SECTION00062500000000000000>5.2.5 Operators and Delimiters</A></H3>
+<P>
+The characters or combination of characters, shown in Table
+<A HREF="node22.html#tablanglangmanualtokenop">5.2--3</A>, are used as either arithmetic
+operators or punctuations.
+<P>
+<A NAME=tablanglangmanualtokenop>&#160;</A>
+<P>
+<CENTER>
+<TABLE CELLPADDING=4>
+<CAPTION ALIGN=TOP><STRONG>Table 5.1--3:</STRONG>Operators and Delimiters</CAPTION>
+<TR ALIGN=CENTER>
+ <TD><TT>(</TT></TD>
+ <TD><TT>)</TT></TD>
+ <TD><TT>{</TT></TD>
+ <TD><TT>}</TT></TD>
+ <TD><TT>!</TT></TD>
+ <TD><TT>~</TT></TD>
+ <TD><TT>+</TT></TD>
+ <TD><TT>-</TT></TD>
+ <TD><TT>&amp;</TT></TD>
+ <TD><TT>@</TT></TD>
+ <TD><TT>*</TT></TD>
+ <TD><TT>/</TT></TD>
+ <TD><TT>%</TT></TD>
+ <TD><TT>+</TT></TD>
+</TR>
+<TR ALIGN=CENTER>
+ <TD><TT>-</TT></TD>
+ <TD><TT>|</TT></TD>
+ <TD><TT>^</TT></TD>
+ <TD><TT>;</TT></TD>
+ <TD><TT>'</TT></TD>
+ <TD><TT>&quot</TT></TD>
+ <TD><TT>&lt;</TT></TD>
+ <TD><TT>&gt;</TT></TD>
+ <TD><TT>=</TT></TD>
+ <TD><TT>?</TT></TD>
+ <TD><TT>:</TT></TD>
+ <TD><TT>.</TT></TD>
+ <TD><TT>,</TT></TD>
+ <TD><TT>[</TT></TD>
+</TR>
+<TR ALIGN=CENTER>
+ <TD><TT>]</TT></TD>
+ <TD><TT>++</TT></TD>
+ <TD><TT>--</TT></TD>
+ <TD><TT>-&gt;</TT></TD>
+ <TD><TT>&lt;&lt;</TT></TD>
+ <TD><TT>&gt;&gt;</TT></TD>
+ <TD><TT>&lt;=</TT></TD>
+ <TD><TT>&gt;=</TT></TD>
+ <TD><TT>==</TT></TD>
+ <TD><TT>!=</TT></TD>
+ <TD><TT>&amp;&amp;</TT></TD>
+ <TD><TT>||</TT></TD>
+ <TD><TT>+=</TT></TD>
+ <TD><TT>-=</TT></TD>
+</TR>
+<TR ALIGN=CENTER>
+ <TD><TT>*=</TT></TD>
+ <TD><TT>/=</TT></TD>
+ <TD><TT>%=</TT></TD>
+ <TD><TT>&amp;=</TT></TD>
+ <TD><TT>|=</TT></TD>
+ <TD><TT>^=</TT></TD>
+ <TD><TT>&lt;&lt;=</TT></TD>
+ <TD><TT>&gt;&gt;=</TT></TD>
+ <TD><TT>::</TT></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<P>
+<H3><A NAME=SECTION00062600000000000000>5.2.6 Definition of a Token</A></H3>
+<P>
+
+<P>
+A token is defined as shown below:
+<P>
+<PRE>[ \t\n]
+&quot;__&quot;[0-9a-zA-Z]{16}                        CLASSNAME,SHAREDNAME
+[_a-zA-Z][_0-9a-zA-Z]*                     IDENTIFIER,TYPEPARAM
+&quot;0&quot;|[1-9][0-9]*                            INTEGER
+[1-9][0-9]*[uU]                            UINTEGER
+[1-9][0-9]*[lL][lL]                        LINTEGER
+[1-9][0-9]*[uU][lL][lL]                    ULLINTEGER
+[0-9]+&quot;.&quot;[0-9]+|[0-9]&quot;.&quot;[0-9]+[eE]-[1-9]+  DOUBLEVAL
+[0-9]+&quot;.&quot;[0-9]+[fF]|[0-9]&quot;.&quot;[0-9]+[eE]-[1-9]+[fF]     FLOATVAL
+0[0-7]*                                    OCT
+0[0-7]*[uU]                                UCOT
+0[0-7]*[lL][lL]                            LLOCT
+0[0-7]*[uU][lL][lL]                        ULLOCT
+0[xX][0-9a-fA-F]*                          HEX
+0[xX][0-9a-fA-F]*[uU]                      UHEX
+0[xX][0-9a-fA-F]*[lL][lL]                  LLHEX
+0[xX][0-9a-fA-F]*[uU][lL][lL]              ULLHEX
+\"[^&quot;]*\"                                  STRING
+\'[^']*\'                                  CONST_CHAR
+.*                                         STRINGS
+&quot;++&quot;
+&quot;--&quot;
+&quot;&lt;&lt;&quot;
+&quot;&gt;&gt;&quot;
+&quot;&lt;=&quot;|&quot;&gt;=&quot;
+&quot;==&quot;|&quot;!=&quot;
+&quot;&amp;&amp;&quot;
+&quot;||&quot;
+&quot;*=&quot;|&quot;/=&quot;|&quot;%=&quot;|&quot;+=&quot;|&quot;-=&quot;|&quot;&lt;&lt;=&quot;|&quot;&gt;&gt;=&quot;|&quot;&amp;=&quot;|&quot;^=&quot;|&quot;|=&quot;
+&quot;::&quot;
+&quot;-&gt;&quot;
+&quot;=&gt;&quot;
+</PRE>
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

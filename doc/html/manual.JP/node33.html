@@ -1,0 +1,458 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.13 クラス</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.13 クラス">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION000613000000000000000>5.13 クラス</A></H2>
+ <A NAME=langlangmanualclass>　</A>
+<P>
+<PRE>class_def
+        : class_sc CLASSNAME parents '{' class_body '}' 
+        ;
+class_sc
+        : 'class'
+        | 'abstract' 'class'
+        ;
+
+class_body
+        : access_ctrls member_decls
+        ;
+</PRE>
+<P>
+クラスは利用者定義型の一つである。クラスは、クラスのインスタンスの内部
+表現であるインスタンス変数およびインスタンスに適用可能なメソッド
+の定義で構成される。クラスに定義されるインスタンス変数、メソッド
+をクラスメンバと呼ぶ。
+<P>
+クラスメンバを持たないクラスのインスタンスのサイズは、0 ではなく記憶領
+域を消費する。
+また、クラスの定義に多重継承を利用することが可能である。
+(<A HREF="node37.html#langlangmanualinheritance">5.17</A>節参照)
+<P>
+<H3><A NAME=SECTION000613100000000000000>5.13.1 クラス名</A></H3>
+<P>
+クラス名は、そのクラス定義のスコープで予約語となる。
+<P>
+<PRE>class C {
+  A a;                // クラス A 型のインスタンス変数
+  B b;                // クラス B 型のインスタンス変数
+}
+</PRE>
+<P>
+クラスは型である。異なるクラスは異なる型であり、後述する親クラス/子ク
+ラスの関係 (<A HREF="node37.html#langlangmanualinheritance">5.17</A>節) にある場合以外は、あ
+るクラスのインスタンスを異なるクラス型の変数に代入することはできない 
+(<A HREF="node26.html#langlangmanualtypeexchangeconsistency">5.6.2</A> 節参照)。
+<P>
+<H3><A NAME=SECTION000613200000000000000>5.13.2 クラスメンバ</A></H3>
+ <A NAME=langlangmanualclassmember>　</A>
+<P>
+<PRE>member_decls
+        : /* empty */
+        | member_decls member_decl 
+        ;
+
+member_decl
+        : member_var_decl
+        | member_method_decl
+        ;
+
+member_var_decl
+        : quals_type vars_list_noinit ';'
+        ; 
+
+vars_list_noinit
+        : vars_noinit
+        | vars_list_noinit ',' vars_noinit
+        ;
+
+vars_noinit
+        : vars
+        ;
+
+member_method_decl
+        : quals_type m_members ':' 'abstract' m_quals_with_abstract ';'
+        | IDENTIFIER '(' args ')' ':' 'abstract' m_quals_with_abstract ';'
+        | quals_type m_members m_quals block
+        | IDENTIFIER '(' args ')' m_quals block
+        ;
+
+m_members
+        : processes IDENTIFIER '(' args ')' arrays 
+        | processes '(' m_members ')' arrays 
+        ;
+
+args
+        : /* empty */
+        | arg
+        | args ',' arg
+        ;
+arg
+        : quals_type vars
+        ;
+
+m_quals
+        : /* empty */ 
+        | ':' m_qual
+        ;
+
+m_qual
+        : m_qualifier
+        | m_qual ',' m_qualifier
+        ;
+
+m_qualifier
+        : 'locked'
+        | 'global'
+        ;
+
+m_quals_with_abstract
+        : /* empty */
+        | ',' m_qual
+        ;
+</PRE>
+<P>
+一つのクラス定義の中では同じ名前のクラスメンバを、二度宣言してはなら
+ない。また、メソッドは C++ のように多重定義することはできない。
+<P>
+<PRE>class C {
+  int m() { ... }        
+  int m(int p) { ... }         // エラー: クラスメンバ m はすでに宣言されている。
+}
+</PRE>
+<P>
+インスタンス変数の宣言では、初期設定は行なえない。
+<P>
+<PRE>class C {
+  int a = 10;         // エラー: 初期設定はできない。
+}
+</PRE>
+<P>
+<tt> m_quals</tt> がないメソッドは、そのメソッドが起動された場合、ロー
+カルアクセスとして実行されるローカルメソッドとなる。
+<P>
+ローカルアクセスとは、同一セル内でのみ有効なオブジェクトに対するアクセス
+である。(図<A HREF="node33.html#figlanglangmanualclassmethod">5.13--1</A> の点線で示したもの)
+ <A HREF="node25.html#langlangmanualusertype">5.5</A>節で述べたように、セルは1つのグローバ
+ルオブジェクトとそれに属する任意個のローカルオブジェクトから構成される
+クラスのインスタンスの集合であるため、セル内部でのみのアクセスであるロー
+カルアクセスは、ネットワークを介することのない同一計算機上でのメソッド
+起動である。
+<P>
+<tt> m_quals</tt> が付加されたメソッドは、その指定によって以下のよう
+な属性を持つ。これらの属性は組み合わせて指定することも可能である。
+<P>
+<UL><LI> <tt> global</tt>
+<P>
+そのメソッドが起動された場合、グローバルアクセスとして実行されるグロー
+バルメソッド
+<P>
+グローバルアクセスとは、セル内外を問わず、グローバルオブジェクトに対す
+るアクセスとして有効なアクセス形態である。(図
+<A HREF="node33.html#figlanglangmanualclassmethod">5.13--1</A> の実線で示したもの)
+<P>
+他のセルのローカルオブジェクトを直接共有することは不可能なため、セル外
+部へのアクセスは、すべて他のセルのグローバルオブジェクトに対するアクセ
+ス、つまりグローバルアクセスとなる。すなわち、セル外部に対してはグローバルオ
+ブジェクトに定義されたグローバルメソッドのみが利用可能となる。
+<P>
+同一セル内では、上述のローカルアクセスに加え、グローバルオブジェクトに
+対してグローバルメソッドを起動することが可能である。この場合、引数のロー
+カルオブジェクトが参照ではなく、コピーが実行されることに注意する必要が
+ある。
+<P>
+グローバルアクセスは、セル外部に対してはネットワークを介したメソッド起
+動となるが、同一セル内であればネットワークを介することなく実行される。
+<P>
+<LI> <tt> locked</tt>
+<P>
+指定されたメソッドの起動に関して排他制御を行なうことを要求する
+<P>
+<tt> locked</tt> のメソッドを一つ以上持つクラスから生成されたインスタンス
+はモニタとなる。
+<P>
+<LI> <tt> abstract</tt>
+<P>
+指定されたメソッドを抽象メソッド 
+(<A HREF="node33.html#langlangmanualclassabstract">5.13.6</A> 節参照) とする
+</UL>
+<P>
+<A NAME=figlanglangmanualclassmethod>　</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD>
+<IMG ALIGN=BOTTOM ALT="lang-method-access.gif" SRC="figure/lang-method-access.gif">
+</TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>図 5.1--2:</STRONG> グローバル/ローカルアクセス</CAPTION>
+</TABLE>
+</CENTER>
+
+<P>
+<PRE>class C {
+  int m1() { ... } 
+    // ローカルメソッド
+  int m2() : global { ... } 
+    // グローバルメソッド
+  int m3() : locked { ... }
+    // 排他制御を行なうローカルメソッド
+  int m4() : global locked { ... }
+    // 排他制御を行なうグローバルメソッド
+}
+</PRE>
+<P>
+
+<P>
+あるメソッドの実装において、同じクラス内で後方において定義される
+メンバを利用する場合には、前方参照が可能であり、プロトタイプ宣言は不要
+である。
+<P>
+<PRE>class A {
+  public: m1;
+
+  int m1(int a) 
+    {
+      ...
+      if (a &lt; 0)
+          m2(a);        // OK
+      ...
+    }
+
+  int m2(int a)
+    {
+      ...
+      if (a &gt; 0)
+          m1(a);
+      ...
+    }
+}
+</PRE>
+<P>
+<H3><A NAME=SECTION000613300000000000000>5.13.3 アクセス制御</A></H3>
+ <A NAME=langlangmanualclassaccesscontrol>　</A>
+<P>
+<PRE>access_ctrls
+        : /* empty */
+        | access_ctrls acess_ctrl_not_protected
+        | access_ctrls acess_ctrl_protected
+        ;
+
+access_ctrls_no_protected
+        : /* empty */
+        | access_ctrls_no_protected acess_ctrl_not_protected
+        ;
+
+acess_ctrl_not_protected
+        : 'public' ':' member_lists ';'
+        | 'constructor' ':' member_lists ';'
+        ;
+
+acess_ctrl_protected
+        : 'protected' ':' member_lists ';'
+        ;
+
+member_lists
+        : IDENTIFIER 
+        | member_lists ',' IDENTIFIER 
+        ;
+</PRE>
+<P>
+クラス定義では、各クラスメンバの各クラスの外部に対する公開/非公開の指
+定を行なう。以後、あるクラスが変数の型として利用される場合、そのクラス
+を顧客クラスと呼ぶものとする。
+<P>
+クラスメンバのアクセス制御には以下の三つの指定が可能である。
+<P>
+<UL><LI> <tt> public</tt>
+<P>
+顧客クラスとして利用された場合に、そのインスタンスに対してメソッド起動
+が可能なように公開する。
+<P>
+クラスが継承された場合、これが指定されているメソッドは子クラスで利用可
+能となる (<A HREF="node37.html#langlangmanualinheritance">5.17</A> 節参照)。
+<P>
+<tt> public</tt> はメソッドに対してのみ指定することができる。
+<P>
+<LI> <tt> protected</tt>
+<P>
+顧客クラスとして利用された場合には非公開であり、そのインスタンスに対し
+てメソッド起動を行なうことができない。
+<P>
+クラスが継承された場合は <tt> public</tt>が指定されたメソッドと同様、これ
+が指定されているクラスメンバは子クラスで
+利用可能となる (<A HREF="node37.html#langlangmanualinheritance">5.17</A> 節参照)。
+<P>
+<tt> protected</tt> はすべてのクラスメンバに指定が可能である。
+<P>
+<LI> <tt> constructor</tt>
+<P>
+インスタンス生成のために利用されるメソッドをコンストラクタ 
+(<A HREF="node38.html#langlangmanualconstructor">5.18</A>節参照) に指定する。
+<P>
+コンストラクタに指定するメソッドは、必ず返り値の型が <tt> void</tt> でなけ
+ればならない。
+<P>
+クラスが継承された場合は通常のメソッドと同様の扱いとなる。
+</UL>
+<P>
+アクセス制御の指定がないものは <tt> private</tt> となり、顧客クラスとして
+利用された場合は非公開であり、かつ継承された場合も子クラスで利用する
+ことができない (<A HREF="node37.html#langlangmanualinheritance">5.17</A> 節参照) 。
+<P>
+<PRE>class C {
+  public: m1, m2; 
+  protected: m3;  
+  constructor: create, create2; // エラー: create2() の返り値が void でない
+
+  int m1() { ... }
+  int m2() { ... }
+  int m3() { ... }
+  int m4() { ... }                 // 指定がないので private となる
+  void create() { ... }
+  int create2() { ... } 
+}
+</PRE>
+<P>
+<H3><A NAME=SECTION000613400000000000000>5.13.4 self</A></H3>
+ <A NAME=langlangmanualclassself>　</A>
+<P>
+あるクラスのメソッドの中で、そのメソッドの起動対象のインスタンス
+を、予約語 <tt> self</tt> によって参照することができる。したがっ
+て、
+<P>
+<PRE>class C {
+  int m1() { ... }
+  int m2() { ... }
+}
+</PRE>
+<P>
+において、メソッド <tt> m1</tt> 内でメソッド <tt> m2</tt> を起動する場合、
+<P>
+<PRE>    m2();
+</PRE>
+<P>
+と
+<P>
+<PRE>    self-&gt;m2();
+</PRE>
+<P>
+は同一である。
+<P>
+<H3><A NAME=SECTION000613500000000000000>5.13.5 インスタンスの生成</A></H3>
+<P>
+あるクラス型の変数は宣言された直後はインスタンスへの参照をもたず、値と
+して 0 を持っている (<A HREF="node24.html#langlangmanualdatatypezero">5.4.2</A> 節参照)。
+この変数に対して、インスタンスを生成しそれを参照するには、そ
+のクラスに定義されたコンストラクタを呼び出すことによって行なう 
+(<A HREF="node38.html#langlangmanualconstructor">5.18</A> 節参照)。
+<P>
+インスタンスの代入はすべて参照に対して実行される (メソッドの引数
+に対する扱いについては、<A HREF="node25.html#langlangmanualusertype">5.5</A> 節参照)。
+<P>
+<PRE>class C {
+  constructor: create;
+ 
+  void create() { ... } 
+}
+
+C c;
+c=&gt;create(); // コンストラクタを呼び出してインスタンスを生成し、
+             // 生成されたインスタンスの参照を c に代入
+</PRE>
+<P>
+また、クラスのインスタンスへの参
+照を持つ変数に、0 を代入することによって、その変数のインスタンスに対す
+る参照をなくすことができる。
+<P>
+<PRE>A a
+
+a=&gt;create();
+...
+a = 0; // インスタンスへの参照をなくす
+</PRE>
+<P>
+<H3><A NAME=SECTION000613600000000000000>5.13.6 抽象クラス</A></H3>
+ <A NAME=langlangmanualclassabstract>　</A>
+<P>
+抽象クラスとはそこに定義されたメソッドの実装をその子孫のクラスに任せる
+クラスのことである。この抽象クラスを利用することによって  OZ++
+  言語におい
+て抽象データ型の表現が可能である。
+抽象クラスはインスタンスを生成することができず、
+継承 (<A HREF="node37.html#langlangmanualinheritance">5.17</A> 節参照) でのみ利用される。
+<P>
+抽象クラスに定義されるような実装が定義されないメソッドを抽象メソッ
+ドと呼ぶ。つまり、抽象メソッドを持つクラスが抽象クラスである。したがっ
+て、次のいずれの場合もエラーである。
+<P>
+<UL><LI> 抽象メソッドを持たないクラスを抽象クラスと宣言した場合
+<P>
+<LI> 抽象メソッドを持つクラスを抽象クラスと宣言していない場合
+</UL>
+<P>
+抽象メソッドの定義は、以下のようにメソッドの属性 
+(<A HREF="node33.html#langlangmanualclassmember">5.13.2</A> 節参照) として指定を行なう。
+また抽象メソッドに実装を記述することはできない。
+<P>
+<PRE>abstract class A {        // 抽象クラス
+  public: m1, m2;
+
+  int m1() : abstract;
+  int m2() : abstract;
+
+class B {                 // エラー: 抽象メソッドを持っている
+  public: m1, m2;
+
+  int m1() { ... }
+  int m2() : abstract;        
+}
+
+class C : A {             // 抽象クラスを継承
+  public: m1, m2;
+
+  int m1() { ... }        
+  int m2() { ... }        
+        // 抽象クラスAで定義された抽象メソッドを再定義し
+        // メソッドの実現を与える
+}
+</PRE>
+<P>
+<H3><A NAME=SECTION000613700000000000000>5.13.7 総称クラス (ジェネリッククラス)</A></H3>
+<P>
+総称クラスとはその定義中に任意の型を表す総称パラメータ (ジェネリックパ
+ラメータ) を持つものである。
+総称クラスは総称パラメータに特定の型を指定することにより、通常のクラスと
+同様に使用することができる。
+<P>
+総称パラメータは以下のようにクラス名に含めて定義する。
+<P>
+<PRE>class Collection&lt;T&gt; {
+  public: Add;
+
+  T Add (T content) { ... }
+}
+</PRE>
+<P>
+総称クラスの総称パラメータの特定は以下のように記述する。
+<P>
+<PRE>Collection&lt;int&gt; a;
+</PRE>
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

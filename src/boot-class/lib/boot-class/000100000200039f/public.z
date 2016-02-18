@@ -1,0 +1,7 @@
+(*class* #000100000200039f 5
+(*list*)
+(*list*
+(*declaration* InvalidSubString (*method* int (*list* #00010000020003c7 0 ) 0) public #000100000200039f 0 0)
+(*declaration* OutOfRange (*method* int (*list* (*scqf* int 2) ) 0) public #000100000200039f 0 1)
+)
+)

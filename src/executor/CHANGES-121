@@ -1,0 +1,35 @@
+Version 1.21
+主な修正内容
+
+	・リモートの通信で入出力に再帰呼出しを行っていたために大きな
+	　オブジェクト送受信時にスタックオーバーフローが発生した。
+	　関数putCommBuff() と 関数 readFile() の実装を　繰り返しに
+	　書き換えた。[remote.c,ozexeccifload.c]
+
+	・下記のエグゼキュータの関数名を変更した。[file.c]
+		旧		新
+		OzSendTo()	OzSendto()
+		OzSendMsg()	OzSendmsg()
+		OzRecvFrom()	OzRecvfrom()
+		OzRecvMsg()	OzRecvmsg()
+
+	・関数 OzOmObjectTableSuspend(), 関数 OzOmObjectTableResume() の
+	　の戻り値の意味を次のように変更した。
+		[object-table.c,load-image.c,debugFunction.c]
+	　（これに伴い、OtGlobalObjectSuspend(), OtGlobalObjectResume() も変更）
+		関数 OzOmObjectTableSuspend() の場合
+			<  0 :	オブジェクトイメージがメモリ上にない、あるいは、
+				既にサスペンドされている。
+			>= 0 :	正常終了
+		関数 OzOmObjectTableResume() の場合
+			<  0 :	オブジェクトイメージがメモリ上にない、あるいは、
+				あるいは、サスペンドされていない。
+			>= 0 :	正常終了
+
+既知の問題点
+	・言語処理系との join の実装での戻り値の取り扱いが異なる。
+	・グローバルインボークで、引数（戻り値）の生成の時に、NoMemory例外が
+	　発生すると自動ＧＣのオブジェクトをサスペンドする所で止ってしまう。
+	　また、例外の受け準備ができていない場所なので、SIGSEGV(OzRunning
+	　Thread->exceptions==0)になってしまう。（オブジェクトのスレッドの
+	　リストの整合性がなくなる）

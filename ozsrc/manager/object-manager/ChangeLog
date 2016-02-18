@@ -1,0 +1,503 @@
+Tue Apr  2 10:32:46 1996  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* preload.oz (Preloader::PreloadObjects)
+	  存在しないオブジェクトをプリロードするように指定されている場合は、
+	  プリロード指定を解除するようにした。
+
+	* om.oz (ObjectManager::{RemoveObject,TransientizeObject})
+	  プリロード指定されているオブジェクトが削除されたり過渡化されたり
+	  するときは、プリロード指定を解除するようにした。
+
+	* ndholder.oz (NameDirectoryHolder)
+	  Searching が 1 の状態でフラッシュされると、一斉同報を発信できな
+	  くなってしまうバグを取った。
+
+	* om.oz (RestoreMe)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  自分自身を Restore するサービスを追加した。
+
+Tue Mar 19 20:06:48 1996  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* om.oz (ObjectManager) otentry.oz (ObjectTableEntry)
+	  オブジェクトが、正常にシャットダウンされたかどうかを示すフラグが
+	  変化したら OM 自身がフラッシュされるようにした。
+
+	* codedaemon.oz (CodeFaultDaemon::DaemonProcess)
+	  例外処理機能を強化した。
+
+Sun Mar  3 10:40:30 1996  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* executor.oz (Executor::ShutdownRequest, WaitShutdownRequest)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  新しいシャットダウン方式に対応するインタフェースを追加。
+
+	* om.oz (ObjectManager::Shutdown, UpcallShutdown)
+	  !!IMAGE CHANGED!!
+	  Feb.1 対応。シャットダウンを、エグゼキュータからのリクエストを待
+	  つ方式に変更。
+
+	* executor.oz (Executor::OzOmstarted)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  Feb.1 対応。 OzOmStarted をインタフェースから削除した。
+
+	* om.oz (ObjectManager::Go)
+	  Feb.1 対応。 OzOmStarted を呼ぶ代わりに Go を終了させるようにし
+	  た。
+
+Sun Feb 18 00:56:11 1996  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* executor.oz
+	  OzOmFileTransfer への参照のために、 executor/remote-file-if.h を
+	  インクルードするようにした。
+
+	* executor.oz (Executor::PrependOZHOME)
+	  引数が 0 でも落ちないようにした。
+
+	* otentry.oz (ObjectTableEntry::Wait20)
+	  オブジェクトから上がった例外の影響を被らないようにした。
+
+Sun Feb  4 17:27:07 1996  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* ndholder.oz (NameDirectoryHolder::MakeSure)
+	  !!PROTECTED INTERFACE CHANGED!!
+	  既にネームディレクトリを捜索中であれば、ムダに IsReady を呼ばな
+	  いようにした。
+
+Fri Feb  2 10:29:03 1996  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* om.oz (ObjectManager::SearchClassImpl)
+	  ClassID 0 を求めて broadcast しないようにした。
+
+Thu Feb  1 15:34:13 1996  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* om.oz (ObjectManager::Go)
+	  OM の再起動時にコンフィギュレーションキャッシュをクリアしなくて
+	  もいいようにした。
+
+Mon Jan 29 15:57:52 1996  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* om.oz (ObjectManager::NewOID)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  シャットダウン処理中でも新しいグローバル ID を獲得できるように、
+	  グローバル ID を与える専用のメソッドを用意した。
+
+Sun Jan 28 00:35:01 1996  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* ndholder.oz (NameDirectoryHolder)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  スレッドを作り過ぎないように改良した
+
+	* om.oz (ObjectManager::FastBoot)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  FastBoot スイッチを削除した
+
+Sat Jan 27 22:32:48 1996  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* om.oz (ObjectManager::ChangeConfigurationCacheExpirationTick,
+	                        GetConfigurationCacheExpirationTick,
+				IsConfigurationCacheExpired,
+				EnableConfigurationCacheExpiration,
+				DisableConfigurationCacheExpiration,
+				ConfigurationCacheExpiration)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  コンフィギュレーションキャッシュのエクスパイアをよりきめ細かく制
+	  御することを可能とした。
+
+	* om.oz (ObjectManager::ChangeDomain, WhichDomain, DomainName)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  ドメイン名を扱うように変更した。ネームディレクトリは、自身の属し
+	  ているドメインのものを利用する。
+
+Mon Jan 22 23:14:04 1996  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* conftable.oz (ConfigurationTable::Lookup)
+	  検索処理ではロックを取らないようにした (そもそも読み書きはアトミッ
+	  クなので)
+
+Fri Jan 19 09:01:45 1996  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* 95Sep.1 を更新
+
+Thu Jan 18 01:18:37 1996  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* om.oz (ObjectManager::Go)
+	  オブジェクトマネージャの名前 (:object-managers:xxxxxx) がネーム
+	  ディレクトリに登録されるようにした。
+
+Wed Jan 10 11:02:08 1996  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* conftable.oz (ConfigurationTable::Remove)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  メソッド Remove を public メソッドとした。
+
+	* om.oz (ObjectManager)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  flags.h の EXPIRECONFIGURATIONCACHE を定義することで、コンフィギュ
+	  レーションキャッシュをエクスパイア可能にした。
+
+	* confexpirer.oz (ConfigurationCacheExpirer)
+	  !!NEW CLASS!!
+	  コンフィギュレーションキャッシュをエクスパイアする Alarmable を
+	  用意した。
+
+	* otentry.oz (ObjectTableEntry::Wait)
+	  正常終了しなかったグローバルオブジェクトはフラッシュしないように
+	  した。
+
+Sat Nov 11 18:20:04 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* ここで Sep.1 を更新
+
+	* object.oz (Object::GetPropertyPathName)
+	  複数のオブジェクトパートを持つオブジェクトの、最下位のパート以外
+	  のパートが持つプロパティを検索すると無限ループするバグを取り除い
+	  た。
+
+Wed Oct 11 22:39:54 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* ここで Sep.1 を更新
+
+Sat Sep 30 14:29:21 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* ここで Sep.1 に更新
+
+Fri Sep 29 02:14:59 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* om.oz (ObjectManager::NewObject)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  新しい Object の仕様にしたがって、 NewObject を、 CCID を引数に
+	  とるように変更した。
+
+Thu Sep 14 11:35:58 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* conftable.oz (ConfigurationTable)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  不要なインスタンス変数 OM, AID を削除した。
+	  これに伴って、 constructor New の引数をなくした。
+
+Mon Sep 11 06:49:03 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* executor.oz (Executor::OzObjectTableRemove)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  削除の成功/不成功を真偽値で返すようにした。
+
+	* executor.oz (Executor::OzObjectTableResume)
+	  エラーメッセージを修正した。
+
+Fri Sep  8 20:23:04 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* object.oz (Object)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  コンフィギュレーションセットに関するメソッドと、クラスプロパティ
+	  の検索に関するメソッドが追加された。
+
+	* ここで Jun.2 を更新
+
+Fri Sep  1 15:36:18 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* clupper.oz (ClassLookupper::LoadIt)
+	  ClassBroadcastManager::Broadcast が、同じクラスを要求している複
+	  数のスレッドに対して同じ答を返す可能性があるので、 
+	  ClassLookupper::LoadClassPart も、同じ ID で複数回呼ばれる可能性
+	  が生じる。そこで、 LoadIt は、既にロード済みかどうかを調べてから
+	  返事するようにした (それでも、先行するロードの途中で後続のロード
+	  がかかる場合もあるので、すべてのケースを防げるわけではない。この
+	  場合は、上書きとなる。)。
+
+	* cbcmng.oz (ClassBroadcastManager::Broadcast)
+	  複数のスレッドが同じクラスを待っていたときのことを考えて、回答構
+	  造体のテーブルは、復帰した後もクリアしない (そのエントリを再利用
+	  するときクリアする) ようにした。
+
+	* om.oz (ObjectManager::IsSuspendedObject)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  オブジェクトが一時停止状態かどうかを調べるメソッドを追加した。
+
+	* ここで Jun.2 を更新
+
+Sun Aug 20 13:20:41 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* daemonfc.oz (DaemonForClass::New)
+	  AID の初期化を、メソッド Set ではなく、コンストラクタで行う
+	  ようにした。
+
+	* confreq.oz (Configuration::Request)
+	  !!REMOVE CLASS!!
+	  整理の結果不要になったので取り除いた。
+
+	* confdaemon.oz (ConfigurationDaemon::DaemonProcess)
+	  code を整理した。
+
+	* debdaemon.oz (DebuggerClassRequestDaemon)
+	  !!NEW CLASS!!
+	  エグゼキュータの DM がクラスを必要としたときに供給するデーモンプ
+	  ロセスのためのクラスを新規に作成した。
+
+	* daemons.oz (Damons)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  om.oz (ObjectManager)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  デバッガデーモンを起動したり、数を調整できるようにインタフェース
+	  を追加した。
+
+	* executor.oz
+	  !!PUBLIC INTERFACE CHANGED!!
+	  デバッガデーモンが利用するランタイムコール 
+	  OzDmClassRequest/OzDmClassRequestReply に対応するインタフェース
+	  を追加した。
+	  また、オブジェクトの一時停止/再開を処理するランタイムコール 
+	  OzOmObjecTableSuspend/OzOmObjecTableResume に対応するインタフェー
+	  スを追加した。
+
+	* otentry.oz (ObjectTableEntry::Suspend, Resume)
+	  Suspend/Resume のときにエグゼキュータに要求する処理を変更した。
+
+Fri Aug 18 03:37:18 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* om.oz (ObjectManager::ShowConfigurationCache)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  コンフィギュレーションキャッシュの内容を表示するメソッドを追加し
+	  た。
+
+	* conftable.oz (ConfigurationTable::Set)
+	  CCID を 0 にしてセットしようとするのは、そのエントリをテーブルか
+          ら取り除こうとしているのだと解釈するようにした。
+
+	* conftable.oz (ConfigurationTable::Rebuild)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  メソッド Rebuild を取り除き、同様の処理を 
+	  ObjectManager::RebuildConfiguration で実現するようにした。
+
+Thu Aug  3 20:35:19 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* ここで Jun.2 を更新
+
+Sun Jul 30 18:55:24 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* cbcmng.oz (ClassBroadcastManager)
+	  !!PROTECTED INTERFACE CHANGED!!
+	  OzSleep を使うようにした。
+
+	* clupper.oz (ClassLookupper::EmployRemoteClassEach)
+	  OzSleep を使うようにした。
+
+	* otentry.oz (ObjectTableEntry::IsSuspended)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  そのセルが一時停止しているかどうか調べるメソッドを追加した。
+
+	* otm.oz (ObjectTableManager::List)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  テーブル上の OID をすべて列挙するメソッドを追加した。
+
+	* om.oz (ObjectManager::ListObjects, 
+	         ObjectManager::ListObjectsOfStatus,
+		 ObjectManager::ListLoadedObjects,
+		 ObjectManager::ListReadyObjects,
+		 ObjectManager::ListSuspendedObjects,
+		 ObjectManager::ListSwappedOutObjects,
+		 ObjectManager::WhichStatus)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  そのエグゼキュータ上の (ある条件を満たす) グローバルオブジェクト
+	  を列挙するメソッド群を追加した。
+
+Fri Jul 28 10:23:45 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* bcreceiver.oz (BroadcastReceiver::DaemonProcess)
+	  classdaemon.oz (ClassRequestDaemon::DaemonProcess)
+	  codedaemon.oz (CodeFaultDaemon::DaemonProcess)
+	  confdaemon.oz (ConfigurationDaemon::DaemonProcess)
+	  lodaemon.oz (LayoutFaultDaemon::DaemonProcess)
+	  ofdaemon.oz (ObjectFaultDaemon::DaemonProcess)
+	  デーモンプロセスが例外を上げて死んだときに、再起動するようにした。
+
+Fri Jun  2 10:42:26 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* om.oz (ObjectManager::SearchClassImpl):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  class 探しの broadcast を出し続けていることを示す warning
+	  message の頻度を変更可能にした (中川さんの要求による)。頻度の確
+	  認、変更に用いる次のよっつの public メソッドを追加した。
+
+	  GetFirstWarningAtSearchClassImpl
+	  SetSuccessiveWarningAtSearchClassImpl
+	  SetFirstWarningAtSearchClassImpl
+	  SetSuccessiveWarningAtSearchClassImpl
+
+Fri May 26 10:57:58 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* om.oz (ObjectManager):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  メソッド ReloadCode を削除した。
+
+	* executor.oz (Executor):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  メソッド OzRemoveCode を削除した。
+
+Wed May 24 17:01:23 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* clupper.oz (ClassLookUpper):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  メソッド UnregisterClassSub は、存在理由が不明確だったので、 
+	  UnregisterClass に取り込んだ。
+	  加えて、メソッド EmployRemoteClassEach の内部では wait せず、メ
+	  ソッド Sleep を作ってそちらで wait するように変更したので、 
+	  locked メソッドではなくした。
+	  AddRemoteClassName は、テーブルの内容の改変を伴うので、単に 
+	  locked とするのではなく、 Lock/Unlock するようにした。
+
+Tue May 16 11:38:12 1995  NISHIOKA Toshihiro  (nishioka@hotate.mri.co.jp)
+
+	* aid.oz (ArchitectureID):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  ID が表現するアーキテクチャを表す文字列を返すメソッド Type を作
+	  成した。
+
+Sun May  7 13:00:36 1995  NISHIOKA Toshihiro  (nishioka@hotate.mri.co.jp)
+
+	* clupper.oz (ClassLookupper):
+	  インスタンス変数 ClassTable, LocalClassTable, RemoteClassNames 
+	  をクラス SimpleArray のインスタンスにした。
+	  登録されていない Class を unregister しようとすると、例外 
+	  ObjectManagerExceptions::UnknownObject をあげるようにした。
+
+Fri May  5 03:20:45 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* !!PUBLIC INTERFACE CHANGED (Preloader, ObjectManager)!!
+	  実行可能コードのプリロードとレイアウト情報のプリロードを独立に指
+	  定可能とした。また、クラス関連情報のプリロードの際に、ファイルの
+	  パス名はクラスオブジェクトから取得することとした (preload.oz,
+	  om.oz)。
+
+	* !!PROTECTED INTERFACE CHANGED (ObjectTableEntry)!!
+	  ObjectTableEntry クラスの状態遷移を待ち合わせるための各種条件変
+	  数を protected とした (otentry.oz)。
+
+	* !!PUBLIC INTERFACE CHANGED (ObjectTableEntry)!!
+	  Flush ができるときには Permanentize されている仕様なので、
+	  ObjectTableEntry::FlushIt の返り値には意味がなく、これを void と
+	  した。これに伴って、 instance 変数 OnceFlushed も廃止された 
+	  (otentry.oz)。
+
+	* ObjectTableEntry::Shutdown と ObjectTableEntry::StopIt の意味を
+	  分けた。 Shutdown では Closed 状態に遷移したままだが、 StopIt で
+	  は Fronzen に戻す (otenty.oz, om.oz)。
+
+	* !!PUBLIC INTERFACE CHANGED (SuspensionStateTransition)!!
+	  結局一時停止できなかったときに呼ばれる method SuspendFailed を実
+	  装した (suspendst.oz)。
+
+	* !!PUBLIC INTERFACE CHANGED (ObjectManagerExceptions)!!
+	  例外 ObjectIsBusy (global Object) を追加。
+	  スレッドの終了を待ち合わせるような操作を行ったが、ある時間を経過
+	  しても終了しない場合に上がる (om-exc.oz)。
+	  ただし、オブジェクトの停止の際にはこの例外は上がらない。
+
+Thu May  4 18:17:54 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* !!PUBLIC INTERFACE CHANGED (ObjectManager)!!
+	  public method ObjectManager::ExecutorID を追加した (om.oz)。
+
+Mon Apr 24 13:20:26 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* ObjectTableEntry::Stopped は不要なので削除した (otentry.oz)。
+
+	* これまで、 ObjectTableEntry::Melt では、 Stop がかけられたかどう
+	  かにしたがって行き先の状態を変更していたが、 OrderStopped に変更
+	  するのは Stop した thread の仕事として、ここでは単に 
+	  Running/OTReady に状態遷移させることとした。
+	  同様に、セルアウトしているオブジェクトに対する Stop でも、 Stop 
+	  した thread が OrderStopped に遷移させる仕様とした (otentry.oz)。
+
+	* !!PUBLIC INTERFACE CHANGED (ObjectManager)!!
+	  ObjectManager::Flush を public とした (om.oz)。
+
+	* NameDirectoryBroadcastManager::IssueBroadcast は取り除き、直接 
+	  Executor::Broadcast を呼び出すようにした (ndbcmng.oz)。
+
+	* ClassBroadcastManager::IssueBroadcast は取り除き、直接 
+	  Executor::Broadcast を呼び出すようにした (cbcmng.oz)。
+
+	* ClassBroadcastManager::Collector において、テーブルからエントリ
+	  を消し去った後に、 Hash 表の整合性をとり直す処理を入れ忘れていた
+	  ので、入れた (cbcmng.oz)。
+
+	* directory mng を、 object-manager, class-object, directories に
+	  分割した。
+
+Mon Apr 17 15:22:00 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* !!PUBLIC INTERFACE CHANGED (ObjectManagerExceptions)!!
+	  system exception と紛らわしい ObjectNotFound を UnknownObject に
+	  改名し、個別の例外を持っていた内部 error をすべて FatalError で
+	  扱うこととした (om-exc.oz)。
+
+	* これより上が、 Release 2 に向けての修正である。
+
+Mon Mar 27 01:59:20 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* BroadcastReceiver で、 site_id の 0 初期化が行われていなかったた
+	  め、有効に働かない broadcast receiver daemon ができる可能性が生
+	  じていたので、修正した (bcreceiver.oz)。
+
+Thu Mar 23 00:43:20 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz)
+
+	* broadcast に答える Class を、その executor 上の class に限った。
+	  すなわち、他の executor 上の Class を参照している executor が 
+	  broadcast を受けとっても、反応しないようにした (clupper.oz)。
+
+	* ObjectManager と Object の flush の timing を変更した。
+	  global Object は、それが Permanentize されたところで flush し、
+	  そのとき同時に ObjectManager も flush するようにした。
+	  反対に、 transient な global Object が Remove されても 
+	  ObjectManager は flush しないようにした (om.oz)。
+
+	* 同一 site からの broadcast にしか反応しないようにした (om.oz,
+	  bcreceiver.oz)。
+
+	* クラスの配送の効率を向上させるために、ひとつの ClassPart を送信
+	  するために必要な global invocation の数を減らした (class.oz,
+	  bcreceiver.oz, clupper.oz, om.oz)。
+
+Fri Mar 10 10:42:44 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* FROZEN 状態のオブジェクトにほぼ同時に invocation があったときに、 
+	  load が二回要求されてしまう障害があったので、改修した 
+	  (otentry.oz)。
+
+	* 同じ class ID に対する broadcast が一回しか出ない障害があったの
+	  で、 cbcmng.oz を修正した。
+
+	* ファイル転送の runtime call を起動する Executor::Transfer を実装
+	  した (executor.oz)。
+
+	* Executor::Broadcast で、実際に broadcast の runtime call を呼ぶ
+	  ようにした (executor.oz)。
+
+	* その executor の面倒をみるクラスオブジェクトが立ち上がらないうち
+	  に class 探しの broadcast を出さないように、 ClassLookupper に 
+	  LocalClass が登録されるまで待ち合わせる WaitClassEmployment メソッ
+	  ドを実装した。
+
+	* コンパイラの改修の結果、オブジェクト ID の 0 を 0LL と表記する必
+	  要がなくなったので、これを取り除いた (ndbcmng.oz)。
+
+	* ObjectManager::NewObject で、コンフィギュアドクラス ID を得るの
+	  に 2 を引くのをやめて、 ConfigurationTable を引くようにした 
+	  (om.oz)。
+
+Sat Mar  4 14:22:30 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz)
+
+	* "ObjectManager::SearchClass: Searching ... " の warning の出るタ
+	  イミングを 10 倍スパースにした。
+
+Fri Mar  3 17:54:08 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz)
+
+	* ObjectTableManager::Shutdown に潜んでいた同期の bug を取り除いた。
+
+Sun Feb 26 22:28:26 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* configured class ID を求めるのに、 2 を引いて返すのではなく、表
+	を検索するようになった。
+
+	* Broadcast を 10 回出してもクラスが得られないときは、 OzPrintf で
+	注意メッセージを出力するようにした。

@@ -1,0 +1,23 @@
+(*class* #0001000002000268 0
+(*list*
+(*list* #0001000002000187 #0001000002000188 0)
+(*list* #00010000020008cb #00010000020008cc 0)
+)
+(*list*
+(*declaration* New (*method* void (*list* (*scqf* #0001000002000254 0 4) #000100000200018c 0 ) 0) constructor #0001000002000268 0 0)
+(*declaration* Capture (*method* void (*list* #00010000020008c6 0 ) 1) public #0001000002000268 0 1)
+(*declaration* ChangeDomain (*method* (*array* char ) (*list* (*array* char ) ) 1) public #0001000002000268 0 2)
+(*declaration* Get (*method* (*scqf* #0001000002000254 0 4) (*list*) 1) public #0001000002000268 0 3)
+(*declaration* Init (*method* void (*list* #000100000200018c 0 ) 1) public #0001000002000268 0 4)
+(*declaration* Peek (*method* (*scqf* #0001000002000254 0 4) (*list*) 1) public #0001000002000268 0 5)
+(*declaration* Reply (*method* void (*list* (*scqf* #0001000002000254 0 4) ) 0) public #0001000002000268 0 6)
+(*declaration* Set (*method* void (*list* (*scqf* #0001000002000254 0 4) ) 0) public #0001000002000268 0 7)
+(*declaration* SetDomainName (*method* void (*list* (*array* char ) ) 0) public #0001000002000268 0 8)
+(*declaration* WhichDomain (*method* (*array* char ) (*list*) 0) public #0001000002000268 0 9)
+(*declaration* Lock (*method* void (*list*) 1) public #0001000002000187 0 0)
+(*declaration* Unlock (*method* void (*list*) 1) public #0001000002000187 0 1)
+(*declaration* Alarm (*method* void (*list* (*scqf* int 2) ) 0) public #00010000020008cb 0 0)
+(*declaration* Hash (*method* (*scqf* int 2) (*list*) 0) public #00010000020008cb 0 1)
+(*declaration* IsEqual (*method* int (*list* #00010000020008cb 8 ) 0) public #00010000020008cb 0 2)
+)
+)

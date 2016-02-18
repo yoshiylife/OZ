@@ -1,0 +1,178 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.18 Constructor</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.18 Constructor">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION000618000000000000000>5.18 Constructor</A></H2>
+ <A NAME=langlangmanualconstructor>&#160;</A>
+<P>
+Constructor is a special method invoked when a instance of an ordinary class or
+static class is created.  
+Generally, it has the function for initialization of an instance.
+<P>
+When it defines that both the instanciation and initialization of an instance 
+are separated, and initialization is done by an ordinary method, 
+the following problem occurs.
+<P>
+<UL><LI>  No other method should be executed to the object between the instanciation
+and initialization of an instance because they are a series of operations.  
+As long as this operation is divided into two parts, however, the language 
+can not control it.
+</UL>
+<P>
+OZ++ language solves this problem to execute the instanciation and initialization of an instance as one operation by introducing the constructor.
+<P>
+<H3><A NAME=SECTION000618100000000000000>5.18.1 Feature</A></H3>
+<P>
+The constructor of OZ++ language has the following features.
+<P>
+<OL><LI>  It is possible to have any number of parameters.
+<LI>  It is possible to define a multiple constructor in one ordinary class 
+or static class.
+<LI>  The constructor is defined as a method whose return value is <tt> void</tt>.
+<LI>  It is possible to reserve the constructor by access control 
+(see Sections <A HREF="node33.html#langlangmanualclassaccesscontrol">5.13.3</A> and 
+<A HREF="node34.html#langlangmanualstaticclassaccesscontrol">5.14.3</A>).
+<P>
+</OL>
+<P>
+With the exception of the above features, it is not different from the 
+ordinary method with regard to definition, and it is a method of reserved 
+<tt> constructor</tt> by access control.
+<P>
+When the constructor is called, however, it is always requested to perform 
+a special process such as the generation of an instance.  
+In doing this, it is questionable to describe it as the ordinary 
+method invocation.  
+In OZ++, the instance can not be created by automatic calling of 
+a constructor when the class type variable is stated as in C++.  
+The instance variable of class type itself has no reference to the instance
+after instanciation, 
+so the reference to the instance created by invoking  constructor 
+to the variable and housed to the variable.  
+Thus, the calling of a constructor in OZ++ has two special features:
+<P>
+<UL><LI>  Special process for the generation of an instance
+<P>
+<LI>  Invocation of a method even when the instance does not exist.
+</UL>
+<P>
+Thus, because of the language distinction, it should be described as follows:
+<P>
+<PRE>class A {
+  constructor: m1, m2;
+
+  void m1(int a) { ... }
+
+  void m2() { ... }
+};
+
+A a, b;
+
+a=&gt;m1(10); // a constructor call
+b=&gt;m2();     // a constructor call
+</PRE>
+<P>
+In OZ++, the generation of global object on the other executors is essential
+to program the distributed application using networks.  
+To do this, an executor where the global object will be instantiated can 
+be specified
+as an option of the constructor invocation.  
+More concretely, it should be declared that the object manager abstracting 
+an executor as an object of OZ++, and be described as follows:
+<P>
+<PRE>global A a;
+global ObjectManager om = Where ();
+
+a=&gt;m1 (10)@om;
+</PRE>
+<P>
+Furthermore, the programmer should define the constructor even if it do only 
+a zero clear of the instance variable.  
+Such constructor can be described with null block as follows:
+<P>
+<PRE>class A {
+  constructor: new;
+
+  void new() {}
+}
+</PRE>
+<P>
+<H3><A NAME=SECTION000618200000000000000>5.18.2 Inheritance of Constructor</A></H3>
+<P>
+In C++ language, when the instance of child class is generated, the constructor
+of the parent class is called automatically after the constructor of the class 
+is called.  
+In this way, however, a programmer should be conscious of the call order 
+of constructors along with the inheritance tree which does not appear directly 
+in programs.
+<P>
+In OZ++ language, it does not  automatically call the constructor of the parent 
+class. 
+The constructor defined by the parent class can also be inherited as an ordinary 
+method in the child class.  
+Thus, in the child class, the user can select whether to invoke the constructor 
+of the parent class as an ordinary method or to utilize the constructor in 
+the child class by access control reserving.
+<P>
+<H3><A NAME=SECTION000618300000000000000>5.18.3 Multiple Calling of Constructor</A></H3>
+<P>
+<PRE>A a;
+
+a=&gt;m1(10);
+... 
+a=&gt;m1(20);
+</PRE>
+<P>
+In the second invocation of the constructor in above example, the reference 
+to the instance referred with <tt> a</tt> until then is discarded and 
+the reference to the newly generated instance is saved to <tt> a</tt>.
+<P>
+<H3><A NAME=SECTION000618400000000000000>5.18.4 Generation of Instance</A></H3>
+<P>
+The constructor described above has functions which initialize an instance 
+after generating the instance on memory.  
+In short, the area for instance is reserved on memory and the area of instance 
+variables is zero cleared before execution of the constructor. 
+In OZ++, this part of the process is hidden from the user and uses need not to 
+concern about memory management.
+<P>
+The memory management process which involves securing of memory area for the 
+instance and so on is executed by an executor.  
+The heap called cell is generated on each unit of global objects, and 
+a process like paging is executed on each cell unit.  
+Furthermore, a local object kept by a global object is generated in a cell.
+<P>
+<H3><A NAME=SECTION000618500000000000000>5.18.5 Deleting Instance</A></H3>
+<P>
+In OZ++, it is impossible to describe directly the program for deleting 
+the local object.  
+The local object is deleted tacitly by GC when it is not referred.  
+On the other hand, it is possible to cut the chain of the reference to 
+instance of the variable by putting 0 (zero) instead of the reference to 
+the instance of class.  
+Accordingly, the local object is enabled to delete indirectly because 
+the following step of execution of GC deletes the local object to avoid 
+all references by putting 0 (zero) instead of the variable referring to 
+the local object.  
+However, there is no clear way to execut GC.
+<P>
+The global object can be deleted by utilizing the service of the object 
+manager managing that global object.
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

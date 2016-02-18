@@ -1,0 +1,215 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>3.2 Workbench operations</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="3.2 Workbench operations">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION00042000000000000000>3.2 Workbench operations</A></H2>
+<P>
+<H3><A NAME=SECTION00042100000000000000>3.2.1 Outline</A></H3>
+<P>
+WB performs the following functions:
+<P>
+<UL><LI> Browses or corrects a school
+<LI> Browses the interface, the source codes, and the configuration of a class
+<LI> Compiles source codes
+</UL><H3><A NAME=SECTION00042200000000000000>3.2.2 How to Activate the Work Bench</A></H3>
+<P>
+Generate and launch objects of the class WorkbenchLaunchable.
+<P>
+If activated for the first time, the window for initial setup appears on
+the screen.  Input the class object name.
+<A NAME=tex2html3 HREF="footnode.html#1091">[+]</A>
+<P>
+<H3><A NAME=SECTION00042300000000000000>3.2.3 Functions that are common to both WB and tools which can be activated from WB</A></H3>
+<P>
+<UL><LI> The button to the extreme left
+<P>
+<UL><LI> Close (excluding WB)<BR> 
+Closes windows
+<LI> Open (CFE and SB only)<BR> 
+Opens a different tool for a new process.<BR> 
+Select the school from the list given in WB (mentioned later)
+<LI> Preference...<BR> 
+Performs initial setups (such as Class Object Name, Current Directory, Language)
+<LI> Quit<BR> 
+Terminates WB
+</UL>
+<P>
+<LI> The Menu Button of the Window<BR> 
+Displays the list of all the present existing windows.<BR> 
+If selected, the window can be either deiconified or raised.
+<P>
+</UL><H3><A NAME=SECTION00042400000000000000>3.2.4 Functions of WB</A></H3>
+<P>
+<UL><LI> List of Schools
+All the names of schools in WB are displayed.  The name indicated as
+'Current' is the current school.  This school is used in case CFE or SB is
+activated without specifying any schools.
+<P>
+<LI> Menu Button
+<UL><LI> Workbench
+<P>
+<PRE>Compiler...
+        Activates the compiler front end (CFE)
+
+School browser...
+        Activates the school browser (SB)
+
+School diretctory browser...
+        Activates the school directory browser (SB)
+</PRE>
+<P>
+<LI> Operation<BR> 
+Performs the following operations on the School List:
+<PRE>Select 
+        Selects schools for further processing if the 'Open' button is
+        clicked from CFE or SB.
+
+Cancel
+        Cancels what has been opened from 'Open' in CFE and SB.
+
+SetCurrent
+        Sets to the current school
+
+Export
+        Transmits the school which is selected from the current school
+        directory.
+
+Delete
+        Deletes
+
+Rename
+        Changes the name
+
+Duplicate
+        Duplicates
+
+New...
+        Creates a new school whose content is blank
+
+Add...
+        Takes the school file specified into WB.
+        This is usually used to take $OZROOT/etc/boot-school.
+</PRE>
+<P>
+<LI> Pop Up Menu<BR> 
+If double-clicked inside the list, the menu, including two of the above
+entries in the work bench is displayed.
+<P>
+</UL></UL><H3><A NAME=SECTION00042500000000000000>3.2.5 Functions of CFE</A></H3>
+<P>
+Refer to the document Compiler Front-End.
+<P>
+<H3><A NAME=SECTION00042600000000000000>3.2.6 Functions of SB</A></H3>
+<P>
+This is an improved version of a simple browser.  It has the following new
+functions:
+<UL><LI> All classes in the school are displayed in the list.<BR> 
+f a class is double-clicked, the information concerning the ID and the
+type (in the file class/staticclass/record/shared/abstract class) is
+displayed.<BR> 
+If the 'Edit' button is pressed, editing becomes possible.  After
+editing, the 'Save' button must be pressed to affect the result in the
+school.  Press the 'Done' button to return to the normal browser state.
+<LI> The Package button is used to create a package to be released to 
+the catalog. Click the Package button. A dialog box with package contents 
+will appear after several seconds. At the top of the dialog box is the 
+class to be registered to the school of the package. At the present, 
+there is only one class (future library package will allow multiple 
+classes). The bottom of the dialog box displays the list of possible 
+classes for creation while activating the class indicated at the top. 
+The Now button at the bottom creates a package that specifies a 
+configuration of the class currently under use (with in the cache of the 
+ object manager). The Default button creates a package that does not 
+specify configuration but uses the default item specified in the class. 
+Click the Now or Default button to open the catalog browser and to 
+select the directory for registering the created package. When clicking 
+Select at this time without making a selection, the currently displayed 
+directory will be used.
+<LI> The titles 'Public', 'Protected', 'Implementation', and 'Configuration'
+are in the form of buttons.  If clicked, the class information concerning the
+respective title can be browsed.
+<LI> The titles 'Public', 'Protected', 'Implementation', and 'Configuration'
+are in the form of buttons.  If clicked, the class information concerning the
+respective title can be browsed.
+<P>
+<PRE>Public
+        Displays the public interface
+Protected
+        Displays the protected interface
+Implementation
+        Displays the source codes
+Configuration
+        Displays information concerning the class implementation
+</PRE>
+If the button 'Other...' to the left of ID is pressed, a list of class
+ID's of other selectable versions is displayed in the window.  The functions
+of the buttons in this window are as follows:
+<PRE>Browse... 
+        Displays the ID information of the class
+Select
+        Selects the given ID (only possible in the edit mode)
+Default
+        Sets the above parts to the default ones
+Visible
+        Inserted as a new version in the class (can not be used in
+        Configuration)
+Close
+        Closes the window
+</PRE>
+<P>
+<LI> Menu Button
+<UL><LI> Operation
+<PRE>Search...
+        Runs the search for the class name or the version ID (having 0x in
+        front).  This process is a little bit buggy :-)
+</PRE>
+</UL></UL><H3><A NAME=SECTION00042700000000000000>3.2.7 Browsing the Class Information</A></H3>
+<P>
+This is a simple browser with a few alterations made to improve its
+display.  Its new function is that it can be connected to a school browser.
+<P>
+<UL><LI> Window Displaying Interface Information<BR> 
+After selecting a version ID or a class name, if any, in the displayed
+list of new classes to the left or in the displayed part of detailed
+information of a member is clicked while pressing the control button,
+information concerning the version ID and the type of class is displayed.
+<UL><LI> Operation
+<P>
+<PRE>Search...
+        Enables a search for a member
+</PRE>
+</UL>
+<P>
+<LI> Window Displaying Source Codes<BR> 
+If a class name is clicked while holding the control key down after
+selecting 'class name', the information concerning the version ID and the
+type of class is displayed.
+<UL><LI> Operation
+<P>
+<PRE>Search...
+        Searches a character string
+
+Goto...
+        Displays the line specified by its line number
+</PRE>
+</UL>
+<P>
+<LI> Window Displaying Source Codes<BR> 
+If a class name is clicked while holding the control key down after
+selecting 'class name', the information concerning the version ID and the
+type of class is displayed.
+</UL>
+<P>
+	<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

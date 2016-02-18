@@ -1,0 +1,871 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>4.1 Using the OZ++/Frame</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="4.1 Using the OZ++/Frame">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION00051000000000000000>4.1 Using the OZ++/Frame</A></H2>
+<P>
+
+<P>
+This section explains the basic operations of OZ++/frame and the use of 
+the junkshop browser.
+<P>
+
+<P>
+<H3><A NAME=SECTION00051100000000000000>4.1.1 Overview</A></H3>
+<P>
+
+<P>
+The overview of GUI of OZ++/Frame is illustrated in Fig. 
+<A HREF="node18.html#figframegagui">4.1--1</A>. The 
+window is composed of menus and the slide/screen display. The slide/screen 
+display is used to draw widgets when requested by the core system library.
+<P>
+The mutator function is activated from the menu.
+<P>
+
+<P>
+<A NAME=figframegagui>&#160;</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD>
+<IMG  ALIGN=BOTTOM ALT="env-frame-ga-gui.gif" SRC="figure/env-frame-ga-gui.gif">
+</TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>Fig. 4.1--1:</STRONG> Overview of GUI</CAPTION>
+</TABLE>
+</CENTER>
+
+
+<P>
+
+<P>
+<H3><A NAME=SECTION00051200000000000000>4.1.2 Menu</A></H3>
+<P>
+
+<P>
+There are the following types of menus:
+<P>
+<UL><LI> <tt> Frame</tt>: Operations of OZ++/Frame.
+<LI> <tt> Series</tt>: Operation of slides and screen.
+<LI> <tt> Goto</tt>: For switching slides.
+<LI> <tt> Widget</tt>: Operation of widgets.
+<LI> <tt> Junkshop</tt>: Operation of junkshops.
+</UL>
+<P>
+Each menu is illustrated in Fig. <A HREF="node18.html#figframegamenus">4.1--2</A>.
+<P>
+
+<P>
+<A NAME=figframegamenus>&#160;</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD COLSPAN=2 ALIGN=CENTER VALIGN=BOTTOM>
+<IMG SRC="figure/env-frame-menu-frame.gif">
+</TD>
+<TD COLSPAN=2 ALIGN=CENTER VALIGN=BOTTOM>
+<IMG SRC="figure/env-frame-menu-series.gif">
+</TD>
+<TD COLSPAN=2 ALIGN=CENTER VALIGN=BOTTOM>
+<IMG SRC="figure/env-frame-menu-goto.gif">
+</TD>
+</TR>
+<TR>
+<TD COLSPAN=2 ALIGN=CENTER>
+(1)<TT>Frame</TT>menu
+</TD>
+<TD COLSPAN=2 ALIGN=CENTER>
+(2)<TT>Series</TT>menu
+</TD>
+<TD COLSPAN=2 ALIGN=CENTER>
+(3)<TT>Goto</TT>menu
+</TD>
+</TR>
+<TR>
+<TD HEIGHT=20></TD>
+</TR>
+<TR>
+<TD></TD>
+<TD COLSPAN=2 ALIGN=CENTER VALIGN=BOTTOM>
+<IMG SRC="figure/env-frame-menu-widget.gif">
+</TD>
+<TD COLSPAN=2 ALIGN=CENTER VALIGN=BOTTOM>
+<IMG SRC="figure/env-frame-menu-junkshop.gif">
+</TD>
+<TD></TD>
+</TR>
+<TR>
+<TD></TD>
+<TD COLSPAN=2 ALIGN=CENTER>
+(4)<TT>Widget</TT>menu
+</TD>
+<TD COLSPAN=2 ALIGN=CENTER>
+(5)<TT>Junkshop</TT>menu
+</TD>
+<TD></TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>Fig. 4.1--2:</STRONG>Menus</CAPTION>
+</TABLE>
+</CENTER>
+
+
+<P>
+When an item in the menu is selected, the following process takes place.
+<P>
+<UL><LI> <tt> Frame</tt> menu
+
+<UL><LI> <tt> Quit</tt>: Exit OZ++/Frame.
+</UL>
+<P>
+<LI> <tt> Series</tt>menu
+
+<UL><LI> <tt> Series Info...</tt>: Displays series information.
+<LI> <tt> Delete Slide...</tt>: Deletes the slide displayed.
+</UL>
+<P>
+<LI> <tt> Goto</tt>menu
+
+<UL><LI> <tt> First</tt>: Switches to the first slide.
+<LI> <tt> Prev</tt>: Switches to the previous slide.
+<LI> <tt> Next</tt>: Switches to the next slide.
+<LI> <tt> Last</tt>: Switches to the last slide.
+</UL>
+<P>
+<LI> <tt> Widget</tt>menu
+
+<UL><LI> <tt> Info...</tt>: Displays information on widget attributes.
+<LI> <tt> Delete...</tt>: Deletes the widget.
+</UL>
+<P>
+<LI> <tt> Junkshop</tt>menu
+
+<UL><LI> <tt> open</tt>: Opens the junkshop browser.
+<LI> <tt> close</tt>: Closes the junkshop browser.
+</UL></UL>
+<P>
+
+<P>
+<H3><A NAME=SECTION00051300000000000000>4.1.3 Operation of slides</A></H3>
+<P>
+
+<P>
+All operation of slides are executed from the menu.
+<P>
+<UL>
+<LI> Switching slides
+
+<P>
+Switching to the first, previous, next and last slides is possible from 
+the Goto menu.
+<P>
+
+<LI> Deleting slides
+
+<P>
+When selecting Delete Slide... in the Series menu, the slide delete 
+confirmation window shown in Fig. <A HREF="node18.html#figframegaslidedelete">4.1--3</A> appears. 
+Press the Delete  button to confirm or the Cancel button to abort.
+<P>
+  
+<P>
+<A NAME=figframegaslidedelete>&#160;</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD>
+<IMG  ALIGN=BOTTOM ALT="env-frame-delete-slide.gif"
+ SRC="figure/env-frame-delete-slide.gif">
+</TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>Fig. 4.1--3:</STRONG> Slide delete confirmation window</CAPTION>
+</TABLE>
+</CENTER>
+
+  
+<P>
+
+<LI> Importing from the junkshop
+
+<P>
+It is possible to import slides registered in the junkshop by opening 
+the junkshop browser in the Junkshop menu and execute slide export. 
+For details, refer to section <A HREF="node18.html#sectionusingjsfromframe">4.1.5.3</A>.
+<P>
+</UL>
+<P>
+
+<P>
+<H3><A NAME=SECTION00051400000000000000>4.1.4 Operating widgets</A></H3>
+<P>
+
+<P>
+There are two operating methods for widgets. The user can either operate 
+widgets directly on the slide/screen display or activate from the menu. 
+When operating directly on the slide/screen display, occurred events 
+operated with the mouse or keyboard can be sent to the widget. From the 
+menu, it is possible to display or change widget attributes or delete 
+widgets.
+<P>
+<UL>
+<LI> Operating with mouse or keyboard
+
+<P>
+Each widget displayed on the slide/screen display receives occurred events 
+from the mouse or keyboard. Operations to output event are shown in Fig. 
+<A HREF="node18.html#tableframegaoperations">4.1--1</A>.
+<P>
+  
+<P>
+<A NAME=tableframegaoperations>&#160;</A>
+<P>
+<TABLE BORDER>
+<CAPTION ALIGN=top><STRONG>Table. 4.1--1:</STRONG> Correspondence of event and operation</A>
+<TR VALIGN=TOP>
+<TH NOWRAP>Widget</TH> <TH NOWRAP>Event</TH> <TH>Operation</TH>
+</TR>
+<TR>
+</TR>
+<TR VALIGN=TOP>
+<TD><TT>button</TT></TD>      <TD><TT>ButtonMouseUp</TT></TD>
+                              <TD>Click left mouse button</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD><TT>radiobutton</TT></TD> <TD><TT>RadioButtonSelected</TT></TD>
+                              <TD>Click left mouse button</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD><TT>checkbutton</TT></TD> <TD><TT>CheckButton</TT></TD>
+                              <TD>Click left mouse button</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD><TT>field</TT></TD>       <TD><TT>FieldTextChanged</TT></TD>
+                              <TD>Click left mouse button then press Return (or Enter)</TD>
+</TR>
+</TABLE>
+
+
+<P>
+
+<LI> Displaying and changing the widget attribute value
+
+<P>
+To display the widget attribute value, follow the given procedure below.
+<P>
+<OL><LI> Select Inf... in the Widget menu.
+<LI> Point and click the desired widget with the mouse to display the 
+attribute value.
+</OL>
+<P>
+By following the above mentioned procedure, the widget attribute window 
+as shown in Fig. <A HREF="node18.html#figframegawidgetinfo">4.1--4</A> appears.
+<P>
+  
+<P>
+<A NAME=figframegawidgetinfo>&#160;</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD ALIGN=CENTER VALIGN=BOTTOM><IMG ALIGN=BOTTOM
+ ALT="env-frame-info-widget.gif"
+ SRC="figure/env-frame-info-widget.gif"></TD>
+<TD WIDTH=20></TD>
+<TD ALIGN=CENTER VALIGN=BOTTOM><IMG ALIGN=BOTTOM
+ ALT="env-frame-info-widget2.gif"
+ SRC="figure/env-frame-info-widget2.gif"></TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER>(1) For button widget</TD>
+<TD></TD>
+<TD ALIGN=CENTER>(2) For string widget</TD>
+</TR>
+</TABLE>
+<CAPTION><STRONG>Fig. 4.1--4:</STRONG> Widget attribute window</CAPTION>
+</CENTER>
+
+  
+<P>
+To change the attribute value, it is necessary to operate each attribute 
+items in the widget attribute window.
+<P>
+<UL>
+<LI> Attribute in which to enter value
+
+<P>
+For attributes giving value of character strings or numbers, click the 
+left mouse button on the field displaying the attribute value to enter 
+a new value. Use this method to change attribute values of name, label, 
+geom, size, value and text.
+<P>
+
+<LI> Attributes in which a value is selected
+
+<P>
+For attributes in which a value is to be selected among a set of values, 
+use the select button to select the appropriate value. Use this method 
+to change attribute values of state, justify, font and font size.
+<P>
+
+<LI> Color attributes
+
+<P>
+For attribute values that specify colors, the color values are displayed 
+in the widget attribute window. To set colors, click the desired color 
+for change with the left mouse button to open the color setting window 
+as shown in Fig. <A HREF="node18.html#figframegacolor">4.1--5</A> then select desired color from 
+either the color pallet or RGB composite.
+<P>
+  
+<P>
+<A NAME=figframegacolor>&#160;</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD>
+<IMG  ALIGN=BOTTOM ALT="env-frame-info-color.gif"
+ SRC="figure/env-frame-info-color.gif">
+</TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>Fig. 4.1--5:</STRONG> Color setting window</CAPTION>
+
+</TABLE>
+</CENTER>
+
+  
+<P>
+</UL>
+<P>
+
+<P>
+<LI> Deleting a widget
+
+<P>
+To delete a widget, follow the given procedure below.
+<P>
+<OL><LI> Select Delete... in the Widget menu.
+<LI> Point and click the desired widget with the mouse to display the 
+attribute value.
+</OL>
+<P>
+By following the above mentioned procedure, the widget delete confirmation 
+window as shown in Fig. <A HREF="node18.html#figframegawidgetdelete">4.1--6</A> appears. Press the 
+Delete button to confirm or the cancel button to cancel.
+<P>
+  
+<P>
+<A NAME=figframegawidgetdelete>&#160;</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD>
+<IMG  ALIGN=BOTTOM ALT="env-frame-delete-widget.gif"
+ SRC="figure/env-frame-delete-widget.gif">
+</TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>Fig. 4.1--6:</STRONG> Widget delete confirmation window</CAPTION>
+
+</TABLE>
+</CENTER>
+
+  
+<P>
+</UL>
+<P>
+
+<H3><A NAME=SECTION00051500000000000000>4.1.5 Junkshop</A></H3>
+<P>
+
+<P>
+The junkshop is an instance repository for the OZ++/Frame. It is possible 
+to store slides and widgets made with the OZ++/Frame by given parts names, 
+as well importing them into OZ++/Frame. The junkshop is a global object 
+that is registered with the entry name &quot;:junkshop&quot; in the name directory.
+<P>
+The operation methods for the junkshop starter to activate the junkshop 
+and junkshop browser to browse contents of the junkshop are explained in 
+this section. Also, registering objects to the junkshop using the junkshop 
+browser and loading such registered objects are explained.
+<P>
+
+<P>
+Junkshop starter <BR>
+<P>
+
+<P>
+The junkshop starter consists of the following functions:
+<P>
+<UL><LI> Examines whether a junkshop object exists.
+<LI> Activates a new junkshop object.
+</UL>
+<P>
+The GUI of the junkshop starter is shown in Fig. <A HREF="node18.html#figframejsstarter">4.1--7</A>.
+<P>
+
+<P>
+<A NAME=figframejsstarter>&#160;</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD WIDTH=50> </TD>
+<TD>
+<IMG  ALIGN=BOTTOM ALT="env-frame-js-starter.gif"
+ SRC="figure/env-frame-js-starter.gif">
+</TD>
+<TD WIDTH=50> </TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>Fig. 4.1--7:</STRONG> GUI of the junkshop starter</CAPTION>
+
+</TABLE>
+</CENTER>
+
+
+<P>
+The following is the operation method.
+<P>
+<UL>
+<LI> Ping: Confirmation for existing junkshop object
+
+<P>
+Press the Ping button. The dialog box shown in Fig. 
+<A HREF="node18.html#figframejsstarterpingdialog">4.1--8</A>(1) appears if an object with the 
+entry name &quot;:junkshop&quot; is registered in the name directory and is 
+definitely a junkshop (an instance of class Junkshop). The 
+dialog boxes shown in Fig. <A HREF="node18.html#figframejsstarterpingdialog">4.1--8</A>(2) 
+appears if there is no object whose name is &quot;:junkshop&quot;. 
+Otherwise Fig. <A HREF="node18.html#figframejsstarterpingdialog">4.1--8</A>(3) appears 
+if the object whose name is &quot;:junkshop&quot; is not an instance of the class 
+&quot;Junkshop&quot;.
+<P>
+  
+<P>
+<A NAME=figframejsstarterpingdialog>&#160;</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD ALIGN=CENTER VALIGN=BOTTOM><IMG  ALIGN=BOTTOM
+ ALT="env-frame-js-starter-pingack.gif"
+ SRC="figure/env-frame-js-starter-pingack.gif"></TD>
+<TD WIDTH=20></TD>
+<TD ALIGN=CENTER VALIGN=BOTTOM><IMG  ALIGN=BOTTOM
+ ALT="env-frame-js-starter-pingnack.gif"
+ SRC="figure/env-frame-js-starter-pingnack.gif"></TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER>(1) If a junkshop exists.</TD>
+<TD></TD>
+<TD ALIGN=CENTER>(2) If a junkshop does not exist.</TD>
+</TR>
+<TR>
+<TD HEIGHT=20></TD>
+</TR>
+<TR>
+<TD COLSPAN=3 ALIGN=CENTER VALIGN=BOTTOM><IMG  ALIGN=BOTTOM
+ ALT="env-frame-js-starter-pingerror.gif"
+ SRC="figure/env-frame-js-starter-pingerror.gif"></TD>
+</TR>
+<TR>
+<TD COLSPAN=3 ALIGN=CENTER>(3) If an object of a different class is registered under the entry name ":junkshop."</TD>
+</TR>
+<TR>
+<TD HEIGHT=20></TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>Fig. 4.1--8:</STRONG> Dialog box in correspondence with the Ping operation of the junkshop starter</CAPTION>
+
+</TABLE>
+</CENTER>
+
+  
+<P>
+
+<LI> Start: Activating the junkshop
+
+<P>
+<OL><LI> Press the Start button.
+<P>
+<LI> The dialog box shown in Fig. <A HREF="node18.html#figframejsstarterstartdialog">4.1--9</A>(1) 
+will appear if the instantiate of the junkshop object and registry to the 
+name directory is successful. The dialogbox shown in Fig. 
+<A HREF="node18.html#figframejsstarterstartdialog">4.1--9</A>(2) will appear if an object 
+registered under the entry name &quot;:junkshop&quot; exists in the name directory. 
+Press the Yes button to instantiate a new junkshop object and exchange 
+entry in the name directory. Press the No button to exit.
+<A NAME=itemframejsstartquery>&#160;</A>
+<P>
+<LI> The dialog box shown in Fig. <A HREF="node18.html#figframejsstarterstartdialog">4.1--9</A>(1) 
+will appear if Yes was selected in 2 and activation of the junkshop is 
+successful. The dialog box shown in Fig. 
+<A HREF="node18.html#figframejsstarterstartdialog">4.1--9</A>(3) will appear if activation of the 
+junkshop is unsuccessful.
+</OL>
+<P>
+  
+<P>
+<A NAME=figframejsstarterstartdialog>&#160;</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD ALIGN=CENTER VALIGN=BOTTOM><IMG  ALIGN=BOTTOM
+ ALT="env-frame-js-starter-startack.gif"
+ SRC="figure/env-frame-js-starter-startack.gif"></TD>
+<TD WIDTH=20></TD>
+<TD ALIGN=CENTER VALIGN=BOTTOM><IMG  ALIGN=BOTTOM
+ ALT="env-frame-js-starter-startquery.gif"
+ SRC="figure/env-frame-js-starter-startquery.gif"></TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER>(1) When activation of the junkshop is successful</TD>
+<TD></TD>
+<TD ALIGN=CENTER>(2) When a junkshop exists</TD>
+</TR>
+<TR>
+<TD HEIGHT=20></TD>
+</TR>
+<TR>
+<TD COLSPAN=3 ALIGN=CENTER VALIGN=BOTTOM><IMG  ALIGN=BOTTOM
+ ALT="env-frame-js-starter-starterror.gif"
+ SRC="figure/env-frame-js-starter-starterror.gif"></TD>
+</TR>
+<TR>
+<TD COLSPAN=3 ALIGN=CENTER>(3) When activation of the junkshop is unsuccessful</TD>
+</TR>
+<TR>
+<TD HEIGHT=20></TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>Fig. 4.1--9:</STRONG> Correspondence dialog for the start operation of the junkshop starter</CAPTION>
+
+</TABLE>
+</CENTER>
+
+  
+<P>
+</UL>
+<P>
+
+<P>
+Junkshop browser <BR>
+<P>
+
+<P>
+The junkshop browser is a tool that allows browsing of junkshop contents. The
+GUI of the junkshop browser is shown in Fig. <A HREF="node18.html#figframejsbrowser">4.1--10</A>.
+<P>
+
+<P>
+<A NAME=figframejsbrowser>&#160;</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD>
+<IMG  ALIGN=BOTTOM ALT="env-frame-js-browser.gif" SRC="figure/env-frame-js-browser.gif">
+</TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>Fig. 4.1--10:</STRONG> GUI of the junkshop browser</CAPTION>
+
+</TABLE>
+</CENTER>
+
+
+<P>
+The GUI consists of three parts: operation buttons, filter and list. The 
+list displays objects according to type. It is possible to select the 
+object type to display (or not to display) by operating the check button 
+of the filter.
+<P>
+The junkshop browser offers the following functions:
+<P>
+<UL><LI> Displaying and rescanning junkshop content
+<LI> Changing registered names of objects
+<LI> Deletion of objects
+</UL>
+
+The latest condition of the junkshop is reflected in the junkshop browser 
+display when rescanning.
+<P>
+The operation method is given below.
+<P>
+<UL>
+<LI> Rescan: Rescan junkshop content
+
+<P>
+Press the Rescan button
+<P>
+
+<LI> Rename: Changing registered name
+
+<P>
+<OL><LI> Select the desired registered name for change by pointing and 
+clicking the left mouse button from the list 
+(Fig. <A HREF="node18.html#figframejsbrowserrename">4.1--11</A>(1)) then press the Rename button.
+<P>
+<LI> Enter the new name (Fig. <A HREF="node18.html#figframejsbrowserrename">4.1--11</A>(2)) 
+when the pop-up window appears. Press the OK button to continue or 
+Cancel to abort.  <A NAME=itemframejsrenamequery>&#160;</A>
+<P>
+<LI> The dialog box shown in Fig. <A HREF="node18.html#figframejsbrowserrename">4.1--11</A>(3) 
+will appear if the OK button was pressed in 2. Press the Rename button 
+to continue with the procedure or Cancel to abort.
+</OL>
+<P>
+  
+<P>
+<A NAME=figframejsbrowserrename>&#160;</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD ALIGN=CENTER VALIGN=BOTTOM><IMG  ALIGN=BOTTOM
+ ALT="env-frame-js-browser-rename.gif"
+ SRC="figure/env-frame-js-browser-rename.gif"></TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER>(1) Entry selection</TD>
+</TR>
+<TR>
+<TD HEIGHT=20></TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER VALIGN=BOTTOM><IMG  ALIGN=BOTTOM
+ ALT="env-frame-js-browser-renameinput.gif"
+ SRC="figure/env-frame-js-browser-renameinput.gif"></TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER>(2) Input new name</TD>
+</TR>
+<TR>
+<TD HEIGHT=20></TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER VALIGN=BOTTOM><IMG  ALIGN=BOTTOM
+ ALT="env-frame-js-browser-renamequery.gif"
+ SRC="figure/env-frame-js-browser-renamequery.gif"></TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER>(3) Rename confirmation</TD>
+</TR>
+<TR>
+<TD HEIGHT=20></TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>Fig. 4.1--11:</STRONG> Rename operation of the junkshop browser</CAPTION>
+
+</TABLE>
+</CENTER>
+
+  
+<P>
+
+<LI> Delete: Entry deletion
+
+<P>
+<OL><LI> Select the desired registered name for deletion by pointing and 
+clicking the left mouse button from the list, then press the Delete button.
+<P>
+<LI> Press the Delete button to continue with the procedure when the 
+dialog box shown in Fig. <A HREF="node18.html#figframejsbrowserdelete">4.1--12</A> appears, or 
+Cancel to abort.
+</OL>
+<P>
+  
+<P>
+<A NAME=figframejsbrowserdelete>&#160;</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD WIDTH=50> </TD>
+<TD>
+<IMG  ALIGN=BOTTOM ALT="env-frame-js-browser-delete.gif"
+ SRC="figure/env-frame-js-browser-delete.gif">
+</TD>
+<TD WIDTH=50> </TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>Fig. 4.1--12:</STRONG> Delete confirmation dialog of the junkshop browser</CAPTION>
+
+</TABLE>
+</CENTER>
+
+  
+<P>
+
+<LI> Filter: Display list selection
+
+<P>
+A check button showing all entry types possible for display in the filter 
+will appear. Check desired selection. &quot;none&quot; will be checked when 
+activated. All checks will be canceled and list of all types will be 
+displayed when &quot;none&quot; is checked (Fig. <A HREF="node18.html#figframejsbrowserfilter">4.1--13</A>).
+<P>
+  
+<P>
+<A NAME=figframejsbrowserfilter>&#160;</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD ALIGN=CENTER VALIGN=BOTTOM><IMG  ALIGN=BOTTOM
+ ALT="env-frame-js-browser-filter2.gif"
+ SRC="figure/env-frame-js-browser-filter2.gif"></TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER>(1) Display for slide and widget</TD>
+</TR>
+<TR>
+<TD HEIGHT=20></TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER VALIGN=BOTTOM><IMG  ALIGN=BOTTOM
+ ALT="env-frame-js-browser-filter1.gif"
+ SRC="figure/env-frame-js-browser-filter1.gif"></TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER>(2) Display for only slide</TD>
+</TR>
+<TR>
+<TD HEIGHT=20></TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER VALIGN=BOTTOM><IMG  ALIGN=BOTTOM
+ ALT="env-frame-js-browser-filter3.gif"
+ SRC="figure/env-frame-js-browser-filter3.gif"></TD>
+</TR>
+<TR>
+<TD COLSPAN=3 ALIGN=CENTER>(3) Checking "none"</TD>
+</TR>
+<TR>
+<TD HEIGHT=20></TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>Fig. 4.1--13:</STRONG> Filter operations for the junkshop browser</CAPTION>
+
+</TABLE>
+</CENTER>
+
+  
+<P>
+</UL>
+<P>
+
+<P>
+Using the junkshop browser from OZ++/Frame <BR>
+<P>
+<A NAME=sectionusingjsfromframe>&#160;</A>
+
+<P>
+The junkshop browser can be used as an interface with OZ++/Frame when 
+loading objects from the junkshop into OZ++/Frame or when registering 
+objects made with OZ++/Frame to the junkshop. ImportSlide and ExportSlide 
+buttons become valid as shown in Fig. <A HREF="node18.html#figframejsbrowserwithowner">4.1--14</A> 
+when activating from OZ++/Frame (these buttons are not usable in 
+Fig. <A HREF="node18.html#figframejsbrowser">4.1--10</A>).
+<P>
+
+<P>
+<A NAME=figframejsbrowserwithowner>&#160;</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD WIDTH=50> </TD>
+<TD>
+<IMG  ALIGN=BOTTOM ALT="env-frame-js-browser-withowner.gif"
+ SRC="figure/env-frame-js-browser-withowner.gif">
+</TD>
+<TD WIDTH=50> </TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>Fig. 4.1--14:</STRONG> Junkshop Browser activated from OZ++/Frame</CAPTION>
+
+</TABLE>
+</CENTER>
+
+
+<P>
+Operation methods are explained below.
+<P>
+<UL>
+<LI> ImportSlide: Registering current slide of OZ++/Frame to the junkshop
+
+<P>
+<OL><LI> Press the ImportSlide button.
+<P>
+<LI> Enter the name for registry to the junkshop when the window shown 
+in Fig. <A HREF="node18.html#figframejsimportquery">4.1--15</A> appears. Confirm the current slide 
+of OZ++/Frame and press the OK button to confirm or Cancel to abort.
+</OL>
+<P>
+  
+<P>
+<A NAME=figframejsimportquery>&#160;</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD>
+<IMG  ALIGN=BOTTOM ALT="env-frame-js-browser-importquery.gif"
+ SRC="figure/env-frame-js-browser-importquery.gif">
+</TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>Fig. 4.1--15:</STRONG> Register name input window of ImportSlide</CAPTION>
+
+</TABLE>
+</CENTER>
+
+  
+<P>
+
+<LI> ExportSlide: Exporting slides from the junkshop to OZ++/Frame
+
+<P>
+<OL><LI> Select entry for export from the slide object list.
+<P>
+<LI> Press the ExportSlide button.
+<P>
+<LI> Press the Export button when the dialog box shown in Fig. 
+<A HREF="node18.html#figframejsexportquery">4.1--16</A> appears to proceed, or Cancel to abort.
+</OL>
+<P>
+  
+<P>
+<A NAME=figframejsexportquery>&#160;</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD>
+<IMG  ALIGN=BOTTOM ALT="env-frame-js-browser-exportquery.gif"
+ SRC="figure/env-frame-js-browser-exportquery.gif">
+</TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>Fig. 4.1--16:</STRONG> Confirmation dialog of ExportSlide</CAPTION>
+
+</TABLE>
+</CENTER>
+
+  
+<P>
+</UL>
+<P>
+
+<P>
+
+<P>
+	<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

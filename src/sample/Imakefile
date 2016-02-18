@@ -1,0 +1,26 @@
+DESTDIR		= ${OZROOT}
+BINDIR		= /bin
+CC		= gcc
+#PROF		= -p
+INCLUDES	= -I. -I../../include
+CFLAGS		= $(PROF) -g -ffixed-i0 -Wall -O $(INCLUDES)
+LOCAL_LDFLAGS	= $(PROF) -g -static
+LOCAL_LIBRARIES	= -L../thread -lthread /usr/lib/debug/malloc.o
+DEPLIBS		= ../thread/libthread.a
+PROGRAM		= a.out
+
+	SRCS	= version.c main.c startup.c cleanup.c sample.c
+	OBJS	= version.o main.o startup.o cleanup.o sample.o
+
+AllTarget($(PROGRAM))
+
+install::
+	@if [ "$(DESTDIR)" = "" ]; then \
+	   echo "***" ;\
+	   echo "You must be set environment variable: OZROOT" ;\
+	   echo "***" ;\
+	   exit 1 ;\
+	 fi
+
+NormalProgramTarget($(PROGRAM),$(OBJS),$(DEPLIBS),$(LOCAL_LIBRARIES),-lm)
+DependTarget()

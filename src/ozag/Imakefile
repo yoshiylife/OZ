@@ -1,0 +1,27 @@
+#define	IHaveSubdirs
+#define	PassCDebugFlags	CDEBUGFLAGS="$(CDEBUGFLAGS)"
+DESTDIR		= ${OZROOT}
+BINDIR		= /bin
+CC		= gcc
+INCLUDES	= -I. -I../../include -I../ncl
+CFLAGS		= -g -DOZAG -DDEBUG $(INCLUDES)
+LOCAL_LDFLAGS	= -g -static
+SUBDIRS		= OzFGW
+
+	SRCS	= apgw.c apgw_ethash.c apgw_sitetbl.c \
+		  apgw_broadcast.c apgw_exmessage.c \
+		  apgw_delivclass.c apgw_mthash.c \
+		  apgw_commands.c
+
+	OBJS	= apgw.o apgw_ethash.o apgw_sitetbl.o \
+		  apgw_broadcast.o apgw_exmessage.o \
+		  apgw_delivclass.o apgw_mthash.o \
+		  apgw_commands.o
+
+AllTarget(ozag)
+NormalProgramTarget(ozag,$(OBJS), , , )
+InstallProgramWithFlags(ozag,$(BINDIR), -m 555)
+DependTarget()
+
+MakeSubdirs( $(SUBDIRS) )
+DependSubdirs( $(SUBDIRS) )

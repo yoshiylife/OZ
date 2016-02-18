@@ -1,0 +1,7 @@
+(*class* #0001000002000187 0
+(*list*)
+(*list*
+(*declaration* Lock (*method* void (*list*) 1) public #0001000002000187 0 0)
+(*declaration* Unlock (*method* void (*list*) 1) public #0001000002000187 0 1)
+)
+)

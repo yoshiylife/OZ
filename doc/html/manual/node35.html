@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.15  shared</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.15  shared">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION000615000000000000000>5.15  shared</A></H2>
+ <A NAME=langlangmanualshared>&#160;</A>
+<P>
+<PRE>shared_def
+        : 'shared' CLASSNAME '{' shared_body '}'
+        ;
+
+shared_body
+        : shared_member_decls
+        ;
+</PRE>
+<P>
+Like user-defined exception names and constants, shared defines an entity which is used in the scope of multiple classes.  Exception names and constants defined by <tt> shared</tt> are called shared members.
+<P>
+The references of <tt> shared</tt> are solved whenever compilations are
+performed. 
+<P>
+<H3><A NAME=SECTION000615100000000000000>5.15.1  shared Name</A></H3>
+<P>
+<tt> shared</tt> name becomes a reserved word inside the scope of its shared definition.
+<P>
+A <tt> shared</tt> name is different from a <tt> class</tt> and a <tt> record</tt> in the sense that it is not a type.
+<P>
+<H3><A NAME=SECTION000615200000000000000>5.15.2  shared Members</A></H3>
+ <A NAME=langlangmanualsharedmember>&#160;</A>
+<A NAME=langlangmanualsharedexcept>&#160;</A>
+<P>
+<PRE>shared_member_decls
+        : /* empty */
+        | shared_member_decls shared_member_decl
+        ;
+
+shared_member_decl
+        : exception_decl ';'
+        | constant_decl ';'
+        ;
+
+exception_decl
+        : exception
+        | exception_decl ',' exception
+        ;
+
+exception
+        : IDENTIFIER '(' ')' 
+        | IDENTIFIER '(' arg ')' 
+        ;
+
+constant_decl
+        : simple_quals_type simple_vars_list_with_exp
+        ;
+
+simple_vars_list_with_exp
+        : exp_vars
+        | simple_vars_list_with_exp ',' exp_vars
+        ;
+</PRE>
+<P>
+Constants of both process-derived types and user-defined types can not be declared in <tt> shared</tt> members.  They must be declared in the following way:
+<P>
+<PRE>shared C {
+  float Pie = 3.14;         // a constant of float type
+  int MaxSize = 100;        // a constant of int type
+  char Name[] = &quot;MyName&quot;;   // a constant of array 
+                            //  derived type of char
+}
+</PRE>
+<P>
+In exception handing of OZ++, it is possible to set parameters of all types to the exceptions.  In fact, type parameters are specified to the exception definitions of <tt> shareds</tt> (see Chapter <A HREF="node36.html#langlangmanualexcept">5.16</A>).  The declaration of exception names are described in the following way:
+<P>
+<PRE>shared C {
+  e1();       // an exception having no parameters
+  e2(int);    // an exception having parameter of int type
+}
+</PRE>
+<P>
+ In case of using <tt> shared</tt>, the exception names must be described as follows
+(see Section <A HREF="node36.html#langlangmanualexceptuser">5.16.2</A>):
+<P>
+<PRE>shared C {
+  float Pie = 3.14;         
+  int MaxSize = 100;        
+  char Name[] = &quot;MyName&quot;;   
+
+  Exception1 ();
+  Exception2 (int);
+}
+
+int a = C::MaxSize;
+
+raise C::Exception1;
+raise C::Exception2 (9999);
+</PRE>
+<P>
+<H3><A NAME=SECTION000615300000000000000>5.15.3 Use of Generic Parameters</A></H3>
+<P>
+Generic parameters can also be used in <tt> shared</tt>.  This usage is similar to that of classes.
+<P>
+<PRE>shared ExceptionOfCollection&lt;T&gt; {
+  OverFlow (T);
+}
+</PRE>
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

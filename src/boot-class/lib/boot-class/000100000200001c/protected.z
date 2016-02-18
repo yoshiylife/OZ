@@ -1,0 +1,19 @@
+(*class* #000100000200001c 0
+(*list*
+(*list* #0001000002000234 #0001000002000235 0)
+)
+(*list*
+(*declaration* NewFromInteger (*method* void (*list* int ) 0) constructor #000100000200001b 0 2)
+(*declaration* NewFromHexa (*method* void (*list* (*scqf* int 2) ) 0) constructor #000100000200001b 0 3)
+(*declaration* NewFromString (*method* void (*list* #00010000020003bd 0 ) 0) constructor #000100000200001b 0 0)
+(*declaration* NewFromFloat (*method* void (*list* double ) 0) constructor #000100000200001b 0 4)
+(*declaration* NewFromArrayOfChar (*method* void (*list* (*array* char ) ) 0) constructor #000100000200001b 0 1)
+(*declaration* IsNil (*method* int (*list*) 0) public #0001000002000234 0 3)
+(*declaration* AsString (*method* #00010000020003bd 0 (*list*) 0) public #0001000002000234 0 0)
+(*declaration* AsFloat (*method* double (*list*) 0) public #000100000200001b 0 7)
+(*declaration* AsInteger (*method* int (*list*) 0) public #000100000200001b 0 5)
+(*declaration* AsHexa (*method* (*scqf* OZ_Long 2) (*list*) 0) public #000100000200001b 0 6)
+(*declaration* Hash (*method* (*scqf* int 2) (*list*) 0) public #0001000002000234 0 5)
+(*declaration* IsEqual (*method* int (*list* #0001000002000234 8 ) 0) public #0001000002000234 0 4)
+)
+)

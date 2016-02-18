@@ -1,0 +1,268 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>3.1 OZ++ program style</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="3.1 OZ++ program style">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION00041000000000000000>3.1 OZ++ program style</A></H2>
+<P>
+<H3><A NAME=SECTION00041100000000000000>3.1.1 Overview</A></H3>
+<P>
+This manual is for beginners.  It explains how to code, compile, and run 
+simple OZ++ programs, so that programming in the OZ++ system can be 
+easily understood.  It stresses comprehensiveness more than preciseness.
+<P>
+Few of the tool functions are explained.  After reading this document, 
+refer to the documents for each tool for more details.
+<P>
+<H3><A NAME=SECTION00041200000000000000>3.1.2 How to use</A></H3>
+<P>
+Until the executor is activated <BR>
+<P>
+OZ++ is a middle software that runs on an existent OS to provide a 
+distributed programming environment.  Each user has to run a program 
+called an executor on an existent OS.
+<P>
+OZ++ programs can also be compiled in this environment.  The following 
+steps are required for environment setups when an executor is 
+activated to perform programming:
+<P>
+<OL><LI> Setups of personal environment<BR> 
+The following environment variables are set:
+<blockquote> % setenv OZROOT <b>&lt;</b> directory where OZ++ is installed <b>&gt;</b><BR> 
+        % setenv PATH $OZROOT/bin:$PATH
+</blockquote>
+<P>
+In the following steps, it is presumed that the environment variables of
+each process are already set.
+<P>
+<LI> Activation of each daemon
+<blockquote> % ncl
+</blockquote>
+ncl is a command for activating the program called nucleus.  This program
+ is one of the daemons of the OZ++ system.  It performs the address 
+solution, and activates necessary daemons for code distribution, when 
+a message is called across workstations.  Refer to the &quot;Nucleus&quot; documents.
+<P>
+<LI> Activation of nucleus front end (nfe)<BR> 
+nfe is a tool for synthesizing and managing executors.  It also 
+synthesizes necessary object images to run the executor. Refer to 
+the documents of &quot;Nucleus Front End Editor.&quot; nfe can be executed 
+from a UNIX shell as follows:
+<blockquote> % nfe
+</blockquote>
+The following prompt appears after nfe is executed:
+<blockquote> nfe<b>&gt;</b></blockquote>
+<P>
+<LI> Making a Site master<BR> 
+An executor called Site master is required at each site to run the OZ++.
+(Refer to &quot;Configuration of Management Objects.&quot;)  Make a Site master 
+by referring to &quot;How to make an image.&quot;  This is done as follows:
+<blockquote> nfe<b>&gt;</b> newimage -k site-master -d your.domain.jp -u yourname -n site-master
+</blockquote>
+<P>
+<LI> Activation of a Site master
+<blockquote> nfe<b>&gt;</b> cex $site-master
+</blockquote>
+cex is an nfe command that activates an executor.  Specify the name of th
+e Site-master.  Instead of the name, the executor ID can also be specified.  T
+he OZ++ Launcher will be activated in 10 minutes.
+<P>
+The following command can be executed to see the list of executors made.
+<blockquote> nfe<b>&gt;</b> exidlist
+</blockquote>
+<P>
+<LI> Synthesis of executor image <BR> 
+New image files are required to run the executor providing a programming
+environment.  Also, the following command is executed from nfe:
+<blockquote> nfe<b>&gt;</b> newimage -n demo
+</blockquote>
+the next appears.
+<PRE>        What kind of image do you want?
+            1. Site master
+            2. Station master
+            3. Slave with a class object
+            4. Slave with no class object
+            9. Fully customized
+            0. Help
+
+        ?
+</PRE>
+The command newimage has options for performing appropriate setups from 
+the executor running state.
+<P>
+Select 2. Station master.
+<PRE>        ? 2             &lt;- type 2
+</PRE>
+If 2 is selected, the following message appears. Here, input the same 
+domain name as that used for Site master.  Also input your name as the 
+user name.
+<PRE>        Enter domain name ? oz.ipa.go.jp
+        Who are you [oz++] ?
+</PRE>
+After the inputs are complete, an image file is created.
+<PRE>        Creating preload direction files ...
+</PRE>
+It is also possible to run the Site master and Station master on 
+different work stations.  At least one Site master and one Station 
+master (for programmers) are required at a site.  For more details, 
+refer to &quot;Site&quot;.
+<P>
+<LI> Running the executor <BR> 
+After the newimage is terminated, run its executor.  The following 
+command can be executed from nfe:
+<blockquote> nfe<b>&gt;</b> cex $demo
+</blockquote></OL>
+<P>
+A simple example <BR>
+<P>
+In C language manuals for beginners, the program outputting the string 
+&quot;Hello world&quot; is very popular. Here is a similar example for the OZ++ 
+language.
+<P>
+<OL><LI> Coding <BR> 
+Like C language, source programs of OZ++ are written in files. The 
+following file is created under the name &quot;hello.oz&quot;.
+<P>
+<PRE>// hello.oz
+class Hello : Launchable {
+  void Launch(){
+    // declare
+    Console win;
+    String hello;
+
+    // construct
+    win =&gt; New();
+    hello =&gt; NewFromArrayOfChar( &quot;Hello world.\n&quot; );
+
+    // act
+    win -&gt; Open();
+    win -&gt; Write( hello );
+    win -&gt; Read(); // press any key
+    win -&gt; Close();
+  }
+}
+</PRE>
+This program is explained below:
+<OL><LI> OZ++ is an object-oriented language. Therefore, all programs 
+are composed of classes. The class used in this program is called 
+&quot;Hello.&quot; Superclasses are prepared by a system called &quot;Launchable.&quot; 
+These classes are used when programs are executed from the launcher.
+<P>
+<LI> Launch() is a method and is run by the launcher. In this 
+program, the class &quot;Hello&quot; contains only one method.
+<P>
+<LI> &quot;win&quot; and &quot;hello&quot; are local variables of the method Launch. 
+These are console and String variables respectively. Console is a 
+class that provides a terminal window using kterm. String is a class 
+that provides character strings. Similar to C++ language, lines 
+starting with '//' are remarks. Remarks having the style '/*..*/' 
+can also be used.
+<P>
+<LI> Workbench<BR> 
+Compilation of OZ++ is done in the OZ++ environment. For compilation, 
+a tool called the workbench is activated. The workbench contains a 
+collection of tools necessary for programming such as compiler, 
+browser, etc. Refer to &quot;Using the Workbench.&quot; The Workbench is 
+activated using a tool called the Launcher. Refer to &quot;Using the Launcher.&quot;
+<P>
+<OL><LI> Executing the Workbench<BR> 
+Select Object from the Create menu provided in the Launcher. 
+Enter '0001000002000413' in the field marked &quot;Class.&quot; Enter 'wb' in the 
+field marked &quot;Name&quot;, then press the Accept button. &quot;wb&quot; (entered name 
+in the field Name) will be displayed in the list box located on the 
+right side of the screen. Double click &quot;wb.&quot;
+<P>
+<LI> Initializing the Workbench<BR> 
+Enter the Class Object name of $demo executor after the Preference 
+window of workbench appears. Refer to &quot;Explanation of newimage&quot; for 
+details as to what type of names are used for Class Objects. In most 
+cases, Class object names are composed in such manner as 
+ ':classes:xxxxxx', with the 'xxxxxx' being the executor number 
+(if the executor ID is 0001001003000000, then the executor number 
+is 001003). The top window of the workbench will appear after pressing 
+Done.
+<P>
+</OL>
+<P>
+<LI> Compile and configuration
+<OL><LI> Creating a school<BR> 
+The top window of the workbench displays the school listing. At first, 
+this window will be blank. A school for the use of booting will be 
+copied since creating one from scratch can be difficult. Select Add 
+from the Operation menu. Enter an appropriate name ('test' is used 
+here) as the school name when prompted.  The File Selector will then 
+open files under $OZROOT/etc., and ask to select a school file. 
+Double click &quot;boot-school&quot; located on the right of the list box. 
+&quot;test&quot; will appear in the top window.
+<P>
+<LI> Loading the compiler front end<BR> 
+The pop-up menu will appear when double clicking &quot;test&quot; in the top 
+window. Compiler front end (CFE) control screen will appear when 
+&quot;compiler&quot; is selected.
+<P>
+<LI> Selecting a file<BR> 
+Select Add on the Compiler menu of CFE to the open file selector. Use 
+this file selector to select the source file and load to CFE. If the 
+source file (hello.oz) is located directly under the current directory, 
+then double click the source file. Otherwise move to the directory 
+with the source file. This is possible by selecting the directory 
+list on the left in order. To move to the directory above, double 
+click &quot;..&quot;. &quot;hello.oz&quot; will appear in the CFE once selected.
+<P>
+<LI> Compile<BR> 
+Pop-up menu will appear when double clicking &quot;hello.oz&quot; of CFE. 
+Select &quot;Compile&quot; and the dialog box for selecting compile options 
+will appear. Select &quot;New&quot; then &quot;from public&quot; from the submenu when 
+compiling files for the first time with a particular school. Then 
+select &quot;All&quot; when the dialog box reappears. &quot;New&quot; is a function that 
+registers the class of entry to the school and create new versions. 
+Therefore, this function is not necessary when recompiling files. 
+Error dialog box will appear in case of an error when compiling. 
+Compile is successful when the mouse cursor returns to the original 
+form from the clock form (and if the dialog box does not appear).
+<P>
+<LI> Configuration<BR> 
+Configuration is necessary after completing compile. Double click 
+&quot;hello.oz&quot; of CFE. Select &quot;Configuration.&quot; Click the Go button when 
+the dialog box appears. It is recommended that you read carefully 
+&quot;Explanation of workbench&quot; before proceeding since compiling is very 
+complicated.
+<P>
+<LI> Registering to catalog<BR> 
+Return to the top window of the workbench and double click the school.
+Select &quot;School Browser&quot; when the pop-up menu appears. The school 
+browser will appear. Select the Operation-Search menu to open the 
+dialog box. Enter &quot;Hello&quot; then press the Go button. ID of each Hello 
+class parts compiled will appear. Press the Package button. Listing 
+of classes to be packaged will appear. Press the Default button at 
+the bottom to open the dialog box. Enter &quot;Hello&quot; for the package 
+name then press Done. The catalog browser will appear. Press Select 
+to complete register.
+<P>
+</OL>
+<P>
+<LI> Program execution<BR> 
+Programs are executed from the Launcher. First, open the Create-Package 
+menu.  Select &quot;Hello&quot; in the entries list on the right with the mouse, 
+then press the Select button on the bottom right hand corner. Use the 
+radio button (object/package switch) of the Launcher to switch to the 
+package side. Double click &quot;Hello&quot; to open the dialog box. Enter 
+'Hello1' then press the Accept button. Use the radio button to switch 
+back to the object side. Double click &quot;Hello1&quot; in the list box located 
+on the right side. kterm will appear and &quot;Hello world.&quot; will appear 
+on the screen. Press the Enter key to close window.
+<P>
+</OL></OL>
+<P>
+	<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

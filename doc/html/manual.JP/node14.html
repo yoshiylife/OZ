@@ -1,0 +1,419 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>3.3 コンパイラフロントエンドの操作説明</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="3.3 コンパイラフロントエンドの操作説明">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION00043000000000000000>3.3 コンパイラフロントエンドの操作説明</A></H2>
+<P>
+<H3><A NAME=SECTION00043100000000000000>3.3.1 概要</A></H3>
+<P>
+このドキュメントではワークベンチから起動されるCFEの機能について述
+べる。
+<P>
+<H3><A NAME=SECTION00043200000000000000>3.3.2 OZ++ におけるプログラミング</A></H3>
+<P>
+ここでは、OZ++ 上でプログラミングを行なう上で必要な概念を説明する。
+<P>
+クラス　 <BR> 
+	
+OZ++では、クラスにシステム全体で一意に識別可能なID(バージョンID)を付
+与し、このIDによって各クラスを管理する。また、クラスはバージョンによっ
+て管理し、そのバージョンは、クラスの機能を次のように三つに分類すること
+によって、三つに分割しそれぞれに異なるバージョンIDを付与している。
+<P>
+<OL><LI>
+メッセージパッシングを行うためのインタフェースの部分(パブリックパート)。
+publicメンバのシグネチャに相当する。publicメンバを利用しているクラスに
+対してこの部分の変更を反映させるためには再コンパイルが必要である。
+<P>
+<LI>
+継承して利用するためのインタフェースの部分(プロテクティッドパート)。 
+protectedのメソッドのシグネチャおよびインスタンス変数の型に相当する。
+このクラスのサブクラスに対してこの部分の変更を反映させるためには再コン
+パイルが必要である。
+<P>
+<LI>
+1、2のインタフェースに対する実装部分(実装パート)。インスタンス変数定義
+もこれに相当する。この部分の変更は再コンパイルを行うことなく反映させる
+ことが可能である(後述)。
+<P>
+これらの三つのパートの間には、パブリックパート、プロテクティッドパー
+ト、実装パートの順で上下関係がある。各パートは一つの上位パートと複数の
+下位パートを持つ。下位パートの中のいずれか一つはデフォルトバージョンに
+指定することが可能である。デフォルトバージョンは利用者がバージョンを明
+示的に指定しない場合に利用される。またパブリックパートの上位パートとし
+てルートパートがあり、これはあるクラスのすべてのバージョンを代表するも
+のである。
+</OL>
+<P>
+言語処理系 <BR>
+<P>
+OZ++システム全体ではクラスをIDによって識別するが、プログラミング時の
+ソースコード中ではクラス名を記述できる仕組みが必要である。したがってコ
+ンパイラはクラス名をIDに変換する必要があり、そのための変換テーブルとし
+てスクールと呼ぶものを導入している。スクールはクラス名とIDの2項組のリ
+ストであり、クラス名に対するプログラミング時の局所的な名称空間を提供す
+るものである。
+<P>
+オブジェクト指向プログラミングでは、クラスが公開しているインタフェー
+スだけを利用することによって、クラスの実装には依存しないプログラミング
+が可能である。OZ++ではこの特徴とクラスのバージョン管理の仕組みを組み合
+わせることによって、プログラム中で使用するクラスの実装パートのバージョ
+ンの決定をインスタンス生成時まで遅延させるという柔軟な運用を可能にして
+いる。言語処理系は、パブリックまたはプロテクティッドパートのインタフェー
+スの情報を利用して、インタフェースの利用に関する検査を行う。この検査に
+利用するの情報を得るために、コンパイラは、実行コードを生成するだけでな
+く、パブリックおよびプロテクティッドパートのインタフェースに関する情報
+の出力も行う。したがってOZ++の一つのクラスのコンパイルはクラスのパブリッ
+ク、プロテクティッド、実装の三つのパート毎に処理を行い、各パートの出力
+をクラス管理システムに登録する。インタフェースに関する検査はこの情報を
+取得することによって行う。
+<P>
+利用するクラスのバージョンは次のように決定する。
+<P>
+<UL><LI>
+パブリックパートを利用しているクラスは、パブリックパートのバージョン
+までをコンパイル時に決定し、インスタンス生成時に実装パートのバージョン
+を決定する。
+<P>
+<LI>
+継承しているクラスは、プロテクティッドパートのバージョンまでをコンパ
+イル時に決定し、インスタンス生成時に実装パートのバージョンを決定する。
+<P>
+インスタンス生成時に行う実装パートのバージョンを決定する処理を、コン
+フィギュアと呼ぶ。このコンフィギュアの結果の情報(コンフィギュレーショ
+ン)もクラスの情報の一つとして、クラス管理システムによって管理される。
+</UL>
+<P>
+コンパイル <BR>
+<P>
+コンパイルは、ワークベンチ上でスクールを指定して、コンパイラフロント
+エンドを起動することによって行う。 OZ++のコンパイルは三つのパートに分
+けて行うが、その各パート毎に次のような制約がある。
+<P>
+<OL><LI> 各パートのコンパイル
+<P>
+<UL><LI>
+上位パートのコンパイルが行われていなければならない。例えば、プロテクティッ
+ドパートのコンパイルを行うには、パブリックパートのコンパイルが行われて
+いなければならない。
+<P>
+<LI>
+コンパイラはスクールによってクラス名をIDに変換するため、利用しているク
+ラスがスクールに含まれていなければならない。
+</UL>
+<P>
+<LI> パブリックパートのコンパイル
+<UL><LI> 
+継承しているクラスのプロテクティッドパートのコンパイルが行われていな
+ければならない。
+</UL>
+<P>
+<LI> 実装パートのコンパイル
+<UL><LI>
+利用しているクラスのパブリックパートのコンパイルが
+行われていなければならない。
+</UL></OL>
+<P>
+バージョンの更新 <BR>
+<P>
+クラスのバージョンの更新は、各パートのコンパイル時に指定することによっ
+て行う。バージョンの更新が指定されると、指定されたパート以下のバージョ
+ンの更新をクラス管理システムに要求する。例えば、パブリックパートのコン
+パイル時にバージョンの更新を指定すると、クラス管理システムはパブリック
+パート以下の三つのパートの新たなバージョンを作成し、それぞれに新たなバー
+ジョンIDを付与する。
+<P>
+ジェネリッククラスに関する用語 <BR>
+<P>
+<UL><LI>
+フォーマルジェネリッククラス
+<P>
+ジェネリッククラスで型が未定の型パラメータを含むもの
+<P>
+<LI>
+リアルジェネリッククラス
+<P>
+フォーマルジェネリッククラスの型パラメータのすべてを特定したもの
+</UL><H3><A NAME=SECTION00043300000000000000>3.3.3 機能一覧</A></H3>
+<P>
+<TABLE BORDER>
+<TR VALIGN=TOP>
+<TH>メニュー</TH> <TH>メニュー項目</TH> <TH>機能</TH>
+</TR>
+<TR>
+</TR>
+<TR VALIGN=TOP>
+<TD ROWSPAN=6>CFE</TD>
+    <TD>Open...</TD>       <TD>別のスクールを使う</TD>
+</TR>
+<TR VALIGN=TOP>
+    <TD>Close</TD>         <TD>閉じる</TD>
+</TR>
+<TR VALIGN=TOP>
+    <TD>Add...</TD>        <TD>ソースファイルの追加</TD>
+</TR>
+<TR VALIGN=TOP>
+    <TD>Remove</TD>        <TD>ソースファイルの削除</TD>
+</TR>
+<TR VALIGN=TOP>
+    <TD>Preference...</TD> <TD>各種設定</TD>
+</TR>
+<TR VALIGN=TOP>
+    <TD>Quit</TD>          <TD>終了</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD ROWSPAN=2>Compile</TD>
+    <TD>One...</TD>        <TD>1つのファイルのコンパイル</TD>
+</TR>
+<TR VALIGN=TOP>
+    <TD>All...</TD>        <TD>複数のファイルのコンパイル</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD ROWSPAN=2>Configure</TD>
+    <TD>One...</TD>        <TD>1つのファイルのコンフィギュア</TD>
+</TR>
+<TR VALIGN=TOP>
+    <TD>All...</TD>        <TD>複数のファイルのコンフィギュア</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD ROWSPAN=5>Generic</TD>
+    <TD>One...</TD>
+                           <TD>1つのクラス名に対するリアルジェネリックの生成<BR>
+                               指定したフォーマルジェネリックから生成されたリア
+                               ルジェネリック(スクール中にあるもののみ)を再生成
+                               することも可能</TD>
+</TR>
+<TR VALIGN=TOP>
+    <TD>All...</TD>
+                           <TD>Compile の実行中に生成する必要が生じたリアルジェ
+                               ネリックの生成</TD>
+</TR>
+<TR VALIGN=TOP>
+    <TD>Detail</TD>        <TD>生成が必要なリアルジェネリック名を表示</TD>
+</TR>
+<TR VALIGN=TOP>
+    <TD>Discard Classes</TD>
+                           <TD>生成が必要なリアルジェネリック名を無効にする</TD>
+</TR>
+<TR VALIGN=TOP>
+    <TD>Discard Files</TD> <TD>生成が不完全なファイルを消去</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD COLSPAN=2>Window</TD>
+                           <TD>ウィンドウの切り替え</TD>
+</TR>
+</TABLE>
+
+<P>
+ダイアログの機能一覧 <BR>
+<P>
+<TABLE BORDER>
+<TR VALIGN=TOP>
+<TH>メニュー</TH> <TH>コマンド</TH> <TH>項目、ボタン</TH> <TH>機能</TH>
+</TR>
+<TR>
+</TR>
+<TR VALIGN=TOP>
+<TD ROWSPAN=3>CFE</TD>
+    <TD ROWSPAN=3>Preference...</TD>
+        <TD>クラスオブジェクト名</TD> <TD>クラスオブジェクト名の入力</TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>カレントディレクトリ</TD> <TD>最初にファイルセレクタを起
+                                          動した時の位置の指定<BR>
+                                          ダブルクリックでファイルセ
+                                          レクタ起動</TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>表示言語</TD>             <TD>英語/日本語</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD ROWSPAN=16>Compile</TD>
+    <TD ROWSPAN=10>One...</TD>
+        <TD>New (メニューボタン)</TD> <TD>新規バージョンの作成<BR>
+                                          新たなクラスの場合にも有効</TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>...public</TD>            <TD>publicの更新(作成)<BR>
+                                          新たなクラスの場合はこれから始める</TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>...protected</TD>         <TD>protectedの更新</TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>...implementation</TD>    <TD>implementationの更新</TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>Public</TD>               <TD><BR></TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>Protected</TD>            <TD>record, static class, shared 
+                                          では使えない</TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>Public &amp; Protected</TD> <TD><BR></TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>Implementation</TD>       <TD>record, static class, shared 
+                                          では使えない</TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>All</TD>                  <TD><BR></TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>Cancel</TD>               <TD>キャンセル</TD>
+</TR>
+<TR VALIGN=TOP>
+    <TD ROWSPAN=6>All...</TD>
+        <TD>New</TD>                  <TD><BR></TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>Public &amp; Protected</TD> <TD><BR></TD> 
+</TR>
+<TR VALIGN=TOP>
+        <TD>Implementation</TD>       <TD><BR></TD> 
+</TR>
+<TR VALIGN=TOP>
+        <TD>Again</TD>                <TD>バージョンなし</TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>Retry</TD>                <TD>ログを初期化して実行</TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>Cancel</TD>               <TD>キャンセル</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD ROWSPAN=5>Configure</TD>
+    <TD ROWSPAN=3>One...</TD>
+        <TD>Go</TD>                   <TD>実行</TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>Cancel</TD>               <TD>キャンセル</TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>Other...</TD>             <TD>他の実装パートを選択</TD>
+</TR>
+<TR VALIGN=TOP>
+    <TD ROWSPAN=2>All...</TD>
+        <TD>Retry</TD>                <TD>ログを初期化して実行</TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>Cancel</TD>               <TD>キャンセル</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD ROWSPAN=9>Generic</TD>
+    <TD ROWSPAN=7>One...</TD>
+        <TD>クラス名</TD>             <TD>生成するリアルジェネリックまたはフォーマ
+                                          ルジェネリックのクラス名を入力</TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>Again (メニューボタン)</TD> <TD>リアルジェネリックの再生成<BR>
+                                          どのパートからかも指定する</TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>...from public</TD>       <TD>publicパートから再生成</TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>...from protected</TD>    <TD>protectedパートから再生成</TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>...only implementation</TD> <TD>implementationのみ再生成</TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>Go</TD>                   <TD>再生成でない場合の実行</TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>Cancel</TD>               <TD>キャンセル</TD>
+</TR>
+<TR VALIGN=TOP>
+    <TD ROWSPAN=2>All...</TD>
+        <TD>Go</TD>                   <TD>実行</TD>
+</TR>
+<TR VALIGN=TOP>
+        <TD>Cancel</TD>               <TD>キャンセル</TD>
+</TR>
+</TABLE>
+
+<P>
+ファイルセレクタの使用法 <BR>
+<P>
+<blockquote> ディレクトリの側でダブルクリックするとディレクトリの移動
+ファイルの側でダブルクリックするとファイルを選択
+</blockquote>
+<P>
+<UL><LI>
+ディレクトリを選択するには...
+<P>
+セレクトしておいて Select ボタンを起動<BR> 
+Control を押しながらダブルクリック
+</UL>
+<P>
+注意事項 <BR>
+<P>
+CompileおよびConfigureの&quot;One...&quot;はファイルを選択してから起動する。
+<P>
+<H3><A NAME=SECTION00043400000000000000>3.3.4 バージョンアップ</A></H3>
+<P>
+すでに生成済みのパートを再コンパイルしようとすると、エラーメッセージが表示さ
+れる。このような場合には、そのパートのバージョンアップを以下のように行なう。
+<P>
+<OL><LI>
+Newのメニューボタンで生成したいパートを指定する
+<LI>
+対象のパートのコンパイルを行なう
+</OL>
+<P>
+新たなクラスのコンパイル時には、Newのpublicを指定する
+<P>
+また、Public, Protectedのバージョンアップを行なうと、コンパイルするパートだ
+けでなく、その下位パートにも同時に新しいIDの付与を行なう。例えば、Public パー
+トのバージョンアップでは、Public, Protected, Implementation の3つのパートの
+新しいIDを付与する。また、新しいIDの付与を行なうと、スクールの内容が書き変わ
+る。
+<P>
+<H3><A NAME=SECTION00043500000000000000>3.3.5 コンフィギュア</A></H3>
+<P>
+クラスを実装までコンパイルした後、それを利用するには必ずコンフィギュア
+を実行する必要がある。
+<P>
+コンフィギュアではそのクラス自身とそのすべての祖先クラスの実装パートと
+して、どのバージョンのものを利用するかを指定しなければならないが、特に
+指定しない場合には、スクールに含まれている実装パートのものを使用する。
+<P>
+&quot;One...&quot;で実行する場合には、その各クラスの&quot;Other...&quot;ボタンで実装パート
+を選択して実行することができる。
+<P>
+<H3><A NAME=SECTION00043600000000000000>3.3.6 リアルジェネリックの再生成</A></H3>
+<P>
+GenericのOne...では指定したリアルジェネリックの再生成がAgainにより可能であり、
+この場合は新たなバージョンとして生成される。したがって、Againではどのパート
+から再生するかを指定する必要がある。
+<P>
+また、再生成するリアルジェネリックの指定には2つの方法がある。
+<UL><LI>
+リアルジェネリッククラス名を指定
+<P>
+指定したそのものを再生成
+<P>
+<LI>
+リアルジェネリッククラス名の'<b>&lt;</b>'までの文字列を指定
+<P>
+スクール中にある指定した文字列と同じ形式のクラス名を持つ、すべてのリアルジェ
+ネリッククラスを再生成する。例えば、Set<b>&lt;</b>String<b>&gt;</b>というリアルジェネリックに対
+して、Setという文字列を指定すると、Set<b>&lt;</b>*<b>&gt;</b>から生成されたものでかつスクールに
+含まれている他のもの(Set<b>&lt;</b>School<b>&gt;</b>等)が再生成の対象となる。
+</UL>
+<P>
+	<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

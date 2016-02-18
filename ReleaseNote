@@ -1,0 +1,71 @@
+###############################################################################
+Copyright(c) 1994-1997 Information-technology Promotion Agency, Japan(IPA)
+
+All rights reserved.
+This software and documentation is a result of the Open Fundamental
+Software Technology Project of Information-technology Promotion Agency,
+Japan(IPA).
+
+Permissions to use, copy, modify and distribute this software are governed
+by the terms and conditions set forth in the file COPYRIGHT, located in
+this release package.
+###############################################################################
+
+
+		       OZ++ System, Version 1, Release 5
+
+				 Release Notes
+
+      Tsukuba Research Laboratory Of Open Fundamental Software Technology
+
+
+   This document  describes  the  objectives  and  the  configuration  of  this
+software  and  the features of this release.
+
+1. What is OZ++ ?
+
+In the software industry, people throughout the  world  have  been  continually
+developing  software  with  very  similar  features;  and thus "reinventing the
+wheel" as it were.  Such  redundancy  has  been  impeding  the  improvement  of
+software  productivity and reliability. Therefore, the sharing and distribution
+of not only information but also of software is needed over the  network  (i.e.
+Internet).  However,  this  cannot  be  achieved  merely by opening the network
+infrastructure and making software publicly available.
+   The OZ++ system has therefore  been  developed  to  solve  this  problem  of
+software transfer.  Based on the concept of object-orientation, the OZ++ system
+provides distribution, upgrading, and authorization function of  software  over
+the network. The high modularity of object-oriented systems and the conformance
+checking  of  interface  between  objects  promotes  the  re-using  of software
+components.  The infrastructure is now being put into place so that  components
+of different software products can be combined in much the same way as hardware
+products.  Because the OZ++ systems enables the distribution of software  (i.e.
+program),  software  can  be  brought  from all over the world; furthermore, it
+allows such software to  run  without  complicated  installation.  Because  the
+versions  of  software  are automatically recognized by the system, old and new
+versions are available at the same time and the newer version is  automatically
+distributed.  In  addition,  validation functions have been included to confirm
+the source of the software so that everyone can use it without  worrying  about
+viruses.  Because  of these functions, OZ++ system users are always able to use
+the newest and most appropriate types of software available.
+
+2. The configurations of the OZ++ system
+
+In OZ++, the computation is done by communicating  distributed  objects  placed
+over  the  network.  Objects  are  run  on  processes  called  `executors'.  An
+executor can run an arbitrary number of  objects  and  is  managed  by  process
+called `nucleus'.  Each  station  is  always managed by a nucleus and a nucleus
+can manage an arbitrary number of executors.
+   See INSTALL for how to install the OZ++ system.
+
+3. About this release
+
+   This release contains the following:
+
+    o Executor and Nucleus (execution mechanisms)
+    o Workbench (a platform of programming tools: e.g. compiler)
+    o Launcher (a tool to launch applications)
+    o Debugger
+    o Class libraries
+
+Explanations of these contents can be found  in  a  group  of  documents  in  a
+directory `doc'.

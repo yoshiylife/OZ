@@ -1,0 +1,12 @@
+(*class* #00010000020008a0 5
+(*list*)
+(*list*
+(*declaration* ElementNotFound (*method* int (*list* #0001000002000883 0 ) 0) public #00010000020008a0 0 0)
+(*declaration* Empty (*method* int (*list*) 0) public #00010000020008a0 0 1)
+(*declaration* InternalError (*method* int (*list* #0001000002000883 0 ) 0) public #00010000020008a0 0 2)
+(*declaration* InvalidIntParameter (*method* int (*list* int ) 0) public #00010000020008a0 0 3)
+(*declaration* InvalidParameter (*method* int (*list*) 0) public #00010000020008a0 0 4)
+(*declaration* RedefinitionOfKey (*method* int (*list* #0001000002000883 0 ) 0) public #00010000020008a0 0 5)
+(*declaration* UnknownKey (*method* int (*list* #0001000002000883 0 ) 0) public #00010000020008a0 0 6)
+)
+)

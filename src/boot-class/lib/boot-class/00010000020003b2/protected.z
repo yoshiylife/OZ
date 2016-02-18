@@ -1,0 +1,13 @@
+(*class* #00010000020003b2 0
+(*list*
+(*list* #00010000020003d8 #00010000020003d9 0)
+)
+(*list*
+(*declaration* New (*method* void (*list*) 0) constructor #00010000020003b1 0 0)
+(*declaration* Extract (*method* #00010000020003e2 8 (*list* #00010000020003b6 0 ) 0) public #00010000020003d8 0 0)
+(*declaration* IsDigit (*method* int (*list* int ) 0) protected #00010000020003d9 0 3)
+(*declaration* IsLetter (*method* int (*list* int ) 0) protected #00010000020003d9 0 5)
+(*declaration* SetBufferSize (*method* int (*list*) 0) protected #00010000020003b2 0 1)
+(*declaration* BufferSize (*scqf* int 2) protected #00010000020003b2 0 BufferSize)
+)
+)

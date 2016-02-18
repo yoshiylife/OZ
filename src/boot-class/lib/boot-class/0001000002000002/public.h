@@ -1,0 +1,18 @@
+*/
+
+/* classes used for instanciation
+/* classes used for invoke
+*/
+
+#ifndef _OZ0001000002000002P_H_
+#define _OZ0001000002000002P_H_
+
+static OZ_ExceptionIDRec OZ_0001000002000002_NotYet = {0x0001000002000002LL, 0};
+static OZ_ExceptionIDRec OZ_0001000002000002_NotFound = {0x0001000002000002LL, 1};
+static OZ_ExceptionIDRec OZ_0001000002000002_Killed = {0x0001000002000002LL, 2};
+static OZ_ExceptionIDRec OZ_0001000002000002_NotFinish = {0x0001000002000002LL, 3};
+static OZ_ExceptionIDRec OZ_0001000002000002_IllegalOp = {0x0001000002000002LL, 4};
+static OZ_ExceptionIDRec OZ_0001000002000002_CannotExec = {0x0001000002000002LL, 5};
+static OZ_ExceptionIDRec OZ_0001000002000002_NotOpend = {0x0001000002000002LL, 6};
+
+#endif _OZ0001000002000002P_H_

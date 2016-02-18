@@ -1,0 +1,55 @@
+Loop.o: Loop.c ../../executor/shell.h ../../executor/mon.h \
+ ../../../include/executor/monitor.h ../../../include/oz++/ozlibc.h
+OzMktime.o: OzMktime.c ../../executor/shell.h \
+ ../../../include/oz++/ozlibc.h
+OzOmWaitShutdownRequest.o: OzOmWaitShutdownRequest.c \
+ ../../executor/shell.h ../../../include/executor/ncl-if.h \
+ ../../../include/executor/executor.h \
+ ../../../include/oz++/object-type.h ../../../include/oz++/ozlibc.h
+cons.o: cons.c ../../executor/shell.h ../../../include/oz++/ozlibc.h
+daemon.o: daemon.c ../../executor/switch.h ../../executor/main.h \
+ ../../executor/thr.h ../../executor/testandset.h
+debug.o: debug.c ../../executor/signal.h ../../executor/testandset.h \
+ ../../executor/thr.h ../../executor/main.h ../../executor/shell.h \
+ ../../../include/oz++/ozlibc.h ../../executor/dyload.h \
+ ../../executor/cl.h ../../../include/executor/monitor.h \
+ ../../../include/executor/executor.h \
+ ../../../include/oz++/object-type.h \
+ ../../../include/oz++/layout-info.h ../../executor/oh-header.h \
+ ../../executor/fault-q.h ../../executor/mon.h \
+ ../../../include/oz++/debug.h ../../executor/ot.h \
+ ../../../include/executor/object-table.h ../../executor/mem.h \
+ ../../../include/executor/memory.h ../../executor/encode-subs.h \
+ ../../executor/channel.h ../../executor/common.h \
+ ../../executor/except.h ../../../include/executor/exception.h
+load.o: load.c ../../executor/switch.h ../../executor/main.h \
+ ../../executor/shell.h ../../../include/executor/exception.h \
+ ../../../include/oz++/object-type.h ../../executor/channel.h \
+ ../../../include/executor/executor.h ../../executor/common.h \
+ ../../executor/except.h ../../executor/ot.h \
+ ../../../include/executor/object-table.h \
+ ../../../include/executor/monitor.h ../../executor/mem.h \
+ ../../../include/executor/memory.h ../../executor/encode-subs.h \
+ ../../executor/fault-q.h ../../executor/mon.h ../../executor/thr.h \
+ ../../executor/testandset.h ../../executor/oh-header.h \
+ ../../../include/oz++/sysexcept.h ../../executor/cl.h \
+ ../../../include/oz++/layout-info.h ../../../include/oz++/debug.h \
+ ../../../include/oz++/ozlibc.h
+loop.o: loop.c ../../executor/shell.h ../../executor/mon.h \
+ ../../../include/executor/monitor.h ../../../include/oz++/ozlibc.h
+misc.o: misc.c ../../executor/switch.h ../../executor/main.h \
+ ../../executor/shell.h ../../executor/thr.h \
+ ../../executor/testandset.h ../../executor/mon.h \
+ ../../../include/executor/monitor.h ../../../include/oz++/ozlibc.h
+panic.o: panic.c ../../executor/switch.h ../../executor/main.h \
+ ../../executor/thr.h ../../executor/testandset.h \
+ ../../executor/shell.h
+sample.o: sample.c ../../executor/switch.h ../../executor/thr.h \
+ ../../executor/testandset.h ../../executor/mon.h \
+ ../../../include/executor/monitor.h ../../executor/shell.h \
+ ../../../include/oz++/ozlibc.h
+sigsegv.o: sigsegv.c ../../executor/switch.h ../../executor/main.h \
+ ../../executor/shell.h
+stackoverflow.o: stackoverflow.c ../../executor/switch.h \
+ ../../executor/main.h ../../executor/shell.h ../../executor/thr.h \
+ ../../executor/testandset.h ../../../include/oz++/ozlibc.h

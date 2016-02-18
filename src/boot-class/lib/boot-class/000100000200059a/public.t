@@ -1,0 +1,10 @@
+8 Collection<Assoc<String,global DirectoryServer<*>>>
+	00010000020005a4	00010000020005a5	00010000020005a6
+0 Set<Assoc<String,global DirectoryServer<*>>>
+	000100000200059a	000100000200059b	000100000200059c
+8 Collection<Assoc<String,global DirectoryServer<*>>>
+	00010000020005a4	00010000020005a5	00010000020005a6
+0 Assoc<String,global DirectoryServer<*>>
+	000100000200059f	00010000020005a0	00010000020005a1
+0 Iterator<Assoc<String,global DirectoryServer<*>>>
+	00010000020005a9	00010000020005aa	00010000020005ab

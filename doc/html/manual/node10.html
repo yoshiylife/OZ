@@ -1,0 +1,568 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>2.6 Application Gateway</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="2.6 Application Gateway">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION00036000000000000000>2.6 Application Gateway</A></H2>
+<P>
+<H3><A NAME=SECTION00036100000000000000>2.6.1 Application Gateway Manual</A></H3>
+<P>
+<DL ><DT>NAME
+<DD> <P>
+ozag - OZ application gateway
+<DT>SYNOPSIS
+<DD> <P>
+ozag
+<DT>DESCRIPTION
+<DD> <P>
+The application gateway is executed in a gateway machine, and
+performs the following services to one or more sites:
+<P>
+<blockquote> <UL><LI> relay of executors outside the OZ++ site.
+<LI> relay of method invocations and return values, as well as
+insertion of external flags against external packets, both
+to and from outside the OZ++ site.
+<LI> relay of class file transfer packets both to and from outside
+the OZ++ site.
+</UL></blockquote>
+<P>
+
+<P>
+<DT>FILE
+<DD> <P>
+<UL><LI> $OZROOT/etc/SITE_table
+This site table is read when the application gateway is started.
+<P>
+If this file does not exist when the application gateway is started,
+the application gateway loads data of site table from WWW server
+automatically.
+<P>
+At the first line of the file, the last updated date
+of the site information is recorded.
+The site table contains the following items:
+<UL><LI> site ID
+<LI> host name or the IP address of the application gateway in
+the site corresponding to the site ID
+</UL>
+<P>
+<LI> $OZROOT/etc/apgw_LSiteInfo<BR> 
+This local site information is read when the application gateway
+is started.  Local site information describes the site information
+recognized by the application gateway.  If the application gateway
+manages more than one sites, their information is also registered
+in the local site information.  The local site information contains
+the following items:
+<UL><LI> site ID
+<LI> host name or the IP address of the relay nucleus corresponding
+to the site ID
+<LI> port number of the relay nucleus corresponding to the site ID
+<LI> type of the site(P[progressive],C[conservative],I[invalidated])
+</UL></UL> 
+ </DL><H3><A NAME=SECTION00036200000000000000>2.6.2 Starting the Application Gateway</A></H3>
+<P>
+The application gateway is started as an OS process from a terminal.
+<P>
+The application gateway creates log files at startup, and its file name
+  appeared on the terminal.
+<P>
+
+<P>
+
+<P>
+<H3><A NAME=SECTION00036300000000000000>2.6.3 Terminating the Application Gateway</A></H3>
+<P>
+The 'exit' command terminates the application gateway.
+<P>
+Signal(SIGTERM) terminates the application gateway also.
+<P>
+<H3><A NAME=SECTION00036400000000000000>2.6.4 Setup of Local Site Information</A></H3>
+<P>
+There are two paths for the relay of inter-site communication by the
+application gateway:
+<blockquote> <UL><LI> Relay between a local site and another site (see figure <A HREF="node10.html#fig1">2.6--1</A>)<BR> 
+Relay is performed between a site managed by the application
+gateway and the other sites.
+<LI> Relay inside a local site (see figure <A HREF="node10.html#fig2">2.6--2</A>)<BR> 
+The application gateway manages several sites, and performs relay
+within the range of the management.
+</UL></blockquote>
+<P>
+<A NAME=fig1>&#160;</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD ALIGN=CENTER>
+<IMG  ALIGN=BOTTOM ALT="TwoApgw.gif" SRC="figure/TwoApgw.gif">
+</TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER>
+ <TABLE BORDER=2 CELLSPACING=0 CELLPADDING=10>
+
+ <TR>
+ <TD><I>(1) Request</I></TD>
+ <TD><I>(2) NN_PRIMARY</I></TD>
+ <TD><I>(3) NN_PRIMARY</I></TD>
+ <TD><I>(4) AR_AG_QUERY</I></TD>
+ </TR>
+
+ <TR>
+ <TD><I>(5) AR_AG_QUERY</I></TD>
+ <TD><I>(6) NN_PRIMARY</I></TD>
+ <TD><I>(7) NN_REPLY</I></TD>
+ <TD><I>(8) NN_REPLY</I></TD>
+ </TR>
+
+ <TR>
+ <TD><I>(9) AR_AG_REPLY</I></TD>
+ <TD><I>(10) AR_AG_REPLY</I></TD>
+ <TD><I>(11) NN_REPLY</I></TD>
+ <TD><I>(12) Response</I></TD>
+ </TR>
+
+ </TABLE>
+</TD>
+</TR>
+
+<TR>
+
+<CAPTION ALIGN=BOTTOM><STRONG>Fig 2.6--1:</STRONG> Relay between a local site and another site<BR></CAPTION>
+
+</TABLE>
+</CENTER>
+
+<P>
+<A NAME=fig2>&#160;</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD ALIGN=CENTER>
+<IMG  ALIGN=BOTTOM ALT="OneApgw.gif" SRC="figure/OneApgw.gif">
+</TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER>
+ <TABLE BORDER=2 CELLSPACING=0 CELLPADDING=10>
+
+ <TR>
+ <TD><I>(1) Request</I></TD>
+ <TD><I>(2) NN_PRIMARY</I></TD>
+ <TD><I>(3) NN_PRIMARY</I></TD>
+ <TD><I>(4) AR_AG_QUERY</I></TD>
+ </TR>
+
+ <TR>
+ <TD><I>(5) NN_PRIMARY</I></TD>
+ <TD><I>(6) NN_REPLY</I></TD>
+ <TD><I>(7) NN_REPLY</I></TD>
+ <TD><I>(8) AR_AG_REPLY</I></TD>
+
+ <TR>
+ </TR>
+ <TD><I>(9) NN_REPLY</I></TD>
+ <TD><I>(10) Response</I></TD>
+ <TD><BR></TD>
+ <TD><BR></TD>
+ </TR>
+ </TABLE>
+<TR>
+
+</TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>Fig 2.6--2:</STRONG> Relay inside a local site<BR></CAPTIO
+N>
+
+</TABLE>
+</CENTER>
+
+<P>
+The site ID, registered as local site information, must already be
+registered in the site table.
+<P>
+In the setup of local site information, only the information for one
+site is described per line of the file.  The usage is described below:
+<PRE>    &lt;site ID&gt;:&lt;rncl IP-Address&gt;:&lt;rncl port&gt;:&lt;type of site&gt;
+</PRE>
+There are two types of sites: progressive policy sites and conservative
+policy sites.
+<P>
+Objects in a progressive policy site can be accessed
+from outside of the site, and can access to objects of other sites.
+Objects in a conservative policy site can access to objects of other sites,
+but can not be accessed from outside of the site.
+<P>
+  The local site information can be modified using 'add','remove','change'
+commands. But it's possible to setup the contents of the file directly.
+<P>
+Setup of Local Site Information between a Local Site and Another Site <BR>
+<P>
+In this case, the local site information is registered as follows:
+<PRE>  Setup of Site-1:
+     Site-1:&lt;IP-Address of R-Ncl1&gt;:&lt;port of R-Ncl1&gt;:&lt;type of site&gt;
+</PRE>
+<PRE>  Setup of Site-2:
+     Site-2:&lt;IP-Address of R-Ncl2&gt;:&lt;port of R-Ncl2&gt;:&lt;type of site&gt;
+</PRE>
+<P>
+For example, this information is described as follows:
+<P>
+Local site information of Site-1
+<PRE>     % cat $OZROOT/etc/apgw_LSiteInfo
+     0005:bunax3:3777:C
+</PRE>
+<P>
+Local site information of Site-2
+<PRE>     % cat $OZROOT/etc/apgw_LSiteInfo
+     0001:bun13:3777:P
+</PRE>
+<P>
+Setup of Local Site Information inside a Local Site <BR>
+<P>
+In this case, the local site information is registered as follows:
+<PRE>     Site-2:&lt;IP-Address of R-Ncl2&gt;:&lt;port of R-Ncl2&gt;:&lt;type of site&gt;
+     Site-3:&lt;IP-Address of R-Ncl3&gt;:&lt;port of R-Ncl3&gt;:&lt;type of site&gt;
+</PRE>
+<P>
+For example, this information is described as follows:
+<PRE>     % cat $OZROOT/etc/apgw_LSiteInfo
+     0005:bunax3:3777:P
+     0001:192.31.202.11:3777:P
+</PRE>
+<P>
+Setup of a Relay Nucleus <BR>
+<P>
+The relay nucleus communicates with the application gateway, and
+relays the transmission of demands to and reception of demands from
+other sites.
+<P>
+The setup of a relay nucleus defines the application gateway
+corresponding to the relay nucleus in the nucleus table.
+<P>
+<PRE>    RELAYNCL:&lt;IP-Address of Relay Nucleus&gt;:&lt;OZAG IP-Address&gt;
+</PRE>
+For those nuclei registered as relay nuclei, it is necessary to
+maintain mutual consistency between these nuclei and the relay nuclei
+registered in the local site information of the application gateway.
+<P>
+For example, when the relay nucleus is set to bun13, and the
+application gateway is set to bunax3:
+<PRE>     % cat $OZROOT/etc/apgw_LSiteInfo
+     0005:bun13:3777:P
+     % cat $OZROOT/etc/ncl-data/NCL_table
+     RELAYNCL:bun13:bunax3
+</PRE>
+<P>
+<H3><A NAME=SECTION00036500000000000000>2.6.5 Site Table</A></H3>
+<P>
+The site table ($OZROOT/etc/SITE_table) is the text file read when
+the application gateway is started.  It contains the following items:
+<PRE>    &lt;site ID&gt;:&lt;host name or the IP-Address of the application gateway&gt;:
+
+   Example:
+     % cat $OZROOT/etc/SITE_table
+     #Sunday, 09-Feb-97 06:24:39 GMT
+     0004:192.33.202.15:
+     0005:bunax3:
+     0006:bun17
+     0007:192.31.202.11:
+</PRE>
+<P>
+<H3><A NAME=SECTION00036600000000000000>2.6.6 Commands of the Application Gateway</A></H3>
+<P>
+  The application gateway accepts following commands. They can be grouped
+to three category, site information related, local site information 
+related and miscellaneous.
+<P>
+<PRE>      list
+      update
+      local
+      add
+      remove
+      change
+      help
+      exit
+</PRE>
+<P>
+Site information related commands <BR>
+<P>
+<DL ><DT>list [site_id]
+<DD>
+<P>
+   List site table. When site_id is specified, list that site if exists,
+otherwise error message will be desplayed.
+<P>
+ Example:
+<PRE>     list
+     ========================================
+     SITE : IP address of application gateway
+     0010 : bunny
+     0011 : bunny
+     0012 : bunny
+     0020 : bunfs
+     ========================================
+
+     list 0020
+     Site = 0020 : Application gateway = bunfs
+
+     list 0023
+     No such site (0023)
+</PRE>
+<P>
+<DT>update
+<DD>  <BR>
+<P>
+   Update site table by getting from master data on WWW server.
+If site information on WWW server is newer than that on the application 
+gateway, site information will be loaded from WWW server, otherwise
+the site information will not be changed because it is upto date.
+<P>
+'update' operation is recorded in log file when the site information is 
+updated.
+<P>
+ </DL>
+<P>
+Local site information related commands <BR>
+<P>
+<A NAME=seclocalSiteInformationCommand>&#160;</A>
+<DL ><DT>local
+<DD>  <BR>
+<P>
+List local sites.
+<P>
+<DT>add site_id RNCL_host RNCL_port policy
+<DD>  <BR>
+<P>
+Add local site or re-activate local site which is removed previously.
+&quot;policy&quot; must be 'P' or 'C'.
+<P>
+'add' operation is recorded in log file.
+<P>
+<DT>remove site_id
+<DD>  <BR>
+<P>
+Remove a local site. The id of site is never reused, so that local
+site treated as temporary invalidation. To reactivate removed site,
+use add command.
+<P>
+'remove' operation is recorded in log file.
+<P>
+<DT>change site_id policy
+<DD>  <BR>
+<P>
+Change policy of a local site. &quot;policy&quot; must be C or P.
+<P>
+'change' operation is recorded in log file.
+<P>
+Examples of 'list','change','remove' commands:
+<P>
+<PRE>     local
+     ----------------------------------------
+     SITE :       policy      : relay NCL
+     0010 :   PROGRESSIVE     : bun15
+     0011 :   PROGRESSIVE     : bun12
+     0012 :   PROGRESSIVE     : bun16
+     ----------------------------------------
+
+     change 10 C
+     Local site (0010) changed
+
+     local  
+     ----------------------------------------
+     SITE :       policy      : relay NCL
+     0010 :   CONSERVATIVE    : bun15
+     0011 :   PROGRESSIVE     : bun12
+     0012 :   PROGRESSIVE     : bun16
+     ----------------------------------------
+
+     remove 11
+     Local site (0011) removed
+
+     local
+     ----------------------------------------
+     SITE :       policy      : relay NCL
+     0010 :   CONSERVATIVE    : bun15
+     0011 : removed temporary : bun12
+     0012 :   PROGRESSIVE     : bun16
+     ----------------------------------------
+</PRE>
+<P>
+Corresponding log in log file:
+<PRE>     [Mon Feb 24 19:47:45 1997] Change local site (0010:C)
+     [Mon Feb 24 19:48:00 1997] Remove local site (0011)
+</PRE>
+<P>
+ </DL>
+<P>
+ Miscellaneous commands <BR>
+<P>
+<DL ><DT>exit
+<DD>  <BR>
+<P>
+   Terminate OZ++ application geteway.
+<P>
+<DT>help 
+<DD>  <BR>
+<P>
+  Print help message as follows.
+<P>
+<PRE>     ** List of Commands **
+       -- Site List -- 
+     list [site_id]
+        List site table. If site_id is specified, list that site only.
+
+     update
+        Update site table by getting from master data.
+
+       -- Local Site --
+     local
+        List local sites.
+
+     add site_id RNCL_host RNCL_port policy   Add a local site.
+
+     remove site_id
+        Remove a local site.
+
+     change site_id policy
+        Change policy of a local site. policy must be C or P.
+
+       -- Miscellaneous --
+     help 
+        Print this help message.
+
+     exit
+        Terminate OZ++ application geteway.
+</PRE>
+<P>
+ </DL><H3><A NAME=SECTION00036700000000000000>2.6.7 Log</A></H3>
+<P>
+The application gateway records following events in log file with
+date and time.
+Log file is placed on $OZROOT/etc/AGxxxxxxxx.log (xxxxxxxx is eight
+hexadecimal degits to present startup time).
+<P>
+  Startup and termination.
+  Begin and end of method invocation relay.
+  Begin and end of file transfer relay.
+  Change of site information and local site information.
+<P>
+Startup and terminatio <BR>
+<P>
+The first line and the last line of log will be startup message and
+termination message.
+<P>
+Example:
+<PRE>     [Wed Feb 19 23:52:24 1997] Application Gateway started!
+
+     [Thu Feb 20 01:16:59 1997] Application gateway terminated!
+</PRE>
+<P>
+Begin and end of method invocation relay <BR>
+<P>
+Begin and end of method invocation relay are recorded. 
+OIDs of caller and callee, message_id and class_id are recorded in
+begin message.
+<P>
+There may exist other messages between begin and end of 
+a method invocation, but corresponding messages have same message id.
+(&quot;001100100b00000f&quot; is message id in following example).
+<P>
+Example:
+<PRE>     [Thu Feb 20 01:12:32 1997] exmessage:New invocation starts: 
+     caller:0x001100100b000005 callee:0x00100010000001a9 
+     class_id:0x0010001000000187 message_id:0x001100100b00000f
+     [Thu Feb 20 01:12:32 1997] exmessage: invocation 001100100b00000f finished
+</PRE>
+<P>
+Begin and end of file transfer relay <BR>
+<P>
+Begin and end of file transfer relay are recorded.
+Sender's executor id and process id of file transfer process OzFGW are
+recorded.
+<P>
+There may exist other messages between begin and end of 
+a file transfer, but corresponding messages have same process id.
+(&quot;26335&quot; is process id in following example).
+<P>
+Example:
+<PRE>     [Thu Feb 20 01:11:58 1997] DeliverClass: source of file 0010001000000000 
+     (process:26335)
+     [Thu Feb 20 01:11:59 1997] OzFGW: file_transfer process 26335 finished(0)
+</PRE>
+<P>
+Change of site information and local site information <BR>
+<P>
+Changes of site information and local site information are recorded 
+as shown in <A HREF="node10.html#seclocalSiteInformationCommand">2.6.6.2</A> . Invocations to objects in conservative policy sites
+are rejected and the rejection is recorded also.
+<P>
+Following example shows log of three invocation to same objects,
+but site of callee objects changes from progressive to conservative
+and back to progressive again.
+<P>
+Example:
+<PRE>     [Thu Feb 20 01:12:33 1997] exmessage:New invocation starts: 
+     caller:0x001100100b000005 callee:0x00100010000001a9 
+     class_id:0x0010001000000187 message_id:0x001100100b000013
+     [Thu Feb 20 01:12:33 1997] exmessage: invocation 001100100b000013 finished
+     [Thu Feb 20 01:13:02 1997] Change local site (0010:C)
+     [Thu Feb 20 01:13:09 1997] exmessage:Reject invocation to conservative 
+     site!
+     [Thu Feb 20 01:13:38 1997] Change local site (0010:P)
+     [Thu Feb 20 01:13:42 1997] exmessage:New invocation starts: 
+     caller:0x001100100b000005 callee:0x00100010000001a9 
+     class_id:0x0010001000000187 message_id:0x001100100b000015
+     [Thu Feb 20 01:13:42 1997] exmessage: invocation 001100100b000015 finished
+</PRE>
+<P>
+<H3><A NAME=SECTION00036800000000000000>2.6.8 Trouble Shooting of the Application Gateway</A></H3>
+<P>
+There may be cases in which the application gateway cannot be started
+due to some troubles.  The following causes may be considered:
+<blockquote> <DL ><DT>(1)
+<DD> The necessary files to start the application gateway cannot be opened.<BR> 
+The following files are necessary to start the application gateway:
+<UL><LI> $OZROOT/etc/SITE_table
+<LI> $OZROOT/etc/apgw_LSiteInfo
+</UL>
+In this case, the following factors can be considered as causes:
+<UL><LI> Environment variable OZROOT is not set properly.
+<LI> Permissions of files under the directory $OZROOT is not given.
+<LI> There are errors in the description of the site table
+($OZROOT/etc/SITE_table).
+</UL>
+<DT>(2)
+<DD> The port used by the nucleus cannot be bound.<BR> 
+The following message is displayed:
+<PRE>     init_apgw_port: bind: Address already in use
+     init_apgw_port: Other APGW start up already ?
+</PRE>
+The following causes may be considered:
+<UL><LI> The station, where the start up is performed, already has another
+application gateway running.
+<LI> The port is bound by another application other than the
+application gateway.
+</UL>
+<DT>(3)
+<DD> Error in the Setup of Local Site Information<BR> 
+The following message is displayed:
+<PRE>     init_localsite_info: Can't found LocalSiteID(????) on site-table
+</PRE>
+This occurs because the site ID in the local site information is not
+registered in the site table.
+<P>
+ </DL></blockquote>
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

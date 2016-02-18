@@ -1,0 +1,258 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.6 型変換</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.6 型変換">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION00066000000000000000>5.6 型変換</A></H2>
+<P>
+ OZ++
+  言語における型変換には次の二種類がある。
+<P>
+<UL><LI> いくつかの演算子で、そのオペランドに応じて行なわれる、ある型から
+他の型への変換 (標準変換)
+<P>
+<LI> クラスのインスタンスに対して明示的に行なう変換 (ナローイング) 
+</UL><H3><A NAME=SECTION00066100000000000000>5.6.1 標準変換</A></H3>
+<P>
+整数の昇格 <BR>
+<P>
+<tt> char</tt>、<tt> short</tt> は符合付きか否かに関わらず、整数が使えると
+ころであればどこでも使用できる。元の型のすべての値を <tt> int</tt> で表現
+できるならば、その値は <tt> int</tt> に変換される。そうでない場合は、<tt>
+unsigned int</tt> に変換される。この過程を整数の昇格と呼ぶ。
+<P>
+整数の変換 <BR>
+<P>
+整数(<tt> char</tt>, <tt> short</tt>, <tt> int</tt>, <tt> long</tt>)は符号なし整数に変
+換される。符号なし整数が小さければ、ビットの左を削る操作に等しい。大き
+い場合は左側をゼロで埋めるか、符号拡張が行なわれる。
+<P>
+整数と浮動小数 <BR>
+<P>
+<UL><LI> 浮動小数の値が整数に変換される場合
+<P>
+小数点以下は捨てられる
+<P>
+整数に入らない大きさの場合、その値は定義されない
+<P>
+負の浮動小数を符号なし整数に変換した結果は定義されない
+<P>
+<LI> 整数が浮動小数に変換される場合
+<P>
+表現可能なもっとも近い値となる。表現できない場合、結果は定義されない
+</UL>
+<P>
+<tt> float</tt> と <tt> double</tt> <BR>
+<P>
+<UL><LI> 精度の低い浮動小数が精度の高い浮動小数に変換される場合
+<P>
+値は変わらない
+<P>
+<LI> 精度の高い浮動小数が精度の低い浮動小数に変換される場合
+<P>
+表現可能なもっとも近い値となる。表現できない場合、結果は定義されない
+</UL>
+<P>
+算術変換 <BR>
+<P>
+演算子は次のような型変換を引き起こす。
+<P>
+<UL><LI> どちらかのオペランドが <tt> double</tt> の場合、もう一方のオペ
+ランドも <tt> double</tt> に変換される
+<P>
+そうでなければ、どちらかのオペランドが <tt> float</tt> の場合、もう一方の
+オペランドも <tt> float</tt> に変換される
+<P>
+そうでなければ、整数の昇格が両方のオペランドに対して行なわれる
+<P>
+ <LI> どちらかのオペランドが <tt> unsigned long</tt> の場合、 もう一
+方のオペランドも <tt> unsigned long</tt> に変換される
+<P>
+そうでなければ、どちらかのオペランドが <tt> long</tt> で、もう一方
+のオペランドが <tt> unsigned int</tt> である場合、 <tt> long</tt> が <tt>
+unsigned int</tt> のすべての値を表現可能であれば、<tt> unsinged int</tt> は 
+<tt> long</tt> に変換され、そうでなければ、両方のオペランドは <tt>
+unsigned long</tt> に変換される
+<P>
+そうでなければ、どちらかのオペランドが <tt> long</tt> の場合、も
+う一方のオペランドも <tt> long</tt> に変換される
+<P>
+そうでなければ、どちらかのオペランドが <tt> unsigned int</tt> の場合、もう
+一方のオペランドも <tt> unsigned int</tt> に変換される
+<P>
+そうでなければ、両方のオペランドは <tt> int</tt> である
+</UL><H3><A NAME=SECTION00066200000000000000>5.6.2 型の一貫性</A></H3>
+ <A NAME=langlangmanualtypeexchangeconsistency>　</A>
+<P>
+代入演算
+<PRE>        x = e
+</PRE>
+を考えた場合、<tt> x</tt> には左辺値、すなわち、クラスのインスタンス変数とメソッ
+ドの局所変数が考えられる。この時、<tt> x</tt> は
+<P>
+<UL><LI> 基本データ型 (<A HREF="node24.html#langlangmanualdatatype">5.4</A> 節参照)
+<LI> プロセス派生型 (<A HREF="node28.html#langlangmanualprocess">5.8</A> 節参照)
+<LI> 配列派生型 (<A HREF="node27.html#langlangmanualarray">5.7</A> 節参照)
+<LI> 利用者定義型 (<A HREF="node25.html#langlangmanualusertype">5.5</A> 節参照)
+</UL>
+の型を持つか、あるいは仮総称パラメタ (<A HREF="node25.html#langlangmanualusertype">5.5</A> 
+節参照) によって、型が規定されている。
+<P>
+ OZ++
+  言語においてこの代入が正しいとされる規則は以下の通りである。
+<P>
+型の互換性規則 <BR>
+<P>
+<tt> x</tt> の型が <tt> X</tt>、<tt> y</tt> の型が <tt> Y</tt> のとき、<tt> y</tt> の <tt>
+x</tt> への代入
+<P>
+<PRE>        X x;
+        Y y;
+        x = y;
+</PRE>
+<P>
+が正しい場合は、以下の場合に限る。
+<P>
+<OL><LI> <tt> X</tt> と <tt> Y</tt> が同一である
+<P>
+<LI> <tt> X</tt> と <tt> Y</tt> がともに基本型である (この場合は 型変換の規則
+が適用される)
+<P>
+<LI> <tt> X</tt> が <tt> void</tt> のプロセス派生型であり <tt> Y</tt> が (任意の
+型の) プロセス派生型である
+<P>
+<LI> <tt> Y</tt> が <tt> X</tt> に適合する (次項参照)
+<P>
+<LI> <tt> X</tt> が ある型 <tt> Z</tt> の配列派生型であり <tt> Y</tt> が <tt> Z</tt> 
+に適合する型の配列派生型である (次項参照)
+</OL>
+<P>
+型の適合規則 <BR>
+<P>
+型 <tt> Y</tt> が 型 <tt> X</tt> に適合するのは、以下の場合に限る。
+<P>
+<OL><LI> <tt> X</tt> と <tt> Y</tt> が同一である
+<P>
+<LI> <tt> X</tt> と <tt> Y</tt> がクラス型であり、<tt> X</tt> に総称パラメタがな
+く、<tt> Y</tt> は直接 <tt> X</tt> を継承する 
+(<A HREF="node37.html#langlangmanualinheritance">5.17</A> 節参照)
+<P>
+
+<P>
+<LI> <tt> Y</tt> が適合する型 <tt> Z</tt> があり、<tt> Z</tt> は <tt> X</tt> に適合する
+</OL>
+<P>
+<PRE>class A {
+  ...
+}
+
+class B : A {
+  ...
+}
+
+class C : B {
+  ...
+}
+</PRE>
+<P>
+上の例の場合、型の適合規則 2 により、<tt> C</tt> は <tt> B</tt> に、また <tt>
+B</tt> は <tt> A</tt> に適合する。したがって、型の適合規則 3 により、 <tt> C</tt> 
+は <tt> A</tt> に適合する。よって、
+<P>
+<PRE>        A a;
+        C c;
+
+        a = c;
+</PRE>
+<P>
+の代入は正しい。
+<P>
+<H3><A NAME=SECTION00066300000000000000>5.6.3 ナローイング</A></H3>
+<P>
+上の型の一貫性の例において、<tt> a</tt> は代入後、 クラス <tt> C</tt> のインス
+タンスを参照することになる。したがって、この場合は <tt> a</tt> の型を <tt>
+A</tt> から <tt> C</tt> に変換が可能である。
+<P>
+このように、継承を利用して定義されたクラスのインスタンスを、そのクラス
+よりも上のクラスのインスタンスとしてアクセスしている場合、現在アクセス
+している型よりも下のクラスとしてアクセスするように型変換することが可能
+である。このような型変換をナローイングと呼ぶ。
+<P>
+ OZ++
+  言語は型システムに基づく静的型検査を前提とする言語であるが、ナ
+ローイングはその例外であり、動的な型検査が行なわれる。ナローイングに失
+敗した場合には、<tt> NarrowFailed</tt> というシステム例外
+(<A HREF="node36.html#langlangmanualexceptkind">5.16.1</A> 節参照)が発生する。
+<P>
+<PRE>A a1, a2;
+B b1, b2, b3;
+C c1, c2, c3;
+
+c1=&gt;new();                // Cのインスタンスを生成
+b1=&gt;new();                // Bのインスタンスを生成
+        
+a1 = c;                   // a1にCのインスタンスへの参照を代入し、Aとしてアクセスする
+a2 = b1;                  // a2にBのインスタンスへの参照を代入、Aとしてアクセスする
+
+c2 = narrow(C, a1);       // CのインスタンスをCとしてアクセスする
+b2 = narrow(B, a1);       // CのインスタンスをBとしてアクセスする
+b3 = narrow(B, a2);       // BのインスタンスをBとしてアクセスする
+
+c3 = narrow(C, a2);       // エラー: a2が参照しているのはBのインスタンス
+</PRE>
+<P>
+上の例では、クラス <tt> C</tt>、<tt> B</tt> のインスタンスを生成し、それらを 
+<tt> A</tt> としてアクセスしているものを、<tt> C</tt>、<tt> B</tt> としてアクセス
+するようにナローイングしている。最後の部分では、<tt> B</tt> のインスタンス
+をその子クラスである <tt> C</tt> としてアクセスしようとして、ナローイング
+に失敗している。
+<P>
+ナローイングは、プログラム上の変数の型ではなくその変数が実行時に参照を
+持つインスタンスの型を利用するため、プログラミング時に予測不可能な動作
+の原因となる可能性があり、これを多用することは危険である。しかし、次の
+例のように、インスタンスの中から特定のクラスのものだけを抽出するために
+利用することもできる。
+<P>
+<PRE>class A {
+  ...
+}
+
+class B : A {
+  ...
+}
+
+class C {
+  public: m1;
+
+  void m1(A a)
+   {
+     B b;
+
+     try 
+       {
+         b = narrow(B, a);
+       }
+     except
+       {
+         // aはBのインスタンスではないことがわかる
+       }
+    }
+}
+</PRE>
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

@@ -1,0 +1,6 @@
+#
+# Informations of ExecutorID management
+#
+IN_ACTIVITY:ExecutorID(000000),Rest(0)
+RESERVATION:ExecutorID(000000),Rest(0)
+EXID_OF_SITE:001000

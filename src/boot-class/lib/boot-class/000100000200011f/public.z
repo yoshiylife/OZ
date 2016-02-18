@@ -1,0 +1,12 @@
+(*class* #000100000200011f 0
+(*list*)
+(*list*
+(*declaration* New (*method* void (*list*) 0) constructor #000100000200011f 0 0)
+(*declaration* NewWithTitle (*method* void (*list* #00010000020003bd 0 ) 0) constructor #000100000200011f 0 1)
+(*declaration* Open (*method* void (*list*) 0) public #000100000200011f 0 3)
+(*declaration* Write (*method* void (*list* #00010000020003bd 0 ) 0) public #000100000200011f 0 4)
+(*declaration* Read (*method* #00010000020003bd 0 (*list*) 0) public #000100000200011f 0 5)
+(*declaration* SetPrompt (*method* #00010000020003bd 0 (*list* #00010000020003bd 0 ) 0) public #000100000200011f 0 2)
+(*declaration* Close (*method* void (*list*) 0) public #000100000200011f 0 6)
+)
+)

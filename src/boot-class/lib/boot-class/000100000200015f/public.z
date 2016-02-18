@@ -1,0 +1,13 @@
+(*class* #000100000200015f 5
+(*list*)
+(*list*
+(*declaration* IllegalPathString (*method* int (*list* #00010000020003bd 0 ) 0) public #000100000200015f 0 0)
+(*declaration* CannotCreateDirectoryServer (*method* int (*list*) 0) public #000100000200015f 0 1)
+(*declaration* DomainConfliction (*method* int (*list* #00010000020003bd 0 ) 0) public #000100000200015f 0 2)
+(*declaration* NotEmtpy (*method* int (*list*) 0) public #000100000200015f 0 3)
+(*declaration* OverWriteProhibited (*method* int (*list* #00010000020003bd 0 ) 0) public #000100000200015f 0 4)
+(*declaration* UnknownDirectory (*method* int (*list* #00010000020003bd 0 ) 0) public #000100000200015f 0 5)
+(*declaration* UnknownDirectoryServer (*method* int (*list* (*scqf* #0001000002000336 8 4) ) 0) public #000100000200015f 0 6)
+(*declaration* UnknownEntry (*method* int (*list* #00010000020003bd 0 ) 0) public #000100000200015f 0 7)
+)
+)

@@ -1,0 +1,188 @@
+#
+#  Copyright (c) 1994-1997 Information-technology Promotion Agency, Japan
+#
+#  All rights reserved.  No guarantee.
+#  This technology is a result of the Open Fundamental Software Technology
+#  Project of Information-technology Promotion Agency, Japan (IPA).
+#
+
+			     About this directory
+
+Contents:
+
+1. Contents of this directory
+2. Changing boot classes
+
+
+
+1. Contents of this directory.
+
+This directory contains source codes of "boot classes."  A boot class is the
+class required to compile OZ++ source codes using OZ++ system.  Although
+classes other than boot classes can be compiled with the programming
+environment on top of the OZ++ system, however, only boot classes must be
+prepared in different way.
+
+   This directory contains following directories:
+
+        src/boot-class/Imakefile    ... template of Makefile
+                       bin/         ... scripts used in make
+                       etc/         ... dictionary of class ID
+                       include/     ... symbolic link to ../../include
+                       lib/         ... binaries of boot classes
+                       src/         ... source files of boot classes
+
+Doing `make all' in the src/boot-class produces binary codes under the
+directory src/boot-class/lib.  Doing `make install' in the src/boot-class
+copies the binaries to the target directory: $OZROOT/lib/boot-class.
+
+
+2. Changing boot classes
+
+In OZ++ system, a class is identified by a class identifier (class-ID).  Since
+the same set of the boot classes must be used even in different OZ++ systems,
+the boot classes of the same ID must contain the same class.  Therefore, as
+well as the executor and the nucleus, a boot class is hardly changed in usual
+case.  But, the following situations may be considered.
+
+  (a) Appling patch on boot classes
+    Even it is said that the same class must be used, in reallity, a class can
+    be replaced by the one which has same interface, the same memory image, and
+    the same functionality.  Thus, it is possible that a patch which is
+    prepared by using these fact are distributed to fix bugs or to improve
+    performance.
+
+  (b) Changing all the boot classes in a OZ++ site
+    If one has decided never to communicate with other site, changing all boot
+    classes in a OZ++ site will do.
+
+In these cases, boot classes can be changed by following the following
+procedure:
+
+  2.1 Prepare changed boot classes
+
+Editing, compiling and testing codes are required.
+
+  (a) Preparing working OZROOT
+    Install a new OZROOT.
+
+  (b) Retrieving source codes
+    The source codes of the boot classes are containted in the directories just
+    under the $OZROOT/lib/boot-class with the name same as the class-ID and the
+    file name is "private.oz."  Copy it to your working directory and rename
+    it.
+
+  (c) Editing
+    Edit the codes.  In case of patch, follow the directions attached to the
+    patch.
+
+  (d) Compiling
+    Compiling boot class needs bwb or cfed.  Refer the manuals for them.
+
+  (e) Testing
+    After successful compilation, make a new image by `newimage' and invoke it.
+    In this time, the executor cannot communicate with other executors which
+    run the old boot classes.  Thus, stop other executors, or, give the nucleus
+    an special option which prohibits the communications between the executors
+    on nucli which are not given the same option.  Refer the manual of ncl.
+
+  2.2 Releasing changed boot classes
+
+By following steps, copy the source codes of new boot classes to the OZ++
+release which has already been compiled by `make World':
+
+  (a) cd src/boot-class
+  (b) make change
+
+
+[Appendix]
+
+A. How to use cfed
+
+  A.1 What is cfed?
+
+cfed is a C program providing command line based operations needed in
+compilation.  It can be used on not only boot classes but also normal classes,
+in this section, however, we describe how to use it on boot classes.
+
+  A.2 How to invoke cfed
+
+Although cfed accepts various kind of options, it is invoked in following way
+when used to boot classes:
+
+        cfed [-p]
+
+cfed gives a propmt when it is given an option `-p'.
+
+Although cfed requires a school file, when it is invoked in this manner, the
+file $OZROOT/etc/boot-school is used as the school file.  If the OZ++ system is
+installed in correct way, the file contains a school of boot classes.
+
+  A.3 Various commands of cfed
+
+Mainly, cfed has following functionalities:
+
+  o Looking up class IDs
+  o Compiling an OZ++ source file
+  o Configuring a class
+  o Generating a real generic class
+
+    A.3.1 Lookup up class IDs
+
+Class IDs can be looked up by `sb' command.  This is mainly used as follows:
+
+        CFE> sb <class-name>
+or,
+        CFE> sb <class-ID>
+
+A part parenthesized by angle bracket should be replaced by an appropriate
+string (This rule is applied in following explanations).  The first example is
+to show a class ID of the class-name and the second example is to show a class
+name of the class-ID.  When a blank is included in the class-name (it is often
+the case of real generic class), class-name should be surrounded by a pair of
+apostrophes.  Furthermore,
+
+        CFE> sb -h
+
+shows the usage of this command.
+
+    A.3.2 Compiling an OZ++ source file
+
+An OZ++ source file can be compiled by `compile' command.  This is mainly used
+as following:
+
+        CFE> compile <file-name> <part> again
+
+The OZ++ source file `file-name' is compiled.  As you know, OZ++ is compiled in
+the class-part, and the class-part which is compiled is designated in the
+`part'.  The `part' should be one of `public', `protected', `private', and
+`all'.  The argument `again' means that the class-part should be compiled even
+if it is already compiled.  Since a boot class has already been compiled
+(except someone failed to compile the class), this designation is required.
+
+    A.3.3 Configuring a class
+
+An OZ++ class can be configured by `config' command.  This is mainly used as
+following:
+
+        CFE> config <class-name> again
+
+The class `class-name' is configured.  When a blank is included in the
+class-name (it is often the case of real generic class), class-name should be
+surrounded by a pair of apostrophes.  The argument `again' means that the class
+should be configured if it is already configured.  Since a boot class is
+usually has already been configured, this desgnation is required.
+
+    A.3.4 Generating a real generic class
+
+If a formal generic class is changed, all real generic classes generated from
+the formal generic class should be re-generated.  This can be done by
+`generate' command in the following manner:
+
+        CFE> generate <class-name> again
+
+Set the name of the real generic class to be re-generated.  When a blank is
+included in the class-name (it is often the case of real generic class),
+class-name should be surrounded by a pair of apostrophes.  The argument `again'
+means that the class should be generated if it is already generated.  Since a
+boot class has already been generated, this designation is required.

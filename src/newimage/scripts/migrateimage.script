@@ -1,0 +1,176 @@
+#!/bin/sh
+#
+#  Copyright (c) 1994-1997 Information-technology Promotion Agency, Japan
+#
+#  All rights reserved.  No guarantee.
+#  This technology is a result of the Open Fundamental Software Technology
+#  Project of Information-technology Promotion Agency, Japan (IPA).
+#
+#
+# migrateimage [-r] executor-ID [dir]
+#
+# Example:
+#     migrateimage exid todir
+#         Move an image of exid to a directory todir.
+#     migrateimage exid
+#         Move an image of exid to a directory $OZROOT/images.
+#     migrateimage -r exid
+#         Command error (must designate another OZROOT)
+#     migrateimage -r exid toozroot
+#         Change the OZROOT of an image of exid to toozroot.
+#         Cannot change ozroot of an image which exists in $OZROOT/images.
+
+
+LN=ln
+PWD=pwd
+RM="rm -f"
+TAR=tar
+TOUCH=touch
+
+
+DESTINATION=
+TRANSMIT=n
+NOLINK=
+
+
+CheckAsOZROOT () {
+  if [ ! -d $1 ]; then
+    echo "Not a directory: $1"
+    exit 2
+  elif [ ! -d $1/images ]; then
+    echo "No image directory found in $1"
+    exit 2
+  elif [ ! -w $1/images ]; then
+    echo "Not a writable image directory $1/images"
+    exit 2
+  fi
+}
+
+CheckDestinationDirectory () {
+  if [ ! -d $1 ]; then
+    echo "Not a directory: $1"
+    exit 2
+  elif [ ! -w $1 ]; then
+    echo "Not a writable directory: $1"
+    exit 2
+  elif [ -d $1/$2 -o -f $1/$2 ]; then
+    echo "Cannot override an existing file/directory: $1/$2"
+    exit 2
+  fi
+}
+
+CheckSameDirectory () {
+  TESTFILE=.migrateimage-test$$
+  cd $1
+  $RM $TESTFILE
+  cd $2
+  $TOUCH $TESTFILE
+  cd $1
+  if [ -f $TESTFILE ]; then
+    $RM $TESTFILE
+    echo "Same directory $1 and $2"
+    exit 1
+  fi
+  cd $2
+  $RM $TESTFILE
+}
+
+# main
+
+if [ "$OZROOT" = "" ]; then
+  echo 'OZROOT must be set.'
+  exit 2
+fi
+
+cd $OZROOT/images
+
+USAGE="usage : migrateimage [-r] executor-ID [dir]"
+set -- `getopt r $*`
+if [ $? != 0 ]
+then
+  echo $USAGE
+  exit 2
+fi
+
+for i in $*; do
+  case $i in
+    -r) TRANSMIT=y; shift;;
+    --) shift; break;;
+  esac
+done
+
+if [ $# = 0 ]; then
+  echo "No executor ID found."
+  echo $USAGE
+  exit 2
+else
+  EXID=`expr substr 000000$1 \`expr length "$1" + 1\` 6`
+  shift
+  if [ $TRANSMIT = y ]; then
+    case $# in
+      0)
+        echo "Do not omit the new OZROOT when -r is designated"
+        exit 2;;
+      1)
+        NEWOZROOT=$1;;
+      *)
+        echo "Too many arguments"
+        echo $USAGE
+        exit 2;;
+    esac
+  else
+    case $# in
+      0)
+        DESTINATION=$OZROOT/images
+        NOLINK=y;;
+      1)
+        DESTINATION=$1
+        NOLINK=n;;
+      *)
+        echo "Too many arguments"
+        echo $USAGE
+        exit 2;;
+    esac
+  fi
+fi
+
+if [ $TRANSMIT = y ]; then
+  CheckSameDirectory $OZROOT $NEWOZROOT
+  CheckAsOZROOT $NEWOZROOT
+  cd $OZROOT/images
+  if [ -h $EXID ]; then
+    cd $NEWOZROOT/images
+    $LN -s `(cd $OZROOT/images/$EXID/..; $PWD)`/$EXID .
+    cd $OZROOT/images
+    $RM $EXID
+  else
+    $TAR cf - $EXID | (cd $NEWOZROOT/images ; tar xf -)
+    $RM -r $EXID
+  fi
+else
+  if [ $NOLINK = y ]; then
+    CheckAsOZROOT $OZROOT
+  else
+    CheckDestinationDirectory $DESTINATION $EXID
+  fi
+  CheckSameDirectory $DESTINATION $OZROOT/images/$EXID/..
+  ORIGDIR=`cd $OZROOT/images/$EXID/..; $PWD`
+  (cd $ORIGDIR; $TAR cf - $EXID) |
+  (if [ $NOLINK = y ]; then
+     $RM $OZROOT/images/$EXID
+   fi
+   cd $DESTINATION
+   tar xf -) && (cd $ORIGDIR; $RM -r $EXID)
+  if [ $NOLINK = n ]; then
+    cd $OZROOT/images
+    $RM $EXID
+    $LN -s $DESTINATION/$EXID .
+    cd $DESTINATION/$EXID
+    $RM OZROOT
+    $LN -s $OZROOT OZROOT
+  else
+    cd $DESTINATION/$EXID
+    $RM OZROOT
+    $LN -s ../.. OZROOT
+  fi
+fi

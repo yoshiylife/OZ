@@ -1,0 +1,80 @@
+#!/bin/sh
+#
+#  Copyright (c) 1994-1997 Information-technology Promotion Agency, Japan
+#
+#  All rights reserved.  No guarantee.
+#  This technology is a result of the Open Fundamental Software Technology
+#  Project of Information-technology Promotion Agency, Japan (IPA).
+#
+
+BOOTSCHOOL=$1
+CFED=$2
+SRCDIR=$3
+SRCLIBBOOTDIR=$4
+
+Object=0001000002ffffff
+
+CP=cp
+RM="rm -f"
+
+OZROOT=OZROOT
+export OZROOT
+
+# Compile class Object first becuase the private.h of the class Object
+# is used in compilation of ordinary classes.
+
+echo "compiling class Object"
+
+if [ ! -f $SRCLIBBOOTDIR/$Object/private.o ]; then
+  (echo "compile $SRCDIR/$Object.oz private again"
+   echo "quit") | $CFED
+fi
+
+# Compile shared second, because the rest of classes may use them.
+
+echo "compiling shared constants"
+
+sed -n 's/^5 \(.*\)$/\1/p' $BOOTSCHOOL |
+(while read i; do
+   echo "sb '$i' 2"
+ done; echo "quit") | $CFED |
+(while read j; do
+   if [ ! -f $SRCLIBBOOTDIR/$j/private.oz ]; then
+     echo "compile $SRCDIR/$j.oz all again"
+   fi
+ done; echo "quit") | $CFED
+
+# Compile record third, because the layout information of records are
+# used in compilation of oridinary classes.
+
+echo "compiling records"
+
+sed -n 's/^7 \(.*\)$/\1/p' $BOOTSCHOOL |
+(while read i; do
+   echo "sb '$i' 2"
+ done; echo "quit") | $CFED |
+(while read j; do
+   if [ ! -f $SRCLIBBOOTDIR/$j/private.o ]; then
+     echo "compile $SRCDIR/$j.oz all again"
+   fi
+ done; echo "quit") | $CFED
+
+# Compile ordinary classes last.
+
+echo "compiling ordinary classes"
+
+sed -n 's/^[068] \(.*\)$/\1/p' $BOOTSCHOOL |
+(while read i; do
+   echo "sb '$i' 2"
+ done; echo "quit") | $CFED |
+(while read j; do
+   if [ ! -f $SRCLIBBOOTDIR/$j/private.o ]; then
+     echo "compile $SRCDIR/$j.oz private again"
+   fi
+ done; echo "quit") | $CFED
+
+$RM private.c private.cl private.d private.h private.i private.l \
+    private.o private.oz private.t
+
+(sed -n 's/^[08] \(.*\)$/config'" '\1'/p" $BOOTSCHOOL; echo "quit") |
+$CFED

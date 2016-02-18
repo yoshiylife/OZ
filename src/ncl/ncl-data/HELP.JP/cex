@@ -1,0 +1,56 @@
+NFE(1)                  NFE 組み込みコマンド                   NFE(1)
+
+　[名前]
+　　　　cex - エグゼキュータを生成する。
+
+　[形式]
+　　　　cex <Executor-ID or Executor-Name> [Executor options]
+
+　[機能説明]
+　　　　エグゼキュータを起動する。引数にはエグゼキュータ ID かエグゼ
+　　　　キュータ名のいずれかを指定する。エグゼキュータ ID とエグゼキ
+　　　　ュータ名はエグゼキュータ ID メンテナンス情報として登録されて
+　　　　いるものしか指定してはならない。
+　　　　エグゼキュータ ID の指定は、16 進の指定として扱う。エグゼキュ
+　　　　ータ名は、先頭の文字が '$' だった場合、それ以降をエグゼキュー
+　　　　タ名として認識する。
+
+　[Executor オプション]
+        cex ではエグゼキュータに対するオプションを指定できる。指定可
+        能なオプションには次のものがある。
+
+          -H <mbyte[k]>  オブジェクトのヒープとして利用するメモリサイ
+                         ズの上限を指定する。
+                         k を付けるとキロバイト指定となる(例 1024k は
+                         1 メガバイト、デフォルト 16メガバイト(1024*1024
+                         単位)。
+          -M <max>       同時に生成と実行ができるスレッドの最大数を指
+                         定する(デファルト 256)。
+          -S <site id>   スタンドアローンで実行する場合のサイト ID を
+                         指定する(デフォルト 1)。
+          -T <ticks>     1 秒間のチック数を指定する(デフォルト 50)。
+          -d             executor を daemon として起動する。
+          -g             OzDebugf() によるメッセージ出力を行う。
+          -i             グローバルアクセスの表示をしない。
+          -p             profile を行う。
+          -s             手動による OZ++ System の起動を行う(shell を
+                         起動する)。
+          -v             executor のバージョン表示のみを行う。
+          -a             エグゼキュータの EXTERN シンボルを全てリンク
+                         可能にする。
+          -o             コンソールを開いて表示する(icon化しない)。
+
+　[使用例]
+　　　　nfe> newimage -n TESTEX -c FOR-DEBUG
+　　　　　            :
+　　　　nfe> newimage -n SEREX -c SERVER-EXECUTOR
+　　　　　            :
+　　　　nfe> exidlist
+　　　　 EXID     EX-NAME                COMMENT
+        00025f    TESTEX                 FOR-DEBUG
+        000260    SEREX                  SERVER-EXECUTOR
+　　　　nfe> cex $TESTEX
+　　　　　            :
+　　　　nfe> cex 260
+　　　　　            :
+

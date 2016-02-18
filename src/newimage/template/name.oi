@@ -1,0 +1,152 @@
+/*
+  oid (000001) : object manager;
+  oid (000002) : class object;
+  oid (000003) : name directory;
+  oid (000004) : DNS resolver;
+  oid (000005) : launcher;
+  oid (000006) : catalog;
+*/
+
+#include "name.h"
+
+global NameDirectory name_directory = 000003 {
+    local String null_string {
+	ACO = {}
+	Len = 0;
+	Str = array char [] { ""; }
+    }
+    local Dictionary <String, Directory <global ResolvableObject>> subdirectories {
+	DefaultCapacity = 16;
+	ExpansionFactor = 2;
+	ExpansionIncrement = 2;
+	Count = 0;
+	Nbits = 4;
+	Mask = 15;
+	Contents = array Assoc <String, Directory <global ResolvableObject>> [16] {}
+    }
+    local Dictionary <String, global ResolvableObject> entries {
+	DefaultCapacity = 16;
+	ExpansionFactor = 2;
+	ExpansionIncrement = 2;
+	Count = 0;
+	Nbits = 4;
+	Mask = 15;
+	Contents = array Assoc <String, global ResolvableObject> [16] {}
+    }
+    local UnixIO debug {
+	aBuffer = array char [14] {}
+	Debug = 0;
+	aFDout = 0;
+	aFDin = 0;
+    }
+    local Directory <global ResolvableObject> root {
+	Subdirectories = local (subdirectories);
+	Entries = local (entries);
+	Debug = local (debug);
+    }
+    local Assoc <String, Directory <global ResolvableObject>> own_map_content0 {
+	aKey = local (null_string);
+	aValue = local (root);
+    }
+    array Assoc <String, Directory <global ResolvableObject>> own_map_contents [16] {
+	own_map_contents [0] = local (own_map_content0);
+    }
+    local Dictionary <String, Directory <global ResolvableObject>> own_map {
+	DefaultCapacity = 16;
+	ExpansionFactor = 2;
+	ExpansionIncrement = 2;
+	Count = 1;
+	Nbits = 4;
+	Mask = 15;
+	Contents = array (own_map_contents);
+    }
+
+    local Assoc <String, global DirectoryServer <global ResolvableObject>> system_map_content0 {
+	aKey = local (null_string);
+	aValue = oid (MAKE_OID (000003));
+    }
+    array
+      Assoc <String, global DirectoryServer <global ResolvableObject>> system_map_contents [4] {
+	  system_map_contents [0] = local (system_map_content0);
+      }
+    local Dictionary <String, global DirectoryServer <global ResolvableObject>> system_map {
+	DefaultCapacity = 16;
+	ExpansionFactor = 2;
+	ExpansionIncrement = 2;
+	Count = 1;
+	Nbits = 2;
+	Mask = 3;
+	Contents = array (system_map_contents);
+    }
+
+    local Set <OIDAsKey <global DirectoryServer <global ResolvableObject>>>
+      members {
+	  DefaultCapacity = 16;
+	  ExpansionFactor = 2;
+	  ExpansionIncrement = 2;
+	  Count = 0;
+	  Nbits = 2;
+	  Mask = 3;
+	  Contents = array
+	    OIDAsKey <global DirectoryServer <global ResolvableObject>> [4] {}
+      }
+
+    local String my_name {
+	ACO = {}
+	Len = 5;
+	Str = array char [] { ":name"; }
+    }
+
+    array Set <String> own_tops_contents [4] {
+	own_tops_contents [0] = local (null_string);
+    }
+    local Set <String> own_tops {
+	DefaultCapacity = 16;
+	ExpansionFactor = 2;
+	ExpansionIncrement = 2;
+	Count = 1;
+	Nbits = 2;
+	Mask = 3;
+	Contents = array (own_tops_contents);
+    }
+
+    local String delimiter {
+	ACO = {}
+	Len = 1;
+	Str = array char [] { ":"; }
+    }
+    local String system_name {
+	ACO = {}
+	Len = 5;
+	Str = array char [] { ":name"; }
+    }
+    local String domain_name {
+	ACO = {}
+	Len = DOMAIN_NAME_LEN;
+	Str = array char [] { DOMAIN_NAME; }
+    }
+    array array names_table [4] {
+	table [0] = array char [] { ":name"; }
+    }
+    local StringArray names {
+	ExpansionFactor = 2;
+	InitialTableSize = 4;
+	ShrinkFactor = 2;
+	ShrinkThreshold = 4;
+	Table = array (names_table);
+	NumberOfElement = 1;
+    }
+
+    OwnMap = local (own_map);
+    SystemMap = local (system_map);
+    Members = local (members);
+    MyName = local (my_name);
+    OwnTops = local (own_tops);
+    Delimiter = local (delimiter);
+    SystemName = local (system_name);
+    DomainName = local (domain_name);
+    ID = oid (0000000000000000);
+    InitialLengthOfNames = 4;
+    Names = local (names);
+    Debug = local (debug);
+}

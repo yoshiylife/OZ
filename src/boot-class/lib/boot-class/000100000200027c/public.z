@@ -1,0 +1,9 @@
+(*class* #000100000200027c 0
+(*list*
+(*list* #00010000020003d8 #00010000020003d9 0)
+)
+(*list*
+(*declaration* New (*method* void (*list*) 0) constructor #00010000020003d8 0 1)
+(*declaration* Extract (*method* #00010000020003e2 8 (*list* #00010000020003b6 0 ) 0) public #00010000020003d8 0 0)
+)
+)

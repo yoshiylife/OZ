@@ -1,0 +1,222 @@
+/*
+ * Copyright(c) 1994-1997 Information-technology Promotion Agency, Japan(IPA)
+ *
+ * All rights reserved.
+ * This software and documentation is a result of the Open Fundamental
+ * Software Technology Project of Information-technology Promotion Agency, 
+ * Japan(IPA).
+ * 
+ * Permissions to use, copy, modify and distribute this software are governed 
+ * by the terms and conditions set forth in the file COPYRIGHT, located in 
+ * this release package.
+ */
+
+
+List of Functions in the Work Bench (WB)
+
+¥ Outline
+
+   WB performs the following functions:
+
+- Browses or corrects a school
+- Browses the interface, the source codes, and the configuration of a class
+- Compiles source codes
+
+¥ How to Activate the Work Bench
+
+   Generate and launch objects of the class WorkbenchLaunchable
+
+   If activated for the first time, the window for initial setup appears on
+the screen.  Input the class object name.
+
+   If you cancel without inputting properly, the work bench terminates, so be
+careful!
+
+¥ Functions that are common to both WB and tools which can be activated from
+WB
+
+. The button to the extreme left
+
+  - Close (excluding WB)
+          Closes windows
+
+  - Open (CFE and SB only)
+          Opens a different tool for a new process.
+          Select the school from the list given in WB (mentioned later)
+
+  - Preference...
+          Performs initial setups (such as Class Object Name,
+                                   Current Directory, Language)
+ 
+  - Quit
+          Terminates WB
+
+  . The Menu Button of the Window
+
+    Displays the list of all the present existing windows
+
+    If selected, the window can be either deiconified or raised.
+
+¥ Functions of WB
+
+  . List of Schools
+
+   All the names of schools in WB are displayed.  The name indicated as
+'Current' is the current school.  This school is used in case CFE or SB is
+activated without specifying any schools.
+
+. Menu Button
+
+  - Work Bench
+
+    Compiler...
+          Activates the compiler front end (CFE)
+
+    School browser...
+          Activates the school browser (SB)
+
+    School directory browser...
+          Activates the school directory browser (SB)
+
+  - Operation
+
+    Performs the following operations on the School List:
+
+    Select
+          Selects schools for further processing if the 'Open' button is
+clicked from CFE or SB.
+
+    Cancel
+          Cancels what has been opened from 'Open' in CFE and SB.
+
+    SetCurrent
+          Sets to the current school
+
+    Export
+          Transmits the school which is selected from the current school
+directory.
+
+    Delete
+          Deletes
+
+    Rename
+          Changes the name
+
+    Duplicate
+          Duplicates
+
+    New...
+          Creates a new school whose content is blank
+
+    Add...
+          Takes the school file specified into WB.  This is usually used to
+take $OZROOT/etc/boot-school.
+
+  . Pop Up Menu
+
+   If double-clicked inside the list, the menu, including two of the above
+entries in the work bench is displayed.
+
+¥ Functions of CFE
+
+   Refer to the document README.CFE.
+
+¥ Functions of SB
+
+   This is an improved version of a simple browser.  It has the following new
+functions:
+
+  . All classes in the school are displayed in the list.
+
+  . If a class is double-clicked, the information concerning the ID and the
+type (in the file class/staticclass/record/shared/abstract class) is
+displayed.
+
+  . If the 'Edit' button is pressed, editing becomes possible.  After
+editing, the 'Save' button must be pressed to affect the result in the
+school.  Press the 'Done' button to return to the normal browser state.
+
+  . The titles 'Public', 'Protected', 'Implementation', and 'Configuration'
+are in the form of buttons.  If clicked, the class information concerning the
+respective title can be browsed.
+
+  . Public
+          Displays the public interface
+
+  . Protected
+          Displays the protected interface
+
+  . Implementation
+          Displays the source codes
+
+  . Configuration
+         Displays information concerning the class implementation
+
+   If the button 'Other...' to the left of ID is pressed, a list of class
+ID's of other selectable versions is displayed in the window.  The functions
+of the buttons in this window are as follows:
+
+  Browse...
+           Displays the ID information of the class
+
+  Select
+           Selects the given ID (only possible in the edit mode)
+
+  Default
+           Sets the above parts to the default ones
+
+  Visible
+           Inserted as a new version in the class (can not be used in
+Configuration)
+
+  Close
+           Closes the window
+
+  . Menu Button
+
+  - Operation
+
+    Search...
+           Runs the search for the class name or the version ID (having 0x in
+front).  This process is a little bit buggy :-)
+
+¥ Browsing the Class Information
+
+   This is a simple browser with a few alterations made to improve its
+display.  Its new function is that it can be connected to a school browser.
+
+  . Window Displaying Interface Information
+
+   After selecting a version ID or a class name, if any, in the displayed
+list of new classes to the left or in the displayed part of detailed
+information of a member is clicked while pressing the control button,
+information concerning the version ID and the type of class is displayed.
+  
+  * Menu Button
+
+  - Operation
+
+    Search...
+           Enables a search for a member
+
+  . Window Displaying Source Codes
+
+   If a class name is clicked while holding the control key down after
+selecting 'class name', the information concerning the version ID and the
+type of class is displayed.
+
+  * Menu Button
+
+  - Operation
+
+    Search...
+              Searches a character string
+
+    Goto...
+              Displays the line specified by its line number
+
+  . Window for Displaying the Class Implementation Information
+
+  After selecting the class part list on the left, if an item is clicked
+while pressing the control key, the information concerning the version ID and
+the type of class is displayed.

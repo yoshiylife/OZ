@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>2.5 エクゼキューターの説明</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="2.5 エクゼキューターの説明">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION00035000000000000000>2.5 エクゼキューターの説明</A></H2>
+<P>
+<H3><A NAME=SECTION00035100000000000000>2.5.1 executor の起動時のオプションと引数</A></H3>
+<P>
+使い方　 <BR> 
+	
+<blockquote> Usage: executor [options] <b>&lt;</b>executor id<b>&gt;</b> <BR> 
+<b>&lt;</b> executor id <b>&gt;</b>スタンドアローンで実行する場合のエグゼキュータＩＤ <BR> 
+</blockquote>
+<P>
+options <BR>
+<P>
+<DL ><DT>-H <b>&lt;</b> mbyte ［k］ <b>&gt;</b> 
+<DD>オブジェクトのヒープとして利用する
+メモリサイズの上限を指定する。 
+k を付けるとキロバイト指定となる。
+（例 1024k は１メガバイト）
+		 （デフォルト 16メガバイト(1024*1024単位)）
+<P>
+<DT>-M <b> &lt;</b>max<b>&gt; </b> 
+<DD>同時に生成と実行ができるスレッドの最大数を指定する。
+		（デファルト 256）
+<P>
+<DT>-S <b>&lt;</b>site id<b>&gt;</b> 
+<DD>スタンドアローンで実行する場合のサイトＩＤを指定する。
+		（デフォルト 1）
+<P>
+<DT>-T <b>&lt;</b>ticks<b>&gt;</b> 
+<DD>１秒間のチック数を指定する。（デフォルト 50）
+<P>
+<DT>-d	
+<DD>executor を daemon として起動する。
+<DT>-g	
+<DD>OzDebugf() によるメッセージ出力を行う。
+<DT>-i	
+<DD>グローバルアクセスの表示をしない。
+<DT>-p	
+<DD>profile を行う。
+<DT>-s	
+<DD>手動による OZ++ System の起動を行う（shell を起動する）。
+<DT>-v	
+<DD>executor のバージョン表示のみを行う。
+<DT>-a	
+<DD>エグゼキュータのEXTERNシンボルを全てリンク可能にする。
+<DT>-o	
+<DD>コンソールを開いて表示する（icon化しない）。
+<P>
+ </DL><H3><A NAME=SECTION00035200000000000000>2.5.2 備考</A></H3>
+<P>
+<DL ><DT>SIGTERM
+<DD>エグゼキュータの終了（ＯＭ経由）
+<DT>SIGINT
+<DD>エグゼキュータのシェル起動 
+<DT>SIGHUP
+<DD>エグゼキュータの強制終了 
+<P>
+ </DL>
+<P>
+	<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

@@ -1,0 +1,292 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.8 Process</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.8 Process">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION00068000000000000000>5.8 Process</A></H2>
+ <A NAME=langlangmanualprocess>&#160;</A>
+<P>
+
+Here we explain the process derived type, which is one of the elements
+for the implementation of OZ++'s concurrent programming (see Chapter
+<A HREF="node39.html#langlangmanualconcurrent">5.19</A>).
+<P>
+<H3><A NAME=SECTION00068100000000000000>5.8.1 Concept of a process in OZ++</A></H3>
+<P>
+In OZ++ language, the execution of methods is
+performed 
+as follows:
+<P>
+
+<OL><LI>  The object which activates the method generates a message.
+<P>
+<LI>  The message is sent to the receiving object.
+<P>
+<LI>  The object receiving the message executes the computation.
+<P>
+<LI>  The computation result is sent back to the object which
+	activated the method.
+</OL>
+<P>
+The object which received the message can also send it to other
+objects.  This means that nesting of method call is possible.
+<P>
+Therefore, in general the execution of methods becomes a chain of
+method activations, and in OZ++ this chain called a <b> process</b>.
+<P>
+OZ++ has the following kinds of processes:
+<P>
+<UL><LI>  There are no parent-child relationships.
+<P>
+<LI>  A process can be awaited until the termination of the process
+which is different from the one generating it.
+<P>
+</UL><H3><A NAME=SECTION00068200000000000000>5.8.2 A Process Derived Type</A></H3>
+<P>
+
+As explained above, whenever a method is activated in OZ++ a process
+can be generated.  Process derived types are provided to store the
+generated process.  It is possible to make derived types from any
+types.  If the original type is <tt> foo</tt>, the process is of the type
+which returns the <tt> foo</tt> type.
+<P>
+The process derived type is defined
+inside 
+the variable declaration as
+follows (see Section 1<A HREF="node31.html#langlangmanualdeclarationvar">5.11.6</A>):
+<P>
+<PRE>class A;
+
+int  @p1;       // a process that returns an int
+A    @p2;       // a process that returns class A
+char @p3[];     // a process that returns the array containing
+                // a char type element 
+void @p4        // a process that returns any types
+</PRE>
+<P>
+As <tt> p4</tt> in the example above, declaration of variables can be assigned any type by using <tt> void</tt>.
+<P>
+If the process type has 0 as its rvalue, it means that
+neither process is being referred.  Therefore, immediately after the
+process is declared, it has the value 0.  Also, by assigning 0 to the
+process, it can be brought to a state where no processes are referred
+(see Section <A HREF="node24.html#langlangmanualdatatypezero">5.4.2</A>).
+<P>
+<H3><A NAME=SECTION00068300000000000000>5.8.3 Operations of Processes</A></H3>
+ <A NAME=langlangmanualprocessoperation>&#160;</A>
+<P>
+The following kinds of operations can be performed as a process:
+<P>
+<UL><LI> Generation (<tt> fork</tt>)
+<P>
+<LI> Unite (<tt> join</tt>)
+<P>
+<LI> Separation (<tt> detach</tt>)
+<P>
+<LI> Termination (<tt> kill</tt>)
+<P>
+<LI> Abortion (<tt> abort</tt>)
+</UL>
+<P>
+<tt> fork</tt> <BR>
+<P>
+A process is spawned (i.e. forked) when this generation is explicitly
+specified during the activation of a method.
+<P>
+This is described as an expression as follows (see Section <A HREF="node29.html#langlangmanualexpunary">5.9.4</A>):
+<P>
+<PRE>exp
+        | 'fork' exp INVOKE IDENTIFIER '(' arg_list ')'
+</PRE>
+<P>
+<PRE>class A {
+  public: m1;
+
+  int m1() { ... }
+}
+
+A a1;
+int @p1;                // process
+
+a1=&gt;new();
+p1 = fork a1-&gt;m1();     // generation of process
+</PRE>
+<P>
+Both the generated process and the generating process are executed concurrently.
+<P>
+<tt> join</tt> <BR>
+<P>
+The operation where the termination of the forked process is awaited until the result of the method executed by this process is obtained, is called <tt> join</tt>.
+<P>
+This is described as an expression as follows (see Section <A HREF="node29.html#langlangmanualexpunary">5.9.4</A>):
+<P>
+<PRE>exp
+        | 'join' exp
+</PRE>
+<P>
+<PRE>class A {
+  public: m1;
+
+  int m1() { ... }
+}
+
+A a;
+int @p, result;
+
+a=&gt;new();
+p = fork a-&gt;m1();    // generation of process
+...
+result = join p;     // after joining obtain the return
+                     // value of int type which p returns
+</PRE>
+<P>
+If an already terminated process is joined, it returns its return value and goes back to the control.  In the example above, if the method activation of <tt> a-&gt;m1()</tt> terminates, the return value of <tt> p</tt> is reserved until the control reaches <tt> result = join p</tt>.
+<P>
+Furthermore, the termination of a process' execution (i.e. joining) can only be awaited once.  If a process is joined more than twice, an error occurs.
+<P>
+<PRE>A a;
+int @p, r1, r2;
+
+a=&gt;new();
+p = fork a-&gt;m1();
+...
+r1 = join p;
+...
+r2 = join p;      // error: joining the same process twice
+</PRE>
+<P>
+<tt> detach</tt> <BR>
+<P>
+If the operation `detach' is executed against a forked process, there is
+no need to wait until the execution of this process terminates.  <tt>
+detach</tt> is described as follows (see Section
+<A HREF="node30.html#langlangmanualstatementconcurrent">5.10.9</A>):
+<P>
+<PRE>concurrent_stmt:
+        |  'detach' exp ';'
+</PRE>
+<P>
+<PRE>class A;
+
+A a;
+int @p;
+
+a=&gt;new();
+p = fork a-&gt;m1();
+...
+detach p;        // separation of process
+...
+detach p;        // NOP: the process is separated twice
+</PRE>
+<P>
+As in the above example, an already separated process is separated again by detach.  However, in OZ++ language, separating the same process more than twice has no effect and is considered harmless.
+<P>
+<tt> join</tt> and <tt> detach</tt> <BR>
+<P>
+Only one of the operations join and detach can be used in a forked process.  This means if joined processes are detached, or if detached process processes are joined, an error occurs.
+<P>
+<PRE>class A
+
+A a;
+int @p1, @p2, result;
+
+a=&gt;new();
+p1 = fork a-&gt;m1();
+p2 = fork a-&gt;m1();
+...
+
+if (result = join p1)
+  {
+    detach p2;
+    ...
+    result = join p2;   // error: detached processes
+  }                     //  can not be joined
+else
+  {
+    detach p1;          // error: joined processes 
+    ...                 //  can not be detached
+  }
+</PRE>
+<P>
+<tt> kill</tt> <BR>
+<P>
+The operation which involves forcible termination of generated processes without waiting for its normal termination is called termination (or kill) (see Section <A HREF="node30.html#langlangmanualstatementconcurrent">5.10.9</A>).
+<P>
+<PRE>concurrent_stmt:
+        |  'kill' exp ';'
+</PRE>
+<P>
+<PRE>class A;
+
+A a;
+int @p;
+
+a=&gt;new();
+p = fork a-&gt;m1();
+...
+kill p;        // termination of process
+</PRE>
+<P>
+
+The process killed may not terminate immediately.  If the process
+satisfies the following conditions, the time when the process
+terminates is later than the time when kill operation is performed.
+<P>
+<UL><LI> If the process is executing a <tt> wait</tt> statement, and if the
+monitor-lock of the object which the process is executing is open, the
+kill operation becomes effective after the wait process terminates.
+(see Section <A HREF="node39.html#langlangmanualconcurrentcondition">5.19.1</A>)
+<P>
+<LI> If the process is about to execute a <tt> wait</tt> statement.
+<P>
+<LI> If the process executes an <tt> abortable</tt> statement
+      (which is explained later).
+</UL>
+<P>
+The actual kill operation involves the generation of system exception
+<tt> Abort</tt>.  (see Section
+<A HREF="node39.html#langlangmanualconcurrentcondition">5.19.1</A>)
+<P>
+Programmers can use the <tt> abortable</tt> statement to describe the
+timing of kill operation.  If the kill operation is not executed for a
+currently running process including its methods, it has no effect.
+<P>
+<tt> abort</tt> <BR>
+<P>
+The process for forcibly terminating a currently running process
+including its methods is called <tt> abort</tt>.
+<P>
+It is described as follows (see Section
+<A HREF="node30.html#langlangmanualstatementconcurrent">5.10.9</A>):
+<P>
+<PRE>concurrent_stmt:
+        |  'abort' ';'
+</PRE>
+<P>
+<PRE>method ()
+  {     
+    ...    
+    abort;        // abort the current process not reached
+    ...          
+  }
+</PRE>
+<P>
+If <tt> abort</tt> is executed, system exception Abort is generated (see
+Section <A HREF="node39.html#langlangmanualconcurrentcondition">5.19.1</A>).
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

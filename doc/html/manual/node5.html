@@ -1,0 +1,319 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>2.1 Structure of OZ++ distributed objects</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="2.1 Structure of OZ++ distributed objects">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION00031000000000000000>2.1 Structure of OZ++ distributed objects</A></H2>
+<P>
+<H3><A NAME=SECTION00031100000000000000>2.1.1 Preface</A></H3>
+<P>
+  A guide line is presented for indicating which function should be assigned 
+to which machine at a site and how to set it appropriately when OZ++ is used. 
+  The OZ++ system performs calculations by operating on objects on the
+executive system known as an executor.  The executor cannot operate by
+itself, so it is necessary to have a nucleus that can manage the executor
+existing on each machine and supply basic functions such as communication
+etc.  There are several types of nucleus suitable for these roles.
+Therefore, it becomes necessary to make available the proper nucleus.
+To enable the communication among sites, it is necessary to lay out the
+application gateway which relays the nucleus communication.  The same
+applies to objects.  That is, not only the user object but also the
+management object supporting the user object should be placed at the
+proper position in the site.
+<P>
+ In this document, the system configuration is presented.  Also, the
+layout of the nucleus and management objects in the system are described.
+<P>
+<H3><A NAME=SECTION00031200000000000000>2.1.2 Configuration of Nucleus</A></H3>
+<P>
+Configuration of OZ++ Site <BR>
+<P>
+The configuration of the OZ++ system is as follows:
+<P>
+<UL><LI> Site <BR> 
+An OZ++ world is the range which can be accessed in the OZ++ system.
+An OZ++ world is composed of more than one site.
+<P>
+<LI> Segment <BR> 
+A range in which a physical broadcast can be performed is called a
+segment.  A segment is comprised of more than one station belonging to
+the same physical segment.  To enable a broadcast to be performed
+between segments of the same site, a halfrouter nucleus (described
+later) is set on each segment.
+<P>
+The logical broadcast is one that is performed over segments through
+the relay of the halfrouter nucleus, as shown in Figure <A HREF="node5.html#figoz_system">2.1--1</A>.
+<P>
+<LI> Station <BR> 
+This is a computer.  One nucleus and more than 0 executors should be
+set on each station.
+</UL>
+<P>
+<A NAME=figoz_system>&#160;</A>
+<P>
+<CENTER>
+<TABLE>
+<TR>
+<TD>
+<IMG ALIGN=BOTTOM ALT="bro.gif" SRC="figure/bro.gif">
+</TD>
+</TR>
+<CAPTION ALIGN=BOTTOM><STRONG>Fig 2.1--1:</STRONG> Propagation Image of Logical Broadcast</CAPTION>
+</TABLE>
+</CENTER>
+
+<P>
+Layout of a Nucleus <BR>
+<P>
+  There are some nuclei which play special roles in the site, and it is
+very important to lay them out properly.
+  The layout of these nuclei is set by registering them in a text file
+called the nucleus table.  Please see set up of nucleus for an
+explanation of nucleus.
+<P>
+<OL><LI> Executor ID Management Nucleus <BR> 
+  The executor which carries and executes the object is identified by a
+unique ID at the site.  This ID is called an executor ID.  The executor ID
+management nucleus is one that performs centralized management for the
+creation of the executor.  The new executor ID is obtained from the
+executor ID management nucleus, to ensure the impartment of the unique
+executor ID at the site.
+<P>
+  Be sure to set only one executor ID management nucleus at a site.  It is
+necessary for the nucleus, to be operational at all times and so it should
+be started on a station that is working continuously.
+<P>
+<LI> Halfrouter Nucleus <BR> 
+  The nucleus relaying the physical broadcast is called a halfrouter nucleus
+(refer to Fig. <A HREF="node5.html#figoz_system">2.1--1</A>).
+<P>
+  When the site is composed of several segments, it is necessary to set one
+halfrouter nucleus in each segment.
+</OL><H3><A NAME=SECTION00031300000000000000>2.1.3 Configuration of Management Object</A></H3>
+<P>
+  A series of objects is prepared in OZ++ to provide the necessary functions
+for the user object operation.  These objects are called a distributed
+object management system in summary.  To operate the user object, it is
+necessary to properly lay out the management object.  The name and outline
+of each management object are shown as follows.
+<P>
+<UL><LI> Object Manager <BR> 
+Only one object manager is required for each executor.
+It manages the state of global object on the executor.
+It has global object functions such as generation, stop, deletion, pause,
+etc.
+<P>
+<LI> Class Object <BR> 
+Generally, one class object is required for each station.
+It manages classes (executable code etc.)
+The executor needs a class of object to be operated on it.
+The class takes on the function of this supplying.
+<P>
+If a class without self-management is required, the requirement is
+transmitted through a network and supplied to the executor after the
+class delivery is received by the class object which manages the class.
+<P>
+<LI> Name Directory <BR> 
+Only one name directory is required in a domain (to be described later).
+It assigns a name to a global object, so that the global object can be
+referred to by its name.
+<P>
+<LI> Catalog <BR> 
+Only one catalog is required in a domain.
+It assigns names for the open application and class library, and then
+stores them.
+<P>
+As a management object needs another management object to control its
+operation, an object image including a management object must be created
+at the beginning.  The newimage is provided as a tool for creating the
+object image of the management object.  Produce the image with the use
+of this tool.  The method of using this tool is written in
+explanation of newimage.
+</UL>
+<P>
+Domain <BR>
+<P>
+  The management objects described above are registered under the following
+names in the name directory.
+<P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD>Class object</TD> <TD></TD> <TD>":classes:xxxxxx"</TD>
+</TR>
+<TR>
+<TD>Name directory</TD> <TD></TD> <TD>":name"</TD>
+</TR>
+<TR>
+<TD>Catalog</TD>           <TD></TD> <TD>":catalog"</TD>
+</TR>
+</TABLE>
+</CENTER>
+
+In the case of newimage unless otherwise specified, xxxxxx is filled in with
+six digits that comprise the ID sequence number part of the executor where the
+class object exists.  If the executor ID is 0001001402000000, the six digits
+are 001402.
+<P>
+  The name space of an object created by the name directory, such as that
+shown above, is called a domain.  The previous section states that only one
+name directory and only one catalog are required in a domain.  This means
+that there are objects corresponding to &quot;:name&quot; and &quot;:catalog&quot; and they have
+to play the roles of name directory and catalog.
+<P>
+  You can build any number of domains in site, but each of them must has a
+name directory and a catalog.
+<P>
+Characteristics of Management Object <BR>
+<P>
+When various objects are laid out, various characteristics are shown.
+<P>
+<OL><LI>  Object Manager <BR> 
+  Only one object manager can be created in each executor.
+<P>
+<LI> Class Object <BR> 
+  The class object can supply the classes not only for the executor on which
+it exists, but also for other executors sharing a common OZROOT.  Therefore,
+it is possible for each OZROOT to actuate the overall system as long as at
+least one class object operates.  Usually, since the OZROOT is made by each
+station, it is believed that the class object is also required for each
+station.  However, when OZROOT is shared according to NFS, etc., it is
+feasible to have only one class object at least for the group of stations.
+<P>
+  Since the OZROOT without class object is disabled from operating, it is
+necessary to hold the class objects for those executors that may not be
+started at the same time.  Otherwise, it is desirable to prepare an executor
+which is always running and to set a class object on this executor.
+<P>
+<UL><LI> Preload Class and Boot Class <BR> 
+  The object manager and class object should operate even when there is no
+class object to provide classes for the executor.  Therefore, the classes
+necessary for the operation must be designated with a special &quot;preload class&quot;
+to ensure that the classes are supplied properly even when no class object
+exists.
+<P>
+  However, it is impossible to operate the user object in practice, unless
+the name directory and catalog necessary for the domain operation as well as
+the classes used to actuate the launcher (refer to &quot;README.launcher&quot;) etc.
+required for starting the application operation are provided.  These classes
+needed for the basic objects are supplied as a boot class.  Whether or not the
+boot class is managed by a class object is specified when the class object is
+created with the newimage.
+<P>
+  The boot class of a non-preload class is different from the preload class.
+  It can not be supplied to the executor until it is managed properly by a
+class object.
+<P>
+  Then, is the class object which does not manage the boot class worth
+nothing?  This is not the case.  For classes without self-management, the
+class object can be delivered from other class objects on the network.
+However, this operation can be performed only by the preload class.
+Therefore, it is necessary to create a class object which does not manage the
+boot class, so as to receive the delivery of classes in sequence and supply
+the classes to the executor at the same time.  (In this case, there must
+exist a class object managing the boot class somewhere on the network.)
+</UL>
+<P>
+<LI> Name Directory <BR> 
+  Be sure to create only one name directory in a domain.
+<P>
+  Since a domain without a name directory can not operate, create one on the
+executor which is always working at your site.
+<P>
+<LI> Catalog <BR> 
+  Be sure to create only one catalog in a domain.
+<P>
+  It is very difficult to start the OZ++ program in a domain without a catalog
+.
+  The catalog should be set on the same executor as the name directory, and
+it should be operated at all times.
+</OL>
+<P>
+Layout of Management Object <BR>
+<P>
+  A guideline is presented to show how to lay out each management object in
+a better way.
+<P>
+<OL><LI> Site Master <BR> 
+  Create the site master<A NAME=tex2html1 HREF="footnode.html#646">[+]</A> first.  Choose a station which is running
+continuously and create an executor which is also working continuously as
+far as possible.  It should include the following:
+<UL><LI> Object manager
+<LI> Class object (managing boot class)
+<LI> Name directory
+<LI> Catalog
+<LI> Launcher 
+</UL>
+<P>
+  A simple procedure for creating the site master is prepared in newimage and
+the executor which has all the objects needed for the site master is easy to
+create using this procedure<A NAME=tex2html2 HREF="footnode.html#649">[+]</A>.
+<P>
+  A site master created with a diffusion source is included in this release.
+In addition to the boot class, various class libraries used for the OZ++ user
+and a lot of classes required for demonstration are registered in the class
+object and catalog on this site master.  This site master should be tried at
+the beginning is suggested.
+<P>
+<LI> Station Master <BR> 
+  Several site masters can not be created at one domain.  Then, what kind of
+executor is it better to create in the station after the second?  It should
+include the following:
+<UL><LI> Object manager
+<LI> Class object (managing boot class)
+<LI> Launcher
+</UL>
+  In this case, the operation until the launcher starts can be performed
+locally only with this station.  If there are other necessary classes,
+delivery can be received at another place.  An executor configured in this
+way is known as a station master.  It is possible to create several station
+masters in one station.
+<P>
+  A simple procedure for creating a station master is prepared in newimage,
+and an executor which has all the objects written above is easy to create
+using the procedure.
+<P>
+<LI> Slave with Class Object <BR> 
+  An executor holding a class object which delivers all the classes including
+the boot class from outside can be created, so that it can take the place of
+a station master.  This kind of executor is called a slave with class objects.
+It holds the following objects.
+<UL><LI> Object manager
+<LI> Class object (does not manage boot class)
+<LI> Launcher
+</UL>
+  A simple procedure for creating a slave with class objects is prepared in
+newimage and an executor which has all the objects written above is easy to
+create using the procedure.
+<P>
+<LI> Slave without Class Objects <BR> 
+  What kind of object should be laid out to create an executor after the
+second on the station where the site master and the station master have been
+created?  It should include the following:
+<UL><LI> Object manager
+<LI> Launcher
+</UL>
+  Class objects in the existing site master and the station master are used.
+<P>
+A simple procedure for creating a slave without class objects is prepared in
+the newimage and the executor which has all the objects written above is easy
+to create using the procedure.
+</OL>
+<P>
+Creating Method of Management Object <BR>
+<P>
+  The management objects are created with a tool called newimage.  The
+method of using this tool is written in explanation of newimage.
+<P>
+	<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

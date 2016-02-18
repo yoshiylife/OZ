@@ -1,0 +1,11 @@
+(*class* #00010000020002f2 0
+(*list*
+(*list* #00010000020002ec #00010000020002ed 0)
+(*list* #000100000200078d #000100000200078e 0)
+)
+(*list*
+(*declaration* New (*method* void (*list*) 0) constructor #000100000200078d 0 0)
+(*declaration* Parse (*method* #000100000200038c 0 (*list* #00010000020003bd 0 ) 0) public #00010000020002ec 0 0)
+(*declaration* AsString (*method* #00010000020003bd 0 (*list* #000100000200038c 0 ) 0) public #00010000020002ec 0 1)
+)
+)

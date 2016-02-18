@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.3 スコープ、ブロック</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.3 スコープ、ブロック">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION00063000000000000000>5.3 スコープ、ブロック</A></H2>
+<P>
+<H3><A NAME=SECTION00063100000000000000>5.3.1 ブロック</A></H3>
+<P>
+一つの文しか使えない場所において複数の文を複文、すなわちブロックとして一
+つの文と同等に扱う場合に用いる。(<A HREF="node30.html#langlangmanualstatement">5.10</A> 節参照)
+<P>
+<H3><A NAME=SECTION00063200000000000000>5.3.2 スコープ</A></H3>
+<P>
+ OZ++
+  言語におけるスコープはレキシカルスコープであり、コンパイル時に静的
+に決定する。
+<P>
+スコープには、局所、クラス、スタティッククラス、レコードの四種類がある。
+<P>
+<UL><LI> 局所
+<P>
+ブロック中で宣言された名前は、そのブロックに局所的である。その名前は、
+そのブロックと、そのブロック中にあるブロックの中のその宣言された場所以
+降のみで使用することができる。
+<P>
+メソッドやオペレータの仮引数の名前は、それらの最も外側のブロックで宣言されてい
+るものとして扱われる。
+<P>
+ブロックで宣言できる名前は、変数の名前のみである。
+<P>
+<LI> クラス
+<P>
+クラスのスコープで、利用される利用者定義型 
+(<A HREF="node25.html#langlangmanualusertype">5.5</A>節 参照) の型名は、そのスコープに局所
+的である。
+<P>
+クラスメンバの名前はそのクラスに局所的であり、以下の場所で使用できる。
+<P>
+<OL><LI> そのクラスのメソッドの中
+<P>
+<LI> そのクラスあるいはそのクラスを継承した子クラスのオブジェクトに適
+用された <tt> -&gt;</tt> 演算子の後 (メソッドの場合)
+<P>
+<LI> そのクラスを継承した子クラスのメソッドの中
+</OL>
+<P>
+ただし、2 、3 はそれが可能となるようなアクセス制御が行なわれている必要
+がある。(<A HREF="node33.html#langlangmanualclass">5.13</A> 節参照)
+<P>
+<LI> スタティッククラス
+<P>
+スタティッククラスのスコープで、利用される利用者定義型 
+(<A HREF="node25.html#langlangmanualusertype">5.5</A>節 参照) の型名は、そのスコープに局所
+的である。
+<P>
+スタティッククラスメンバの名前はそのスタティッククラスに局所的であり、以下の
+場所で使用できる。
+<P>
+<OL><LI> そのスタティッククラスのメソッドの中
+<P>
+ <LI> そのスタティッククラスのオブジェクトに適用された <tt> -&gt;</tt> 演算
+子の後 (メソッドの場合)
+</OL>
+<P>
+ただし、2 はそれが可能となるようなアクセス制御が行なわれている必要
+がある。(<A HREF="node34.html#langlangmanualstaticclass">5.14</A> 節参照)
+<P>
+<LI> レコード
+<P>
+レコードのスコープで、利用される利用者定義型 
+(<A HREF="node25.html#langlangmanualusertype">5.5</A>節 参照) の型名は、そのスコープに局所
+的である。
+<P>
+レコードのメンバ、オペレータの名前はそのレコードに局所的であり、以下の
+場所で使用できる。
+<P>
+<OL><LI> そのレコードのオペレータの中
+<P>
+ <LI> そのレコードのオブジェクトに適用された <tt> .</tt> 演算子の後
+</OL></UL>
+<P>
+名前は、そのスコープが取り囲んでいるスコープによって隠される場合がある。
+<P>
+<PRE>class D : A {
+  public: m1;
+
+  int x, y;
+  B b;
+  C c;
+
+  void m1 (int x)
+    {
+      int y, i;        
+
+      y = x;
+      for (i = 0; i &lt; y; i++)
+       {
+          int x;
+
+          x +=  y * i;
+       }
+    }        
+}
+</PRE>
+<P>
+上の例の場合、<tt> A</tt>、<tt> B</tt>、<tt> C</tt>、<tt> D</tt> の四つの利用者定義型
+の型名は、クラス <tt> D</tt> のスコープに局所的な名前である。
+<P>
+またメソッド <tt> m1</tt> では、局所的に <tt> y</tt> が宣言され、仮引数として 
+<tt> x</tt> が宣言されているため、このブロックではインスタンス変数 <tt> x</tt>、 
+<tt> y</tt> は隠されてしまう。さらに for 文中で局所的に <tt> x</tt> が宣言され
+ているため、このブロックではメソッドの仮引数 <tt> x</tt>が隠されてしまう。
+このように局所的に宣言されたものが隠された場合には、隠されたものにアク
+セスすることは不可能である。
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>

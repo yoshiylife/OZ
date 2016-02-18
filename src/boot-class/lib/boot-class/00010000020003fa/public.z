@@ -1,0 +1,7 @@
+(*class* #00010000020003fa 0
+(*list*)
+(*list*
+(*declaration* New (*method* void (*list*) 0) constructor #00010000020003fa 0 0)
+(*declaration* Execute (*method* int (*list* #00010000020003bd 0 #00010000020003bd 0 int ) 0) public #00010000020003fa 0 1)
+)
+)

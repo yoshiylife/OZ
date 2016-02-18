@@ -1,0 +1,606 @@
+Wed Mar 20 15:05:09 1996  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+        * clogger.oz (ClassLogger)
+	  再実行に失敗したトランザクションがあっても、クラスオブジェクト自
+	  体はフラッシュするようにした。
+
+	* clogger.oz (ClassLogger)
+	  OpenFlag を使わず、 fcntl.h を include するようにした。
+
+Tue Mar 19 20:07:34 1996  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* class.oz (Class)
+	  Feb.1 になって、 OZROOT が ../../ とは限らなくなったので、シンボ
+	  リックリンクを張る先を修正した。
+
+	* clogger.oz (ClassLogger)
+	  logfile.rcv が残ってしまう場合があったので、修正した。
+
+Mon Feb 19 06:04:55 1996  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* clogger.oz (ClassLogger)
+	  前回フラッシュされなかったトランザクションを再実行する方式を少し
+	  変えた。
+	    o .bak ファイルは作らない。
+	    o 処理が終ったら .rcv ファイルは必ず消す。
+	    o 再実行に失敗したトランザクションだけを、 .ded ファイルに追加
+	      する。
+
+Mon Jan 29 16:01:38 1996  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* class.oz (Class)
+	  ClassID を、インスタンシエーションせずに、 OM の NewOID サービス
+	  を利用するようにした。
+
+Sun Jan 28 11:26:32 1996  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* class.oz (Class::DelegateClassAsOriginal)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  クラスを、配送先がオリジナルになるように配送するメソッドを追加し
+	  た。
+
+Mon Jan 22 23:11:49 1996  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* class.oz (Class::DestroyClassPackage)
+	  クラスパッケージを破棄するトランザクションを記録するようにした
+
+	* clogger.oz (ClassLogger::LogDestroyClassPackage)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  クラスパッケージを破棄するトランザクションを記録するメソッドを追
+	  加した。
+
+Fri Jan 19 09:01:24 1996  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* 95Sep.1 を更新
+
+Thu Jan 11 00:11:31 1996  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* class.oz (Class::RemoveClassVersion)
+	  cv.oz (ClassVersion::Eliminate)
+	  upperpart.oz (UpperPart::Eliminate)
+	  cpubv.oz (PublicPart::Eliminate)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  あるクラスパートの下位のクラスパートをすべて削除するメソッド 
+	  Class::RemoveClassVersion と、その実装に用いるメソッド 
+	  ClassVersion::Eliminate を作った。
+
+	* class.oz (Class)
+	  メソッド LoadClassPart で PublicPart をインポートしたときと、メ
+	  ソッド SetDefaultConfiguredClassID で、デフォルトのコンフィギュ
+	  アドクラスを変更したときに、 OM のコンフィギュレーションキャッシュ
+	  も変更するようにした。
+
+Sat Nov 11 22:46:04 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* ここで Sep.1 を更新
+
+Thu Nov  9 11:39:18 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* classcopy.oz (ClassCopyKind)
+	  !!NEW CLASS!!
+	  クラスのコピー管理が導入されるのに伴って、コピーの種類を表す定数
+	  を定義した。
+
+	* class-exc.oz (ClassExceptions)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  クラスのコピー管理が導入されるのに伴って、リードオンリーのコピー
+	  に対する変更を禁止する例外
+	  	NotModifiableCopy (global ClassID);
+	  を追加した。
+
+Wed Oct 18 00:50:37 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* class.oz (Class::DelegateALl)
+	  ClassTable の容量を調べるのにメソッド Size を使っていたのをメソッ
+	  ド Capacity () に修正した。
+
+Wed Oct 11 22:38:42 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* ここで Sep.1 を更新
+
+Sat Sep 30 14:29:45 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* ここで Sep.1 に更新
+
+Thu Sep 28 18:04:35 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* class.oz (Class::SetItAsDefaultLowerVersion)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  LowerVersion だけを指定して、それがデフォルトになるように変更す
+	  るインタフェースを追加した。
+
+Mon Sep 11 06:49:55 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* ここで Jun.2 を更新
+
+Thu Sep  7 18:44:28 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* class.oz (Class::LookupProperty)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  LookupProperty を public method とした。
+
+	* classpart.oz (ClassPart::RemoveProperty)
+	  locked メソッドから lockecd メソッドを呼んでいたので、 
+	  RemoveProperty から GetClassFileDirectory を呼ばないようにした。
+
+Fri Sep  1 14:27:47 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* class.oz (Class::SetItAsDefaultConfiguredClass)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  コンフィギュアドクラス ID だけを指定して、それがデフォルトになる
+	  ように変更するインタフェースを追加した。
+
+	* ここで Jun.2 を更新
+
+Sun Aug 20 19:27:30 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* class.oz (Class::Distribute)
+	  実装パートの配送を、 Any architecture という指定で要求された場合
+	  に、全プロパティを配送するようにした。
+
+Fri Aug 18 03:31:01 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* class.oz (Class::Dump, Class::Restore)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  クラスのダンプ/リストアを可能にした。
+
+	* class.oz (Class::GetImplementationParts)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  メソッド GetImplementationParts をパブリックメソッドとした。
+
+Sat Aug  5 19:23:17 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* clogger.oz (ClassLogger)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  メソッド Apply を独立に呼びだし可能にした (トランザクションログ
+	  ファイル形式で、クラスオブジェクトに情報を入力するため)。
+
+Thu Aug  3 20:15:31 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* class.oz (Class::OM)
+	  !!PROTECTED INTERFACE CHANGED!!
+	  OM インスタンス変数を削除した。
+
+	* class.oz (Class::Initialize, Read, ReadImpl)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  古い形式のクラスリストファイルを読み込む能力を捨てた。
+	  Class::Read, ReadImpl を廃止し、 Initialize を変更した。
+
+	* ここで Jun.2 を更新
+
+Thu Jul 27 13:08:43 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* class.oz (Class::RegisterClassInformations)
+	  コンフィギュアドクラスの登録時に、 private.s から実装パートの列
+	  を読み出すようにした。
+
+Sun Jul 23 18:39:35 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* clogger.oz (ClassLogger::LogSetDefaultConfiguredClassID)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  class.oz (Class::SetDefaultConfiguredClassID)
+	  SetDefaultConfiguredClassID を log し、 apply できるように修正し
+	  た。これに伴って、 Class::SetDefaultConfiguredClassID の実装を、
+	  ロギングするように変更した。
+
+Fri Jul 14 11:38:56 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* cprotv.oz (ProtectedPart::NewLowerVersion)
+	  新しい実装パートを作るときに、そのエグゼキュータのアーキテクチャ
+	  をサポートするような処理を追加した。マルチアーキテクチャ対応をき
+	  ちんと検討しないための quick hack である。
+
+Wed Jul 12 14:09:43 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* clogger.oz (ClassLogger)
+	  CountUp するタイミングが早過ぎたため、ログファイルの先頭に既に終
+	  了したトランザクションがひとつ記録されてしまう障害を取り除いた。
+
+Mon Jul 10 10:54:21 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* class.oz (Class::SetDefaultConfiguredClassID)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  cpubv.oz (PublicPart::SetDefaultConfiguredClassID)
+	  public メソッド SetDefaultConfiguredClassID を追加した。
+	  PublicPart の、デフォルトのコンフィギュアドクラスをセットする。
+	  また、これまで PublicPart のメソッド名の整合が取れていなかったの
+	  を改め、 PublicPart::SetDefaultConfiguredClass を、 
+	  PublicPart::SetDefaultConfiguredClassID に変更した。
+
+Wed Jul  5 09:47:12 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* class.oz (Class::WhichKind)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  public メソッド WhichKind を追加した。
+
+	* part.oz (ClassPartName)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  anOrdinaryClass を追加した。
+
+	* lower.oz (LowerPart)
+	  !!PROTECTED INTERFACE CHANGED!!
+	  cpubv.oz (PublicPart), cprotv.oz (protectedPart),
+	  cimpv (ImplementationPart)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  LowerPart のメソッドを rename する場所を、 LowerPart ではなく、
+	  各 subclass に移した。
+
+Tue Jul  4 14:29:21 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* psreader.oz (PrivateDotsFileReader)
+	  pstreader.oz (PrivateDotsTokenReader)
+	  !!NEW CLASS!!
+	  private.s を読むための token reader を用意した。
+
+	* confclass.oz (ConfiguredClass::ReadPrivateDotsFile)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  private.s から、実装パートの列を読み込む機能を追加した。
+
+	* classpart.oz (ClassPart::LookupProperty)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  cv.oz (ClassVersion::UsedClassTableImpl)
+	  class.oz (Class::{GetPropertyPath,LookupProperty,
+		   	    RegisterClassInformations})
+	  cpubv.oz (PublicPart::LowerLookupProperty)
+	  cprotv.oz (ProtectedPart::LowerLookupProperty)
+	  cimpv.oz (ImplementationPart::LowerLookupProperty)
+	  LookupProperty の返り値を、 0/1 ではなく、そのプロパティのパス名
+	  を返すように変更した。見つからないときに 0 が返る点は従来と同じ。
+	  これに伴って、 ClassVersion::UsedClassTableImpl,
+	  Class::GetPropertyPath, Class::LookupProperty,
+	  Class::RegisterClassInformations の実装が変更された。
+	  また、 PublicPart::LowerLookupProperty,
+	  ProtectedPart::LowerLookupProperty,
+	  ImplementationPart::LowerLookupProperty の signature を変更した。
+
+	* class.oz (Class::ReadImpl)
+	  クラスリストファイルをオープンできなかったときは、 `complete' メッ
+	  セージは出ないようにした。
+
+Wed Jun 14 01:21:22 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* clogger.oz (ClassLogger::Apply)
+	  OzDebugf の第一引数に 0 を入れてしまっていたのを修正した。
+
+	* class.oz (Class::ReadOneRecord)
+	  ブートストラップ処理系からのクラスリストファイル読み込み要求を受
+	  け付けた場合は、 lib/boot-class/<CID> から 
+	  images/<EXID>/classes/<CID> へシンボリックを張るようにした。
+
+Fri Jun  9 18:13:45 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* confclass.oz (ConfiguredClass)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  メソッド GetRuntimeClassInformation を廃止した。
+
+	* cimpv.oz (ImplementationPart)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  メソッド GetCode, GetLayout を廃止した。
+
+	* class.oz (Class)
+	  !!PUBLIC INTERFACE CHANGED!!
+	  クラスプロパティのパス名を求めるメソッド GetPropertyPath を追加
+	  した。
+
+	* class-exc.oz (ClassExceptions::UnknownProperty):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  UnknownProperty のパラメータを String から char [] に変更した。
+
+Fri Jun  2 13:14:20 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* vstring.oz (VersionString::AsString):
+	  正しく返り値を返すように修正した。
+
+	* clogger.oz (ClassLogger):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  ログファイルを書き込み用に open する public メソッド Open を追加
+	  した。その他、コードを見やすくするための細かい修正を全面に加えた。
+
+Sat May 20 23:20:48 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* class.oz (Class):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  メソッド RemoveProperty を global とした。
+
+Thu May 18 22:38:47 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* classpart.oz (ClassPart):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  メソッド WhichPart を public method とした (abstract method)。
+
+Sun May 14 07:52:27 1995  NISHIOKA Toshihiro  (nishioka@hotate.mri.co.jp)
+
+	* clogtreader.oz (ClassListFileTokenReader):
+	  clogfreader.oz (ClassListFileReader):
+	  !!NEW CLASS!!
+	  ClassLogger が読み書きするログファイルを読み込むリーダを作成した。
+
+	* class.oz (Class):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  ClassLogger から呼び出すために、メソッド AddToClassTable,
+	  SetVersionString を public とした。
+	  その他、 transaction log を出力するために、全面的な変更を行った。
+
+	* clogger.oz (ClassLogger):
+	  !!NEW CLASS!!
+	  ClassObject の transaction log を管理し、必要なら再実行するクラ
+	  ス ClassLogger を作成した。
+
+	* crootv.oz (UpperPart):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  メソッド GetProperties を public とした。
+
+Sat May 13 10:01:25 1995  NISHIOKA Toshihiro  (nishioka@hotate.mri.co.jp)
+
+	* class.oz (Class):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  メソッド AddProperty を global メソッドとした。
+
+	* class.oz (Class):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  メソッド AddArchitecture を global メソッドとした。
+
+	* classpart.oz (ClassPart):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  メソッド RemoveProperty の引数を、他のメソッドに合わせるため、 
+	  String ではなく char [] とした。
+
+	* class.oz (Class): 
+	  !!PUBLIC INTERFACE CHANGED!!
+	  クラスプロパティを削除するメソッド RemoveProperty を実装した。
+
+	* class.oz (Class): 
+	  !!PUBLIC INTERFACE CHANGED!!
+	  管理しているクラス ID の一覧を返すメソッド ListClassID を実装し
+	  た。
+
+Fri May 12 23:00:06 1995  NISHIOKA Toshihiro  (nishioka@hotate.mri.co.jp)
+
+	* class.oz (Class):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  メソッド GetVersionString, DefaultVersionString の返り値をクラス 
+	  VersionString のインスタンスとした。
+
+Mon May  8 20:43:04 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* vstring.oz (VersionString):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  メソッド Assign を実装した。
+
+Sun May  7 11:44:06 1995  NISHIOKA Toshihiro  (nishioka@hotate.mri.co.jp)
+
+	* vstring.oz (VersionString):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  String の subclass でなくした。
+
+	* class-exc.oz (ClassExceptions):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  cv.oz (ClassVersion),
+	  upperpart.oz (UpperPart),
+	  lowerpart.oz (LowerPart),
+	  crootv.oz (RootPart),
+	  cpubv.oz (PublicPart),
+	  cprotv.oz (ProtectedPart),
+	  cimpv.oz (ImplementationPart):
+	  !!PROTECTED INTERFACE CHANGED!!
+	  メソッド GetUsedClassTable を、 Property を参照するように変更し、
+	  これを実現する protected メソッド GetUsedClassTableImpl を 
+	  ClassVersion に置いた。
+	  例外 NoUsedClassTable を UnknownProperty に置き換えた。
+	  例外 ClassFileNotFound を UnknownProperty に置き換えた。
+
+	* class-exc.oz (ClassExceptions):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  class.oz (Class):
+	  インスタンス変数 Next を取り除いた。
+	  これに伴って、複数のクラスリストファイルを同時に読み込むことが可
+	  能となり、例外 ReadInProgress を削除した。
+
+	* classpart.oz (ClassPart), confclass.oz (ConfiguredClass),
+	  cv.oz (ClassVersion), upperpart.oz (UpperPart),
+	  lowerpart.oz (LowerPart), crootv.oz (RootPart),
+	  cpubv.oz (PublicPart), cprotv.oz (ProtectedPart),
+	  cimpv.oz (ImplementationPart):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  SetInitialLengthOfPropertyTable を、 (public ではなく) protected
+	  method とした。
+
+	* upperpart.oz (UpperPart): 
+	  !!PUBLIC INTERFACE CHANGED!!
+	  メソッド LatestVersionNumber を追加した。
+
+	* upperpart.oz (UpperPart): 
+	  インスタンス変数 LowerVersion, VisibleLowerVersion を、クラス 
+	  SimpleArray のインスタンスに改めた。
+
+	* class-exc.oz (ClassExceptions): 
+	  !!PUBLIC INTERFACE CHANGED!!
+	  クラス UpperPart で、未知の下位パートを操作した際にあげる、 
+	  UnknownLowerPart を加えた。
+
+Thu May  4 23:13:34 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* class.oz (Class), confclass.oz (ConfiguredClass):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  ConfiguredClass に、 configuration に使われた実装パートの ID の
+	  列を記憶するようにし、それを Get/Set する interface
+	  GetImplementationParts, SetImplementationParts を用意した。
+
+Mon Apr 24 13:20:26 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* directory mng を、 object-manager, class-object, directories に
+	  分割した。
+
+	* これより上が、 Release 2 に向けての修正である。
+
+Sun Mar 26 14:13:39 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* cnote.oz (NotifierWindow):
+	  複数のクラスの送信要求が来た場合の同時実行制御をサボっているとい
+	  う障害があったので、修正した。
+
+Thu Mar 23 00:43:20 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz)
+
+	* class.oz (Class):
+	  Read のたびに flush するのをやめた。
+
+	* class.oz (Class), bcreceiver.oz (BroadcastReceiver),
+	  clupper.oz (ClassLookupper), om.oz (ObjectManager):
+	  クラスの配送の効率を向上させるために、ひとつの ClassPart を送信
+	  するために必要な global invocation の数を減らした。
+
+Mon Mar 20 14:32:37 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* cpubv.oz (PublicPart), cprotv.oz (ProtectedPart):
+	  メソッド VersionIDFromVersionString で、 version string に現れる
+	  整数値の range check が (0 origin と勘違いして) < で判定していた
+	  のを、 <= に改めた [音川さんの指摘による]。
+
+	* vstring.oz (VersionString):
+	  メソッド Content で、 PublicPart が 0 でなかった場合の else 節で、
+	  余分な条件判定をひとつしていたので、取り除いた [音川さんの指摘に
+	  よる]。
+
+	* class.oz (Class):
+	  メソッド LookupAs{Upper,Lower}Part で、それぞれ逆側の ClassPart 
+	  が Table に入っていたときに narrow の例外が上がるバグがあったの
+	  で、修正した [音川さんの指摘による]。
+
+	* class.oz (Class):
+	  メソッド CreateNewPart で、 Table に入るのが LowerPart 側の 
+	  ClassPart になることがあったので、全体を揃える目的で、 UpperPart
+	  側が入るように修正した [音川さんの指摘による]。
+	  ただしこの修正は、一旦 Object に代入してから ClassVersion に 
+	  narrow するものであって、 compiler の実装に依存している。
+
+Fri Mar 10 10:42:44 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+	* classpart.oz (ClassPart), confclass.oz (ConfiguredClass),
+	  cv.oz (ClassVersion), upperpart.oz (UpperPart),
+	  lowerpart.oz (LowerPart), crootv.oz (RootPart),
+	  cpubv.oz (PublicPart), cprotv.oz (ProtectedPart),
+	  cimpv.oz (ImplementationPart):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  ClassPart の public method から Delegate を取り除いた。
+
+	* classpart.oz (ClassPart), confclass.oz (ConfiguredClass),
+	  cv.oz (ClassVersion), upperpart.oz (UpperPart),
+	  lowerpart.oz (LowerPart), crootv.oz (RootPart),
+	  cpubv.oz (PublicPart), cprotv.oz (ProtectedPart),
+	  cimpv.oz (ImplementationPart):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  ClassPart の public method に IsConfiguredClass を加え、 
+	  ConfiguredClass に対しても、 IsConfiguredClass 以下の part の問
+	  い合わせの method を使えるようにした。
+
+	* classpart.oz (ClassPart), confclass.oz (ConfiguredClass),
+	  cv.oz (ClassVersion), upperpart.oz (UpperPart),
+	  lowerpart.oz (LowerPart), crootv.oz (RootPart),
+	  cpubv.oz (PublicPart), cprotv.oz (ProtectedPart),
+	  cimpv.oz (ImplementationPart):
+	  ClassPart の public method GetProperties を、各 subclass でも継
+	  承して用いることとした。
+
+	* cimpv.oz (ImplementationPart), class.oz (Class):
+	  !!PUBLIC INTERFACE CHANGED!!
+	  public method に、特定の architecture に関する property だけを返
+	  す、 GetPropertiesOfArchitecture を追加した。また、これを Class 
+	  から使えるようにした。
+
+	* classpart.oz (ClassPart):
+	  メソッド AddProperty で、既に存在する property を再び 
+	  AddProperty するのは例外としないこととした。
+
+	* class-exc.oz (ClassExceptions):
+	  Class 関連の class の内部エラーを表す例外 InternalError を追加し
+	  た。
+
+	* class.oz (Class):
+	  メソッド WhichPart を実現した。
+
+	* part.oz (ClassPartName):
+	  !!New Shared!!
+	  各クラスパートを区別する定数表記のため、 shared ClassPartName を
+	  作った。
+
+	* Class の subclass で、 guruguru を実行する ClassWithNotifier を
+	  作った (classwn.oz)。まだ OZ++ compiler が不調で、 method 名の 
+	  alias がうまく働かないため、新しいクラスを拡張するだけでは作れず、 
+	  Class にも abstract method Mawaru, Tomaru, OtherInitialize を導
+	  入した (class.oz)。
+
+	* guruguru を実行するクラスである NotiferWindow を作った 
+	  (cnote.oz)。
+
+	* New で作った Class の Class::WorkingDirectory が正しく設定されな
+	  い障害を改修した (class.oz)。
+
+	* 永続的でない Class が自分を flush しようとする障害を改修した 
+	  (class.oz)。
+
+	* Class::Read によって Class を構築する際、 private.i を読んで親ク
+	  ラスを得ることをやめた (class.oz)。
+
+	* Class の配送を実現する method Class::CopyClass,
+	  Class::Distribute, Class::DistributeEnd, Class::GetTarFileName,
+	  Class::LoadClassPart, Class::UntarFile を実現した (class.oz)。
+
+	* Class から他の Class に ClassPart を配送する時に、オリジナルの状
+	  態を破壊してしまう障害を改修した (class.oz)。
+
+	* Class::GetVersionString で、 version string が与えられていないと
+	  きに 0 を返すようにした (class.oz)。
+
+	* Class::Removing で、自身の管理していたディレクトリを削除するよう
+	  にした (class.oz)。
+
+	* OZ++ compiler の method alias が不調なので、一部で alias を 
+	  rename に切替えた (crootv.oz, upperpart.oz)。
+
+	* UnixCommand で、 command の実行前に $OZHOME に cd するようにした 
+	  (unix.oz)。
+
+Sat Mar  4 14:22:30 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz)
+
+	* class object の object image が大きくなり過ぎて問題が生じそうな
+	  ので (2M を越えた)、 ClassPart を中心に、 Class のための local
+	  object の instance 変数から String を取り去り、 char [] に替えた。
+	  これに伴って、 class object 内部の local invocation の protocol 
+	  も、一部変更された。
+	  影響を受けたのは、 cimpv.oz, classpart.oz, class-exc.oz,
+	  class.oz, confclass.oz, crootv.oz, cv.oz, upperpart.oz である。
+
+	* class list file からの load 中に、たまたまできたばかりの 
+	  ImplementationPart が、まだ property を登録する前に、 GetCode な
+	  どのアクセスを受けてエラーを返す障害が発見された。
+	  このため、 Class の Table への登録を、 property の登録後に遅らせ
+	  る対処をした (class.oz)。
+
+Fri Mar  3 17:54:08 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz)
+
+	* Class::GetVisibleLowerVersion を public service として実現した。
+
+Thu Mar  2 19:27:38 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz)
+
+	* PublicPart::UsedClassTable で、 
+	  ClassExceptions::ClassFileNotFound の parameter に String を入れ
+	  ているところを修正し、 char [] を入れるようにした。
+
+	* FileOperators::Execute で、 UnixCommand を verbose mode で起動す
+	  るのをやめた。
+
+Sun Feb 26 22:28:26 1995  NISHIOKA 'Jazz' Toshihiro  (nishioka@oz4)
+
+    	* Class 管理系を全面改修した。
+	     - CFE との interface を用意した。
+	     - 複数の下位バージョンを区別して管理できるようになった。
+	     - 1.2.3 などというバージョン文字列を利用できるようになった。
+	     - 実行可能ファイル、レイアウト情報ファイルのパスを class list
+	       file から読み込むのをやめ、現実にディレクトリに存在している
+	       ものを登録し、管理するようになった。
+	       このため、 ls を spawn するので、クラスの install はかなり
+	       遅くなった (将来的には opendir などのライブラリを駆使して高
+	       速化する予定)。
+
+	* file 処理のための class FileOperators が追加された。
+	  これは将来的には外部プロセスライブラリによって置き換えられる予定。

@@ -1,0 +1,23 @@
+(*class* #000100000200057a 0
+(*list*
+(*list* #0001000002000589 #000100000200058a 0)
+(*list* #000100000200057f #0001000002000580 0)
+)
+(*list*
+(*declaration* New (*method* void (*list*) 0) constructor #000100000200057f 0 0)
+(*declaration* NewWithSize (*method* void (*list* (*scqf* int 2) ) 0) constructor #000100000200057f 0 1)
+(*declaration* AddAssoc (*method* #0001000002000584 0 (*list* #00010000020003bd 0 OZ_Generic ) 0) public #000100000200057a 0 0)
+(*declaration* AssocAt (*method* #0001000002000584 0 (*list* #00010000020003bd 0 ) 0) public #000100000200057a 0 1)
+(*declaration* AtKey (*method* OZ_Generic (*list* #00010000020003bd 0 ) 0) public #000100000200057a 0 2)
+(*declaration* DoFinish (*method* void (*list* #000100000200058e 0 ) 0) public #0001000002000589 0 9)
+(*declaration* DoNext (*method* #0001000002000584 0 (*list* #000100000200058e 0 ) 0) public #0001000002000589 0 1)
+(*declaration* DoReset (*method* void (*list* #000100000200058e 0 ) 0) public #0001000002000589 0 10)
+(*declaration* IncludesKey (*method* int (*list* #00010000020003bd 0 ) 0) public #000100000200057a 0 3)
+(*declaration* IsEmpty (*method* int (*list*) 0) public #0001000002000589 0 12)
+(*declaration* IsEqual (*method* int (*list* #0001000002000589 8 ) 0) public #0001000002000589 0 3)
+(*declaration* RemoveKey (*method* #0001000002000584 0 (*list* #00010000020003bd 0 ) 0) public #000100000200057a 0 4)
+(*declaration* SetAtKey (*method* OZ_Generic (*list* #00010000020003bd 0 OZ_Generic ) 0) public #000100000200057a 0 5)
+(*declaration* SetOfKeies (*method* #0001000002000463 0 (*list*) 0) public #000100000200057a 0 6)
+(*declaration* Size (*method* (*scqf* int 2) (*list*) 0) public #0001000002000589 0 15)
+)
+)

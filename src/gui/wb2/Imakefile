@@ -1,0 +1,17 @@
+DESTDIR		= ${OZROOT}
+GUIDIR		= /lib/gui/wb2
+
+	SCRIPTS	= cb.tcl cfe.tcl config.tcl db.tcl eb.tcl filesel.tcl \
+		  if-to-oz.tcl sb.tcl sdb.tcl wb-lib.tcl wb.tcl
+
+AllTarget()
+
+install::
+	@if [ "$(DESTDIR)" = "" ]; then \
+	   echo "***" ;\
+	   echo "You must be set environment variable: OZROOT" ;\
+	   echo "***" ;\
+	   exit 1 ;\
+	 fi
+
+InstallMultiple($(SCRIPTS),$(GUIDIR))

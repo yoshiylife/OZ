@@ -1,0 +1,338 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95 (Thu Jan 19 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<!Actually with its Japanized version JLaTeX2HTML 95 (Wed Mar 1 1995) by Masahiro Kitagawa (kitagawa@ee.es.osaka-u.ac.jp), Osaka University >
+<HEAD>
+<TITLE>5.2 字句</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value="5.2 字句">
+<meta name="keywords" value="main">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <H2><A NAME=SECTION00062000000000000000>5.2 字句</A></H2>
+<P>
+ OZ++
+  言語の字句には以下のものがある。
+<P>
+<UL><LI> コメント
+<LI> 識別子
+<LI> キーワード
+<LI> 定数(整数、文字、浮動小数、文字列)
+<LI> 演算子
+<LI> 区切子
+</UL>
+<P>
+空白 (スペース、タブ、改行、改ページ) は字句の区切りとなる他は無視され
+る。
+<P>
+字句を読み込む場合には、構成可能な最長の文字列が字句として採用される。
+<P>
+<H3><A NAME=SECTION00062100000000000000>5.2.1 コメント</A></H3>
+<P>
+ OZ++
+  言語では二種類のコメントがある。
+<P>
+<UL><LI> <code>/*</code> で始まり <code>*/</code> で終るコメント
+<P>
+この形式のコメントは入れ子にできない
+<P>
+<LI> <code>//</code> で始まり、改行で終るコメント
+</UL>
+<P>
+コメントは空白と同じ意味、すなわち字句の区切りとなる他は無視される。
+<P>
+<H3><A NAME=SECTION00062200000000000000>5.2.2 識別子</A></H3>
+<P>
+英字から始まる英数字 (あるいはアンダースコア) の列であり、英字の大文字
+と小文字は区別される。31 文字まで区別され、31 文字以上は長さは区別さ
+れるが、31 文字以上の内容が区別されることは保証されない。
+<P>
+また2つのアンダースコアにつづき[0-9a-fA-F]を16文字もつ識別子はクラス名
+をクラス ID によって表現したものとして区別される.
+<P>
+<PRE>__0001000002000101      // 0001000002000101 というクラス ID のクラスを表す
+</PRE>
+<P>
+<H3><A NAME=SECTION00062300000000000000>5.2.3 キーワード</A></H3>
+<P>
+表1の識別子はキーワードとして使われる。このうち、<tt> yield</tt>、<tt> foreach</tt>、
+<tt> iterator</tt> は現在の文法では用いておらず、将来のために予約されている。
+<P>
+<CENTER>
+<TABLE BORDER>
+<CAPTION ALIGN=TOP><STRONG>表 5.1--1:</STRONG> キーワード</CAPTION>
+<TR><TD>
+<TABLE CELLPADDING=2>
+ <TR>
+ <TD>abort</TD><TD>abortable</TD><TD>abstract</TD><TD>alias</TD><TD>break</TD>
+ </TR>
+ <TR>
+ <TD>case</TD><TD>cell</TD><TD>char</TD><TD>class</TD><TD>condition</TD>
+ </TR>
+ <TR>
+ <TD>constructor</TD><TD>continue</TD><TD>debug</TD><TD>default</TD><TD>detach</TD>
+ </TR>
+ <TR>
+ <TD>do</TD><TD>double</TD><TD>else</TD><TD>except</TD><TD>float</TD>
+ </TR>
+ <TR>
+ <TD>for</TD><TD>foreach</TD><TD>fork</TD><TD>global</TD><TD>if</TD>
+ </TR>
+ <TR>
+ <TD>inline</TD><TD>int</TD><TD>iterator</TD><TD>join</TD><TD>kill</TD>
+ </TR>
+ <TR>
+ <TD>length</TD><TD>locked</TD><TD>long</TD><TD>narrow</TD><TD>oid</TD>
+ </TR>
+ <TR>
+ <TD>protected</TD><TD>public</TD><TD>raise</TD><TD>record</TD><TD>rename</TD>
+ </TR>
+ <TR>
+ <TD>return</TD><TD>self</TD><TD>shared</TD><TD>short</TD><TD>signal</TD>
+ </TR>
+ <TR>
+ <TD>signalall</TD><TD>static</TD><TD>switch</TD><TD>try</TD><TD>unsigned</TD>
+ </TR>
+ <TR>
+ <TD>until</TD><TD>void</TD><TD>wait</TD><TD>while</TD><TD>yield</TD>
+ </TR>
+</TABLE>
+</TD></TR>
+</TABLE>
+</CENTER>
+
+<P>
+<H3><A NAME=SECTION00062400000000000000>5.2.4 定数</A></H3>
+<P>
+定数には以下のものがある。
+<P>
+<UL><LI> 整数定数
+<P>
+整数定数は数字の列である。
+<P>
+<UL><LI> 0 から始まっている場合は 8 進数
+<P>
+8 進数の場合は 8 と 9 を含まない
+<P>
+<LI><tt> 0x</tt> あるいは <tt> 0X</tt> で始まる場合は 16進数
+<P>
+16 進数の場合は a から f (大文字でも良い) を 10 から 15 として含む
+<P>
+<LI> それ以外の場合は 10 進数。
+<P>
+</UL>
+<P>
+<tt> u</tt> あるいは <tt> U</tt> がついた場合は <tt> unsigned</tt> を、<tt> ll</tt>、
+<tt> lL</tt>、<tt> LL</tt> あるいは <tt> Ll</tt> がついた場合は <tt> long</tt> をあら
+わす.
+<P>
+<PRE>123        // int型の10進数の123
+0173       // int型の123(10進数)の8進数表記
+0x76       // int型の123(10進数)の16進数表記
+123U       // unsinged int型の123(10進数)
+</PRE>
+<P>
+<LI> 文字定数
+<P>
+文字定数はシングルクオートに囲まれた文字で、一文字を表す。一部の非
+グラフィック文字、シングルクオート等は、表 <A HREF="node22.html#tabesc">5.2--2</A> に示すエスケー
+プシーケンスで表現可能である。
+<P>
+<A NAME=tabesc>　</A>
+<P>
+<CENTER>
+<TABLE>
+<CAPTION ALIGN=TOP><STRONG>表 5.1--2:</STRONG> エスケープシーケンス</CAPTION>
+<TR><TD WIDTH=30></TD>
+<TABLE BORDER>
+ <TR><TD>newline</TD>        <TD>NLL (LF)</TD><TD>\n</TD></TR>
+ <TR><TD>horizontal tab</TD> <TD>HT</TD>      <TD>\t</TD></TR>
+ <TR><TD>vertical tab</TD>   <TD>VT</TD>      <TD>\v</TD></TR>
+ <TR><TD>backspace</TD>      <TD>BS</TD>      <TD>\b</TD></TR>
+ <TR><TD>carriage return</TD><TD>CR</TD>      <TD>\r</TD></TR>
+ <TR><TD>formfeed</TD>       <TD>FF</TD>      <TD>\f</TD></TR>
+ <TR><TD>audible alert</TD>  <TD>BEL</TD>     <TD>\a</TD></TR>
+ <TR><TD>backslash</TD>      <TD>\</TD>       <TD>\\ </TD></TR>
+ <TR><TD>question mark</TD>  <TD>?</TD>       <TD>\?</TD></TR>
+ <TR><TD>single quote</TD>   <TD>'</TD>       <TD>\'</TD></TR>
+ <TR><TD>double quote</TD>   <TD>&quot;</TD>  <TD>\&quot;</TD></TR>
+ <TR><TD>octal number</TD>   <TD>ooo</TD>     <TD>\ooo</TD></TR>
+ <TR><TD>hex number</TD>     <TD>hh</TD>      <TD><TT>\x</TT>hh</TD></TR>
+</TABLE>
+</TD>
+<TD WIDTH=30></TD></TR>
+</TABLE>
+</CENTER>
+
+<P>
+文字定数は <tt> char</tt> 型を持ち、その値はマシンの文字集合中
+のその文字の数値である。
+<P>
+<PRE>'a' '\n'        // 文字a、改行文字
+</PRE>
+<P>
+<LI> 浮動小数定数
+<P>
+浮動小数は整数部、小数点、小数部、<tt> e</tt> あるいは <tt> E</tt> の後に指数
+部が続き、それに続いてサフィックスが来る。サフィックスには
+<P>
+<UL><LI> <tt> f</tt> あるいは <tt> F</tt> 
+</UL>
+<P>
+のがある。これは、
+<P>
+<UL><LI> サフィックスがない場合は <tt> double</tt>
+<P>
+<LI> <tt> f</tt> あるいは <tt> F</tt> の場合は <tt> float</tt>
+</UL>
+を表す。
+<P>
+<PRE>1.23 1.23E-1        // double型
+1.23F 1.23E-1F      // float型
+</PRE>
+<P>
+<LI> 文字列
+<P>
+文字列は <tt> char</tt> 型の配列派生型である (<A HREF="node27.html#langlangmanualarray">5.7</A> 
+節参照)。文字
+列はダブルクォーテーションマークで囲まれた文字の列で、 非グラフィック
+文字等は文字定数と同じエスケープシーケンスで表現される。ただし、文字列
+の中に改行を含んではならない。
+<P>
+となりあった文字列はコンカチーネートされ一つの文字列として扱われる。
+<P>
+<PRE>&quot;OZ++&quot;
+&quot;OZ&quot; &quot;++&quot;         // &quot;OZ++&quot; として
+</PRE>
+<P>
+<LI> ユーザ定義の定数
+<P>
+sharedの中で定数を宣言し、使用することが可能で
+ある (<A HREF="node35.html#langlangmanualsharedmember">5.15.2</A> 節参照)。
+<P>
+ユーザ定義の定数は宣言された型を持つ。
+<P>
+<PRE>float Pie = 3.14;        // float型の定数
+int MaxSize = 100;       // int型の定数
+char Name = &quot;MyName&quot;;    // char の配列派生型の定数
+</PRE>
+</UL><H3><A NAME=SECTION00062500000000000000>5.2.5 演算子、区切子</A></H3>
+<P>
+表<A HREF="node22.html#tablanglangmanualtokenop">5.2--3</A>の文字あるいは文字の組合せは、演算子または区切子として使用する。
+<P>
+<A NAME=tablanglangmanualtokenop>　</A>
+<P>
+<CENTER>
+<TABLE CELLPADDING=4>
+<CAPTION ALIGN=TOP><STRONG>表 5.1--3:</STRONG> 演算子、区切子</CAPTION>
+<TR ALIGN=CENTER>
+ <TD><TT>(</TT></TD>
+ <TD><TT>)</TT></TD>
+ <TD><TT>{</TT></TD>
+ <TD><TT>}</TT></TD>
+ <TD><TT>!</TT></TD>
+ <TD><TT>~</TT></TD>
+ <TD><TT>+</TT></TD>
+ <TD><TT>-</TT></TD>
+ <TD><TT>&amp;</TT></TD>
+ <TD><TT>@</TT></TD>
+ <TD><TT>*</TT></TD>
+ <TD><TT>/</TT></TD>
+ <TD><TT>%</TT></TD>
+ <TD><TT>+</TT></TD>
+</TR>
+<TR ALIGN=CENTER>
+ <TD><TT>-</TT></TD>
+ <TD><TT>|</TT></TD>
+ <TD><TT>^</TT></TD>
+ <TD><TT>;</TT></TD>
+ <TD><TT>'</TT></TD>
+ <TD><TT>&quot</TT></TD>
+ <TD><TT>&lt;</TT></TD>
+ <TD><TT>&gt;</TT></TD>
+ <TD><TT>=</TT></TD>
+ <TD><TT>?</TT></TD>
+ <TD><TT>:</TT></TD>
+ <TD><TT>.</TT></TD>
+ <TD><TT>,</TT></TD>
+ <TD><TT>[</TT></TD>
+</TR>
+<TR ALIGN=CENTER>
+ <TD><TT>]</TT></TD>
+ <TD><TT>++</TT></TD>
+ <TD><TT>--</TT></TD>
+ <TD><TT>-&gt;</TT></TD>
+ <TD><TT>&lt;&lt;</TT></TD>
+ <TD><TT>&gt;&gt;</TT></TD>
+ <TD><TT>&lt;=</TT></TD>
+ <TD><TT>&gt;=</TT></TD>
+ <TD><TT>==</TT></TD>
+ <TD><TT>!=</TT></TD>
+ <TD><TT>&amp;&amp;</TT></TD>
+ <TD><TT>||</TT></TD>
+ <TD><TT>+=</TT></TD>
+ <TD><TT>-=</TT></TD>
+</TR>
+<TR ALIGN=CENTER>
+ <TD><TT>*=</TT></TD>
+ <TD><TT>/=</TT></TD>
+ <TD><TT>%=</TT></TD>
+ <TD><TT>&amp;=</TT></TD>
+ <TD><TT>|=</TT></TD>
+ <TD><TT>^=</TT></TD>
+ <TD><TT>&lt;&lt;=</TT></TD>
+ <TD><TT>&gt;&gt;=</TT></TD>
+ <TD><TT>::</TT></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<P>
+<H3><A NAME=SECTION00062600000000000000>5.2.6 字句定義</A></H3>
+<P>
+字句の定義を以下に示す。
+<P>
+<PRE>[ \t\n]
+&quot;__&quot;[0-9a-zA-Z]{16}                                     CLASSNAME, SHAREDNAME
+[_a-zA-Z][_0-9a-zA-Z]*                                  IDENTIFIER, TYPEPARAM
+&quot;0&quot;|[1-9][0-9]*                                         INTEGER
+[1-9][0-9]*[uU]                                         UINTEGER
+[1-9][0-9]*[lL][lL]                                     LINTEGER
+[1-9][0-9]*[uU][lL][lL]                                 ULLINTEGER
+[0-9]+&quot;.&quot;[0-9]+|[0-9]&quot;.&quot;[0-9]+[eE]-[1-9]+               DOUBLEVAL
+[0-9]+&quot;.&quot;[0-9]+[fF]|[0-9]&quot;.&quot;[0-9]+[eE]-[1-9]+[fF]       FLOATVAL
+0[0-7]*                                                 OCT
+0[0-7]*[uU]                                             UCOT
+0[0-7]*[lL][lL]                                         LLOCT
+0[0-7]*[uU][lL][lL]                                     ULLOCT
+0[xX][0-9a-fA-F]*                                       HEX
+0[xX][0-9a-fA-F]*[uU]                                   UHEX
+0[xX][0-9a-fA-F]*[lL][lL]                               LLHEX
+0[xX][0-9a-fA-F]*[uU][lL][lL]                           ULLHEX
+\"[^&quot;]*\"                                               STRING
+\'[^']*\'                                               CONST_CHAR
+.*                                                      STRINGS
+&quot;++&quot;
+&quot;--&quot;
+&quot;&lt;&lt;&quot;
+&quot;&gt;&gt;&quot;
+&quot;&lt;=&quot;|&quot;&gt;=&quot;
+&quot;==&quot;|&quot;!=&quot;
+&quot;&amp;&amp;&quot;
+&quot;||&quot;
+&quot;*=&quot;|&quot;/=&quot;|&quot;%=&quot;|&quot;+=&quot;|&quot;-=&quot;|&quot;&lt;&lt;=&quot;|&quot;&gt;&gt;=&quot;|&quot;&amp;=&quot;|&quot;^=&quot;|&quot;|=&quot;
+&quot;::&quot;
+&quot;-&gt;&quot;
+&quot;=&gt;&quot;
+</PRE>
+<P>
+
+<P>
+
+<P>
+<BR> <HR>
+<P><ADDRESS>
+Copyright 1994-1997 Information-technology Promotion Agency, Japan
+</ADDRESS>
+</BODY>
